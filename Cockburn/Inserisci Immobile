@@ -1,0 +1,116 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\begin{tabular}{|c|cccc|}
+\hline
+\textbf{USE CASE \#2} &
+  \multicolumn{4}{c|}{\textbf{Inserisci Immobile}} \\ \hline
+\textbf{Goal in Context} &
+  \multicolumn{4}{l|}{L'agente immobiliare vuole inserire un nuovo immobile} \\ \hline
+\textbf{Preconditions} &
+  \multicolumn{4}{l|}{Deve essersi autenticato come agente immobiliare di un'azienda} \\ \hline
+\textbf{Success End Condition} &
+  \multicolumn{4}{l|}{L'immobile è stato registrato correttamente sull'applicazione} \\ \hline
+\textbf{Failed End Condition} &
+  \multicolumn{4}{l|}{L'immobile non viene caricato sull'applicazione} \\ \hline
+\textbf{Primary Actor} &
+  \multicolumn{4}{l|}{Agente Immobiliare} \\ \hline
+\textbf{Trigger} &
+  \multicolumn{4}{l|}{L'agente immobiliare seleziona "Aggiungi Immobile" in M00} \\ \hline
+\multirow{9}{*}{\textbf{Main Scenario}} &
+  \multicolumn{1}{c|}{\textbf{Step n.}} &
+  \multicolumn{1}{c|}{\textbf{Agente Immobiliare}} &
+  \multicolumn{1}{c|}{\textbf{API}} &
+  \textbf{System} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{1} &
+  \multicolumn{1}{c|}{Preme "Aggiungi Immobile" in M00} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{2} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M01 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{3} &
+  \multicolumn{1}{c|}{Compila i campi} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{Mostra sulla mappa la posizione dell'indirizzo inserito} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5} &
+  \multicolumn{1}{c|}{Preme "Inserisci"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M03 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{7} &
+  \multicolumn{1}{c|}{Preme "Si"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{8} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M00 \\ \hline
+\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} &
+  \multicolumn{1}{c|}{3a} &
+  \multicolumn{1}{c|}{Preme la freccia in alto a sinistra} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4a} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M04 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5a} &
+  \multicolumn{1}{c|}{Preme "Si"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6a} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Riprendi dallo step 8 Main Scenario \\ \hline
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Non conferma l'inserimento)\end{tabular}}} &
+  \multicolumn{1}{c|}{7b} &
+  \multicolumn{1}{c|}{Preme "No"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{8b} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Riprendi dallo step 2 Main Scenario \\ \hline
+\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Torna indietro ma ci ripensa)\end{tabular}}} &
+  \multicolumn{1}{c|}{3c} &
+  \multicolumn{1}{c|}{Preme la freccia in alto a sinistra} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4c} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M04 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5c} &
+  \multicolumn{1}{c|}{Preme "No"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6c} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Riprendi dallo step 2 Main Scenario \\ \hline
+\end{tabular}
+\end{table}

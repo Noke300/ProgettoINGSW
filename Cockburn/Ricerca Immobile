@@ -47,7 +47,7 @@
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Restituisce sulla mappa \\ la posizione degli \\ immobili della lista\end{tabular}} &
    \\ \hline
-\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Exstension \#1 \\ (Utente non seleziona una delle \\ scelte poste dall'API in fase di \\ inserimento "Citta' o Comune")\end{tabular}}} &
+\multirow{5}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Exstension \#1 \\ (Non seleziona una \\ delle scelte poste \\ dall'API in fase di \\ inserimento "Città \\ o Comune")\end{tabular}}} &
   \multicolumn{1}{c|}{4a} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
@@ -58,16 +58,21 @@
   \multicolumn{1}{c|}{} &
    \\ \cline{2-5} 
  &
-  \multicolumn{1}{c|}{\multirow{2}{*}{6a}} &
-  \multicolumn{1}{c|}{\multirow{2}{*}{}} &
-  \multicolumn{1}{c|}{\multirow{2}{*}{}} &
-  \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular}} \\
+  \multicolumn{1}{c|}{\multirow{3}{*}{6a}} &
+  \multicolumn{1}{c|}{\multirow{3}{*}{}} &
+  \multicolumn{1}{c|}{\multirow{3}{*}{}} &
+  \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular}} \\
+ &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+   \\
  &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
    \\ \hline
-\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Exstension \#2\\ (Utente seleziona una ricerca \\ che non da' risultati)\end{tabular}}} &
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Exstension \#2\\ (Seleziona una \\ ricerca che \\ non dà risultati)\end{tabular}}} &
   \multicolumn{1}{c|}{4b} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
@@ -82,7 +87,7 @@
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
   \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 Main scenario\end{tabular} \\ \hline
-\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Exstension \#3\\ (Utente seleziona una citta' \\ che non ha immobili)\end{tabular}}} &
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Exstension \#3\\ (Seleziona una \\ città che non \\ ha immobili)\end{tabular}}} &
   \multicolumn{1}{c|}{4c} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &

@@ -24,7 +24,7 @@
   \textbf{System} \\ \cline{2-5} 
  &
   \multicolumn{1}{c|}{1} &
-  \multicolumn{1}{c|}{Preme "Aggiungi Immobile" in M00} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Preme "Aggiungi \\ Immobile" in M00\end{tabular}} &
   \multicolumn{1}{c|}{} &
    \\ \cline{2-5} 
  &
@@ -40,7 +40,7 @@
  &
   \multicolumn{1}{c|}{4} &
   \multicolumn{1}{c|}{} &
-  \multicolumn{1}{c|}{Mostra sulla mappa la posizione dell'indirizzo inserito} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Mostra sulla mappa la \\ posizione dell'indirizzo inserito\end{tabular}} &
    \\ \cline{2-5} 
  &
   \multicolumn{1}{c|}{5} &
@@ -64,7 +64,7 @@
   Mostra M00 \\ \hline
 \multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} &
   \multicolumn{1}{c|}{3a} &
-  \multicolumn{1}{c|}{Preme la freccia in alto a sinistra} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Preme la freccia \\ in alto a sinistra\end{tabular}} &
   \multicolumn{1}{c|}{} &
    \\ \cline{2-5} 
  &
@@ -81,8 +81,8 @@
   \multicolumn{1}{c|}{6a} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
-  Riprendi dallo step 8 Main Scenario \\ \hline
-\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Non conferma l'inserimento)\end{tabular}}} &
+  \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 8 Main Scenario\end{tabular} \\ \hline
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Non conferma \\ l'inserimento)\end{tabular}}} &
   \multicolumn{1}{c|}{7b} &
   \multicolumn{1}{c|}{Preme "No"} &
   \multicolumn{1}{c|}{} &
@@ -91,10 +91,10 @@
   \multicolumn{1}{c|}{8b} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
-  Riprendi dallo step 2 Main Scenario \\ \hline
-\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Torna indietro ma ci ripensa)\end{tabular}}} &
+  \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 2 Main Scenario\end{tabular} \\ \hline
+\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Torna indietro \\ ma ci ripensa)\end{tabular}}} &
   \multicolumn{1}{c|}{3c} &
-  \multicolumn{1}{c|}{Preme la freccia in alto a sinistra} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Preme la freccia \\ in alto a sinistra\end{tabular}} &
   \multicolumn{1}{c|}{} &
    \\ \cline{2-5} 
  &
@@ -111,6 +111,6 @@
   \multicolumn{1}{c|}{6c} &
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
-  Riprendi dallo step 2 Main Scenario \\ \hline
+  \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 2 Main Scenario\end{tabular} \\ \hline
 \end{tabular}
 \end{table}

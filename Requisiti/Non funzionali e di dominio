@@ -1,0 +1,21 @@
+\section{Descrizione dei requisiti non-funzionali e di dominio}
+
+\subsection{Non funzionali}
+
+\begin{itemize}
+\item I dati personali e le credenziali degli utenti del sistema devono essere protetti e salvati in modo sicura sulla base dati.
+\item Si necessita di un database apposito per salvare i dati multimediali, nello specifico le immagini caricate dagli agenti immobiliari durante il caricamento nel sistema degli immobili.
+\item Il sistema deve essere facilmente scalabile, per permettere di aggiungere in futuro nuove funzionalità in modo facile e veloce.
+\item Le ricerche effettuate dall'utente devono essere efficienti e performati, c'è quindi bisogno di un softwer incentrato sull'efficienza.
+\item Il sistema deve essere facile da utilizzare per chiunque, sfruttando una UI semplice e intuitiva, compresa di interfaccie grafiche come il calendario per prenotare le visite o la mappa per visualizzare l'indirizzo dell'immobile.
+\end{itemize}
+
+\subsection{Di dominio}
+
+\begin{itemize}
+    \item Ogni immobile deve essere ben dettagliato, con informazioni obbligatorie riguardanti l'indirizzo dell'immobile, la presenza di bagni, la tipologia dell'immobile, il prezzo di vendita e una descrizione dettagliata dello stesso.
+    \item Il software deve gestire la presenza di più agenzie su di essa, dividendo la gestione dei vari ruoli nell'azienda.
+    \item Bisogna poter conservare i dati degli utenti relativi alla registrazione e avere uno storico delle operazioni fatte.
+    \item Si necessità di una comunicazione tra cliente e l'agente immobiliare tramite notifiche email e chat.
+
+\end{itemize}

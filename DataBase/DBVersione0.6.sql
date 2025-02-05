@@ -26,7 +26,7 @@ CREATE TABLE AdminSupport(
 	NomeSupport VARCHAR(255) NOT NULL,
 	CognomeSupport VARCHAR(255) NOT NULL,
 	EmailSupport VARCHAR(255) PRIMARY KEY,
-	PasswordSupPort VARCHAR(255) NOT NULL UNIQUE,
+	PasswordSupport VARCHAR(255) NOT NULL UNIQUE,
 	NomeAgenzia VARCHAR(255),
     FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 	
@@ -98,8 +98,6 @@ CHECK(Cliente.EmailCliente LIKE '_%@%.__%');
 CHECK (
     	Cliente.DataN <= CURRENT_DATE - INTERVAL '18 years'
     AND EXTRACT(YEAR FROM Cliente.DataN) >= 1900);
-	
-		-- Password Constrains ??
 
 	-- AgenziaImmobiliare
 	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAgenziaImmobiliare
@@ -107,8 +105,6 @@ CHECK (
 	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAdmin
 	CHECK(AgenziaImmobiliare.EmailAdmin LIKE '_%@%.__%');
 
-
-		-- Password Constrains ??
 		
 	--AdminSupport
 	ALTER TABLE AdminSupport ADD CONSTRAINT EmailAdminSupport 
@@ -144,3 +140,55 @@ CHECK (
          --Visita
                 ALTER TABLE Visita ADD CONSTRAINT DataValida
                 CHECK(DataVisita > CURRENT_DATE);
+	
+--Trigger
+
+CREATE OR REPLACE FUNCTION CheckPasswordGeneric(
+    table_name TEXT,  -- Nome della tabella
+    column_name TEXT  -- Nome della colonna che contiene la password
+) RETURNS TRIGGER AS $$
+DECLARE
+    password_value TEXT;
+BEGIN
+    -- Ottiene dinamicamente il valore della password
+    EXECUTE format('SELECT %I FROM %I WHERE id = $1', column_name, table_name)
+    INTO password_value
+    USING NEW.id;
+    
+    -- Controlla la password con espressione regolare
+    IF password_value !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
+        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+--Agenzia Immobiliare
+
+CREATE TRIGGER AgenziaImmobiliarePasswordTrigger
+BEFORE INSERT OR UPDATE ON AgenziaImmobiliare
+FOR EACH ROW
+EXECUTE FUNCTION CheckPasswordGeneric('AgenziaImmobiliare', 'PasswordAdmin');
+
+--Cliente
+
+CREATE TRIGGER ClientePasswordTrigger
+BEFORE INSERT OR UPDATE ON Cliente
+FOR EACH ROW
+EXECUTE FUNCTION CheckPasswordGeneric('Cliente', 'PasswordCliente');
+
+--Agente Immobiliare
+
+CREATE TRIGGER AgenteImmobiliarePasswordTrigger
+BEFORE INSERT OR UPDATE ON AgenteImmobiliare
+FOR EACH ROW
+EXECUTE FUNCTION CheckPasswordGeneric('AgenteImmobiliare', 'PasswordAgente');
+
+--Admin Support
+
+CREATE TRIGGER AdminSupportPasswordTrigger
+BEFORE INSERT OR UPDATE ON AdminSupport
+FOR EACH ROW
+EXECUTE FUNCTION CheckPasswordGeneric('AdminSupport', 'PasswordSupport');

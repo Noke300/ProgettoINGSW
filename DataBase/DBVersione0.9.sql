@@ -45,11 +45,11 @@ CREATE TABLE Indirizzo(
  CREATE TABLE Immobile(
          IdImmobile SERIAL PRIMARY KEY,
 	 IdIndirizzo INT,
-	 NomeAI VARCHAR(255),
+	 NomeAgente VARCHAR(255),
 	 
 	 Prezzo DECIMAL(10,2) NOT NULL,
 	 TipoVendita VARCHAR(255) NOT NULL,
-	 Superfice INT NOT NULL,
+	 Superficie INT NOT NULL,
 	 TipoImmobile VARCHAR(255) NOT NULL,
 	 NumBagni INT NOT NULL,
 	 ClasseEnergetica VARCHAR(10) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE Indirizzo(
 	 Portineria BOOLEAN,
 	 Climatizzatione BOOLEAN,
 	 Venduto BOOLEAN DEFAULT FALSE,
- FOREIGN KEY(IdIndirizzo) REFERENCES Indirizzo(IdIndirizzio),
+ FOREIGN KEY(IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo),
  FOREIGN KEY(NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente)
 
  );
@@ -119,9 +119,6 @@ CHECK (
 
 	--Indirizzo
 		--Possibili Constrains per limitare errori con le API da valutare 
-
-                ALTER TABLE Indirizzo ADD CONSTRAINT NumeroCivico
-                CHECK(Indirizzo.NumeroCivico > 0);
 		
 	--Immobile
 
@@ -139,7 +136,7 @@ CHECK (
  
          --Offerta
                 ALTER TABLE Offerta ADD CONSTRAINT PrezzoOfferta
-                CHECK(Offerta.NumStanze > 0);
+                CHECK(Offerta.PrezzoOfferta > 0);
  
          --Visita
                 ALTER TABLE Visita ADD CONSTRAINT DataValida
@@ -147,55 +144,77 @@ CHECK (
 	
 --Trigger:
 
-CREATE OR REPLACE FUNCTION CheckPasswordGeneric(
-    table_name TEXT,  -- Nome della tabella
-    column_name TEXT  -- Nome della colonna che contiene la password
-) RETURNS TRIGGER AS $$
-DECLARE
-    password_value TEXT;
+
+--Agenzia Immobiliare
+
+CREATE OR REPLACE FUNCTION CheckPasswordAgenziaImmobiliare()
+RETURNS TRIGGER AS $$
 BEGIN
-    -- Ottiene dinamicamente il valore della password
-    EXECUTE format('SELECT %I FROM %I WHERE id = $1', column_name, table_name)
-    INTO password_value
-    USING NEW.id;
-    
-    -- Controlla la password con espressione regolare
-    IF password_value !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
+    IF NEW.PasswordAdmin !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
         RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
     END IF;
-    
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 
---Agenzia Immobiliare
 
 CREATE TRIGGER AgenziaImmobiliarePasswordTrigger
 BEFORE INSERT OR UPDATE ON AgenziaImmobiliare
 FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordGeneric('AgenziaImmobiliare', 'PasswordAdmin');
+EXECUTE FUNCTION CheckPasswordAgenziaImmobiliare();
 
 --Cliente
+
+CREATE OR REPLACE FUNCTION CheckPasswordCliente()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.PasswordCliente !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
+        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER ClientePasswordTrigger
 BEFORE INSERT OR UPDATE ON Cliente
 FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordGeneric('Cliente', 'PasswordCliente');
+EXECUTE FUNCTION CheckPasswordCliente();
 
 --Agente Immobiliare
+
+CREATE OR REPLACE FUNCTION CheckPasswordAgenteImmobiliare()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.PasswordAgente !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
+        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER AgenteImmobiliarePasswordTrigger
 BEFORE INSERT OR UPDATE ON AgenteImmobiliare
 FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordGeneric('AgenteImmobiliare', 'PasswordAgente');
+EXECUTE FUNCTION CheckPasswordAgenteImmobiliare();
 
 --Admin Support
+
+CREATE OR REPLACE FUNCTION CheckPasswordAdmin()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.PasswordSupport !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
+        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER AdminSupportPasswordTrigger
 BEFORE INSERT OR UPDATE ON AdminSupport
 FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordGeneric('AdminSupport', 'PasswordSupport');
+EXECUTE FUNCTION CheckPasswordAdmin();
+
 
 
 --Trigger Cancellazione Offerte e Visite in caso di Venduto = TRUE:

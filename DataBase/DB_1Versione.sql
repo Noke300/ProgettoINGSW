@@ -24,9 +24,9 @@ FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 
 CREATE TABLE Indirizzo(
 	IdIndirizzio SERIAL PRIMARY KEY,
-    Cap  INT NOT NULL,
+   	Cap  INT NOT NULL,
 	Provincia VARCHAR(255) NOT NULL,
-    Citta VARCHAR(255) NOT NULL,
+    	Citta VARCHAR(255) NOT NULL,
 	Via VARCHAR(255) NULL NULL,
 	NumeroCivico VARCHAR(10) NULL NULL
  );

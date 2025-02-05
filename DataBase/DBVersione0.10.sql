@@ -2,7 +2,9 @@ CREATE TABLE AgenziaImmobiliare (
 	NomeAgenzia VARCHAR(255) PRIMARY KEY,
 	EmailAgenzia VARCHAR(255) NOT NULL UNIQUE,
 	EmailAdmin VARCHAR(255) NOT NULL UNIQUE,
-	PasswordAdmin VARCHAR(255) NOT NULL
+	PasswordAdmin VARCHAR(255) NOT NULL,
+	Regione VARCHAR(255) NOT NULL
+
 );
 
 CREATE TABLE Cliente (
@@ -36,6 +38,7 @@ CREATE TABLE AdminSupport(
 CREATE TABLE Indirizzo(
 	IdIndirizzo SERIAL PRIMARY KEY,
    	Cap DECIMAL(5,0) NOT NULL,
+	Regione VARCHAR(255) NOT NULL,
 	Provincia VARCHAR(255) NOT NULL,
         Citta VARCHAR(255) NOT NULL,
 	Via VARCHAR(255) NOT NULL,

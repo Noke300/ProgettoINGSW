@@ -14,14 +14,22 @@ CREATE TABLE Cliente (
 );
 
 CREATE TABLE AgenteImmobiliare(
-	NomeAI VARCHAR(255) NOT NULL,
-	CognomeAI VARCHAR(255) NOT NULL,
-	DataNAI DATE NOT NULL,
-	EmailAI VARCHAR(255) PRIMARY KEY,
-	PasswordAI VARCHAR(255) NOT NULL UNIQUE,
+	NomeAgente VARCHAR(255) NOT NULL,
+	CognomeAgente VARCHAR(255) NOT NULL,
+	EmailAgente VARCHAR(255) PRIMARY KEY,
+	PasswordAgente VARCHAR(255) NOT NULL UNIQUE,
 	NomeAgenzia VARCHAR(255),
 FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 
+);
+CREATE TABLE AdminSupport(
+	NomeSupport VARCHAR(255) NOT NULL,
+	CognomeSupport VARCHAR(255) NOT NULL,
+	EmailSupport VARCHAR(255) PRIMARY KEY,
+	PasswordSupPort VARCHAR(255) NOT NULL UNIQUE,
+	NomeAgenzia VARCHAR(255),
+    FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
+	
 );
 
 CREATE TABLE Indirizzo(
@@ -53,16 +61,16 @@ CREATE TABLE Indirizzo(
 	 Climatizzatione BOOLEAN,
 	 Vendutto BOOLEAN DEFAULT FALSE,
  FOREIGN KEY(IdIndirizzo) REFERENCES Indirizzo(IdIndirizzio),
- FOREIGN KEY(NomeAI) REFERENCES AgenteImmobiliare(EmailAI)
+ FOREIGN KEY(NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente)
 
  );
  
  CREATE TABLE Offerta(
 	 IdImmobile  INT,
 	 NomeCliente VARCHAR(255),
-	 Prezzo FLOAT,
-	 DataOfferta DATE,
-	 Esito BOOLEAN,
+	 PrezzoOfferta DECIMAL(10,2) NOT NULL,
+	 DataOfferta DATE NOT NULL,
+	 EsitoOfferta BOOLEAN,
  PRIMARY KEY (IdImmobile, NomeCliente),
  FOREIGN KEY(IdImmobile) REFERENCES Immobile(IdImmobile),
  FOREIGN KEY(NomeCliente) REFERENCES Cliente(EmailCliente)
@@ -72,8 +80,8 @@ CREATE TABLE Indirizzo(
  CREATE TABLE Visita(
 	 IdImmobile  INT,
 	 NomeCliente VARCHAR(255),
-	 Ora FLOAT,
-	 DataOfferta DATE,
+	 OraVisita TIME NOT NULL,
+	 DataVisita DATE NOT NULL,
  PRIMARY KEY (IdImmobile, NomeCliente),
  FOREIGN KEY(IdImmobile) REFERENCES Immobile(IdImmobile),
  FOREIGN KEY(NomeCliente) REFERENCES Cliente(EmailCliente)
@@ -102,15 +110,14 @@ CHECK (
 
 		-- Password Constrains ??
 		
+	--AdminSupport
+	ALTER TABLE AdminSupport ADD CONSTRAINT EmailAdminSupport 
+	CHECK(AdminSupport.EmailSupport LIKE '_%@%.__%');
+	
 	--AgenteImmobiliare
 	
 	ALTER TABLE AgenteImmobiliare ADD CONSTRAINT EmailAgenteImmobiliareValida 
-	CHECK(AgenteImmobiliare.EmailAI LIKE '_%@%.__%');
-	
-	ALTER TABLE AgenteImmobiliare ADD CONSTRAINT DataNascitaAgenteImmobiliare
-CHECK (
-    	AgenteImmobiliare.DataNAI <= CURRENT_DATE - INTERVAL '18 years'
-    AND EXTRACT(YEAR FROM AgenteImmobiliare.DataNAI) >= 1900);
+	CHECK(AgenteImmobiliare.EmailAgente LIKE '_%@%.__%');
 	
 		-- Password Constrains ??
 	--Indirizzo
@@ -120,3 +127,4 @@ CHECK (
 		--il boss
 		ALTER TABLE Immobile ADD CONSTRAINT PrezzoImmobile
 		CHECK(Immobile.Prezzo > 0);
+	

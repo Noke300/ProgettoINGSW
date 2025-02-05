@@ -7,16 +7,18 @@ CREATE TABLE AgenziaImmobiliare (
 
 CREATE TABLE Cliente (
 	Nome VARCHAR(255) NOT NULL,
+	Cognome VARCHAR(255) NOT NULL,
 	EmailCliente VARCHAR(255) PRIMARY KEY,
 	PasswordCliente VARCHAR(255) NOT NULL,
 	DataN DATE NOT NULL
 );
 
 CREATE TABLE AgenteImmobiliare(
-	NomeAI VARCHAR(255),
+	NomeAI VARCHAR(255) NOT NULL,
+	CognomeAI VARCHAR(255) NOT NULL,
+	DataNAI DATE NOT NULL,
 	EmailAI VARCHAR(255) PRIMARY KEY,
 	PasswordAI VARCHAR(255) NOT NULL UNIQUE,
-	CompagniaAI VARCHAR(255),
 	NomeAgenzia VARCHAR(255),
 FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 
@@ -26,9 +28,9 @@ CREATE TABLE Indirizzo(
 	IdIndirizzio SERIAL PRIMARY KEY,
    	Cap  INT NOT NULL,
 	Provincia VARCHAR(255) NOT NULL,
-    	Citta VARCHAR(255) NOT NULL,
-	Via VARCHAR(255) NULL NULL,
-	NumeroCivico VARCHAR(10) NULL NULL
+    Citta VARCHAR(255) NOT NULL,
+	Via VARCHAR(255) NOT NULL,
+	NumeroCivico VARCHAR(10) NOT NULL
  );
  
  CREATE TABLE Immobile(
@@ -36,7 +38,7 @@ CREATE TABLE Indirizzo(
 	 IdIndirizzo INT,
 	 NomeAI VARCHAR(255),
 	 
-	 Prezzo FLOAT NOT NULL,
+	 Prezzo DECIMAL(10,2) NOT NULL,
 	 TipoVendita VARCHAR(255) NOT NULL,
 	 Superfice INT NOT NULL,
 	 TipoImmobile VARCHAR(255) NOT NULL,
@@ -78,4 +80,43 @@ CREATE TABLE Indirizzo(
 
  );
  
+ --Constreins
+ 	--Cliente
  
+ALTER TABLE Cliente ADD CONSTRAINT EmailClienteValida 
+CHECK(Cliente.EmailCliente LIKE '_%@%.__%');
+
+ ALTER TABLE Cliente ADD CONSTRAINT DataNascita
+CHECK (
+    	Cliente.DataN <= CURRENT_DATE - INTERVAL '18 years'
+    AND EXTRACT(YEAR FROM Cliente.DataN) >= 1900);
+	
+		-- Password Constrains ??
+
+	-- AgenziaImmobiliare
+	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAgenziaImmobiliare
+	CHECK(AgenziaImmobiliare.EmailAgenzia LIKE '_%@%.__%');
+	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAdmin
+	CHECK(AgenziaImmobiliare.EmailAdmin LIKE '_%@%.__%');
+
+
+		-- Password Constrains ??
+		
+	--AgenteImmobiliare
+	
+	ALTER TABLE AgenteImmobiliare ADD CONSTRAINT EmailAgenteImmobiliareValida 
+	CHECK(AgenteImmobiliare.EmailAI LIKE '_%@%.__%');
+	
+	ALTER TABLE AgenteImmobiliare ADD CONSTRAINT DataNascitaAgenteImmobiliare
+CHECK (
+    	AgenteImmobiliare.DataNAI <= CURRENT_DATE - INTERVAL '18 years'
+    AND EXTRACT(YEAR FROM AgenteImmobiliare.DataNAI) >= 1900);
+	
+		-- Password Constrains ??
+	--Indirizzo
+		--Possibili Constrains per limitare errori con le API da valutare 
+		
+	--Immobile
+		--il boss
+		ALTER TABLE Immobile ADD CONSTRAINT PrezzoImmobile
+		CHECK(Immobile.Prezzo > 0);

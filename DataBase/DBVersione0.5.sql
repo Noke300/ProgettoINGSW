@@ -59,7 +59,7 @@ CREATE TABLE Indirizzo(
 	 Cantina BOOLEAN,
 	 Portineria BOOLEAN,
 	 Climatizzatione BOOLEAN,
-	 Vendutto BOOLEAN DEFAULT FALSE,
+	 Venduto BOOLEAN DEFAULT FALSE,
  FOREIGN KEY(IdIndirizzo) REFERENCES Indirizzo(IdIndirizzio),
  FOREIGN KEY(NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente)
 
@@ -127,4 +127,20 @@ CHECK (
 		--il boss
 		ALTER TABLE Immobile ADD CONSTRAINT PrezzoImmobile
 		CHECK(Immobile.Prezzo > 0);
-	
+ 
+                ALTER TABLE Immobile ADD CONSTRAINT SuperficieImmobile
+                CHECK(Superficie > 0);
+               
+                ALTER TABLE Immobile ADD CONSTRAINT NumeroBagni
+                CHECK(NumBagni >= 0);
+
+                ALTER TABLE Immobile ADD CONSTRAINT NumeroStanze
+                CHECK(NumStanze > 0);
+ 
+         --Offerta
+                ALTER TABLE Offerta ADD CONSTRAINT PrezzoOfferta
+                CHECK(NumStanze > 0);
+ 
+         --Visita
+                ALTER TABLE Visita ADD CONSTRAINT DataValida
+                CHECK(DataVisita > CURRENT_DATE);

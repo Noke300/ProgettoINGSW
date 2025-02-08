@@ -12,14 +12,13 @@ import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.VirtualEarthTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.viewer.*;
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,10 +26,19 @@ import java.util.Set;
 
 public class Main {
 
-    private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
-    private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
     private double latitudine = 40.8518;
     private double longitudine = 14.2681;
+    private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
+
+    public void setLatitudine(double latitudine) {
+        this.latitudine = latitudine;
+    }
+
+    public void setLongitudine(double longitudine) {
+        this.longitudine = longitudine;
+    }
+
+    private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::createAndShowGUI);
@@ -39,14 +47,10 @@ public class Main {
     static void createAndShowGUI() {
         Main M = new Main();
 
-
-        JFrame frame = new JFrame(" Places Autocomplete with Interactive Map");
+        JFrame frame = new JFrame("Google Places Autocomplete with Interactive Map");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLayout(new BorderLayout());
-
-        String UrlIconaCento = "https://api.geoapify.com/v1/icon/?type=awesome&color=%23290eb4&icon=landmark&iconSize=small&textSize=small&strokeColor=%232b5124&shadowColor=%23342451&scaleFactor=2&apiKey="+GEOAPIFY_API_KEY;
-        String UrlIconaScuola = "https://api.geoapify.com/v1/icon/?type=material&color=%23fbdb10&size=small&icon=user-graduate&iconType=awesome&textSize=small&noShadow&noWhiteCircle&scaleFactor=2&apiKey="+GEOAPIFY_API_KEY;
 
         // Barra di ricerca combinata
         JComboBox<String> comboBox = new JComboBox<>();
@@ -54,19 +58,9 @@ public class Main {
         JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
         textField.setColumns(60);
         JButton searchButton = new JButton("Cerca");
-        JButton filterButton = new JButton("Filtra");
+        JButton FilterButton = new JButton("Filtra");
 
-        //ComboBox Stile mappa
-        JComboBox<String> comboBoxMap = new JComboBox<>();
-        comboBoxMap.setVisible(true);
-        comboBoxMap.setEditable(true);
-        comboBoxMap.addItem("Default");
-        comboBoxMap.addItem("MAP");
-        comboBoxMap.addItem("HYBRID");
-        comboBoxMap.addItem("SATELLITE");
-
-
-        filterButton.addActionListener(e -> {
+        FilterButton.addActionListener(e -> {
             String input = textField.getText();
             if (!input.isEmpty()) {
                 List<String> suggestions = fetchAutocompleteSuggestions(input);
@@ -82,11 +76,21 @@ public class Main {
         searchPanel.add(new JLabel("Indirizzo:"));
         searchPanel.add(comboBox);
         searchPanel.add(searchButton);
-        searchPanel.add(filterButton);
+        searchPanel.add(FilterButton);
         frame.add(searchPanel, BorderLayout.NORTH);
 
         // Interactive Map with Markers
         JXMapViewer mapViewer = new JXMapViewer();
+
+        JComboBox<String> comboBoxMap = new JComboBox<>();
+
+        comboBoxMap.setVisible(true);
+        comboBoxMap.setEditable(true);
+        comboBoxMap.addItem("Default");
+        comboBoxMap.addItem("MAP");
+        comboBoxMap.addItem("HYBRID");
+        comboBoxMap.addItem("SATELLITE");
+
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
@@ -119,17 +123,17 @@ public class Main {
         searchPanel.add(comboBoxMap);
 
         class CustomWaypoint extends DefaultWaypoint {
-            private final String iconUrl;
+            private final Color color;
             private final String info;
 
-            public CustomWaypoint(GeoPosition coord, String iconUrl, String info) {
+            public CustomWaypoint(GeoPosition coord, Color color, String info) {
                 super(coord);
-                this.iconUrl = iconUrl;
+                this.color = color;
                 this.info = info;
             }
 
-            public String getIconUrl() {
-                return iconUrl;
+            public Color getColor() {
+                return color;
             }
 
             public String getInfo() {
@@ -140,15 +144,13 @@ public class Main {
         class CustomWaypointRenderer implements WaypointRenderer<CustomWaypoint> {
             @Override
             public void paintWaypoint(Graphics2D g, JXMapViewer map, CustomWaypoint waypoint) {
-                try {
-                    Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-                    Image icon = ImageIO.read(new URL(waypoint.getIconUrl()));
-                    g.drawImage(icon, (int) point.getX() - 10, (int) point.getY() - 10, 20, 25, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.setColor(waypoint.getColor());
+                Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
+                g.fillOval((int) point.getX() - 5, (int) point.getY() - 5, 10, 10);
+
             }
         }
+
 
         // List of markers
         Set<CustomWaypoint> waypoints = new HashSet<>();
@@ -179,13 +181,26 @@ public class Main {
         // Add map to the center of the frame
         frame.add(mapViewer, BorderLayout.CENTER);
 
+        // Center the map on mouse click
+        // Center the map on mouse click
+        mapViewer.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Point2D worldPos = e.getPoint();
+                GeoPosition geo = mapViewer.convertPointToGeoPosition(worldPos);
+                mapViewer.setCenterPosition(geo);
+            }
+        });
+
+        // Add waypoint click listener
+
+
         searchButton.addActionListener(e -> {
             String address = textField.getText();
             if (!address.isEmpty()) {
                 GeoPosition geoPosition = getCoordinatesFromAddress(address);
                 if (geoPosition != null) {
                     waypoints.clear();
-                    waypoints.add(new CustomWaypoint(geoPosition, UrlIconaCento, "Cento"));
+                    waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE,"Cento"));
                     waypointPainter.setWaypoints(waypoints);
                     mapViewer.setCenterPosition(geoPosition);
                     mapViewer.repaint();
@@ -194,7 +209,7 @@ public class Main {
                     // Fetch places using Geoapify Places API for schools
                     List<GeoPosition> places = fetchPlaces(geoPosition.getLatitude(), geoPosition.getLongitude(), "education.school");
                     for (GeoPosition place : places) {
-                        waypoints.add(new CustomWaypoint(place, UrlIconaScuola, "Scuola"));
+                        waypoints.add(new CustomWaypoint(place, Color.RED,"Scuola"));
                     }
                     waypointPainter.setWaypoints(waypoints);
                     mapViewer.repaint();
@@ -204,25 +219,22 @@ public class Main {
             }
         });
 
-        // Center the map on mouse click
         mapViewer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Point2D worldPos = e.getPoint();
-                GeoPosition geo = mapViewer.convertPointToGeoPosition(worldPos);
-                mapViewer.setCenterPosition(geo);
+                Point2D mousePos = e.getPoint();
+                for (CustomWaypoint waypoint : waypoints) {
+                    Point2D point = mapViewer.getTileFactory().geoToPixel(waypoint.getPosition(), mapViewer.getZoom());
+                    if (point.distance(mousePos) < 5) {
+                        EventQueue.invokeLater(() -> JOptionPane.showMessageDialog(mapViewer, waypoint.getInfo()));
+                        break;
+                    }
+                }
             }
         });
-        //non fa un cazzo
-        JPanel waypointPanel = new JPanel();
-        waypointPanel.setLayout(null);
-        waypointPanel.setOpaque(false);
-        mapViewer.add(waypointPanel);
-
 
         frame.setVisible(true);
     }
-
     // La funzione fetchAutocompleteSuggestions rimane invariata
     private static List<String> fetchAutocompleteSuggestions(String input) {
         List<String> results = new ArrayList<>();
@@ -289,7 +301,7 @@ public class Main {
     private static List<GeoPosition> fetchPlaces(double latitudine, double longitudine, String category) {
         List<GeoPosition> places = new ArrayList<>();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
-        String url = String.format("https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=10&apiKey=%s",
+        String url = String.format("https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=30&apiKey=%s",
                 category, longitudine, latitudine, longitudine, latitudine, GEOAPIFY_API_KEY);
 
         Request request = new Request.Builder()
@@ -317,14 +329,6 @@ public class Main {
             e.printStackTrace();
         }
         return places;
-    }
-
-    public void setLatitudine(double latitudine) {
-        this.latitudine = latitudine;
-    }
-
-    public void setLongitudine(double longitudine) {
-        this.longitudine = longitudine;
     }
 
 }

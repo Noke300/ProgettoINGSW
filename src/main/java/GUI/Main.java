@@ -17,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,18 +27,9 @@ import java.util.Set;
 
 public class Main {
 
-    private double latitudine = 40.8518;
-    private double longitudine = 14.2681;
+    private static final double latitudineNapoli = 40.8518;
+    private static final double longitudineNapoli = 14.2681;
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
-
-    public void setLatitudine(double latitudine) {
-        this.latitudine = latitudine;
-    }
-
-    public void setLongitudine(double longitudine) {
-        this.longitudine = longitudine;
-    }
-
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
     public static void main(String[] args) {
@@ -45,7 +37,6 @@ public class Main {
     }
 
     static void createAndShowGUI() {
-        Main M = new Main();
 
         JFrame frame = new JFrame("Google Places Autocomplete with Interactive Map");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,9 +49,9 @@ public class Main {
         JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
         textField.setColumns(60);
         JButton searchButton = new JButton("Cerca");
-        JButton FilterButton = new JButton("Filtra");
+        JButton filterButton = new JButton("Filtra");
 
-        FilterButton.addActionListener(e -> {
+        filterButton.addActionListener(e -> {
             String input = textField.getText();
             if (!input.isEmpty()) {
                 List<String> suggestions = fetchAutocompleteSuggestions(input);
@@ -76,7 +67,7 @@ public class Main {
         searchPanel.add(new JLabel("Indirizzo:"));
         searchPanel.add(comboBox);
         searchPanel.add(searchButton);
-        searchPanel.add(FilterButton);
+        searchPanel.add(filterButton);
         frame.add(searchPanel, BorderLayout.NORTH);
 
         // Interactive Map with Markers
@@ -117,7 +108,7 @@ public class Main {
         });
 
         // Initial Position
-        mapViewer.setCenterPosition(new GeoPosition(M.latitudine, M.longitudine)); // Napoli, Italia
+        mapViewer.setCenterPosition(new GeoPosition(latitudineNapoli, longitudineNapoli)); // Napoli, Italia
         mapViewer.setZoom(5);
 
         searchPanel.add(comboBoxMap);
@@ -146,7 +137,7 @@ public class Main {
             public void paintWaypoint(Graphics2D g, JXMapViewer map, CustomWaypoint waypoint) {
                 g.setColor(waypoint.getColor());
                 Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-                g.fillOval((int) point.getX() - 5, (int) point.getY() - 5, 10, 10);
+                g.fillOval((int) point.getX() - 5, (int) point.getY() - 5, 15, 15);
 
             }
         }
@@ -184,6 +175,7 @@ public class Main {
         // Center the map on mouse click
         // Center the map on mouse click
         mapViewer.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 Point2D worldPos = e.getPoint();
                 GeoPosition geo = mapViewer.convertPointToGeoPosition(worldPos);
@@ -219,20 +211,86 @@ public class Main {
             }
         });
 
-        mapViewer.addMouseListener(new MouseAdapter() {
+        final int HITBOX_RADIUS = 40;
+
+        // Creiamo il pannello laterale per le informazioni
+        final JPanel detailsPanel = new JPanel(new BorderLayout());
+        detailsPanel.setPreferredSize(new Dimension(400, 600));  // dimensioni personalizzabili
+        final JTextArea detailsTextArea = new JTextArea();
+        detailsTextArea.setEditable(false);
+        detailsTextArea.setLineWrap(true);
+        detailsTextArea.setWrapStyleWord(true);
+        detailsTextArea.setFont(new Font("Arial", Font.BOLD, 24));
+        detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
+
+// Inizialmente il pannello non è visibile (oppure lo lasciamo vuoto)
+        detailsPanel.setVisible(false);
+
+// Aggiungiamo il pannello al frame (al lato destro)
+        frame.add(detailsPanel, BorderLayout.WEST);
+
+
+// Listener per cambiare il cursore quando il mouse passa sopra un marker
+        mapViewer.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                Point2D mousePos = e.getPoint();
+            public void mouseMoved(MouseEvent e) {
+                Point mousePos = e.getPoint();
+                Rectangle viewport = mapViewer.getViewportBounds();
+                boolean hovering = false;
                 for (CustomWaypoint waypoint : waypoints) {
-                    Point2D point = mapViewer.getTileFactory().geoToPixel(waypoint.getPosition(), mapViewer.getZoom());
-                    if (point.distance(mousePos) < 5) {
-                        EventQueue.invokeLater(() -> JOptionPane.showMessageDialog(mapViewer, waypoint.getInfo()));
+                    GeoPosition wpGeo = waypoint.getPosition();
+                    // Converte la posizione geografica in coordinate pixel assolute
+                    Point2D wpPixelAbs = mapViewer.getTileFactory().geoToPixel(wpGeo, mapViewer.getZoom());
+                    // Calcola la posizione relativa (rispetto al viewport)
+                    double markerX = wpPixelAbs.getX() - viewport.x;
+                    double markerY = wpPixelAbs.getY() - viewport.y;
+                    Point2D markerPoint = new Point2D.Double(markerX, markerY);
+                    if (mousePos.distance(markerPoint) < HITBOX_RADIUS-10) {
+                        hovering = true;
                         break;
                     }
                 }
+                mapViewer.setCursor(hovering ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+                        : Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             }
         });
 
+// Se il click avviene vicino a un marker, viene mostrato il popup con le info.
+// Se non è su un marker, la mappa viene centrata sul punto cliccato.
+        mapViewer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Point clickedPoint = e.getPoint();
+                Rectangle viewport = mapViewer.getViewportBounds();
+                boolean markerFound = false;
+
+                // Scorri tutti i waypoint per vedere se il click è vicino aduno di essi
+                for (CustomWaypoint waypoint : waypoints) {
+                    GeoPosition wpGeo = waypoint.getPosition();
+                    // Ottieni le coordinate assolute del waypoint sulla mappa
+                    Point2D wpPixelAbs = mapViewer.getTileFactory().geoToPixel(wpGeo, mapViewer.getZoom());
+                    // Calcola la posizione relativa rispetto al viewport
+                    double markerX = wpPixelAbs.getX() - viewport.x;
+                    double markerY = wpPixelAbs.getY() - viewport.y;
+                    Point2D markerPoint = new Point2D.Double(markerX, markerY);
+
+                    if (clickedPoint.distance(markerPoint) < HITBOX_RADIUS+5) {
+                        markerFound = true;
+                        // Aggiorna il pannello con le informazioni del waypoint
+                        detailsTextArea.setText("Informazioni: " + waypoint.getInfo() + "\n" +
+                                "Indirizzo: " + getAddressFromCoordinates(waypoint.getPosition().getLatitude(),waypoint.getPosition().getLongitude()));
+                        detailsPanel.setVisible(true);  // Rendi visibile il pannello
+                        break;
+                    }
+                }
+
+                if (!markerFound) {
+                    // Se il click non è su un marker, nascondi o svuota il pannello
+                    detailsTextArea.setText("");
+                    detailsPanel.setVisible(false);
+                }
+            }
+        });
         frame.setVisible(true);
     }
     // La funzione fetchAutocompleteSuggestions rimane invariata
@@ -250,8 +308,8 @@ public class Main {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
                 JSONArray features = (JSONArray) jsonObject.get("features");
-                for (int i = 0; i < features.size(); i++) {
-                    JSONObject feature = (JSONObject) features.get(i);
+                for (Object o : features) {
+                    JSONObject feature = (JSONObject) o;
 
                     JSONObject properties = (JSONObject) feature.get("properties");
                     results.add((String) properties.get("formatted"));
@@ -297,6 +355,32 @@ public class Main {
         return null;
     }
 
+    public static String getAddressFromCoordinates(double lat, double lon) {
+        OkHttpClient client = new OkHttpClient();
+        // Costruisco URL per la richiesta di reverse geocoding a Nominatim
+        String url = String.format("https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&addressdetails=1", lat, lon);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .header("User-Agent", "Mozilla/5.0 (Java) ReverseGeocoder")  // opzionale, ma raccomandato
+                .get()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                String jsonData = response.body().string();
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
+                // "display_name" contiene l'indirizzo formattato
+                return (String) jsonObject.get("display_name");
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     //scan dei posti
     private static List<GeoPosition> fetchPlaces(double latitudine, double longitudine, String category) {
         List<GeoPosition> places = new ArrayList<>();
@@ -316,8 +400,8 @@ public class Main {
                 JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
                 JSONArray features = (JSONArray) jsonObject.get("features");
 
-                for (int i = 0; i < features.size(); i++) {
-                    JSONObject feature = (JSONObject) features.get(i);
+                for (Object o : features) {
+                    JSONObject feature = (JSONObject) o;
                     JSONObject geometry = (JSONObject) feature.get("geometry");
                     JSONArray coordinates = (JSONArray) geometry.get("coordinates");
                     double lon = (double) coordinates.get(0);

@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,8 +27,8 @@ import java.util.Set;
 
 public class Main {
 
-    private static final double latitudineNapoli = 40.8518;
-    private static final double longitudineNapoli = 14.2681;
+    private static final double LATITUDINE_NAPOLI = 40.8518;
+    private static final double LONGITUDINE_NAPOLI = 14.2681;
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
@@ -36,7 +36,7 @@ public class Main {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(frame.getWidth(), frame.getHeight());
         // Barra di ricerca combinata
         JComboBox<String> comboBox = new JComboBox<>();
@@ -103,7 +103,7 @@ public class Main {
         });
 
         // Initial Position
-        mapViewer.setCenterPosition(new GeoPosition(latitudineNapoli, longitudineNapoli)); // Napoli, Italia
+        mapViewer.setCenterPosition(new GeoPosition(LATITUDINE_NAPOLI, LONGITUDINE_NAPOLI)); // Napoli, Italia
         mapViewer.setZoom(5);
 
         searchPanel.add(comboBoxMap);

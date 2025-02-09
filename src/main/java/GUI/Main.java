@@ -37,7 +37,7 @@ public class Main {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(frame.getWidth(), frame.getHeight());
         // Barra di ricerca combinata
         JComboBox<String> comboBox = new JComboBox<>();
         comboBox.setEditable(true);
@@ -205,7 +205,7 @@ public class Main {
                     mapViewer.setZoom(6);
 
                     // Fetch places using Geoapify Places API for schools
-                    List<GeoPosition> places = fetchPlaces(geoPosition.getLatitude(), geoPosition.getLongitude(), "education.school");
+                    List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
                     for (GeoPosition place : places) {
                         waypoints.add(new CustomWaypoint(place, Color.YELLOW,"Scuola"));
                     }
@@ -251,7 +251,7 @@ public class Main {
                     double markerX = wpPixelAbs.getX() - viewport.x;
                     double markerY = wpPixelAbs.getY() - viewport.y;
                     Point2D markerPoint = new Point2D.Double(markerX, markerY);
-                    if (mousePos.distance(markerPoint) < HITBOX_RADIUS-10) {
+                    if (mousePos.distance(markerPoint) < HITBOX_RADIUS-5) {
                         hovering = true;
                         break;
                     }
@@ -284,7 +284,7 @@ public class Main {
                         markerFound = true;
                         // Aggiorna il pannello con le informazioni del waypoint
                         detailsTextArea.setText("Informazioni: " + waypoint.getInfo() + "\n" +
-                                "Indirizzo: " + getAddressFromCoordinates(waypoint.getPosition().getLatitude(),waypoint.getPosition().getLongitude()));
+                                "Indirizzo: " + getAddressFromCoordinates(waypoint.getPosition()));
                         detailsPanel.setVisible(true);  // Rendi visibile il pannello
                         break;
                     }
@@ -372,10 +372,10 @@ public class Main {
         return null;
     }
 
-    public static String getAddressFromCoordinates(double lat, double lon) {
+    public static String getAddressFromCoordinates(GeoPosition g) {
         OkHttpClient client = new OkHttpClient();
         // Costruisco URL per la richiesta di reverse geocoding a Nominatim
-        String url = String.format("https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&addressdetails=1", lat, lon);
+        String url = String.format("https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&addressdetails=1", g.getLatitude(), g.getLongitude());
 
         Request request = new Request.Builder()
                 .url(url)
@@ -399,11 +399,11 @@ public class Main {
 
 
     //scan dei posti
-    private static List<GeoPosition> fetchPlaces(double latitudine, double longitudine, String category) {
+    private static List<GeoPosition> fetchPlaces(GeoPosition g, String category) {
         List<GeoPosition> places = new ArrayList<>();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         String url = String.format("https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=30&apiKey=%s",
-                category, longitudine, latitudine, longitudine, latitudine, GEOAPIFY_API_KEY);
+                category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
 
         Request request = new Request.Builder()
                 .url(url)

@@ -1,5 +1,8 @@
 package GUI;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -24,6 +27,8 @@ public class Home {
     }
 
     public static void main(String[] args) {
+
+        FlatDarculaLaf.setup();
         JFrame frame = new JFrame("Home");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);

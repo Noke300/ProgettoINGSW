@@ -1,7 +1,7 @@
 package model;
 
 
-import java.util.Date; //sql
+import java.util.Date;
 
 public class Cliente extends Utente {
     private Date dataN;

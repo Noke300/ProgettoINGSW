@@ -32,17 +32,12 @@ public class Main {
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Main::createAndShowGUI);
-    }
+    public JPanel createMainPanel(JFrame frame) {
 
-    static void createAndShowGUI() {
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
-        JFrame frame = new JFrame("Google Places Autocomplete with Interactive Map");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
-        frame.setLayout(new BorderLayout());
-
         // Barra di ricerca combinata
         JComboBox<String> comboBox = new JComboBox<>();
         comboBox.setEditable(true);
@@ -68,7 +63,7 @@ public class Main {
         searchPanel.add(comboBox);
         searchPanel.add(searchButton);
         searchPanel.add(filterButton);
-        frame.add(searchPanel, BorderLayout.NORTH);
+        mainPanel.add(searchPanel, BorderLayout.NORTH);
 
         // Interactive Map with Markers
         JXMapViewer mapViewer = new JXMapViewer();
@@ -135,9 +130,20 @@ public class Main {
         class CustomWaypointRenderer implements WaypointRenderer<CustomWaypoint> {
             @Override
             public void paintWaypoint(Graphics2D g, JXMapViewer map, CustomWaypoint waypoint) {
+                int size = 15;
                 g.setColor(waypoint.getColor());
                 Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-                g.fillOval((int) point.getX() - 5, (int) point.getY() - 5, 15, 15);
+
+                if(waypoint.info.equals("Scuola")){
+                    g.fillRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
+
+                    g.setColor(Color.BLACK);
+                    g.drawRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
+                }else {
+                    g.fillOval((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
+                    g.setColor(Color.BLACK);  // Bordo nero
+                    g.drawOval((int) point.getX() - 7, (int) point.getY() - 7, 15, 15);
+                }
 
             }
         }
@@ -170,7 +176,7 @@ public class Main {
         });
 
         // Add map to the center of the frame
-        frame.add(mapViewer, BorderLayout.CENTER);
+        mainPanel.add(mapViewer, BorderLayout.CENTER);
 
         // Center the map on mouse click
         // Center the map on mouse click
@@ -201,12 +207,12 @@ public class Main {
                     // Fetch places using Geoapify Places API for schools
                     List<GeoPosition> places = fetchPlaces(geoPosition.getLatitude(), geoPosition.getLongitude(), "education.school");
                     for (GeoPosition place : places) {
-                        waypoints.add(new CustomWaypoint(place, Color.RED,"Scuola"));
+                        waypoints.add(new CustomWaypoint(place, Color.YELLOW,"Scuola"));
                     }
                     waypointPainter.setWaypoints(waypoints);
                     mapViewer.repaint();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Indirizzo non Valido.");
+                    JOptionPane.showMessageDialog(mainPanel, "Indirizzo non Valido.");
                 }
             }
         });
@@ -227,7 +233,7 @@ public class Main {
         detailsPanel.setVisible(false);
 
 // Aggiungiamo il pannello al frame (al lato destro)
-        frame.add(detailsPanel, BorderLayout.WEST);
+        mainPanel.add(detailsPanel, BorderLayout.WEST);
 
 
 // Listener per cambiare il cursore quando il mouse passa sopra un marker
@@ -291,7 +297,18 @@ public class Main {
                 }
             }
         });
-        frame.setVisible(true);
+
+
+        JButton backButton = new JButton("Torna alla Home");
+        backButton.addActionListener(e -> {
+            frame.setContentPane(new Home().createHomePanel(frame));
+            frame.revalidate();
+            frame.repaint();
+        });
+        mainPanel.add(backButton, BorderLayout.SOUTH);
+
+
+        return mainPanel;
     }
     // La funzione fetchAutocompleteSuggestions rimane invariata
     private static List<String> fetchAutocompleteSuggestions(String input) {

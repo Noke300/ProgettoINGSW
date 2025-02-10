@@ -8,7 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.VirtualEarthTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.viewer.*;
@@ -24,86 +23,30 @@ import java.util.List;
 
 public class Main {
 
-    private static final double LATITUDINE_NAPOLI = 40.8518;
-    private static final double LONGITUDINE_NAPOLI = 14.2681;
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
-    public JPanel createMainPanel(JFrame frame) {
+    public JPanel createMainPanel(JFrame frame, String address) {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(frame.getWidth(), frame.getHeight());
         // Barra di ricerca combinata
-        JComboBox<String> comboBox = new JComboBox<>();
-        comboBox.setEditable(true);
-        JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
-        textField.setColumns(60);
-        JButton searchButton = new JButton("Cerca");
-        JButton filterButton = new JButton("Filtra");
-
-        filterButton.addActionListener(e -> {
-            String input = textField.getText();
-            if (!input.isEmpty()) {
-                List<String> suggestions = fetchAutocompleteSuggestions(input);
-                comboBox.removeAllItems();
-                for (String suggestion : suggestions) {
-                    comboBox.addItem(suggestion);
-                }
-                comboBox.showPopup();
-            }
-        });
-
-        JPanel searchPanel = new JPanel();
-        searchPanel.add(new JLabel("Indirizzo:"));
-        searchPanel.add(comboBox);
-        searchPanel.add(searchButton);
-        searchPanel.add(filterButton);
-        mainPanel.add(searchPanel, BorderLayout.NORTH);
 
         // Interactive Map with Markers
         JXMapViewer mapViewer = new JXMapViewer();
 
-        JComboBox<String> comboBoxMap = new JComboBox<>();
-
-        comboBoxMap.setVisible(true);
-        comboBoxMap.setEditable(true);
-        comboBoxMap.addItem("Default");
-        comboBoxMap.addItem("MAP");
-        comboBoxMap.addItem("HYBRID");
-        comboBoxMap.addItem("SATELLITE");
-
-        TileFactoryInfo info = new OSMTileFactoryInfo();
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
 
-        comboBoxMap.addActionListener(e -> {
-            int index = comboBoxMap.getSelectedIndex();
-            TileFactoryInfo info2 = null;
-            if (index == 0) {
-                info2 = new OSMTileFactoryInfo();
-            } else if (index == 1) {
-                info2 = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
-
-            } else if (index == 2) {
-
-                info2 = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.HYBRID);
-
-            } else if (index == 3) {
-                info2 = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
-
-            }
-
-            DefaultTileFactory tileFactory2 = new DefaultTileFactory(info2);
-            mapViewer.setTileFactory(tileFactory2);
-        });
-
         // Initial Position
-        mapViewer.setCenterPosition(new GeoPosition(LATITUDINE_NAPOLI, LONGITUDINE_NAPOLI)); // Napoli, Italia
+        GeoPosition geoPosition = getCoordinatesFromAddress(address);
+        assert geoPosition != null;
+        mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(),geoPosition.getLongitude())); // Indirizzi da address
         mapViewer.setZoom(5);
 
-        searchPanel.add(comboBoxMap);
 
         class CustomWaypoint extends DefaultWaypoint {
             private final Color color;
@@ -179,31 +122,29 @@ public class Main {
         mainPanel.add(mapViewer, BorderLayout.CENTER);
 
         // Add waypoint click listener
-
-        searchButton.addActionListener(e -> {
-            String address = textField.getText();
             if (!address.isEmpty()) {
-                GeoPosition geoPosition = getCoordinatesFromAddress(address);
-                if (geoPosition != null) {
                     waypoints.clear();
-                    waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE,"Cento"));
+                    waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Cento"));
                     waypointPainter.setWaypoints(waypoints);
                     mapViewer.setCenterPosition(geoPosition);
                     mapViewer.repaint();
                     mapViewer.setZoom(6);
 
-                    // Fetch places using Geoapify Places API for schools
-                    List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
-                    for (GeoPosition place : places) {
-                        waypoints.add(new CustomWaypoint(place, Color.YELLOW,"Scuola"));
+
+                    if (1>0) {
+                        // Fetch places using Geoapify Places API for schools
+                        List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
+                        for (GeoPosition place : places) {
+                            waypoints.add(new CustomWaypoint(place, Color.YELLOW, "Scuola"));
+                        }
+                        waypointPainter.setWaypoints(waypoints);
+                        mapViewer.repaint();
+                    } else {
+                        JOptionPane.showMessageDialog(mainPanel, "Indirizzo non Valido.");
                     }
-                    waypointPainter.setWaypoints(waypoints);
-                    mapViewer.repaint();
-                } else {
-                    JOptionPane.showMessageDialog(mainPanel, "Indirizzo non Valido.");
-                }
+
             }
-        });
+
 
         final int HITBOX_RADIUS = 25;
 
@@ -298,35 +239,6 @@ public class Main {
 
         return mainPanel;
     }
-    // La funzione fetchAutocompleteSuggestions rimane invariata
-    private static List<String> fetchAutocompleteSuggestions(String input) {
-        List<String> results = new ArrayList<>();
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        Request request = new Request.Builder()
-                .url("https://api.geoapify.com/v1/geocode/autocomplete?text=" + input + "&limit=10&apiKey=" + GEOAPIFY_API_KEY)
-                .method("GET", null)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
-                String jsonData = response.body().string();
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
-                JSONArray features = (JSONArray) jsonObject.get("features");
-                for (Object o : features) {
-                    JSONObject feature = (JSONObject) o;
-
-                    JSONObject properties = (JSONObject) feature.get("properties");
-                    results.add((String) properties.get("formatted"));
-                }
-            }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-
-        return results;
-    }
-
     private static GeoPosition getCoordinatesFromAddress(String address) {
 
         OkHttpClient client = new OkHttpClient();

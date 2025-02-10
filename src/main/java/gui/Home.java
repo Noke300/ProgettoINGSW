@@ -15,7 +15,7 @@ public class Home {
 
         JButton accessoButton = new JButton("Accedi alla Mappa");
         accessoButton.addActionListener(e -> {
-            frame.setContentPane(new Main().createMainPanel(frame));  // Passa alla mappa
+            frame.setContentPane(new Ricerca().createMainPanel(frame));  // Passa alla mappa
             frame.revalidate();
             frame.repaint();
         });
@@ -29,7 +29,7 @@ public class Home {
         FlatDarculaLaf.setup();
         JFrame frame = new JFrame("Home");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1400, 800);
         frame.setLocationRelativeTo(null);
         frame.setContentPane(new Home().createHomePanel(frame));  // Schermata iniziale
         frame.setVisible(true);

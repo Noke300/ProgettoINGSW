@@ -12,7 +12,6 @@ import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.VirtualEarthTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.viewer.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -20,10 +19,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class Main {
 
@@ -130,19 +127,22 @@ public class Main {
         class CustomWaypointRenderer implements WaypointRenderer<CustomWaypoint> {
             @Override
             public void paintWaypoint(Graphics2D g, JXMapViewer map, CustomWaypoint waypoint) {
-                int size = 15;
+                int size = 10;
                 g.setColor(waypoint.getColor());
                 Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
 
                 if(waypoint.info.equals("Scuola")){
-                    g.fillRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
 
+                    g.fillRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
                     g.setColor(Color.BLACK);
                     g.drawRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
+
                 }else {
+
                     g.fillOval((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
                     g.setColor(Color.BLACK);  // Bordo nero
-                    g.drawOval((int) point.getX() - 7, (int) point.getY() - 7, 15, 15);
+                    g.drawOval((int) point.getX() - 3, (int) point.getY() - 3, size, size);
+
                 }
 
             }
@@ -178,19 +178,7 @@ public class Main {
         // Add map to the center of the frame
         mainPanel.add(mapViewer, BorderLayout.CENTER);
 
-        // Center the map on mouse click
-        // Center the map on mouse click
-        mapViewer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Point2D worldPos = e.getPoint();
-                GeoPosition geo = mapViewer.convertPointToGeoPosition(worldPos);
-                mapViewer.setCenterPosition(geo);
-            }
-        });
-
         // Add waypoint click listener
-
 
         searchButton.addActionListener(e -> {
             String address = textField.getText();
@@ -217,7 +205,7 @@ public class Main {
             }
         });
 
-        final int HITBOX_RADIUS = 40;
+        final int HITBOX_RADIUS = 25;
 
         // Creiamo il pannello laterale per le informazioni
         final JPanel detailsPanel = new JPanel(new BorderLayout());
@@ -251,7 +239,7 @@ public class Main {
                     double markerX = wpPixelAbs.getX() - viewport.x;
                     double markerY = wpPixelAbs.getY() - viewport.y;
                     Point2D markerPoint = new Point2D.Double(markerX, markerY);
-                    if (mousePos.distance(markerPoint) < HITBOX_RADIUS-5) {
+                    if (mousePos.distance(markerPoint) < HITBOX_RADIUS-10) {
                         hovering = true;
                         break;
                     }
@@ -280,7 +268,7 @@ public class Main {
                     double markerY = wpPixelAbs.getY() - viewport.y;
                     Point2D markerPoint = new Point2D.Double(markerX, markerY);
 
-                    if (clickedPoint.distance(markerPoint) < HITBOX_RADIUS+5) {
+                    if (clickedPoint.distance(markerPoint) < HITBOX_RADIUS+7) {
                         markerFound = true;
                         // Aggiorna il pannello con le informazioni del waypoint
                         detailsTextArea.setText("Informazioni: " + waypoint.getInfo() + "\n" +
@@ -375,7 +363,7 @@ public class Main {
     public static String getAddressFromCoordinates(GeoPosition g) {
         OkHttpClient client = new OkHttpClient();
         // Costruisco URL per la richiesta di reverse geocoding a Nominatim
-        String url = String.format("https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&addressdetails=1", g.getLatitude(), g.getLongitude());
+        String url = String.format(Locale.US,"https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&addressdetails=1", g.getLatitude(), g.getLongitude());
 
         Request request = new Request.Builder()
                 .url(url)
@@ -402,10 +390,10 @@ public class Main {
     private static List<GeoPosition> fetchPlaces(GeoPosition g, String category) {
         List<GeoPosition> places = new ArrayList<>();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
-        String url = String.format("https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=30&apiKey=%s",
+        String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=30&apiKey=%s",
                 category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
 
-        Request request = new Request.Builder()
+                 Request request = new Request.Builder()
                 .url(url)
                 .method("GET", null)
                 .build();

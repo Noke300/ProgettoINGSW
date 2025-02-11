@@ -70,7 +70,7 @@ public class Ricerca {
 
         // Aggiungi un DocumentListener al JTextField
         searchField.getDocument().addDocumentListener(new DocumentListener() {
-            private Timer timer = new Timer(300, null);
+            private final Timer timer = new Timer(300, null);
 
             private void scheduleUpdate() {
                 timer.restart();

@@ -13,8 +13,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,7 @@ public class Ricerca {
         JCheckBox hospitalsCheckBox = new JCheckBox("Ospedali");
         JCheckBox barsCheckBox = new JCheckBox("Bar");
 
+        //da passare a main in futuro
         List<JCheckBox> checkBoxesList = new ArrayList<>();
         checkBoxesList.add(schoolsCheckBox);
         checkBoxesList.add(hospitalsCheckBox);
@@ -70,8 +69,12 @@ public class Ricerca {
 
         // Aggiungi un DocumentListener al JTextField
         searchField.getDocument().addDocumentListener(new DocumentListener() {
-            private Timer timer = new Timer(300, null);
+            private static final Timer timer = new Timer(300, null);
 
+            {
+                timer.setRepeats(false);
+                timer.addActionListener(e -> updateSuggestions());
+            }
             private void scheduleUpdate() {
                 timer.restart();
             }
@@ -89,16 +92,6 @@ public class Ricerca {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 scheduleUpdate();
-            }
-
-            {
-                timer.setRepeats(false);
-                timer.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        updateSuggestions();
-                    }
-                });
             }
 
             private void updateSuggestions() {
@@ -232,7 +225,7 @@ public class Ricerca {
             JFrame frame = new JFrame("Ricerca con AutoCompletamento");
             frame.setContentPane(new Ricerca().createMainPanel(frame));
             frame.setSize(frame.getWidth(), frame.getHeight());
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);
         });
     }

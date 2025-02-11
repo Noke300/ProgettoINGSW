@@ -155,7 +155,7 @@ public class Ricerca {
 
             GeoPosition geoPos = getCoordinatesFromAddress(searchField.getText());
             if (geoPos != null) {
-                frame.setContentPane(new Main().createMainPanel(frame, geoPos));
+                frame.setContentPane(new Main().createMainPanel(frame, geoPos,checkBoxesList));
                 frame.revalidate();
                 frame.repaint();
             }else{

@@ -25,7 +25,7 @@ public class Main {
 
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
 
-    public JPanel createMainPanel(JFrame frame,  GeoPosition geoPosition) {
+    public JPanel createMainPanel(JFrame frame,  GeoPosition geoPosition,List<JCheckBox> checkBoxesList) {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -126,18 +126,18 @@ public class Main {
                     mapViewer.setZoom(6);
 
                     //inserimento Filtro non toccare so che è sbagliato 0>1
-                    if (1>0) {
-                        // Fetch places using Geoapify Places API for schools
-                        List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
-                        for (GeoPosition place : places) {
-                            waypoints.add(new CustomWaypoint(place, Color.YELLOW, "Scuola"));
-                        }
-                        waypointPainter.setWaypoints(waypoints);
-                        mapViewer.repaint();
-                    } else {
-                        JOptionPane.showMessageDialog(mainPanel, "Indirizzo non Valido.");
-                    }
+                    for(JCheckBox box : checkBoxesList) {
 
+                        if(box.getText().equals("Scuole") && box.isSelected()) {
+                            // Fetch places using Geoapify Places API for schools
+                            List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
+                            for (GeoPosition place : places) {
+                                waypoints.add(new CustomWaypoint(place, Color.YELLOW, "Scuola"));
+                            }
+                            waypointPainter.setWaypoints(waypoints);
+                            mapViewer.repaint();
+                        }
+                    }
 
         final int HITBOX_RADIUS = 25;
 

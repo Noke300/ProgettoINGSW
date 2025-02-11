@@ -41,7 +41,6 @@ public class Main {
         mapViewer.setTileFactory(tileFactory);
 
         // Initial Position
-            assert geoPosition != null;
             mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(), geoPosition.getLongitude())); // Indirizzi da address
             mapViewer.setZoom(5);
 
@@ -72,17 +71,17 @@ public class Main {
                 g.setColor(waypoint.getColor());
                 Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
 
-                if(waypoint.info.equals("Scuola")){
-
-                    g.fillRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
-                    g.setColor(Color.BLACK);
-                    g.drawRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
-
-                }else {
+                if (waypoint.info.equals("Indirizzo")) {
 
                     g.fillOval((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
                     g.setColor(Color.BLACK);  // Bordo nero
                     g.drawOval((int) point.getX() - 3, (int) point.getY() - 3, size, size);
+
+                } else {
+
+                    g.fillRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
+                    g.setColor(Color.BLACK);
+                    g.drawRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
 
                 }
 
@@ -119,7 +118,7 @@ public class Main {
         mainPanel.add(mapViewer, BorderLayout.CENTER);
         // Add waypoint click listener
                     waypoints.clear();
-                    waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Cento"));
+                    waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Indirizzo"));
                     waypointPainter.setWaypoints(waypoints);
                     mapViewer.setCenterPosition(geoPosition);
                     mapViewer.repaint();
@@ -136,6 +135,21 @@ public class Main {
                             }
                             waypointPainter.setWaypoints(waypoints);
                             mapViewer.repaint();
+                        }else if(box.getText().equals("Trasporti") && box.isSelected()) {
+                            List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
+                            for (GeoPosition place : places) {
+                                waypoints.add(new CustomWaypoint(place, Color.RED, "Transport"));
+                            }
+                            waypointPainter.setWaypoints(waypoints);
+                            mapViewer.repaint();
+                        }else if(box.getText().equals("Parchi") && box.isSelected()) {
+                            List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
+                            for (GeoPosition place : places) {
+                                waypoints.add(new CustomWaypoint(place, Color.GREEN, "Parco"));
+                            }
+                            waypointPainter.setWaypoints(waypoints);
+                            mapViewer.repaint();
+
                         }
                     }
 
@@ -223,6 +237,7 @@ public class Main {
 
         JButton backButton = new JButton("Torna alla Ricerca");
         backButton.addActionListener(e -> {
+            // ritorno di address nella barra di ricerca
             frame.setContentPane(new Ricerca().createRicercaPanel(frame));
             frame.revalidate();
             frame.repaint();
@@ -264,7 +279,7 @@ public class Main {
     private static List<GeoPosition> fetchPlaces(GeoPosition g, String category) {
         List<GeoPosition> places = new ArrayList<>();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
-        String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=30&apiKey=%s",
+        String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=15&apiKey=%s",
                 category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
 
                  Request request = new Request.Builder()

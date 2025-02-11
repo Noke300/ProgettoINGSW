@@ -40,8 +40,8 @@ public class Ricerca {
         JPanel filterPanel = new JPanel();
         filterPanel.add(new JLabel("Filtri:"));
         JCheckBox schoolsCheckBox = new JCheckBox("Scuole");
-        JCheckBox hospitalsCheckBox = new JCheckBox("Ospedali");
-        JCheckBox barsCheckBox = new JCheckBox("Bar");
+        JCheckBox hospitalsCheckBox = new JCheckBox("Trasporti");
+        JCheckBox barsCheckBox = new JCheckBox("Parchi");
 
         List<JCheckBox> checkBoxesList = new ArrayList<>();
         checkBoxesList.add(schoolsCheckBox);
@@ -55,8 +55,8 @@ public class Ricerca {
         // Pannello contenente i controlli
         JPanel searchPanel = new JPanel();
         searchPanel.add(new JLabel("Indirizzo:"));
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
+        searchPanel.add(searchField,BorderLayout.NORTH);
+        searchPanel.add(searchButton,BorderLayout.CENTER);
         mainPanel.add(searchPanel, BorderLayout.NORTH);
         mainPanel.add(filterPanel, BorderLayout.CENTER);
 

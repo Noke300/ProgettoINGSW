@@ -229,7 +229,7 @@ public class Ricerca {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Ricerca con Autocompletamento");
+            JFrame frame = new JFrame("Ricerca con AutoCompletamento");
             frame.setContentPane(new Ricerca().createMainPanel(frame));
             frame.setSize(frame.getWidth(), frame.getHeight());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

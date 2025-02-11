@@ -221,9 +221,9 @@ public class Main {
         });
 
 
-        JButton backButton = new JButton("Torna alla Home");
+        JButton backButton = new JButton("Torna alla Ricerca");
         backButton.addActionListener(e -> {
-            frame.setContentPane(new Home().createHomePanel(frame));
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
             frame.revalidate();
             frame.repaint();
         });

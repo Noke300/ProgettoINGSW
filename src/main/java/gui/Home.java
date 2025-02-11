@@ -15,7 +15,7 @@ public class Home {
 
         JButton accessoButton = new JButton("Accedi alla Mappa");
         accessoButton.addActionListener(e -> {
-            frame.setContentPane(new Ricerca().createMainPanel(frame));  // Passa alla mappa
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame));  // Passa alla mappa
             frame.revalidate();
             frame.repaint();
         });

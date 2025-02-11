@@ -25,7 +25,7 @@ public class Ricerca {
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
 
-    public JPanel createMainPanel(JFrame frame) {
+    public JPanel createRicercaPanel(JFrame frame) {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -163,6 +163,15 @@ public class Ricerca {
             }
         });
 
+
+        JButton backButtonHome = new JButton("Torna alla Home");
+        backButtonHome.addActionListener(e -> {
+            frame.setContentPane(new Home().createHomePanel(frame));
+            frame.revalidate();
+            frame.repaint();
+        });
+        mainPanel.add(backButtonHome, BorderLayout.SOUTH);
+
         return mainPanel;
     }
 
@@ -230,7 +239,7 @@ public class Ricerca {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Ricerca con AutoCompletamento");
-            frame.setContentPane(new Ricerca().createMainPanel(frame));
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
             frame.setSize(frame.getWidth(), frame.getHeight());
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);

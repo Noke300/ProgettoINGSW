@@ -24,9 +24,8 @@ import java.util.List;
 public class Main {
 
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
-    private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
-    public JPanel createMainPanel(JFrame frame, String address) {
+    public JPanel createMainPanel(JFrame frame,  GeoPosition geoPosition) {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -42,10 +41,9 @@ public class Main {
         mapViewer.setTileFactory(tileFactory);
 
         // Initial Position
-        GeoPosition geoPosition = getCoordinatesFromAddress(address);
-        assert geoPosition != null;
-        mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(),geoPosition.getLongitude())); // Indirizzi da address
-        mapViewer.setZoom(5);
+            assert geoPosition != null;
+            mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(), geoPosition.getLongitude())); // Indirizzi da address
+            mapViewer.setZoom(5);
 
 
         class CustomWaypoint extends DefaultWaypoint {
@@ -117,12 +115,9 @@ public class Main {
                 mapViewer.setZoom(zoom - 1);
             }
         });
-
         // Add map to the center of the frame
         mainPanel.add(mapViewer, BorderLayout.CENTER);
-
         // Add waypoint click listener
-            if (!address.isEmpty()) {
                     waypoints.clear();
                     waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Cento"));
                     waypointPainter.setWaypoints(waypoints);
@@ -130,7 +125,7 @@ public class Main {
                     mapViewer.repaint();
                     mapViewer.setZoom(6);
 
-
+                    //inserimento Filtro non toccare so che è sbagliato 0>1
                     if (1>0) {
                         // Fetch places using Geoapify Places API for schools
                         List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
@@ -142,8 +137,6 @@ public class Main {
                     } else {
                         JOptionPane.showMessageDialog(mainPanel, "Indirizzo non Valido.");
                     }
-
-            }
 
 
         final int HITBOX_RADIUS = 25;
@@ -239,38 +232,7 @@ public class Main {
 
         return mainPanel;
     }
-    private static GeoPosition getCoordinatesFromAddress(String address) {
 
-        OkHttpClient client = new OkHttpClient();
-        String url = String.format("%s?q=%s&format=json&limit=1", NOMINATIM_URL, address.replace(" ", "+"));
-
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
-                String jsonData = response.body().string();
-                JSONParser parser = new JSONParser();
-                JSONArray jsonArray = (JSONArray) parser.parse(jsonData);
-
-                if (!jsonArray.isEmpty()) {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-                    double lat = Double.parseDouble((String) jsonObject.get("lat"));
-                    double lon = Double.parseDouble((String) jsonObject.get("lon"));
-                    String stato = jsonObject.get("display_name").toString();
-                    if (stato.contains("Italia") || stato.contains("Italy") || stato.contains("Ita")) {
-                        return new GeoPosition(lat, lon);
-                    }
-                }
-            }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     public static String getAddressFromCoordinates(GeoPosition g) {
         OkHttpClient client = new OkHttpClient();

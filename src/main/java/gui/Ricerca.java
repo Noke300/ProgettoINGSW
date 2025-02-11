@@ -155,7 +155,7 @@ public class Ricerca {
 
             GeoPosition geoPos = getCoordinatesFromAddress(searchField.getText());
             if (geoPos != null) {
-                frame.setContentPane(new Main().createMainPanel(frame, geoPos,checkBoxesList));
+                frame.setContentPane(new MapPanel().createMapPanel(frame, geoPos,checkBoxesList));
                 frame.revalidate();
                 frame.repaint();
             }else{
@@ -178,10 +178,11 @@ public class Ricerca {
     private static GeoPosition getCoordinatesFromAddress(String address) {
 
         OkHttpClient client = new OkHttpClient();
-        String url = String.format("%s?q=%s&format=json&limit=1", NOMINATIM_URL, address.replace(" ", "+"));
+        String url = String.format("%s?q=%s&format=json&limit=1&accept-language=it", NOMINATIM_URL, address.replace(" ", "+"));
 
         Request request = new Request.Builder()
                 .url(url)
+                .addHeader("Accept-Language", "it")
                 .get()
                 .build();
 
@@ -213,7 +214,7 @@ public class Ricerca {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
                 .url("https://api.geoapify.com/v1/geocode/autocomplete?text="
-                        + input + "&limit=10&apiKey=" + GEOAPIFY_API_KEY)
+                        + input + "&limit=10&lang=it&apiKey=" + GEOAPIFY_API_KEY)
                 .get()
                 .build();
 

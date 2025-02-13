@@ -1,5 +1,6 @@
 package gui;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -8,10 +9,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.jxmapviewer.viewer.GeoPosition;
+import org.kordamp.ikonli.fontawesome.FontAwesome;
+import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.metal.MetalButtonUI;
+import javax.swing.plaf.metal.MetalCheckBoxIcon;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
@@ -29,20 +34,18 @@ public class Ricerca {
     public JPanel createRicercaPanel(JFrame frame) {
         // Utilizziamo un pannello principale con BoxLayout verticale per centrare i componenti
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // (Opzionale) Imposta uno sfondo o un bordo per evidenziare il pannello
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        // Imposta uno sfondo o un bordo per evidenziare il pannello
+
 
         // --- 1. Barra di ricerca ---
-        JTextField searchField = new JTextField(60);
+        JTextField searchField = new JTextField(90);
         JButton searchButton = new JButton("Cerca");
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         searchPanel.add(new JLabel("Indirizzo:"));
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         // Impostiamo l'allineamento orizzontale per il pannello
-        searchPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // --- 2. Pannello dei filtri ---
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -60,7 +63,6 @@ public class Ricerca {
         filterPanel.add(schoolsCheckBox);
         filterPanel.add(hospitalsCheckBox);
         filterPanel.add(barsCheckBox);
-        filterPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // --- 3. Popup per i suggerimenti ---
         JPopupMenu suggestionPopup = new JPopupMenu();
@@ -163,25 +165,50 @@ public class Ricerca {
         });
 
         // --- 6. Pulsante "Torna alla Home" ---
-        JButton backButtonHome = new JButton("Torna alla Home");
+
+        FontIcon homeIcon = FontIcon.of(FontAwesome.HOME, 24); // 24px di dimensione
+
+        JButton backButtonHome = new JButton();
+        backButtonHome.setIcon(homeIcon);
+
+
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
             frame.setContentPane(new Home().createHomePanel(frame));
             frame.revalidate();
             frame.repaint();
         });
-        backButtonHome.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // --- Aggiunta dei componenti al pannello principale ---
-        // Aggiungiamo "vertical glue" per centrare verticalmente i componenti
-        mainPanel.add(Box.createVerticalGlue());
-        mainPanel.add(searchPanel);
-        mainPanel.add(Box.createVerticalStrut(10)); // spaziatura verticale
-        mainPanel.add(filterPanel);
-        mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(backButtonHome);
-        mainPanel.add(Box.createVerticalGlue());
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
+// Bottone "Ritorna alla Home" in alto a sinistra
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0; // Il bottone non si espande orizzontalmente
+        gbc.weighty = 0; // Il bottone non si espande verticalmente
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START; // Posizionato in alto a sinistra
+        gbc.insets = new Insets(10, 10, 0, 0); // Margine attorno al bottone
+        gbc.fill = GridBagConstraints.NONE; // Nessuna espansione del bottone
+        mainPanel.add(backButtonHome, gbc);
+
+// Pannello di ricerca (searchPanel) in alto, si espande orizzontalmente e leggermente in verticale
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0.8; // Si espande orizzontalmente
+        gbc.weighty = 0.1; // Occupa il 30% dello spazio verticale totale
+        gbc.fill = GridBagConstraints.BOTH; // Espandibile in entrambe le direzioni
+        gbc.insets = new Insets(400, 10, 0, 10); // Margini intorno al pannello
+        mainPanel.add(searchPanel, gbc);
+
+// Pannello di filtro (filterPanel) al centro, si espande completamente
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 1; // Si espande orizzontalmente
+        gbc.weighty = 1; // Occupa il resto dello spazio verticale (70%)
+        gbc.fill = GridBagConstraints.BOTH; // Espandibile in entrambe le direzioni
+        gbc.insets = new Insets(1, 30, 0, 30); // Margini
+        mainPanel.add(filterPanel, gbc);
         return mainPanel;
     }
 
@@ -256,6 +283,7 @@ public class Ricerca {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            FlatDarculaLaf.setup();
             JFrame frame = new JFrame("Ricerca con AutoCompletamento");
             frame.setContentPane(new Ricerca().createRicercaPanel(frame));
             // Imposta una dimensione fissa o usa pack() in base alle tue esigenze

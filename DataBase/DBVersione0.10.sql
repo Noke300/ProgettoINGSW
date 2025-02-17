@@ -227,7 +227,7 @@ CREATE OR REPLACE FUNCTION EliminaOfferteVisita()
 RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.Venduto = TRUE AND OLD.Venduto = FALSE THEN
-        DELETE FROM offerte WHERE IdImmobile = NEW.IdImmobile;
+        DELETE FROM offerta WHERE IdImmobile = NEW.IdImmobile;
         DELETE FROM visita WHERE IdImmobile = NEW.IdImmobile;
     END IF;
     
@@ -240,3 +240,70 @@ CREATE TRIGGER TriggerEliminaOfferteVisita
 BEFORE UPDATE ON Immobile
 FOR EACH ROW
 EXECUTE FUNCTION EliminaOfferteVisita();
+
+
+--Insert
+
+-- Inserimento dati nella tabella AgenziaImmobiliare
+INSERT INTO AgenziaImmobiliare (NomeAgenzia, EmailAgenzia, EmailAdmin, PasswordAdmin, Regione) VALUES
+('CasaFacile', 'info@casafacile.it', 'admin@casafacile.it', 'pass1234!', 'Lombardia'),
+('ImmobiliareRoma', 'info@immobiliareroma.it', 'admin@immobiliareroma.it', 'pass5678!', 'Lazio'),
+('MilanCase', 'info@milancase.it', 'admin@milancase.it', 'pass91011!', 'Lombardia'),
+('ViviCasa', 'info@vivicasa.it', 'admin@vivicasa.it', 'pass1213!', 'Veneto'),
+('TorinoHome', 'info@torinohome.it', 'admin@torinohome.it', 'pass1415!', 'Piemonte');
+
+-- Inserimento dati nella tabella Cliente
+INSERT INTO Cliente (Nome, Cognome, EmailCliente, PasswordCliente, DataN) VALUES
+('Mario', 'Rossi', 'mario.rossi@email.com', 'mariopass5!', '1985-06-15'),
+('Luca', 'Bianchi', 'luca.bianchi@email.com', 'lucapass5!', '1990-09-22'),
+('Giulia', 'Verdi', 'giulia.verdi@email.com', 'giuliapass6!', '1987-04-10'),
+('Anna', 'Neri', 'anna.neri@email.com', 'annapass7!', '1995-11-30'),
+('Marco', 'Gialli', 'marco.gialli@email.com', 'marcopass8!', '1982-02-18');
+
+-- Inserimento dati nella tabella AgenteImmobiliare
+INSERT INTO AgenteImmobiliare (NomeAgente, CognomeAgente, EmailAgente, PasswordAgente, NomeAgenzia) VALUES
+('Giovanni', 'Moretti', 'giovanni.moretti@email.com', 'agente1231!', 'CasaFacile'),
+('Elisa', 'Ferrari', 'elisa.ferrari@email.com', 'agente456!', 'ImmobiliareRoma'),
+('Paolo', 'Ricci', 'paolo.ricci@email.com', 'agente789!', 'MilanCase'),
+('Martina', 'De Luca', 'martina.deluca@email.com', 'agente101!', 'ViviCasa'),
+('Andrea', 'Conti', 'andrea.conti@email.com', 'agente102!', 'TorinoHome');
+
+-- Inserimento dati nella tabella AdminSupport
+INSERT INTO AdminSupport (NomeSupport, CognomeSupport, EmailSupport, PasswordSupport, NomeAgenzia) VALUES
+('Francesco', 'Bianchi', 'support.bianchi@email.com', 'support123!', 'CasaFacile'),
+('Sara', 'Galli', 'support.galli@email.com', 'support456!', 'ImmobiliareRoma'),
+('Davide', 'Rizzo', 'support.rizzo@email.com', 'support789!', 'MilanCase'),
+('Lucia', 'Marini', 'support.marini@email.com', 'support101!', 'ViviCasa'),
+('Roberto', 'Serra', 'support.serra@email.com', 'support102!', 'TorinoHome');
+
+-- Inserimento dati nella tabella Indirizzo
+INSERT INTO Indirizzo (IdIndirizzo, Cap, Provincia, Citta, Via, NumeroCivico, Regione) VALUES
+(1, 20121, 'Milano', 'Milano', 'Via Roma', '10', 'Lombardia'),
+(2, 00100, 'Roma', 'Roma', 'Viale Europa', '50', 'Lazio'),
+(3, 35122, 'Padova', 'Padova', 'Corso Milano', '25', 'Veneto'),
+(4, 10121, 'Torino', 'Torino', 'Piazza Castello', '8', 'Piemonte'),
+(5, 50123, 'Firenze', 'Firenze', 'Via Tornabuoni', '5', 'Toscana');
+
+-- Inserimento dati nella tabella Immobile
+INSERT INTO Immobile (IdImmobile, IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
+(1, 1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 80, 'Appartamento', 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
+(2, 2, 'elisa.ferrari@email.com', 'ImmobiliareRoma', 320000, 'Vendita', 100, 'Villa', 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
+(3, 3, 'paolo.ricci@email.com', 'MilanCase', 180000, 'Affitto', 60, 'Bilocale', 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+(4, 4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 85, 'Attico', 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
+(5, 5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 75, 'Trilocale', 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
+
+-- Inserimento dati nella tabella Offerta
+INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta) VALUES
+(1, 'mario.rossi@email.com', 245000, '2024-01-10', FALSE),
+(2, 'luca.bianchi@email.com', 310000, '2024-01-12', FALSE),
+(3, 'giulia.verdi@email.com', 175000, '2024-01-15', TRUE),
+(4, 'anna.neri@email.com', 270000, '2024-01-18', FALSE),
+(5, 'marco.gialli@email.com', 215000, '2024-01-20', TRUE);
+
+-- Inserimento dati nella tabella Visita
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita) VALUES
+(1, 'mario.rossi@email.com', '10:00', '2025-05-05'),
+(2, 'luca.bianchi@email.com', '14:30', '2025-09-06'),
+(3, 'giulia.verdi@email.com', '16:00', '2025-08-07'),
+(4, 'anna.neri@email.com', '11:00', '2025-07-08'),
+(5, 'marco.gialli@email.com', '13:00', '2025-06-09');

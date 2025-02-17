@@ -1,6 +1,5 @@
 package gui;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -15,10 +14,11 @@ import org.kordamp.ikonli.swing.FontIcon;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.metal.MetalButtonUI;
-import javax.swing.plaf.metal.MetalCheckBoxIcon;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,55 +30,42 @@ public class Ricerca {
 
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
+    private JPanel mainPanelRicerca;
+    private JButton backButtonHome;
+    private JTextField searchField;
+    private JButton searchButton;
+    private JCheckBox schoolsCheckBox;
+    private JCheckBox hospitalsCheckBox;
+    private JCheckBox barsCheckBox;
+    private JPopupMenu popupMenu;
+
+    public Ricerca() {
+        initializePopupMenu(); // Inizializza il menu
+        addPopupToSearchField(); // Collega il menu al searchField
+    }
+
+
 
     public JPanel createRicercaPanel(JFrame frame) {
-        // Utilizziamo un pannello principale con BoxLayout verticale per centrare i componenti
-        JPanel mainPanel = new JPanel();
-
-        // Imposta uno sfondo o un bordo per evidenziare il pannello
-
-
-        // --- 1. Barra di ricerca ---
-        JTextField searchField = new JTextField(90);
-        JButton searchButton = new JButton("Cerca");
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        searchPanel.add(new JLabel("Indirizzo:"));
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
-        // Impostiamo l'allineamento orizzontale per il pannello
-
-        // --- 2. Pannello dei filtri ---
-        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        filterPanel.add(new JLabel("Filtri:"));
-        JCheckBox schoolsCheckBox = new JCheckBox("Scuole");
-        JCheckBox hospitalsCheckBox = new JCheckBox("Trasporti");
-        JCheckBox barsCheckBox = new JCheckBox("Parchi");
 
         List<JCheckBox> checkBoxesList = new ArrayList<>();
         checkBoxesList.add(schoolsCheckBox);
         checkBoxesList.add(hospitalsCheckBox);
         checkBoxesList.add(barsCheckBox);
 
-        filterPanel.add(schoolsCheckBox);
-        filterPanel.add(hospitalsCheckBox);
-        filterPanel.add(barsCheckBox);
 
         // --- 3. Popup per i suggerimenti ---
         JPopupMenu suggestionPopup = new JPopupMenu();
-        JLabel loadingLabel = new JLabel("Caricamento...");
-        loadingLabel.setVisible(false);
-        // Inseriamo l'etichetta di caricamento nel pannello della ricerca (puoi spostarla se preferisci)
-        searchPanel.add(loadingLabel);
 
         // --- 4. Auto-completamento ---
         searchField.getDocument().addDocumentListener(new DocumentListener() {
-            private static final int TIMER_DELAY_MS = 300;
+            private static final int TIMER_DELAY_MS = 700;
 
             private Timer initializeTimer() {
-                Timer timer = new Timer(TIMER_DELAY_MS, e -> handleSuggestionInput());
-                timer.setRepeats(false);
-                return timer;
+                Timer timer2;
+                timer2 = new Timer(TIMER_DELAY_MS, e -> handleSuggestionInput());
+                timer2.setRepeats(false);
+                return timer2;
             }
 
             private final Timer timer = initializeTimer();
@@ -96,7 +83,7 @@ public class Ricerca {
                 timer.restart();
             }
             private void handleSuggestionInput() {
-                loadingLabel.setVisible(true);
+
                 SwingUtilities.invokeLater(() -> {
                     String inputText = searchField.getText().trim();
                     if (inputText.isEmpty()) {
@@ -112,13 +99,13 @@ public class Ricerca {
 
                     populateSuggestions(suggestions);
                     displaySuggestionPopup();
-                    loadingLabel.setVisible(false);
+
                 });
             }
 
             private void hideSuggestions() {
                 suggestionPopup.setVisible(false);
-                loadingLabel.setVisible(false);
+
             }
 
             private void populateSuggestions(List<String> suggestions) {
@@ -151,6 +138,8 @@ public class Ricerca {
             }
         });
 
+
+
         // --- 5. Azione del pulsante "Cerca" ---
         searchButton.addActionListener(e -> {
             GeoPosition geoPos = getCoordinatesFromAddress(searchField.getText());
@@ -160,15 +149,13 @@ public class Ricerca {
                 frame.revalidate();
                 frame.repaint();
             } else {
-                JOptionPane.showMessageDialog(mainPanel, "Indirizzo non valido.");
+                JOptionPane.showMessageDialog(mainPanelRicerca, "Indirizzo non valido.");
             }
         });
 
         // --- 6. Pulsante "Torna alla Home" ---
 
         FontIcon homeIcon = FontIcon.of(FontAwesome.HOME, 24); // 24px di dimensione
-
-        JButton backButtonHome = new JButton();
         backButtonHome.setIcon(homeIcon);
 
 
@@ -179,38 +166,11 @@ public class Ricerca {
             frame.repaint();
         });
 
-        mainPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
-// Bottone "Ritorna alla Home" in alto a sinistra
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0; // Il bottone non si espande orizzontalmente
-        gbc.weighty = 0; // Il bottone non si espande verticalmente
-        gbc.anchor = GridBagConstraints.FIRST_LINE_START; // Posizionato in alto a sinistra
-        gbc.insets = new Insets(10, 10, 0, 0); // Margine attorno al bottone
-        gbc.fill = GridBagConstraints.NONE; // Nessuna espansione del bottone
-        mainPanel.add(backButtonHome, gbc);
-
-// Pannello di ricerca (searchPanel) in alto, si espande orizzontalmente e leggermente in verticale
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0.8; // Si espande orizzontalmente
-        gbc.weighty = 0.1; // Occupa il 30% dello spazio verticale totale
-        gbc.fill = GridBagConstraints.BOTH; // Espandibile in entrambe le direzioni
-        gbc.insets = new Insets(400, 10, 0, 10); // Margini intorno al pannello
-        mainPanel.add(searchPanel, gbc);
-
-// Pannello di filtro (filterPanel) al centro, si espande completamente
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 1; // Si espande orizzontalmente
-        gbc.weighty = 1; // Occupa il resto dello spazio verticale (70%)
-        gbc.fill = GridBagConstraints.BOTH; // Espandibile in entrambe le direzioni
-        gbc.insets = new Insets(1, 30, 0, 30); // Margini
-        mainPanel.add(filterPanel, gbc);
-        return mainPanel;
+        return mainPanelRicerca;
     }
+
+
+
 
     private static GeoPosition getCoordinatesFromAddress(String address) {
         OkHttpClient client = new OkHttpClient();
@@ -229,10 +189,7 @@ public class Ricerca {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(0);
                     double lat = Double.parseDouble((String) jsonObject.get("lat"));
                     double lon = Double.parseDouble((String) jsonObject.get("lon"));
-                    String displayName = jsonObject.get("display_name").toString();
-                    if (displayName.contains("Italia") || displayName.contains("Italy") || displayName.contains("Ita")) {
-                        return new GeoPosition(lat, lon);
-                    }
+                    return new GeoPosition(lat, lon);
                 }
             }
         } catch (IOException | ParseException e) {
@@ -282,15 +239,63 @@ public class Ricerca {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            FlatDarculaLaf.setup();
-            JFrame frame = new JFrame("Ricerca con AutoCompletamento");
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
-            // Imposta una dimensione fissa o usa pack() in base alle tue esigenze
-            frame.setSize(800, 600);
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+        // Creazione della finestra per testare l'interfaccia
+        JFrame frame = new JFrame("Ricerca");
+        Ricerca ricerca = new Ricerca();
+        frame.setContentPane(ricerca.createRicercaPanel(frame));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+
+    private void initializePopupMenu() {
+        // Crea un nuovo JPopupMenu
+        popupMenu = new JPopupMenu();
+
+        // Aggiungi un'opzione per pulire il campo di testo
+        JMenuItem clearFieldItem = new JMenuItem("Clear Field");
+        clearFieldItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchField.setText(""); // Pulisce il campo quando selezionato
+            }
+        });
+
+        // Aggiungi un'opzione per avviare la ricerca
+        JMenuItem searchItem = new JMenuItem("Search");
+        searchItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Search triggered for: " + searchField.getText());
+            }
+        });
+
+        // Aggiungi le opzioni al menu
+        popupMenu.add(clearFieldItem);
+        popupMenu.add(searchItem);
+    }
+
+    private void addPopupToSearchField() {
+        // Aggiungi un MouseListener al campo di testo per mostrare il popup
+        searchField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                showPopupMenu(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                showPopupMenu(e);
+            }
+
+            private void showPopupMenu(MouseEvent e) {
+                if (e.isPopupTrigger()) { // Controlla se è un click destro
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
         });
     }
+
+
 }

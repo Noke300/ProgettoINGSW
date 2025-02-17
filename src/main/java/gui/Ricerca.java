@@ -16,7 +16,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -243,7 +242,7 @@ public class Ricerca {
         JFrame frame = new JFrame("Ricerca");
         Ricerca ricerca = new Ricerca();
         frame.setContentPane(ricerca.createRicercaPanel(frame));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
@@ -255,21 +254,12 @@ public class Ricerca {
 
         // Aggiungi un'opzione per pulire il campo di testo
         JMenuItem clearFieldItem = new JMenuItem("Clear Field");
-        clearFieldItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchField.setText(""); // Pulisce il campo quando selezionato
-            }
-        });
+        clearFieldItem.addActionListener(e -> searchField.setText("")); // Pulisce il campo quando selezionato
+
 
         // Aggiungi un'opzione per avviare la ricerca
         JMenuItem searchItem = new JMenuItem("Search");
-        searchItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Search triggered for: " + searchField.getText());
-            }
-        });
+        searchItem.addActionListener(e -> JOptionPane.showMessageDialog(null, "Search triggered for: " + searchField.getText()));
 
         // Aggiungi le opzioni al menu
         popupMenu.add(clearFieldItem);

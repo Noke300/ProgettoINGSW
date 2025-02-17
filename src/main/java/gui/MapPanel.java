@@ -181,13 +181,7 @@ public class MapPanel {
                 Rectangle viewport = mapViewer.getViewportBounds();
                 boolean hovering = false;
                 for (CustomWaypoint waypoint : waypoints) {
-                    GeoPosition wpGeo = waypoint.getPosition();
-                    // Converte la posizione geografica in coordinate pixel assolute
-                    Point2D wpPixelAbs = mapViewer.getTileFactory().geoToPixel(wpGeo, mapViewer.getZoom());
-                    // Calcola la posizione relativa (rispetto al viewport)
-                    double markerX = wpPixelAbs.getX() - viewport.x;
-                    double markerY = wpPixelAbs.getY() - viewport.y;
-                    Point2D markerPoint = new Point2D.Double(markerX, markerY);
+                    Point2D markerPoint = calcoloPosizione(mapViewer,waypoint,viewport);
                     if (mousePos.distance(markerPoint) < HITBOX_RADIUS-10) {
                         hovering = true;
                         break;
@@ -209,14 +203,8 @@ public class MapPanel {
 
                 // Scorri tutti i waypoint per vedere se il click è vicino aduno di essi
                 for (CustomWaypoint waypoint : waypoints) {
-                    GeoPosition wpGeo = waypoint.getPosition();
-                    // Ottieni le coordinate assolute del waypoint sulla mappa
-                    Point2D wpPixelAbs = mapViewer.getTileFactory().geoToPixel(wpGeo, mapViewer.getZoom());
-                    // Calcola la posizione relativa rispetto al viewport
-                    double markerX = wpPixelAbs.getX() - viewport.x;
-                    double markerY = wpPixelAbs.getY() - viewport.y;
-                    Point2D markerPoint = new Point2D.Double(markerX, markerY);
 
+                    Point2D markerPoint = calcoloPosizione(mapViewer,waypoint,viewport);
                     if (clickedPoint.distance(markerPoint) < HITBOX_RADIUS+7) {
                         markerFound = true;
                         // Aggiorna il pannello con le informazioni del waypoint
@@ -247,6 +235,16 @@ public class MapPanel {
 
 
         return mainPanel;
+    }
+
+    public static Point2D calcoloPosizione(JXMapViewer mapViewer,Waypoint waypoint, Rectangle viewport){
+        GeoPosition wpGeo = waypoint.getPosition();
+        // Ottieni le coordinate assolute del waypoint sulla mappa
+        Point2D wpPixelAbs = mapViewer.getTileFactory().geoToPixel(wpGeo, mapViewer.getZoom());
+        // Calcola la posizione relativa rispetto al viewport
+        double markerX = wpPixelAbs.getX() - viewport.x;
+        double markerY = wpPixelAbs.getY() - viewport.y;
+        return new Point2D.Double(markerX, markerY);
     }
 
 

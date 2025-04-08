@@ -1,0 +1,158 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+\usepackage{float}
+\usepackage[margin=2.5cm]{geometry}
+
+
+
+\title{Progetto Ingegneria del Software}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+
+
+\maketitle
+
+
+\newpage
+
+
+
+\maketitle
+
+\section{Documento dei Requisiti Software}
+
+\subsection{Analisi di utilizzo dell'applicativo}
+
+Abbiamo individuato le seguenti \textit{Personas} che rappresentano i diversi utenti tipo del nostro applicativo:
+\\
+\\
+
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9);
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Antonio_Vincenti.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+\subsubsection*{Antonio Vincenti -- Cliente giovane e tecnologico}
+
+Antonio Vincenti è un utente giovane, non esperto del settore immobiliare ma pratico nell'utilizzo di applicativi software. Utilizza l'applicativo come cliente. Il suo obiettivo è trovare una casa in affitto vicina a dei mezzi di trasporto.
+
+A tale scopo, l'applicativo deve essere \textbf{intuitivo} per poter essere utilizzato anche da utenti che non conoscono il mondo immobiliare. Deve inoltre fornire la possibilità di \textbf{visualizzare appartamenti attraverso una mappa} che mostri chiaramente la vicinanza ai mezzi di trasporto.
+
+\\
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Gennaro_Ioffredo.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+\subsubsection*{Gennaro Ioffredo -- Cliente esperto ma poco tecnologico}
+
+Gennaro Ioffredo è un uomo di mezza età, conosce bene il settore immobiliare ma non è molto avvezzo all’utilizzo di strumenti tecnologici. Utilizza l’applicativo come cliente e il suo obiettivo è acquistare una casa che possa avere anche una camera in più per ospitare i figli.
+
+L’applicativo dovrà quindi essere \textbf{chiaro e semplice da usare}, adatto anche a persone poco esperte in ambito digitale. Dovrà fornire strumenti di ricerca \textbf{filtrabili}, ad esempio per numero di stanze, per facilitare la selezione degli immobili più adatti.
+
+\\
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Monica_Tiberini.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+\subsubsection*{Monica Tiberini -- Agente immobiliare}
+
+Monica Tiberini utilizza l’applicativo come agente immobiliare. Conosce molto bene il suo lavoro e ha medie conoscenze informatiche. Il suo obiettivo è quello di offrire il miglior servizio possibile ai propri clienti.
+
+L’applicativo deve permettere di \textbf{gestire in modo rapido e fluido le operazioni quotidiane}, attraverso percorsi chiari e strumenti ottimizzati, al fine di ridurre i tempi di attesa e l’interazione non necessaria.
+
+\newpage
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Raffaele_Sepe.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+
+\subsubsection*{Raffaele Sepe -- Amministratore}
+
+Raffaele Sepe utilizza l’applicativo come \textit{Admin}. Conosce bene il mondo immobiliare e ha buone capacità informatiche. Il suo obiettivo è quello di far espandere la sua azienda anche su piattaforme virtuali e riuscire comunque a gestire al meglio i suoi lavoratori.
+
+Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amministratori di aziende immobiliari di \textbf{registrare la propria azienda} e di \textbf{nominare account admin secondari e agenti immobiliari}.
+
+
+
+
+\end{document}

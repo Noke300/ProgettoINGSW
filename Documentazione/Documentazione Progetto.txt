@@ -1,11 +1,11 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx} % Required for inserting images
-\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm, margin=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{shadows.blur}
 \usepackage{float}
-\usepackage[margin=2.5cm]{geometry}
+\usepackage[italian]{babel}
 
 
 
@@ -20,17 +20,30 @@
 
 \newpage
 
+\tableofcontents
+
+\newpage
 
 
-\maketitle
+\section{Introduzione}
+
+TODO 
 
 \section{Documento dei Requisiti Software}
 
-\subsection{Analisi di utilizzo dell'applicativo}
+\subsection{Glossario}
+TODO
+
+\subsection{Casi d'uso}
+TODO
+
+\subsection{Ricerca e Analisi degli utenti tipo}
+
 
 Abbiamo individuato le seguenti \textit{Personas} che rappresentano i diversi utenti tipo del nostro applicativo:
-\\
-\\
+
+\subsubsection{Personas}
+\vspace{0.5cm}
 
 
 \begin{figure}[H]
@@ -57,11 +70,11 @@ Abbiamo individuato le seguenti \textit{Personas} che rappresentano i diversi ut
 
 \subsubsection*{Antonio Vincenti -- Cliente giovane e tecnologico}
 
-Antonio Vincenti è un utente giovane, non esperto del settore immobiliare ma pratico nell'utilizzo di applicativi software. Utilizza l'applicativo come cliente. Il suo obiettivo è trovare una casa in affitto vicina a dei mezzi di trasporto.
+Antonio Vincenti è un utente giovane, non esperto del settore immobiliare ma pratico nell'utilizzo di applicativi software. Interagisce con l’applicativo come cliente. Il suo obiettivo è trovare una casa in affitto vicina a dei mezzi di trasporto.
 
 A tale scopo, l'applicativo deve essere \textbf{intuitivo} per poter essere utilizzato anche da utenti che non conoscono il mondo immobiliare. Deve inoltre fornire la possibilità di \textbf{visualizzare appartamenti attraverso una mappa} che mostri chiaramente la vicinanza ai mezzi di trasporto.
 
-\\
+\vspace{0.5cm}
 
 \begin{figure}[H]
     \noindent
@@ -91,7 +104,7 @@ Gennaro Ioffredo è un uomo di mezza età, conosce bene il settore immobiliare m
 
 L’applicativo dovrà quindi essere \textbf{chiaro e semplice da usare}, adatto anche a persone poco esperte in ambito digitale. Dovrà fornire strumenti di ricerca \textbf{filtrabili}, ad esempio per numero di stanze, per facilitare la selezione degli immobili più adatti.
 
-\\
+\vspace{0.5cm}
 
 \begin{figure}[H]
     \noindent
@@ -151,6 +164,81 @@ L’applicativo deve permettere di \textbf{gestire in modo rapido e fluido le op
 Raffaele Sepe utilizza l’applicativo come \textit{Admin}. Conosce bene il mondo immobiliare e ha buone capacità informatiche. Il suo obiettivo è quello di far espandere la sua azienda anche su piattaforme virtuali e riuscire comunque a gestire al meglio i suoi lavoratori.
 
 Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amministratori di aziende immobiliari di \textbf{registrare la propria azienda} e di \textbf{nominare account admin secondari e agenti immobiliari}.
+\newpage
+
+
+\subsection{Requisiti dell'applicativo}
+
+\subsubsection{Requisiti Non-Funzionali}
+TODO
+\subsubsection{Requisiti di Dominio}
+TODO
+\subsection{Approfondimento Casi D'uso significativi}
+
+\subsubsection{Ricerca Immobile}
+Prendere da GitHub
+\subsubsection{Inserisci Immobile}
+Prendere da GitHub
+
+
+
+
+\newpage
+\section{Documento di Design del Sistema}
+
+\subsection{Descrizione dell'Architettura}
+\subsubsection{TODO}
+
+\subsection{Linguaggi di programmazione utilizzati}
+TODO
+\subsection{Descrizione dello schema per la persistenza dati}
+TODO
+\subsection{Scelte di design UI}
+TODO
+\subsection{Diagramma delle classi di design}
+TODO
+\subsection{Sequence Diagram}
+TODO
+
+
+
+
+
+\newpage
+\section{Processo di sviluppo}
+
+\subsection{Strumenti di Versioning Utilizzati}
+TODO
+\subsection{Report Qualità del codice}
+TODO
+
+
+
+
+
+\newpage
+\section{Testing e valutazione dell'usabilità}
+
+
+\subsection{Strategie adottate per la progettazione dei test}
+TODO
+
+\subsubsection{Expert reviews}
+
+\subsubsection{Descrizione della Checklist utilizzata}
+TODO
+\subsubsection{Applicazione della Checklist}
+TODO
+
+\subsection{Esperimenti con utenti reali}
+
+\subsubsection{Descrizione dei soggetti reclutati}
+TODO
+\subsubsection{Survey utilizzato}
+TODO
+\subsubsection{Risultati dell'esperimento}
+TODO
+
 
 
 

@@ -1,0 +1,407 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm, margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+\usepackage{float}
+\usepackage[italian]{babel}
+\usepackage{multirow}
+
+
+
+\title{Progetto Ingegneria del Software}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+
+
+\maketitle
+
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+\section{Introduzione}
+
+TODO 
+
+\section{Documento dei Requisiti Software}
+
+\subsection{Glossario}
+TODO
+
+\subsection{Casi d'uso}
+TODO
+
+\subsection{Ricerca e Analisi degli utenti tipo}
+
+
+Abbiamo individuato le seguenti \textit{Personas} che rappresentano i diversi utenti tipo del nostro applicativo:
+
+\subsubsection{Personas}
+\vspace{0.5cm}
+
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9);
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Antonio_Vincenti.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+\subsubsection*{Antonio Vincenti -- Cliente giovane e tecnologico}
+
+Antonio Vincenti è un utente giovane, non esperto del settore immobiliare ma pratico nell'utilizzo di applicativi software. Interagisce con l’applicativo come cliente. Il suo obiettivo è trovare una casa in affitto vicina a dei mezzi di trasporto.
+
+A tale scopo, l'applicativo deve essere \textbf{intuitivo} per poter essere utilizzato anche da utenti che non conoscono il mondo immobiliare. Deve inoltre fornire la possibilità di \textbf{visualizzare appartamenti attraverso una mappa} che mostri chiaramente la vicinanza ai mezzi di trasporto.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Gennaro_Ioffredo.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+\subsubsection*{Gennaro Ioffredo -- Cliente esperto ma poco tecnologico}
+
+Gennaro Ioffredo è un uomo di mezza età, conosce bene il settore immobiliare ma non è molto avvezzo all’utilizzo di strumenti tecnologici. Utilizza l’applicativo come cliente e il suo obiettivo è acquistare una casa che possa avere anche una camera in più per ospitare i figli.
+
+L’applicativo dovrà quindi essere \textbf{chiaro e semplice da usare}, adatto anche a persone poco esperte in ambito digitale. Dovrà fornire strumenti di ricerca \textbf{filtrabili}, ad esempio per numero di stanze, per facilitare la selezione degli immobili più adatti.
+
+\vspace{0.5cm}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Monica_Tiberini.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+\subsubsection*{Monica Tiberini -- Agente immobiliare}
+
+Monica Tiberini utilizza l’applicativo come agente immobiliare. Conosce molto bene il suo lavoro e ha medie conoscenze informatiche. Il suo obiettivo è quello di offrire il miglior servizio possibile ai propri clienti.
+
+L’applicativo deve permettere di \textbf{gestire in modo rapido e fluido le operazioni quotidiane}, attraverso percorsi chiari e strumenti ottimizzati, al fine di ridurre i tempi di attesa e l’interazione non necessaria.
+
+\newpage
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Raffaele_Sepe.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\vspace{0.5cm}
+
+
+\subsubsection*{Raffaele Sepe -- Amministratore}
+
+Raffaele Sepe utilizza l’applicativo come \textit{Admin}. Conosce bene il mondo immobiliare e ha buone capacità informatiche. Il suo obiettivo è quello di far espandere la sua azienda anche su piattaforme virtuali e riuscire comunque a gestire al meglio i suoi lavoratori.
+
+Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amministratori di aziende immobiliari di \textbf{registrare la propria azienda} e di \textbf{nominare account admin secondari e agenti immobiliari}.
+\newpage
+
+
+\subsection{Requisiti dell'applicativo}
+
+\subsubsection{Requisiti Non-Funzionali}
+TODO
+\subsubsection{Requisiti di Dominio}
+TODO
+\subsection{Approfondimento Casi D'uso significativi}
+
+\subsubsection{Ricerca Immobile}
+\subsubsection*{Cockburn}
+
+\begin{center}
+\label{tab:usecase1}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|cccc|}
+\hline
+\textbf{Use Case \#1} & \multicolumn{4}{c|}{\textbf{Ricerca Immobile}} \\ \hline
+\textbf{Goal in Context} & \multicolumn{4}{l|}{Utente vorrebbe trovare una lista di immobili con le caratteristiche selezionate} \\ \hline
+\textbf{Preconditions} & \multicolumn{4}{l|}{Nessuna} \\ \hline
+\textbf{Success End Condition} & \multicolumn{4}{l|}{Untete trova una lista con le specifiche da lui inserite} \\ \hline
+\textbf{Failed End Condition} & \multicolumn{4}{l|}{Non visualizza la liste delle case con le specifiche inserite} \\ \hline
+\textbf{Primary Actor} & \multicolumn{4}{l|}{Utente} \\ \hline
+\textbf{Trigger} & \multicolumn{4}{l|}{Utente apre applicazione} \\ \hline
+\multirow{6}{*}{\textbf{Main Scenario}} & \textbf{Steps n.} & \textbf{Utente} & \textbf{API generica} & \textbf{System} \\ \cline{2-5}
+& 1 & & & Mostra M00 \\ \cline{2-5}
+& 2 & Riempie i Campi & & \\ \cline{2-5}
+& 3 & \begin{tabular}[c]{@{}c@{}}Clicca il \\ pulsante "Ricerca"\end{tabular} & & \\ \cline{2-5}
+& 4 & & & Mostra M03 \\ \cline{2-5}
+& 5 & & \begin{tabular}[c]{@{}c@{}}Restituisce sulla mappa \\ la posizione degli \\ immobili della lista\end{tabular} & \\ \hline
+\multirow{5}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1 \\ (Non seleziona una \\ delle scelte poste \\ dall'API in fase di \\ inserimento "Città \\ o Comune")\end{tabular}}}
+& 4a & & & \begin{tabular}[c]{@{}c@{}}Mostra M02 \\ con messaggio: \\ "Selezionare un luogo"\end{tabular} \\ \cline{2-5}
+& 5a & Clicca "Ok" & & \\ \cline{2-5}
+& \multirow{3}{*}{6a} & \multirow{3}{*}{} & \multirow{3}{*}{} & \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular}} \\
+& & & & \\
+& & & & \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Seleziona una \\ ricerca che \\ non dà risultati)\end{tabular}}}
+& 4b & & & \begin{tabular}[c]{@{}c@{}}Mostra M03 \\ con messaggio:\\ "Non ci sono immobili \\ con le specifiche richieste"\end{tabular} \\ \cline{2-5}
+& 5b & Clicca "Ok" & & \\ \cline{2-5}
+& 6b & & & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 Main scenario\end{tabular} \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Seleziona una \\ città che non \\ ha immobili)\end{tabular}}}
+& 4c & & & \begin{tabular}[c]{@{}c@{}}Mostra M03 \\ con messaggio:\\ "Non ci sono immobili in \\ questa Citta' o Comune"\end{tabular} \\ \cline{2-5}
+& 5c & Clicca "Ok" & & \\ \cline{2-5}
+& 6c & & & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular} \\ \hline
+\end{tabular}
+}
+\end{center}
+
+\subsubsection*{Mock-Up}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Cerca_Immobile 1.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,12); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,12);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=12cm]{Cerca_Immobile 2.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+
+\subsubsection{Inserisci Immobile}
+
+
+    
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|cccc|}
+\hline
+\textbf{USE CASE \#2} & \multicolumn{4}{c|}{\textbf{Inserisci Immobile}} \\ \hline
+\textbf{Goal in Context} & \multicolumn{4}{l|}{L'agente immobiliare vuole inserire un nuovo immobile} \\ \hline
+\textbf{Preconditions} & \multicolumn{4}{l|}{Deve essersi autenticato come agente immobiliare di un'azienda} \\ \hline
+\textbf{Success End Condition} & \multicolumn{4}{l|}{L'immobile è stato registrato correttamente sull'applicazione} \\ \hline
+\textbf{Failed End Condition} & \multicolumn{4}{l|}{L'immobile non viene caricato sull'applicazione} \\ \hline
+\textbf{Primary Actor} & \multicolumn{4}{l|}{Agente Immobiliare} \\ \hline
+\textbf{Trigger} & \multicolumn{4}{l|}{L'agente immobiliare seleziona "Aggiungi Immobile" in M00} \\ \hline
+\multirow{9}{*}{\textbf{Main Scenario}} &
+  \multicolumn{1}{c|}{\textbf{Step n.}} &
+  \multicolumn{1}{c|}{\textbf{Agente Immobiliare}} &
+  \multicolumn{1}{c|}{\textbf{API}} &
+  \textbf{System} \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Preme "Aggiungi \\ Immobile" in M00\end{tabular}} & \multicolumn{1}{c|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & Mostra M01 \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{Compila i campi} & \multicolumn{1}{c|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{4} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Mostra sulla mappa la \\ posizione dell'indirizzo inserito\end{tabular}} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{5} & \multicolumn{1}{c|}{Preme "Inserisci"} & \multicolumn{1}{c|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{6} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & Mostra M03 \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{7} & \multicolumn{1}{c|}{Preme "Si"} & \multicolumn{1}{c|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{8} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & Mostra M00 \\ \hline
+\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} &
+  \multicolumn{1}{c|}{3a} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Preme la freccia \\ in alto a sinistra\end{tabular}} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4a} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M04 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5a} &
+  \multicolumn{1}{c|}{Preme "Si"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6a} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 8 Main Scenario\end{tabular} \\ \hline
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Non conferma \\ l'inserimento)\end{tabular}}} &
+  \multicolumn{1}{c|}{7b} &
+  \multicolumn{1}{c|}{Preme "No"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{8b} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 2 Main Scenario\end{tabular} \\ \hline
+\multirow{4}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Torna indietro \\ ma ci ripensa)\end{tabular}}} &
+  \multicolumn{1}{c|}{3c} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Preme la freccia \\ in alto a sinistra\end{tabular}} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4c} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M04 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5c} &
+  \multicolumn{1}{c|}{Preme "No"} &
+  \multicolumn{1}{c|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6c} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 2 Main Scenario\end{tabular} \\ \hline
+\end{tabular}
+}
+\end{center}
+
+
+
+
+\newpage
+\section{Documento di Design del Sistema}
+
+\subsection{Descrizione dell'Architettura}
+\subsubsection{TODO}
+
+\subsection{Linguaggi di programmazione utilizzati}
+TODO
+\subsection{Descrizione dello schema per la persistenza dati}
+TODO
+\subsection{Scelte di design UI}
+TODO
+\subsection{Diagramma delle classi di design}
+TODO
+\subsection{Sequence Diagram}
+TODO
+
+
+
+
+
+\newpage
+\section{Processo di sviluppo}
+
+\subsection{Strumenti di Versioning Utilizzati}
+TODO
+\subsection{Report Qualità del codice}
+TODO
+
+
+
+
+
+\newpage
+\section{Testing e valutazione dell'usabilità}
+
+
+\subsection{Strategie adottate per la progettazione dei test}
+TODO
+
+\subsubsection{Expert reviews}
+
+\subsubsection{Descrizione della Checklist utilizzata}
+TODO
+\subsubsection{Applicazione della Checklist}
+TODO
+
+\subsection{Esperimenti con utenti reali}
+
+\subsubsection{Descrizione dei soggetti reclutati}
+TODO
+\subsubsection{Survey utilizzato}
+TODO
+\subsubsection{Risultati dell'esperimento}
+TODO
+
+
+
+
+
+\end{document}

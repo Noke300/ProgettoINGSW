@@ -254,7 +254,7 @@ INSERT INTO AgenziaImmobiliare (NomeAgenzia, EmailAgenzia, EmailAdmin, PasswordA
 
 -- Inserimento dati nella tabella Cliente
 INSERT INTO Cliente (Nome, Cognome, EmailCliente, PasswordCliente, DataN) VALUES
-('Mario', 'Rossi', 'mario.rossi@email.com', 'mariopass5!', '1985-06-15'),
+('Mario', 'Rossi', 'mario.rossi@email.com', '$2a$12$Am3HxCFrTnstR6q0yOA9K.254UR2pBCcaWiomKv9EjO5m4NoV1wuO', '1985-06-15'),
 ('Luca', 'Bianchi', 'luca.bianchi@email.com', 'lucapass5!', '1990-09-22'),
 ('Giulia', 'Verdi', 'giulia.verdi@email.com', 'giuliapass6!', '1987-04-10'),
 ('Anna', 'Neri', 'anna.neri@email.com', 'annapass7!', '1995-11-30'),

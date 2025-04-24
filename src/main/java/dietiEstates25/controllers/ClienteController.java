@@ -1,0 +1,55 @@
+package dietiEstates25.controllers;
+
+import dietiEstates25.model.Cliente;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.server.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.*;
+import dietiEstates25.service.ClienteServiceDB;
+
+import java.util.List;
+
+@RestController
+public class ClienteController {
+
+    //possiamo iniettare ClienteServiceMock per andare a lavorare con i dati d'esempio presenti
+    @Autowired
+    private ClienteServiceDB clienteService;
+
+    @GetMapping("/clienti")
+    public List<Cliente> getAllClienti() {
+        return clienteService.getAllClients();
+    }
+
+    @GetMapping("/clienti/{mail}")
+    public Cliente getCliente(@PathVariable String mail) {
+        return clienteService.getClienteByMail(mail);
+    }
+
+    @PostMapping("/register")
+    public void addCliente(@RequestBody Cliente cliente) {
+        clienteService.addCliente(cliente);
+    }
+
+    @PutMapping("/clienti/{mail}")
+    public void updateCliente(@PathVariable String mail, @RequestBody Cliente cliente) {
+        clienteService.updateCliente(mail, cliente);
+    }
+
+    @DeleteMapping("/clienti/{mail}")
+    public void deleteCliente(@PathVariable String mail) {
+        clienteService.deleteCliente(mail);
+    }
+
+    @GetMapping("/csrf-token")
+    public CsrfToken getCsrfToken(HttpServletRequest request) {
+        return (CsrfToken) request.getAttribute("_csrf");
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody Cliente cliente) {
+        return clienteService.verify(cliente);
+    }
+
+}
+

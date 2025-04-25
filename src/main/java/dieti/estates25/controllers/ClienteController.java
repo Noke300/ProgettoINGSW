@@ -1,11 +1,11 @@
-package dietiEstates25.controllers;
+package dieti.estates25.controllers;
 
-import dietiEstates25.model.Cliente;
+import dieti.estates25.model.Cliente;
+import dieti.estates25.service.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-import dietiEstates25.service.ClienteServiceDB;
 
 import java.util.List;
 

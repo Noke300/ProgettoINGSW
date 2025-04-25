@@ -1,4 +1,4 @@
-package dietiEstates25;
+package dieti.estates25;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;

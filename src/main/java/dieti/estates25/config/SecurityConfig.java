@@ -1,4 +1,4 @@
-package dietiEstates25.config;
+package dieti.estates25.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

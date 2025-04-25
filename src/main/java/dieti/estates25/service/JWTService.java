@@ -1,4 +1,4 @@
-package dietiEstates25.service;
+package dieti.estates25.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.io.Decoders;
@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
-    private String secretKey;
+    private final String secretKey;
 
     public JWTService(){
         try {
@@ -69,6 +69,15 @@ public class JWTService {
     }
 
     public boolean validateToken(String token, UserDetails clientDetails) {
-        return true;
+        final String email = extractEmail(token);
+        return (email.equals(clientDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 }

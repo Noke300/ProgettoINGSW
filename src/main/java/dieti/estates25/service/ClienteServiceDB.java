@@ -1,7 +1,7 @@
-package dietiEstates25.service;
+package dieti.estates25.service;
 
-import dietiEstates25.model.Cliente;
-import dietiEstates25.model.ClientePrincipal;
+import dieti.estates25.model.Cliente;
+import dieti.estates25.model.ClientePrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import dietiEstates25.repositories.ClienteRepository;
+import dieti.estates25.repositories.ClienteRepository;
 
 import java.util.List;
 import java.util.Optional;

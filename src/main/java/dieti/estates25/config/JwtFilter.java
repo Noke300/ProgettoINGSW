@@ -1,7 +1,7 @@
-package dietiEstates25.config;
+package dieti.estates25.config;
 
-import dietiEstates25.service.ClienteServiceDB;
-import dietiEstates25.service.JWTService;
+import dieti.estates25.service.ClienteServiceDB;
+import dieti.estates25.service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

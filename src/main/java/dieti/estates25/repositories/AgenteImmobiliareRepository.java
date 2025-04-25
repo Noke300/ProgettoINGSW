@@ -1,6 +1,6 @@
-package dietiEstates25.repositories;
+package dieti.estates25.repositories;
 
-import dietiEstates25.model.AgenteImmobiliare;
+import dieti.estates25.model.AgenteImmobiliare;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

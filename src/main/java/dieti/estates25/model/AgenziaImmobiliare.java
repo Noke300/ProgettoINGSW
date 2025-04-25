@@ -1,4 +1,4 @@
-package dietiEstates25.model;
+package dieti.estates25.model;
 
 import jakarta.persistence.*;
 import java.util.*;

@@ -1,6 +1,7 @@
-package dietiEstates25.service;
+package dieti.estates25.service;
 
-import dietiEstates25.model.Cliente;
+import dieti.estates25.model.Cliente;
+
 import java.util.List;
 
 public interface ClienteService {

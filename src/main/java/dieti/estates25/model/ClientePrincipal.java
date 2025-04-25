@@ -1,4 +1,4 @@
-package dietiEstates25.model;
+package dieti.estates25.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

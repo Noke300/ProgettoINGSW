@@ -1,8 +1,9 @@
-package gui;
+package gui.costumComponents;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,19 +20,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
-public class MapPanel {
+public class MapLoader {
+    private static final String GEOAPIFY_API_KEY = "8f5bca3082a24dadb72c4f3546cacd4c";
+    private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
-    private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5"; // Sostituisci con la tua chiave API
+    public MapLoader() { /* TODO document why this constructor is empty */ }
 
-    public JPanel createMapPanel(JFrame frame,  GeoPosition geoPosition,List<JCheckBox> checkBoxesList) {
-
-        JPanel mainPanel = new JPanel(new BorderLayout());
-
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(frame.getWidth(), frame.getHeight());
+    public static void createMapPanel(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel MapFrame) {
         // Barra di ricerca combinata
 
         // Interactive Map with Markers
@@ -42,53 +40,8 @@ public class MapPanel {
         mapViewer.setTileFactory(tileFactory);
 
         // Initial Position
-            mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(), geoPosition.getLongitude())); // Indirizzi da address
-            mapViewer.setZoom(5);
-
-
-        class CustomWaypoint extends DefaultWaypoint {
-            private final Color color;
-            private final String info;
-
-            public CustomWaypoint(GeoPosition coord, Color color, String info) {
-                super(coord);
-                this.color = color;
-                this.info = info;
-            }
-
-            public Color getColor() {
-                return color;
-            }
-
-            public String getInfo() {
-                return info;
-            }
-        }
-
-        class CustomWaypointRenderer implements WaypointRenderer<CustomWaypoint> {
-            @Override
-            public void paintWaypoint(Graphics2D g, JXMapViewer map, CustomWaypoint waypoint) {
-                int size = 10;
-                g.setColor(waypoint.getColor());
-                Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
-
-                if (waypoint.info.equals("Indirizzo")) {
-
-                    g.fillOval((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
-                    g.setColor(Color.BLACK);  // Bordo nero
-                    g.drawOval((int) point.getX() - 3, (int) point.getY() - 3, size, size);
-
-                } else {
-
-                    g.fillRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
-                    g.setColor(Color.BLACK);
-                    g.drawRect((int) point.getX() - size / 2, (int) point.getY() - size / 2, size, size);
-
-                }
-
-            }
-        }
-
+        mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(), geoPosition.getLongitude())); // Indirizzi da address
+        mapViewer.setZoom(5);
 
         // List of markers
         Set<CustomWaypoint> waypoints = new HashSet<>();
@@ -115,44 +68,47 @@ public class MapPanel {
                 mapViewer.setZoom(zoom - 1);
             }
         });
-        // Add map to the center of the frame
-        mainPanel.add(mapViewer, BorderLayout.CENTER);
+        // Add a map to the center of the frame
+        MapFrame.add(mapViewer, BorderLayout.CENTER);
+        MapFrame.revalidate();
+        MapFrame.repaint();
+
         // Add waypoint click listener
-                    waypoints.clear();
-                    waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Indirizzo"));
-                    waypointPainter.setWaypoints(waypoints);
-                    mapViewer.setCenterPosition(geoPosition);
-                    mapViewer.repaint();
-                    mapViewer.setZoom(6);
+        waypoints.clear();
+        waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Indirizzo"));
+        waypointPainter.setWaypoints(waypoints);
+        mapViewer.setCenterPosition(geoPosition);
+        mapViewer.repaint();
+        mapViewer.setZoom(6);
 
-                    //inserimento Filtro non toccare so che è sbagliato 0>1
-                    for(JCheckBox box : checkBoxesList) {
+        //inserimento Filtro non toccare so che è sbagliato 0>1
+        for(JCheckBox box : checkBoxesList) {
 
-                        if(box.getText().equals("Scuole") && box.isSelected()) {
-                            // Fetch places using Geoapify Places API for schools
-                            List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
-                            for (GeoPosition place : places) {
-                                waypoints.add(new CustomWaypoint(place, Color.YELLOW, "Scuola"));
-                            }
-                            waypointPainter.setWaypoints(waypoints);
-                            mapViewer.repaint();
-                        }else if(box.getText().equals("Trasporti") && box.isSelected()) {
-                            List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
-                            for (GeoPosition place : places) {
-                                waypoints.add(new CustomWaypoint(place, Color.RED, "Transport"));
-                            }
-                            waypointPainter.setWaypoints(waypoints);
-                            mapViewer.repaint();
-                        }else if(box.getText().equals("Parchi") && box.isSelected()) {
-                            List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
-                            for (GeoPosition place : places) {
-                                waypoints.add(new CustomWaypoint(place, Color.GREEN, "Parco"));
-                            }
-                            waypointPainter.setWaypoints(waypoints);
-                            mapViewer.repaint();
+            if(box.getText().equals("Scuole") && box.isSelected()) {
+                // Fetch places using Geoapify Places API for schools
+                List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
+                for (GeoPosition place : places) {
+                    waypoints.add(new CustomWaypoint(place, Color.YELLOW, "Scuola"));
+                }
+                waypointPainter.setWaypoints(waypoints);
+                mapViewer.repaint();
+            }else if(box.getText().equals("Trasporti") && box.isSelected()) {
+                List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
+                for (GeoPosition place : places) {
+                    waypoints.add(new CustomWaypoint(place, Color.RED, "Transport"));
+                }
+                waypointPainter.setWaypoints(waypoints);
+                mapViewer.repaint();
+            }else if(box.getText().equals("Parchi") && box.isSelected()) {
+                List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
+                for (GeoPosition place : places) {
+                    waypoints.add(new CustomWaypoint(place, Color.GREEN, "Parco"));
+                }
+                waypointPainter.setWaypoints(waypoints);
+                mapViewer.repaint();
 
-                        }
-                    }
+            }
+        }
 
         final int HITBOX_RADIUS = 25;
 
@@ -170,7 +126,7 @@ public class MapPanel {
         detailsPanel.setVisible(false);
 
 // Aggiungiamo il pannello al frame (al lato destro)
-        mainPanel.add(detailsPanel, BorderLayout.WEST);
+        MapFrame.add(detailsPanel, BorderLayout.WEST);
 
 
 // Listener per cambiare il cursore quando il mouse passa sopra un marker
@@ -222,19 +178,6 @@ public class MapPanel {
                 }
             }
         });
-
-
-        JButton backButton = new JButton("Torna alla Ricerca");
-        backButton.addActionListener(e -> {
-            // ritorno di address nella barra di ricerca
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
-            frame.revalidate();
-            frame.repaint();
-        });
-        mainPanel.add(backButton, BorderLayout.SOUTH);
-
-
-        return mainPanel;
     }
 
     public static Point2D calcoloPosizione(JXMapViewer mapViewer,Waypoint waypoint, Rectangle viewport){
@@ -273,6 +216,31 @@ public class MapPanel {
         return null;
     }
 
+    public static GeoPosition getCoordinatesFromAddress(String address) {
+        OkHttpClient client = new OkHttpClient();
+        String url = String.format("%s?q=%s&format=json&limit=1&accept-language=it", NOMINATIM_URL, address.replace(" ", "+"));
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Accept-Language", "it")
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                String jsonData = response.body().string();
+                JSONParser parser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) parser.parse(jsonData);
+                if (!jsonArray.isEmpty()) {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+                    double lat = Double.parseDouble((String) jsonObject.get("lat"));
+                    double lon = Double.parseDouble((String) jsonObject.get("lon"));
+                    return new GeoPosition(lat, lon);
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     //scan dei posti
     private static List<GeoPosition> fetchPlaces(GeoPosition g, String category) {
@@ -281,7 +249,7 @@ public class MapPanel {
         String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=15&apiKey=%s",
                 category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
 
-                 Request request = new Request.Builder()
+        Request request = new Request.Builder()
                 .url(url)
                 .method("GET", null)
                 .build();
@@ -307,5 +275,4 @@ public class MapPanel {
         }
         return places;
     }
-
 }

@@ -1,0 +1,78 @@
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "hidemode 3,align center center"
+			"$columnConstraints": "[fill][fill][fill][fill]"
+			"$rowConstraints": "[][][][][][]"
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBar1"
+				"borderPainted": false
+				"background": new java.awt.Color( 78, 80, 82, 255 )
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "menuBar1MouseClicked", true ) )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menuOpzioni"
+					"text": "Opzioni"
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "logInButton"
+						"text": "Log In"
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ricercaButton"
+						"text": "Ricerca"
+						"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "backButtonHome"
+						"text": "Home"
+						"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
+					} )
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 0,alignx center,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelEmail"
+				"text": "Email :"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textFildEmail"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 1 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelPassword"
+				"text": "Password :"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2"
+			} )
+			add( new FormComponent( "javax.swing.JPasswordField" ) {
+				name: "passwordField1"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 2 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonLogIn"
+				"text": "Log In"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 3"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonRegistrati"
+				"text": "Inizza con Noi"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 4"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 65, 130 )
+			"size": new java.awt.Dimension( 405, 295 )
+		} )
+	}
+}

@@ -1,0 +1,91 @@
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,hidemode 3"
+			"$columnConstraints": "[188,fill][174,center][174,center][174,center][174,center]"
+			"$rowConstraints": "[452][452][452][452,grow][452]0[106,grow]"
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "panelTopBar"
+				"border": new javax.swing.border.LineBorder( sfield java.awt.Color black, 2, true )
+				"background": &SwingColor0 new com.jformdesigner.model.SwingColor( "Actions.Green" )
+				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+					name: "menuBarOpzioni"
+					"borderPainted": false
+					"background": new java.awt.Color( 78, 80, 82, 255 )
+					"font": new java.awt.Font( "Segoe UI", 0, 26 )
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menuOpzioni"
+						"text": "Opzioni"
+						"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
+						"font": new java.awt.Font( "Segoe UI", 0, 26 )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "logInButton"
+							"text": "Log In"
+							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "ricercaButton"
+							"text": "Ricerca"
+							"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
+							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "backButtonHome"
+							"text": "Home"
+							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
+							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "After"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button1"
+					"text": "Back"
+					"font": new java.awt.Font( "Segoe UI", 0, 24 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "Tree.openIcon" )
+					"background": #SwingColor0
+					"border": new javax.swing.border.EtchedBorder( 0, null, null )
+					"borderPainted": false
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Before"
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "north"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+				"hgap": 1
+				"vgap": 1
+			} ) {
+				name: "panelImmagineImmobile"
+				"border": new javax.swing.border.EtchedBorder( 0, #SwingColor0, null )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button3"
+					"text": ">"
+					"font": new java.awt.Font( "Segoe UI", 1, 24 )
+					"background": new java.awt.Color( 255, 255, 255, 0 )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "East"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button4"
+					"text": "<"
+					"font": new java.awt.Font( "Segoe UI", 1, 24 )
+					"background": new java.awt.Color( 255, 255, 255, 0 )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "West"
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0,grow"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 180, 65 )
+			"size": new java.awt.Dimension( 625, 520 )
+		} )
+	}
+}

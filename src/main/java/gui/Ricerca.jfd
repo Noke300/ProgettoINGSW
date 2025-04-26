@@ -1,0 +1,323 @@
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center,gap 10 5"
+			"$columnConstraints": "0[74,fill]0[shrink 0,center]0[left]0[fill]0[24,center]0[102,center]0[62,shrink 0,fill]0"
+			"$rowConstraints": "[73,top]0[73,center]0[73,center]0[73,center]0[84,top]0[90,center]0[29]0[77]0[21,top]0"
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "panelMenuBarOpzioniColore"
+				"foreground": sfield java.awt.Color green
+				"background": &SwingColor0 new com.jformdesigner.model.SwingColor( "Actions.Green" )
+				"border": new javax.swing.border.MatteBorder( 1, 1, 1, 1, sfield java.awt.Color black )
+				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+					name: "menuBarOpzioni"
+					"background": new java.awt.Color( 102, 255, 102, 255 )
+					"borderPainted": false
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menuOpzioni"
+						"text": "Opzioni"
+						"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
+						"horizontalAlignment": 0
+						"horizontalTextPosition": 2
+						"foreground": new java.awt.Color( 102, 255, 102, 255 )
+						"background": sfield java.awt.Color green
+						"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "logInButton"
+							"text": "Log In"
+							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.detailsViewIcon" )
+							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonAccountAmministrazione"
+							"text": "Account Amministrazione"
+							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.newFolderIcon" )
+							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "backButtonHome"
+							"horizontalTextPosition": 4
+							"text": "Home"
+							"verticalAlignment": 1
+							"verticalTextPosition": 1
+							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
+							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "After"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "LogoOpzioni"
+					"icon": &SwingIcon0 new com.jformdesigner.model.SwingIcon( 0, "/Logo.svg" )
+					"iconTextGap": 2
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Before"
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "north"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelTitolo"
+				"text": "DietaEstate25 "
+				"font": new java.awt.Font( "Felix Titling", 3, 58 )
+				"foreground": #SwingColor0
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 2 5 1,alignx center,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "searchButton"
+				"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
+				"font": new java.awt.Font( "Segoe UI", 0, 22 )
+				"iconTextGap": 10
+				"preferredSize": new java.awt.Dimension( 38, 47 )
+				"minimumSize": new java.awt.Dimension( 40, 45 )
+				"maximumSize": new java.awt.Dimension( 40, 47 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 5 4,align right center,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "searchField"
+				"background": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				"font": new java.awt.Font( "Segoe UI", 0, 30 )
+				"cursor": new java.awt.Cursor( 2 )
+				"text": "Cerca Qualcosa"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 4 5 1,aligny center,grow 100 0"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "listaTipi"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "Casa"
+					addElement( "Casa" )
+					addElement( "Appartamento" )
+				}
+				"selectedIndex": 0
+				"font": new java.awt.Font( "Segoe UI", 0, 14 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 5,align left center,grow 0 0"
+			} )
+			add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBarPrezziTutto"
+				"background": new java.awt.Color( 153, 153, 153, 255 )
+				"border": new com.jformdesigner.model.SwingBorder( "CheckBox.border" )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menuPrezzi"
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
+					"text": "Prezzi"
+					"horizontalAlignment": 4
+					"horizontalTextPosition": 4
+					"border": new com.jformdesigner.model.SwingBorder( "ComboBox.border" )
+					"foreground": new java.awt.Color( 255, 255, 255, 255 )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
+					add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+						name: "menuBarContenitorePrezziBox"
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxPrezzoMax"
+							"model": new javax.swing.DefaultComboBoxModel {
+								selectedItem: "Prezzo Massimo"
+								addElement( "Prezzo Massimo" )
+								addElement( "Poco" )
+								addElement( "Medio " )
+								addElement( "Simone" )
+							}
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxPrezzoMinimo"
+							"model": new javax.swing.DefaultComboBoxModel {
+								selectedItem: "Prezzo Minimo"
+								addElement( "Prezzo Minimo" )
+								addElement( "Tanto " )
+								addElement( "Poco" )
+							}
+						} )
+					} )
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 5,align left center,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBoxSuperfice"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "Superfice"
+					addElement( "Superfice" )
+				}
+				"foreground": sfield java.awt.Color black
+				"font": new java.awt.Font( "Segoe UI", 0, 16 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 5,align left center,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonFiltri"
+				"text": "Filtri"
+				"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.detailsViewIcon" )
+				"font": new java.awt.Font( "Segoe UI", 0, 16 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 5,align left center,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "LogoOpzioni2"
+				"icon": #SwingIcon0
+				"iconTextGap": 2
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 7,align center bottom,grow 0 0"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 50, 20 )
+			"size": new java.awt.Dimension( 660, 575 )
+		} )
+		add( new FormContainer( "javax.swing.JInternalFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,hidemode 3,align center center"
+			"$columnConstraints": "[94,fill][fill]para[fill]0[102,fill]"
+			"$rowConstraints": "[][][][][][][][]"
+		} ) {
+			name: "internalFrameFiltri"
+			"visible": true
+			"frameIcon": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			"font": new java.awt.Font( "Inter", 0, 16 )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelTipoVendita"
+				"text": "Tipo Di Vendita"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBoxTipVendita"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "Qualsiasi"
+					addElement( "Qualsiasi" )
+				}
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelNumeroBagni"
+				"text": "Numero Bagni"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JSpinner" ) {
+				name: "spinnerBagni"
+				"model": new javax.swing.SpinnerListModel {
+					list: new java.util.ArrayList {
+						add( "Indifferente" )
+						add( "0" )
+						add( "1" )
+						add( "2" )
+						add( "3" )
+						add( "4" )
+						add( "5" )
+						add( "6+" )
+					}
+				}
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelStanze"
+				"text": "Numero Stanze"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JSpinner" ) {
+				name: "spinnerStanze"
+				"model": new javax.swing.SpinnerListModel {
+					list: new java.util.ArrayList {
+						add( "Indifferente" )
+						add( "1" )
+						add( "2" )
+						add( "3" )
+						add( "4" )
+						add( "5" )
+						add( "6+" )
+					}
+				}
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 2"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelClasseE"
+				"text": "Classe Energetica"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 3 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBoxClasseE"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "Qualsiasi"
+					addElement( "Qualsiasi" )
+				}
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 3"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelPiani"
+				"text": "Piano/i"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 4 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JSpinner" ) {
+				name: "spinnerPiani"
+				"model": new javax.swing.SpinnerListModel {
+					list: new java.util.ArrayList {
+						add( "Indifferente" )
+						add( "Terra" )
+						add( "1" )
+						add( "2" )
+						add( "3" )
+						add( "4" )
+						add( "5+" )
+					}
+				}
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 4"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "schoolsCheckBox"
+				"horizontalAlignment": 11
+				"text": "Scuole"
+				"verticalAlignment": 3
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 5,align left bottom,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "parkCheckBox"
+				"horizontalAlignment": 0
+				"text": "Parchi"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 5,align left bottom,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "hospitalsCheckBox"
+				"horizontalAlignment": 0
+				"text": "Trasporti"
+				"toolTipText": ""
+				"verticalAlignment": 0
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 5,align left bottom,grow 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonConfermaFiltri"
+				"text": "Conferma"
+				"background": new java.awt.Color( 59, 107, 61, 255 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 7"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonCancellaFiltri"
+				"text": "Cancella"
+				"background": new java.awt.Color( 96, 60, 62, 255 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 7"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 130, 640 )
+		} )
+	}
+}

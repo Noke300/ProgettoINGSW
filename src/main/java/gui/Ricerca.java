@@ -34,8 +34,9 @@ public class Ricerca extends JPanel {
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
     private JPopupMenu popupMenu;
 
-   FontIcon homeIcon = FontIcon.of(FontAwesome.HOME, 24);
-    FontIcon mapIcon = FontIcon.of(FontAwesome.GLOBE, 24);
+   FontIcon searcherIcon = FontIcon.of(FontAwesome.SEARCH_PLUS, 24);
+   FontIcon mapIcon = FontIcon.of(FontAwesome.GLOBE, 24);
+   FontIcon homeIcon = FontIcon.of(FontAwesome.HOME,100,new Color(0x59A869));
 
     public Ricerca() {
         initComponents();
@@ -52,6 +53,7 @@ public class Ricerca extends JPanel {
 
     public JPanel createRicercaPanel(JFrame frame) {
 
+        labelTitolo.setIcon(homeIcon);
         internalFrameFiltri.setVisible(false);
 
         List<JCheckBox> checkBoxesList = new ArrayList<>();
@@ -68,7 +70,7 @@ public class Ricerca extends JPanel {
         );
 
         // --- 5. Azione del pulsante "Cerca" ---
-        searchButton.setIcon(homeIcon);
+        searchButton.setIcon(searcherIcon);
         searchButton.addActionListener(e -> {
             GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
             if (geoPos != null) {
@@ -416,13 +418,12 @@ public class Ricerca extends JPanel {
         buttonCancellaFiltri = new JButton();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
-        .swing.border.EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing
-        .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
-        Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt.Color.red
-        ), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
-        public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName(
-        )))throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
+        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER
+        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font
+        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r"
+        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -449,6 +450,9 @@ public class Ricerca extends JPanel {
         labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 58));
         labelTitolo.setForeground(UIManager.getColor("Actions.Green"));
         labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
+        labelTitolo.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+        labelTitolo.setHorizontalTextPosition(SwingConstants.CENTER);
+        labelTitolo.setVerticalTextPosition(SwingConstants.BOTTOM);
         add(labelTitolo, "cell 1 1 5 1,align center center,grow 0 0");
 
         //---- mapButton ----
@@ -467,6 +471,9 @@ public class Ricerca extends JPanel {
         searchButton.setPreferredSize(new Dimension(38, 47));
         searchButton.setMinimumSize(new Dimension(40, 45));
         searchButton.setMaximumSize(new Dimension(40, 47));
+        searchButton.setBackground(new Color(0x00ffffff, true));
+        searchButton.setBorderPainted(false);
+        searchButton.setBorder(null);
         add(searchButton, "cell 5 2,align right center,grow 0 0");
 
         //---- searchField ----
@@ -482,8 +489,8 @@ public class Ricerca extends JPanel {
             "Appartamento"
         }));
         listaTipi.setSelectedIndex(0);
-        listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        add(listaTipi, "cell 1 3,align left center,grow 0 0");
+        listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        add(listaTipi, "cell 1 3,align center center,grow 0 0");
 
         //======== menuBarPrezziTutto ========
         {
@@ -498,7 +505,7 @@ public class Ricerca extends JPanel {
                 menuPrezzi.setHorizontalTextPosition(SwingConstants.RIGHT);
                 menuPrezzi.setBorder(UIManager.getBorder("ComboBox.border"));
                 menuPrezzi.setForeground(Color.white);
-                menuPrezzi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                menuPrezzi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
                 //======== menuBarContenitorePrezziBox ========
                 {
@@ -510,6 +517,7 @@ public class Ricerca extends JPanel {
                         "Medio ",
                         "Simone"
                     }));
+                    comboBoxPrezzoMax.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                     menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
 
                     //---- comboBoxPrezzoMinimo ----
@@ -518,6 +526,7 @@ public class Ricerca extends JPanel {
                         "Tanto ",
                         "Poco"
                     }));
+                    comboBoxPrezzoMinimo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                     menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
                 }
                 menuPrezzi.add(menuBarContenitorePrezziBox);
@@ -531,13 +540,13 @@ public class Ricerca extends JPanel {
             "Superfice"
         }));
         comboBoxSuperfice.setForeground(Color.black);
-        comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         add(comboBoxSuperfice, "cell 3 3,align left center,grow 0 0");
 
         //---- buttonFiltri ----
         buttonFiltri.setText("Filtri");
         buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-        buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         add(buttonFiltri, "cell 4 3,align left center,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========

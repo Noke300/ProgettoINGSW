@@ -178,7 +178,154 @@ new FormModel {
 					"value": "Before"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "north"
+				"value": "north,growx"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+				"$layoutConstraints": "fill,hidemode 3,align center center"
+				"$columnConstraints": "[94,fill][fill]para[fill]0[102,fill]"
+				"$rowConstraints": "[22][][][][][]para[62,center]"
+			} ) {
+				name: "internalFrameFiltri"
+				"font": new java.awt.Font( "Inter", 0, 22 )
+				"border": new javax.swing.border.LineBorder( new com.jformdesigner.model.SwingColor( "Actions.Green" ), 2, true )
+				"visible": true
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelTipoVendita"
+					"text": "Tipo Di Vendita"
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 0 2 1"
+				} )
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "comboBoxTipVendita"
+					"model": new javax.swing.DefaultComboBoxModel {
+						selectedItem: "Qualsiasi"
+						addElement( "Qualsiasi" )
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 0"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelNumeroBagni"
+					"text": "Numero Bagni"
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 1 2 1"
+				} )
+				add( new FormComponent( "javax.swing.JSpinner" ) {
+					name: "spinnerBagni"
+					"model": new javax.swing.SpinnerListModel {
+						list: new java.util.ArrayList {
+							add( "Indifferente" )
+							add( "0" )
+							add( "1" )
+							add( "2" )
+							add( "3" )
+							add( "4" )
+							add( "5" )
+							add( "6+" )
+						}
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 1"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelStanze"
+					"text": "Numero Stanze"
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 2 2 1"
+				} )
+				add( new FormComponent( "javax.swing.JSpinner" ) {
+					name: "spinnerStanze"
+					"model": new javax.swing.SpinnerListModel {
+						list: new java.util.ArrayList {
+							add( "Indifferente" )
+							add( "1" )
+							add( "2" )
+							add( "3" )
+							add( "4" )
+							add( "5" )
+							add( "6+" )
+						}
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 2"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelClasseE"
+					"text": "Classe Energetica"
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 3 2 1"
+				} )
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "comboBoxClasseE"
+					"model": new javax.swing.DefaultComboBoxModel {
+						selectedItem: "Qualsiasi"
+						addElement( "Qualsiasi" )
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 3"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelPiani"
+					"text": "Piano/i"
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 4 2 1"
+				} )
+				add( new FormComponent( "javax.swing.JSpinner" ) {
+					name: "spinnerPiani"
+					"model": new javax.swing.SpinnerListModel {
+						list: new java.util.ArrayList {
+							add( "Indifferente" )
+							add( "Terra" )
+							add( "1" )
+							add( "2" )
+							add( "3" )
+							add( "4" )
+							add( "5+" )
+						}
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 4"
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "schoolsCheckBox"
+					"horizontalAlignment": 11
+					"text": "Scuole"
+					"verticalAlignment": 3
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 5,align left bottom,grow 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "parkCheckBox"
+					"horizontalAlignment": 0
+					"text": "Parchi"
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 1 5,align left bottom,grow 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "hospitalsCheckBox"
+					"horizontalAlignment": 0
+					"text": "Trasporti"
+					"toolTipText": ""
+					"verticalAlignment": 0
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 5,align left bottom,grow 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonConfermaFiltri"
+					"text": "Conferma"
+					"background": new java.awt.Color( 59, 107, 61, 255 )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 6"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonCancellaFiltri"
+					"text": "Cancella"
+					"background": new java.awt.Color( 96, 60, 62, 255 )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 1 6"
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "east,alignx center,grow 0 100"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "LogoOpzioni2"
@@ -188,155 +335,8 @@ new FormModel {
 				"value": "cell 0 7,align center bottom,grow 0 0"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 50, 20 )
-			"size": new java.awt.Dimension( 660, 575 )
-		} )
-		add( new FormContainer( "javax.swing.JInternalFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
-			"$layoutConstraints": "fill,hidemode 3,align center center"
-			"$columnConstraints": "[94,fill][fill]para[fill]0[102,fill]"
-			"$rowConstraints": "[][][][][][][][]"
-		} ) {
-			name: "internalFrameFiltri"
-			"visible": true
-			"frameIcon": sfield com.jformdesigner.model.FormObject NULL_VALUE
-			"font": new java.awt.Font( "Inter", 0, 16 )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelTipoVendita"
-				"text": "Tipo Di Vendita"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 2 1"
-			} )
-			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "comboBoxTipVendita"
-				"model": new javax.swing.DefaultComboBoxModel {
-					selectedItem: "Qualsiasi"
-					addElement( "Qualsiasi" )
-				}
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 0"
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelNumeroBagni"
-				"text": "Numero Bagni"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 1 2 1"
-			} )
-			add( new FormComponent( "javax.swing.JSpinner" ) {
-				name: "spinnerBagni"
-				"model": new javax.swing.SpinnerListModel {
-					list: new java.util.ArrayList {
-						add( "Indifferente" )
-						add( "0" )
-						add( "1" )
-						add( "2" )
-						add( "3" )
-						add( "4" )
-						add( "5" )
-						add( "6+" )
-					}
-				}
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 1"
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelStanze"
-				"text": "Numero Stanze"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 2 2 1"
-			} )
-			add( new FormComponent( "javax.swing.JSpinner" ) {
-				name: "spinnerStanze"
-				"model": new javax.swing.SpinnerListModel {
-					list: new java.util.ArrayList {
-						add( "Indifferente" )
-						add( "1" )
-						add( "2" )
-						add( "3" )
-						add( "4" )
-						add( "5" )
-						add( "6+" )
-					}
-				}
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 2"
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelClasseE"
-				"text": "Classe Energetica"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 3 2 1"
-			} )
-			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "comboBoxClasseE"
-				"model": new javax.swing.DefaultComboBoxModel {
-					selectedItem: "Qualsiasi"
-					addElement( "Qualsiasi" )
-				}
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 3"
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelPiani"
-				"text": "Piano/i"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 4 2 1"
-			} )
-			add( new FormComponent( "javax.swing.JSpinner" ) {
-				name: "spinnerPiani"
-				"model": new javax.swing.SpinnerListModel {
-					list: new java.util.ArrayList {
-						add( "Indifferente" )
-						add( "Terra" )
-						add( "1" )
-						add( "2" )
-						add( "3" )
-						add( "4" )
-						add( "5+" )
-					}
-				}
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 4"
-			} )
-			add( new FormComponent( "javax.swing.JCheckBox" ) {
-				name: "schoolsCheckBox"
-				"horizontalAlignment": 11
-				"text": "Scuole"
-				"verticalAlignment": 3
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 5,align left bottom,grow 0 0"
-			} )
-			add( new FormComponent( "javax.swing.JCheckBox" ) {
-				name: "parkCheckBox"
-				"horizontalAlignment": 0
-				"text": "Parchi"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 5,align left bottom,grow 0 0"
-			} )
-			add( new FormComponent( "javax.swing.JCheckBox" ) {
-				name: "hospitalsCheckBox"
-				"horizontalAlignment": 0
-				"text": "Trasporti"
-				"toolTipText": ""
-				"verticalAlignment": 0
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 5,align left bottom,grow 0 0"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "buttonConfermaFiltri"
-				"text": "Conferma"
-				"background": new java.awt.Color( 59, 107, 61, 255 )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 7"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "buttonCancellaFiltri"
-				"text": "Cancella"
-				"background": new java.awt.Color( 96, 60, 62, 255 )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 7"
-			} )
-		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 130, 640 )
+			"location": new java.awt.Point( 20, 20 )
+			"size": new java.awt.Dimension( 715, 510 )
 		} )
 	}
 }

@@ -40,6 +40,7 @@ public class Ricerca extends JPanel {
 
     public Ricerca() {
         initComponents();
+        cursoreComponents();
         initializePopupMenu(); // Inizializza il menu
         addPopupToSearchField();// Collega il menu al searchField
     }
@@ -87,7 +88,6 @@ public class Ricerca extends JPanel {
 
         FontIcon homeIcon = FontIcon.of(FontAwesome.HOME, 24); // 24px di dimensione
         backButtonHome.setIcon(homeIcon);
-
 
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
@@ -297,7 +297,35 @@ public class Ricerca extends JPanel {
         };
     }
 
+    //Funzione Cambio Cursore
+    private MouseAdapter cursorButton(){
+        return new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Ripristina il cursore quando il mouse esce dal bottone
+                e.getComponent().setCursor(Cursor.getDefaultCursor());
+            }
+        };
+    }
 
+    private void cursoreComponents() {
+        mapButton.addMouseListener(cursorButton());
+        searchButton.addMouseListener(cursorButton());
+        buttonFiltri.addMouseListener(cursorButton());
+        buttonConfermaFiltri.addMouseListener(cursorButton());
+        buttonCancellaFiltri.addMouseListener(cursorButton());
+        logInButton.addMouseListener(cursorButton());
+        buttonAccountAmministrazione.addMouseListener(cursorButton());
+        backButtonHome.addMouseListener(cursorButton());
+        listaTipi.addMouseListener(cursorButton());
+        comboBoxTipVendita.addMouseListener(cursorButton());
+        menuOpzioni.addMouseListener(cursorButton());
+        comboBoxSuperfice.addMouseListener(cursorButton());
+    }
 
     private List<String> fetchAutocompleteSuggestions(String input) {
         List<String> results = new ArrayList<>();
@@ -338,6 +366,7 @@ public class Ricerca extends JPanel {
 
         return results;
     }
+
     private void initializePopupMenu() {
         // Crea un nuovo JPopupMenu
         popupMenu = new JPopupMenu();
@@ -399,8 +428,7 @@ public class Ricerca extends JPanel {
         buttonAccountAmministrazione = new JButton();
         backButtonHome = new JButton();
         LogoOpzioni = new JLabel();
-        LogoOpzioni2 = new JLabel();
-        internalFrameFiltri = new JInternalFrame();
+        internalFrameFiltri = new JPanel();
         labelTipoVendita = new JLabel();
         comboBoxTipVendita = new JComboBox<>();
         labelNumeroBagni = new JLabel();
@@ -416,14 +444,14 @@ public class Ricerca extends JPanel {
         hospitalsCheckBox = new JCheckBox();
         buttonConfermaFiltri = new JButton();
         buttonCancellaFiltri = new JButton();
+        LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
-        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER
-        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font
-        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
-        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r"
-        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
+        , 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
+         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -601,20 +629,14 @@ public class Ricerca extends JPanel {
             LogoOpzioni.setIconTextGap(2);
             panelMenuBarOpzioniColore.add(LogoOpzioni, BorderLayout.LINE_START);
         }
-        add(panelMenuBarOpzioniColore, "north");
-
-        //---- LogoOpzioni2 ----
-        LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
-        LogoOpzioni2.setIconTextGap(2);
-        add(LogoOpzioni2, "cell 0 7,align center bottom,grow 0 0");
+        add(panelMenuBarOpzioniColore, "north,growx");
 
         //======== internalFrameFiltri ========
         {
+            internalFrameFiltri.setFont(new Font("Inter", Font.PLAIN, 22));
+            internalFrameFiltri.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 2, true));
             internalFrameFiltri.setVisible(true);
-            internalFrameFiltri.setFrameIcon(null);
-            internalFrameFiltri.setFont(new Font("Inter", Font.PLAIN, 16));
-            var internalFrameFiltriContentPane = internalFrameFiltri.getContentPane();
-            internalFrameFiltriContentPane.setLayout(new MigLayout(
+            internalFrameFiltri.setLayout(new MigLayout(
                 "fill,hidemode 3,align center center",
                 // columns
                 "[94,fill]" +
@@ -622,87 +644,92 @@ public class Ricerca extends JPanel {
                 "[fill]0" +
                 "[102,fill]",
                 // rows
+                "[22]" +
                 "[]" +
                 "[]" +
                 "[]" +
                 "[]" +
-                "[]" +
-                "[]" +
-                "[]" +
-                "[]"));
+                "[]para" +
+                "[62,center]"));
 
             //---- labelTipoVendita ----
             labelTipoVendita.setText("Tipo Di Vendita");
-            internalFrameFiltriContentPane.add(labelTipoVendita, "cell 0 0 2 1");
+            internalFrameFiltri.add(labelTipoVendita, "cell 0 0 2 1");
 
             //---- comboBoxTipVendita ----
             comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
                 "Qualsiasi"
             }));
-            internalFrameFiltriContentPane.add(comboBoxTipVendita, "cell 3 0");
+            internalFrameFiltri.add(comboBoxTipVendita, "cell 3 0");
 
             //---- labelNumeroBagni ----
             labelNumeroBagni.setText("Numero Bagni");
-            internalFrameFiltriContentPane.add(labelNumeroBagni, "cell 0 1 2 1");
+            internalFrameFiltri.add(labelNumeroBagni, "cell 0 1 2 1");
 
             //---- spinnerBagni ----
             spinnerBagni.setModel(new SpinnerListModel(new String[] {"Indifferente", "0", "1", "2", "3", "4", "5", "6+"}));
-            internalFrameFiltriContentPane.add(spinnerBagni, "cell 3 1");
+            internalFrameFiltri.add(spinnerBagni, "cell 3 1");
 
             //---- labelStanze ----
             labelStanze.setText("Numero Stanze");
-            internalFrameFiltriContentPane.add(labelStanze, "cell 0 2 2 1");
+            internalFrameFiltri.add(labelStanze, "cell 0 2 2 1");
 
             //---- spinnerStanze ----
             spinnerStanze.setModel(new SpinnerListModel(new String[] {"Indifferente", "1", "2", "3", "4", "5", "6+"}));
-            internalFrameFiltriContentPane.add(spinnerStanze, "cell 3 2");
+            internalFrameFiltri.add(spinnerStanze, "cell 3 2");
 
             //---- labelClasseE ----
             labelClasseE.setText("Classe Energetica");
-            internalFrameFiltriContentPane.add(labelClasseE, "cell 0 3 2 1");
+            internalFrameFiltri.add(labelClasseE, "cell 0 3 2 1");
 
             //---- comboBoxClasseE ----
             comboBoxClasseE.setModel(new DefaultComboBoxModel<>(new String[] {
                 "Qualsiasi"
             }));
-            internalFrameFiltriContentPane.add(comboBoxClasseE, "cell 3 3");
+            internalFrameFiltri.add(comboBoxClasseE, "cell 3 3");
 
             //---- labelPiani ----
             labelPiani.setText("Piano/i");
-            internalFrameFiltriContentPane.add(labelPiani, "cell 0 4 2 1");
+            internalFrameFiltri.add(labelPiani, "cell 0 4 2 1");
 
             //---- spinnerPiani ----
             spinnerPiani.setModel(new SpinnerListModel(new String[] {"Indifferente", "Terra", "1", "2", "3", "4", "5+"}));
-            internalFrameFiltriContentPane.add(spinnerPiani, "cell 3 4");
+            internalFrameFiltri.add(spinnerPiani, "cell 3 4");
 
             //---- schoolsCheckBox ----
             schoolsCheckBox.setHorizontalAlignment(SwingConstants.TRAILING);
             schoolsCheckBox.setText("Scuole");
             schoolsCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
-            internalFrameFiltriContentPane.add(schoolsCheckBox, "cell 0 5,align left bottom,grow 0 0");
+            internalFrameFiltri.add(schoolsCheckBox, "cell 0 5,align left bottom,grow 0 0");
 
             //---- parkCheckBox ----
             parkCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
             parkCheckBox.setText("Parchi");
-            internalFrameFiltriContentPane.add(parkCheckBox, "cell 1 5,align left bottom,grow 0 0");
+            internalFrameFiltri.add(parkCheckBox, "cell 1 5,align left bottom,grow 0 0");
 
             //---- hospitalsCheckBox ----
             hospitalsCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
             hospitalsCheckBox.setText("Trasporti");
             hospitalsCheckBox.setToolTipText("");
             hospitalsCheckBox.setVerticalAlignment(SwingConstants.CENTER);
-            internalFrameFiltriContentPane.add(hospitalsCheckBox, "cell 3 5,align left bottom,grow 0 0");
+            internalFrameFiltri.add(hospitalsCheckBox, "cell 3 5,align left bottom,grow 0 0");
 
             //---- buttonConfermaFiltri ----
             buttonConfermaFiltri.setText("Conferma");
             buttonConfermaFiltri.setBackground(new Color(0x3b6b3d));
-            internalFrameFiltriContentPane.add(buttonConfermaFiltri, "cell 3 7");
+            internalFrameFiltri.add(buttonConfermaFiltri, "cell 3 6");
 
             //---- buttonCancellaFiltri ----
             buttonCancellaFiltri.setText("Cancella");
             buttonCancellaFiltri.setBackground(new Color(0x603c3e));
-            internalFrameFiltriContentPane.add(buttonCancellaFiltri, "cell 1 7");
+            internalFrameFiltri.add(buttonCancellaFiltri, "cell 1 6");
         }
+        add(internalFrameFiltri, "east,alignx center,grow 0 100");
+
+        //---- LogoOpzioni2 ----
+        LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
+        LogoOpzioni2.setIconTextGap(2);
+        add(LogoOpzioni2, "cell 0 7,align center bottom,grow 0 0");
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 
@@ -728,8 +755,7 @@ public class Ricerca extends JPanel {
     private JButton buttonAccountAmministrazione;
     private JButton backButtonHome;
     private JLabel LogoOpzioni;
-    private JLabel LogoOpzioni2;
-    private JInternalFrame internalFrameFiltri;
+    private JPanel internalFrameFiltri;
     private JLabel labelTipoVendita;
     private JComboBox<String> comboBoxTipVendita;
     private JLabel labelNumeroBagni;
@@ -745,5 +771,6 @@ public class Ricerca extends JPanel {
     private JCheckBox hospitalsCheckBox;
     private JButton buttonConfermaFiltri;
     private JButton buttonCancellaFiltri;
+    private JLabel LogoOpzioni2;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

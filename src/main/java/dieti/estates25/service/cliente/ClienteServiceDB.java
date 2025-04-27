@@ -1,8 +1,11 @@
-package dieti.estates25.service;
+package dieti.estates25.service.cliente;
 
 import dieti.estates25.model.Cliente;
 import dieti.estates25.model.ClientePrincipal;
+import dieti.estates25.service.JWTService;
+import dieti.estates25.service.cliente.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,9 +31,10 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
 
     @Autowired
     @Lazy
+    @Qualifier("clientAuthenticationManager")
     private AuthenticationManager authManager;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);   //numero di round che permettono una grande sicurezza senza troppo tempo per il calcolo
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);   //numero di round che permettono una grande sicurezza senza troppo tempo per il calcolo
 
     @Override
     public List<Cliente> getAllClients() {
@@ -40,11 +44,7 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
     @Override
     public Cliente getClienteByMail(String mail) {
         Optional<Cliente> cliente = this.clienteRepository.findById(mail);
-        if (cliente.isPresent()){
-            return cliente.get();
-        }else {
-            return null;
-        }
+        return cliente.orElse(null);
     }
 
     @Override
@@ -69,7 +69,6 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
         Cliente cliente = clienteRepository.findByEmailCliente(username);
 
         if (cliente == null) {
-            System.out.println("Cliente non trovato");
             throw new UsernameNotFoundException("Cliente non trovato");
         }
 
@@ -81,7 +80,7 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(cliente.getEmailCliente(), cliente.getPasswordCliente()));
 
         if(authentication.isAuthenticated())
-            return jwtService.generateToken(cliente.getEmailCliente());
+            return jwtService.generateToken(cliente.getEmailCliente(), "cliente");
 
         return "Fail";
     }

@@ -31,9 +31,10 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String ruolo) {
 
         Map<String, Object> claims = new HashMap<>();
+        claims.put("ruolo", ruolo);
 
         return Jwts.builder()
                 .claims()
@@ -68,9 +69,9 @@ public class JWTService {
                 .getPayload();
     }
 
-    public boolean validateToken(String token, UserDetails clientDetails) {
+    public boolean validateToken(String token, UserDetails userDetails) {
         final String email = extractEmail(token);
-        return (email.equals(clientDetails.getUsername()) && !isTokenExpired(token));
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
@@ -80,4 +81,10 @@ public class JWTService {
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
+    public String extractRuolo(String token) {
+        final Claims claims = extractAllClaim(token);
+        return claims.get("ruolo", String.class);
+    }
+
 }

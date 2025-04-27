@@ -1,6 +1,7 @@
-package dieti.estates25.service;
+package dieti.estates25.service.cliente;
 
 import dieti.estates25.model.Cliente;
+import dieti.estates25.service.cliente.ClienteService;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;

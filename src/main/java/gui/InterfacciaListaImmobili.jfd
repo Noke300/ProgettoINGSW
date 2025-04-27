@@ -18,19 +18,21 @@ new FormModel {
 				name: "panelTopBar"
 				"background": new com.jformdesigner.model.SwingColor( "Actions.Green" )
 				"border": new javax.swing.border.LineBorder( sfield java.awt.Color black, 2, false )
-				add( new FormComponent( "javax.swing.JTextField" ) {
-					name: "searchField"
-					"background": sfield com.jformdesigner.model.FormObject NULL_VALUE
-					"font": new java.awt.Font( "Segoe UI", 0, 24 )
-				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 1,aligny center,grow 100 0"
-				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonCerca"
 					"selectedIcon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
-					"text": "Cerca"
+					"minimumSize": new java.awt.Dimension( 50, 37 )
+					"maximumSize": new java.awt.Dimension( 50, 38 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 1 1,align left center,grow 0 0"
+					"value": "cell 1 1,align right center,grow 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "searchField"
+					"background": sfield java.awt.Color white
+					"font": new java.awt.Font( "Segoe UI", 0, 24 )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 1 2 1,aligny center,grow 100 0"
 				} )
 				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 					name: "menuBarOpzioni"

@@ -34,6 +34,8 @@ public class Ricerca extends JPanel {
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
     private JPopupMenu popupMenu;
 
+   FontIcon homeIcon = FontIcon.of(FontAwesome.HOME, 24);
+    FontIcon mapIcon = FontIcon.of(FontAwesome.GLOBE, 24);
 
     public Ricerca() {
         initComponents();
@@ -66,6 +68,7 @@ public class Ricerca extends JPanel {
         );
 
         // --- 5. Azione del pulsante "Cerca" ---
+        searchButton.setIcon(homeIcon);
         searchButton.addActionListener(e -> {
             GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
             if (geoPos != null) {
@@ -200,9 +203,8 @@ public class Ricerca extends JPanel {
                 // No action needed here
             }
         });
-
-
-        //// TODO(Marco): Il Panel dei prezzi scompare
+        //--9. button Mappa
+        mapButton.setIcon(mapIcon);
 
         return this;
     }
@@ -376,14 +378,8 @@ public class Ricerca extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco GuIdo Scotto di Uccio
-        panelMenuBarOpzioniColore = new JPanel();
-        menuBarOpzioni = new JMenuBar();
-        menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        buttonAccountAmministrazione = new JButton();
-        backButtonHome = new JButton();
-        LogoOpzioni = new JLabel();
         labelTitolo = new JLabel();
+        mapButton = new JButton();
         searchButton = new JButton();
         searchField = new JTextField();
         listaTipi = new JComboBox<>();
@@ -394,6 +390,13 @@ public class Ricerca extends JPanel {
         comboBoxPrezzoMinimo = new JComboBox<>();
         comboBoxSuperfice = new JComboBox<>();
         buttonFiltri = new JButton();
+        panelMenuBarOpzioniColore = new JPanel();
+        menuBarOpzioni = new JMenuBar();
+        menuOpzioni = new JMenu();
+        logInButton = new JButton();
+        buttonAccountAmministrazione = new JButton();
+        backButtonHome = new JButton();
+        LogoOpzioni = new JLabel();
         LogoOpzioni2 = new JLabel();
         internalFrameFiltri = new JInternalFrame();
         labelTipoVendita = new JLabel();
@@ -413,12 +416,13 @@ public class Ricerca extends JPanel {
         buttonCancellaFiltri = new JButton();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
-        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER
-        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font
-        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
-        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072"
-        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
+        .swing.border.EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing
+        .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
+        Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt.Color.red
+        ), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
+        public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName(
+        )))throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -439,6 +443,102 @@ public class Ricerca extends JPanel {
             "[29]0" +
             "[77]0" +
             "[21,top]0"));
+
+        //---- labelTitolo ----
+        labelTitolo.setText("DietaEstate25 ");
+        labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 58));
+        labelTitolo.setForeground(UIManager.getColor("Actions.Green"));
+        labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelTitolo, "cell 1 1 5 1,align center center,grow 0 0");
+
+        //---- mapButton ----
+        mapButton.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+        mapButton.setMaximumSize(new Dimension(34, 35));
+        mapButton.setMinimumSize(new Dimension(34, 35));
+        mapButton.setBorder(null);
+        mapButton.setBorderPainted(false);
+        mapButton.setBackground(new Color(0x00ffffff, true));
+        add(mapButton, "cell 0 2,alignx right,growx 0");
+
+        //---- searchButton ----
+        searchButton.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+        searchButton.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+        searchButton.setIconTextGap(10);
+        searchButton.setPreferredSize(new Dimension(38, 47));
+        searchButton.setMinimumSize(new Dimension(40, 45));
+        searchButton.setMaximumSize(new Dimension(40, 47));
+        add(searchButton, "cell 5 2,align right center,grow 0 0");
+
+        //---- searchField ----
+        searchField.setBackground(null);
+        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+        searchField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+        searchField.setText("Cerca Qualcosa");
+        add(searchField, "cell 1 2 5 1,aligny center,grow 100 0");
+
+        //---- listaTipi ----
+        listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
+            "Casa",
+            "Appartamento"
+        }));
+        listaTipi.setSelectedIndex(0);
+        listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        add(listaTipi, "cell 1 3,align left center,grow 0 0");
+
+        //======== menuBarPrezziTutto ========
+        {
+            menuBarPrezziTutto.setBackground(new Color(0x999999));
+            menuBarPrezziTutto.setBorder(UIManager.getBorder("CheckBox.border"));
+
+            //======== menuPrezzi ========
+            {
+                menuPrezzi.setIcon(UIManager.getIcon("Table.descendingSortIcon"));
+                menuPrezzi.setText("Prezzi");
+                menuPrezzi.setHorizontalAlignment(SwingConstants.RIGHT);
+                menuPrezzi.setHorizontalTextPosition(SwingConstants.RIGHT);
+                menuPrezzi.setBorder(UIManager.getBorder("ComboBox.border"));
+                menuPrezzi.setForeground(Color.white);
+                menuPrezzi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+                //======== menuBarContenitorePrezziBox ========
+                {
+
+                    //---- comboBoxPrezzoMax ----
+                    comboBoxPrezzoMax.setModel(new DefaultComboBoxModel<>(new String[] {
+                        "Prezzo Massimo",
+                        "Poco",
+                        "Medio ",
+                        "Simone"
+                    }));
+                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
+
+                    //---- comboBoxPrezzoMinimo ----
+                    comboBoxPrezzoMinimo.setModel(new DefaultComboBoxModel<>(new String[] {
+                        "Prezzo Minimo",
+                        "Tanto ",
+                        "Poco"
+                    }));
+                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
+                }
+                menuPrezzi.add(menuBarContenitorePrezziBox);
+            }
+            menuBarPrezziTutto.add(menuPrezzi);
+        }
+        add(menuBarPrezziTutto, "cell 2 3,align left center,grow 0 0");
+
+        //---- comboBoxSuperfice ----
+        comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
+            "Superfice"
+        }));
+        comboBoxSuperfice.setForeground(Color.black);
+        comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        add(comboBoxSuperfice, "cell 3 3,align left center,grow 0 0");
+
+        //---- buttonFiltri ----
+        buttonFiltri.setText("Filtri");
+        buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
+        buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        add(buttonFiltri, "cell 4 3,align left center,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -493,93 +593,6 @@ public class Ricerca extends JPanel {
             panelMenuBarOpzioniColore.add(LogoOpzioni, BorderLayout.LINE_START);
         }
         add(panelMenuBarOpzioniColore, "north");
-
-        //---- labelTitolo ----
-        labelTitolo.setText("DietaEstate25 ");
-        labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 58));
-        labelTitolo.setForeground(UIManager.getColor("Actions.Green"));
-        labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
-        add(labelTitolo, "cell 1 2 5 1,alignx center,growx 0");
-
-        //---- searchButton ----
-        searchButton.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-        searchButton.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-        searchButton.setIconTextGap(10);
-        searchButton.setPreferredSize(new Dimension(38, 47));
-        searchButton.setMinimumSize(new Dimension(40, 45));
-        searchButton.setMaximumSize(new Dimension(40, 47));
-        add(searchButton, "cell 5 4,align right center,grow 0 0");
-
-        //---- searchField ----
-        searchField.setBackground(null);
-        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-        searchField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-        searchField.setText("Cerca Qualcosa");
-        add(searchField, "cell 1 4 5 1,aligny center,grow 100 0");
-
-        //---- listaTipi ----
-        listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
-            "Casa",
-            "Appartamento"
-        }));
-        listaTipi.setSelectedIndex(0);
-        listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        add(listaTipi, "cell 1 5,align left center,grow 0 0");
-
-        //======== menuBarPrezziTutto ========
-        {
-            menuBarPrezziTutto.setBackground(new Color(0x999999));
-            menuBarPrezziTutto.setBorder(UIManager.getBorder("CheckBox.border"));
-
-            //======== menuPrezzi ========
-            {
-                menuPrezzi.setIcon(UIManager.getIcon("Table.descendingSortIcon"));
-                menuPrezzi.setText("Prezzi");
-                menuPrezzi.setHorizontalAlignment(SwingConstants.RIGHT);
-                menuPrezzi.setHorizontalTextPosition(SwingConstants.RIGHT);
-                menuPrezzi.setBorder(UIManager.getBorder("ComboBox.border"));
-                menuPrezzi.setForeground(Color.white);
-                menuPrezzi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-
-                //======== menuBarContenitorePrezziBox ========
-                {
-
-                    //---- comboBoxPrezzoMax ----
-                    comboBoxPrezzoMax.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "Prezzo Massimo",
-                        "Poco",
-                        "Medio ",
-                        "Simone"
-                    }));
-                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
-
-                    //---- comboBoxPrezzoMinimo ----
-                    comboBoxPrezzoMinimo.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "Prezzo Minimo",
-                        "Tanto ",
-                        "Poco"
-                    }));
-                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
-                }
-                menuPrezzi.add(menuBarContenitorePrezziBox);
-            }
-            menuBarPrezziTutto.add(menuPrezzi);
-        }
-        add(menuBarPrezziTutto, "cell 2 5,align left center,grow 0 0");
-
-        //---- comboBoxSuperfice ----
-        comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
-            "Superfice"
-        }));
-        comboBoxSuperfice.setForeground(Color.black);
-        comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        add(comboBoxSuperfice, "cell 3 5,align left center,grow 0 0");
-
-        //---- buttonFiltri ----
-        buttonFiltri.setText("Filtri");
-        buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-        buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        add(buttonFiltri, "cell 4 5,align left center,grow 0 0");
 
         //---- LogoOpzioni2 ----
         LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
@@ -687,14 +700,8 @@ public class Ricerca extends JPanel {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Marco GuIdo Scotto di Uccio
-    private JPanel panelMenuBarOpzioniColore;
-    private JMenuBar menuBarOpzioni;
-    private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton buttonAccountAmministrazione;
-    private JButton backButtonHome;
-    private JLabel LogoOpzioni;
     private JLabel labelTitolo;
+    private JButton mapButton;
     private JButton searchButton;
     private JTextField searchField;
     private JComboBox<String> listaTipi;
@@ -705,6 +712,13 @@ public class Ricerca extends JPanel {
     private JComboBox<String> comboBoxPrezzoMinimo;
     private JComboBox<String> comboBoxSuperfice;
     private JButton buttonFiltri;
+    private JPanel panelMenuBarOpzioniColore;
+    private JMenuBar menuBarOpzioni;
+    private JMenu menuOpzioni;
+    private JButton logInButton;
+    private JButton buttonAccountAmministrazione;
+    private JButton backButtonHome;
+    private JLabel LogoOpzioni;
     private JLabel LogoOpzioni2;
     private JInternalFrame internalFrameFiltri;
     private JLabel labelTipoVendita;

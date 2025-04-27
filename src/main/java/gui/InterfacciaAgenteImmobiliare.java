@@ -296,12 +296,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
+        EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax.swing
+        .border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),
+        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
+        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.getPropertyName()))
+        throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -342,8 +342,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 "[138,fill]" +
                 "[fill]",
                 // rows
-                "[66,fill]0" +
-                "[34,grow,top]0"));
+                "[67,grow,fill]0"));
 
             //---- labelNomeAzzienda ----
             labelNomeAzzienda.setText("Nome");
@@ -391,7 +390,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
-            panelOpzioni.add(menuBarOpzioni, "cell 4 0 1 2,align center top,grow 0 0");
+            panelOpzioni.add(menuBarOpzioni, "cell 4 0,align trailing top,grow 0 0");
         }
         add(panelOpzioni, "north");
 
@@ -407,7 +406,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             }
             panelListaImmobileScroll.setViewportView(panelListaImmobile);
         }
-        add(panelListaImmobileScroll, "cell 1 0 3 7,grow");
+        add(panelListaImmobileScroll, "cell 0 0 4 7,grow");
 
         //======== panelMap ========
         {

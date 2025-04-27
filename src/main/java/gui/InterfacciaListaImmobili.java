@@ -266,8 +266,8 @@ public class InterfacciaListaImmobili extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco GuIdo Scotto di Uccio
         panelTopBar = new JPanel();
-        searchField = new JTextField();
         buttonCerca = new JButton();
+        searchField = new JTextField();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         logInButton = new JButton();
@@ -282,12 +282,13 @@ public class InterfacciaListaImmobili extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
-        .EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax
-        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,
-        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
-        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax .
+        swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmDes\u0069gner \u0045valua\u0074ion" , javax. swing .border
+        . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "D\u0069alog"
+        , java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) , getBorder
+        () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java
+        . beans. PropertyChangeEvent e) { if( "\u0062order" .equals ( e. getPropertyName () ) )throw new RuntimeException
+        ( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -330,15 +331,17 @@ public class InterfacciaListaImmobili extends JPanel {
                 "[75,grow,top]0" +
                 "[45,grow,shrink 0,fill]0"));
 
-            //---- searchField ----
-            searchField.setBackground(null);
-            searchField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-            panelTopBar.add(searchField, "cell 0 1,aligny center,grow 100 0");
-
             //---- buttonCerca ----
             buttonCerca.setSelectedIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-            buttonCerca.setText("Cerca");
-            panelTopBar.add(buttonCerca, "cell 1 1,align left center,grow 0 0");
+            buttonCerca.setMinimumSize(new Dimension(50, 37));
+            buttonCerca.setMaximumSize(new Dimension(50, 38));
+            buttonCerca.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+            panelTopBar.add(buttonCerca, "cell 1 1,align right center,grow 0 0");
+
+            //---- searchField ----
+            searchField.setBackground(Color.white);
+            searchField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+            panelTopBar.add(searchField, "cell 0 1 2 1,aligny center,grow 100 0");
 
             //======== menuBarOpzioni ========
             {
@@ -435,8 +438,8 @@ public class InterfacciaListaImmobili extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Marco GuIdo Scotto di Uccio
     private JPanel panelTopBar;
-    private JTextField searchField;
     private JButton buttonCerca;
+    private JTextField searchField;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JButton logInButton;

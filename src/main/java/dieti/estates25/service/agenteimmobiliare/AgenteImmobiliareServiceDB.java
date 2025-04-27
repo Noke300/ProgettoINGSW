@@ -1,0 +1,86 @@
+package dieti.estates25.service.agenteimmobiliare;
+
+import dieti.estates25.model.AgenteImmobiliare;
+import dieti.estates25.model.AgenteImmobiliarePrincipal;
+import dieti.estates25.repositories.AgenteImmobiliareRepository;
+import dieti.estates25.service.JWTService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, UserDetailsService {
+
+    @Autowired
+    private AgenteImmobiliareRepository agentRepository;
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    @Lazy
+    @Qualifier("agentAuthenticationManager")
+    private AuthenticationManager authManager;
+
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    @Override
+    public List<AgenteImmobiliare> getAllAgents() {
+        return agentRepository.findAll();
+    }
+
+    @Override
+    public AgenteImmobiliare getAgentByMail(String mail) {
+        Optional<AgenteImmobiliare> agent = this.agentRepository.findById(mail);
+        return  agent.orElse(null);
+    }
+
+    @Override
+    public void addAgent(AgenteImmobiliare agent) {
+        agent.setPasswordAgente(encoder.encode(agent.getPasswordAgente()));
+        agentRepository.save(agent);
+    }
+
+    @Override
+    public void updateAgent(String mail, AgenteImmobiliare agent) {
+        agentRepository.save(agent);
+    }
+
+    @Override
+    public void deleteAgent(String mail) {
+        agentRepository.deleteById(mail);
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        AgenteImmobiliare agent = agentRepository.findByEmailAgente(username);
+
+        if (agent == null) {
+            throw new UsernameNotFoundException("Agente Immobiliare non trovato");
+        }
+
+        return new AgenteImmobiliarePrincipal(agent);
+    }
+
+    public String verify(AgenteImmobiliare agent) {
+        Authentication authentication =
+                authManager.authenticate(new UsernamePasswordAuthenticationToken(agent.getEmailAgente(), agent.getPasswordAgente()));
+
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(agent.getEmailAgente(), "agente");
+
+        return "Fail";
+    }
+}

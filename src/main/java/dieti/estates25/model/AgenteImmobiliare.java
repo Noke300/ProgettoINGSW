@@ -4,24 +4,24 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "AgenteImmobiliare")
+@Table(name = "agenteimmobiliare")
 public class AgenteImmobiliare {
 
     @Id
-    @Column(name = "EmailAgente")
+    @Column(name = "emailagente")
     private String emailAgente;
 
-    @Column(name = "NomeAgente", nullable = false)
+    @Column(name = "nomeagente", nullable = false)
     private String nomeAgente;
 
-    @Column(name = "CognomeAgente", nullable = false)
+    @Column(name = "cognomeagente", nullable = false)
     private String cognomeAgente;
 
-    @Column(name = "PasswordAgente", nullable = false, unique = true)
+    @Column(name = "passwordagente", nullable = false, unique = true)
     private String passwordAgente;
 
     //@ManyToOne
-    @JoinColumn(name = "NomeAgenzia")
+    @Column(name = "nomeagenzia")
     private String nomeAgenzia;
 
     // Getters and Setters

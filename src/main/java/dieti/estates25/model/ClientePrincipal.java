@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class ClientePrincipal implements UserDetails {
 
-    private Cliente cliente;
+    private final Cliente cliente;
 
     public ClientePrincipal(Cliente cliente) {
         this.cliente = cliente;

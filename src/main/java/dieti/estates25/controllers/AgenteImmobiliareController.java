@@ -1,0 +1,59 @@
+package dieti.estates25.controllers;
+
+import dieti.estates25.model.AgenteImmobiliare;
+import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.server.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/auth-agente")
+public class AgenteImmobiliareController {
+
+    @Autowired
+    @Qualifier("agentAuthenticationManager")
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private AgenteImmobiliareServiceDB agentService;
+
+    @GetMapping("/agenti")
+    public List<AgenteImmobiliare> getAllAgents() {
+        return agentService.getAllAgents();
+    }
+
+    @GetMapping("/agenti/{mail}")
+    public AgenteImmobiliare getAgent(@PathVariable String mail) {
+        return agentService.getAgentByMail(mail);
+    }
+
+    @PostMapping("/register")
+    public void addAgent(@RequestBody AgenteImmobiliare agent) {
+        agentService.addAgent(agent);
+    }
+
+    @PutMapping("/agenti/{mail}")
+    public void updateAgent(@PathVariable String mail, @RequestBody AgenteImmobiliare agent) {
+        agentService.updateAgent(mail, agent);
+    }
+
+    @DeleteMapping("/agenti/{mail}")
+    public void deleteAgent(@PathVariable String mail) {
+        agentService.deleteAgent(mail);
+    }
+
+    @GetMapping("/csrf-token")
+    public CsrfToken getCsrfToken(HttpServletRequest request) {
+        return (CsrfToken) request.getAttribute("_csrf");
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody AgenteImmobiliare agent) {
+        return agentService.verify(agent);
+    }
+}

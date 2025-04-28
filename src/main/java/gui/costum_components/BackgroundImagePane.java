@@ -1,4 +1,4 @@
-package gui.costumComponents;
+package gui.costum_components;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

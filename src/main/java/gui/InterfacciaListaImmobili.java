@@ -4,7 +4,7 @@
 
 package gui;
 
-import gui.costumComponents.MapLoader;
+import gui.costum_components.MapLoader;
 import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
 

@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import gui.costumComponents.MapLoader;
+import gui.costum_components.MapLoader;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.kordamp.ikonli.fontawesome.FontAwesome;

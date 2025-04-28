@@ -63,32 +63,34 @@
     </dependency>
 
 <!--Incone Font Awesome Icons-->
-    <!-- Core di Ikonli -->
+    <!-- Ikonli Core -->
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
       <artifactId>ikonli-core</artifactId>
       <version>12.3.0</version>
     </dependency>
 
-    <!-- Supporto per FontAwesome -->
+    <!-- Ikonli Swing -->
+    <dependency>
+      <groupId>org.kordamp.ikonli</groupId>
+      <artifactId>ikonli-swing</artifactId>
+      <version>12.3.0</version>
+    </dependency>
+
+    <!-- FontAwesome Icon Pack -->
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
       <artifactId>ikonli-fontawesome-pack</artifactId>
       <version>12.3.0</version>
     </dependency>
 
-    <!-- Ikonli per Swing -->
+    <!-- FontAwesome Solid (if available in another package) -->
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-swing</artifactId>
-      <version>12.3.1</version>
+      <artifactId>ikonli-fontawesome5-pack</artifactId>
+      <version>12.3.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.kordamp.ikonli</groupId>
-      <artifactId>ikonli-fontawesome-pack</artifactId>
-      <version>12.3.1</version>
-    </dependency>
 
     <!-- Layout JSwingDeveloper -->
     <dependency>

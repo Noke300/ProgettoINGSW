@@ -83,8 +83,7 @@ public class Ricerca extends JPanel {
 
         //--- 6. Menu Opzioni ---
 
-        FontIcon homeIcon = FontIcon.of(FontAwesome.HOME, 24); // 24px di dimensione
-        backButtonHome.setIcon(homeIcon);
+
 
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
@@ -95,6 +94,7 @@ public class Ricerca extends JPanel {
             frame.revalidate();
             frame.repaint();
         });
+        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
 
         logInButton.addActionListener(e -> {
             menuOpzioni.setVisible(false);
@@ -104,6 +104,7 @@ public class Ricerca extends JPanel {
             frame.revalidate();
             frame.repaint();
         });
+        logInButton.setIcon(iconSet.getLogInIcon());
 
         buttonAccountAmministrazione.addActionListener(e -> {
             menuOpzioni.setVisible(false);
@@ -113,6 +114,8 @@ public class Ricerca extends JPanel {
             frame.revalidate();
             frame.repaint();
         });
+        buttonAccountAmministrazione.setIcon(iconSet.getAccauntAministazioneIcon());
+
         
         //--- 7. Filtri  ---
         buttonFiltri.addActionListener(e ->

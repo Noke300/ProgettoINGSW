@@ -1,7 +1,7 @@
 package dieti.estates25.service.agenteimmobiliare;
 
-import dieti.estates25.model.AgenteImmobiliare;
-import dieti.estates25.model.AgenteImmobiliarePrincipal;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
 import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;

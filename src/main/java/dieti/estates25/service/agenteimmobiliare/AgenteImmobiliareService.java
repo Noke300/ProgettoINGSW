@@ -1,6 +1,6 @@
 package dieti.estates25.service.agenteimmobiliare;
 
-import dieti.estates25.model.AgenteImmobiliare;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 
 import java.util.List;
 

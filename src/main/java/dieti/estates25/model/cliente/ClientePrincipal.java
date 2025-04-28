@@ -1,5 +1,6 @@
-package dieti.estates25.model;
+package dieti.estates25.model.cliente;
 
+import dieti.estates25.model.cliente.Cliente;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,27 +8,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-public class AgenteImmobiliarePrincipal implements UserDetails {
+public class ClientePrincipal implements UserDetails {
 
-    private final AgenteImmobiliare agent;
+    private final Cliente cliente;
 
-    public AgenteImmobiliarePrincipal(AgenteImmobiliare agent) {
-        this.agent = agent;
+    public ClientePrincipal(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("AGENTE_IMMOBILIARE"));
+        return Collections.singleton(new SimpleGrantedAuthority("CLIENT"));
     }
 
     @Override
     public String getPassword() {
-        return agent.getPasswordAgente();
+        return cliente.getPasswordCliente();
     }
 
     @Override
     public String getUsername() {
-        return agent.getEmailAgente();
+        return cliente.getEmailCliente();
     }
 
     @Override

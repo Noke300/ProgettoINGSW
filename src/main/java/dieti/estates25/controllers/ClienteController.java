@@ -1,6 +1,6 @@
 package dieti.estates25.controllers;
 
-import dieti.estates25.model.Cliente;
+import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.cliente.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

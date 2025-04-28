@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -33,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
         String ruolo = null;
-        UserDetails userDetails = null;
+        UserDetails userDetails;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {  //la richiesta che arriverà avrà la parola Bearer prima del token
             token = authHeader.substring(7);
@@ -53,25 +55,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if(jwtService.validateToken(token, userDetails)){
                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(userDetails, null, List.of(new SimpleGrantedAuthority(ruolo)));
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-        }
-
-        if (ruolo != null) {
-            String path = request.getRequestURI();
-
-            if (path.startsWith("/auth-cliente") && !"cliente".equals(ruolo)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
-                response.getWriter().write("Accesso negato: non sei un cliente");
-                return;
-            }
-
-            if (path.startsWith("/auth-agente") && !"agente".equals(ruolo)) {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
-                response.getWriter().write("Accesso negato: non sei un agente");
-                return;
             }
         }
         filterChain.doFilter(request, response);

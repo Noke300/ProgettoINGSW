@@ -21,13 +21,13 @@ public class JWTService {
 
     private final String secretKey;
 
-    public JWTService(){
+    public JWTService() throws NoSuchAlgorithmException {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGen.generateKey();
             secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new NoSuchAlgorithmException(e);
         }
     }
 

@@ -1,6 +1,6 @@
 package dieti.estates25.controllers;
 
-import dieti.estates25.model.AgenteImmobiliare;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package dieti.estates25.config;
 
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareService;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import dieti.estates25.service.cliente.ClienteServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +12,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity   //serve a dire di usare questa configurazione e non quella di default
@@ -48,7 +42,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth-cliente/register", "/auth-cliente/login").permitAll()
-                        //.requestMatchers("/auth-agente/**").denyAll()
+                        .requestMatchers("/auth-cliente/**").hasAuthority("cliente")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
@@ -66,7 +60,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth-agente/register", "/auth-agente/login").permitAll()
-                        //.requestMatchers("/auth-cliente/**").denyAll()
+                        .requestMatchers("/auth-agente/**").hasAuthority("agente")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->

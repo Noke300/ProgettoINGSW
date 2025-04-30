@@ -59,8 +59,8 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
         cliente.setPasswordCliente(encoder.encode(cliente.getPasswordCliente()));
         clienteRepository.save(cliente);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Account creato");
+                .status(HttpStatus.CREATED)
+                .body("Utente creato correttamente");
     }
 
     @Override
@@ -90,9 +90,7 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(cliente.getEmailCliente(), cliente.getPasswordCliente()));
 
         if(authentication.isAuthenticated()){
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(jwtService.generateToken(cliente.getEmailCliente(), "cliente"));
+            return ResponseEntity.ok(jwtService.generateToken(cliente.getEmailCliente(), "cliente"));
         }
 
         return ResponseEntity

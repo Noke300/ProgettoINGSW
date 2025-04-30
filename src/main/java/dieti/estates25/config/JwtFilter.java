@@ -29,6 +29,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     ApplicationContext context;
 
+    @Autowired
+    private TokenBlacklist tokenBlacklist;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
@@ -41,6 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             ruolo = jwtService.extractRuolo(token);
             email = jwtService.extractEmail(token);
+        }
+
+        // BLOCCA SE IL TOKEN È NELLA BLACKLIST
+        if (tokenBlacklist.isBlacklisted(token)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token invalido (blacklisted)");
+            return;
         }
 
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {

@@ -20,7 +20,6 @@ public class ClienteController {
     @Qualifier("clientAuthenticationManager")
     private AuthenticationManager authenticationManager;
 
-    //possiamo iniettare ClienteServiceMock per andare a lavorare con i dati d'esempio presenti
     @Autowired
     private ClienteServiceDB clienteService;
 

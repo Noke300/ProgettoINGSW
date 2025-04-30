@@ -89,9 +89,7 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(agent.getEmailAgente(), agent.getPasswordAgente()));
 
         if(authentication.isAuthenticated()){
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(jwtService.generateToken(agent.getEmailAgente(), "agente"));
+            return ResponseEntity.ok(jwtService.generateToken(agent.getEmailAgente(), "agente"));
         }
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

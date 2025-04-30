@@ -5,6 +5,7 @@ import dieti.estates25.service.cliente.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,8 @@ public class ClienteController {
     }
 
     @PostMapping("/register")
-    public void addCliente(@RequestBody Cliente cliente) {
-        clienteService.addCliente(cliente);
+    public ResponseEntity<String> addCliente(@RequestBody Cliente cliente) {
+        return clienteService.addCliente(cliente);
     }
 
     @PutMapping("/clienti/{mail}")
@@ -54,7 +55,7 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Cliente cliente) {
+    public ResponseEntity<String> login(@RequestBody Cliente cliente) {
         return clienteService.verify(cliente);
     }
 

@@ -1,6 +1,7 @@
 package dieti.estates25.service.cliente;
 
 import dieti.estates25.model.cliente.Cliente;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ClienteService {
 
     Cliente getClienteByMail(String mail);
 
-    void addCliente(Cliente cliente);
+    ResponseEntity<String> addCliente(Cliente cliente);
 
     void updateCliente(String mail, Cliente cliente);
 

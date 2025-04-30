@@ -6,6 +6,8 @@ import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -47,9 +49,18 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
     }
 
     @Override
-    public void addCliente(Cliente cliente) {
+    public ResponseEntity<String> addCliente(Cliente cliente) {
+        if (clienteRepository.findByEmailCliente(cliente.getEmailCliente()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("è già presente un account con questa mail");
+        }
+
         cliente.setPasswordCliente(encoder.encode(cliente.getPasswordCliente()));
         clienteRepository.save(cliente);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Account creato");
     }
 
     @Override
@@ -74,14 +85,19 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
         return new ClientePrincipal(cliente);
     }
 
-    public String verify(Cliente cliente) {
+    public ResponseEntity<String> verify(Cliente cliente) {
         Authentication authentication =
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(cliente.getEmailCliente(), cliente.getPasswordCliente()));
 
-        if(authentication.isAuthenticated())
-            return jwtService.generateToken(cliente.getEmailCliente(), "cliente");
+        if(authentication.isAuthenticated()){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(jwtService.generateToken(cliente.getEmailCliente(), "cliente"));
+        }
 
-        return "Fail";
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Unauthorized");
     }
 }
 

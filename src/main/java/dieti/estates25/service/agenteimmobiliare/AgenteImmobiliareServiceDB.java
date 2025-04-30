@@ -7,6 +7,8 @@ import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,9 +48,17 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     }
 
     @Override
-    public void addAgent(AgenteImmobiliare agent) {
+    public ResponseEntity<String> addAgent(AgenteImmobiliare agent) {
+        if (agentRepository.findByEmailAgente(agent.getEmailAgente()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("è già presente un account con questa mail");
+        }
         agent.setPasswordAgente(encoder.encode(agent.getPasswordAgente()));
         agentRepository.save(agent);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Utente creato correttamente");
     }
 
     @Override
@@ -74,13 +84,17 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return new AgenteImmobiliarePrincipal(agent);
     }
 
-    public String verify(AgenteImmobiliare agent) {
+    public ResponseEntity<String> verify(AgenteImmobiliare agent) {
         Authentication authentication =
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(agent.getEmailAgente(), agent.getPasswordAgente()));
 
-        if(authentication.isAuthenticated())
-            return jwtService.generateToken(agent.getEmailAgente(), "agente");
-
-        return "Fail";
+        if(authentication.isAuthenticated()){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(jwtService.generateToken(agent.getEmailAgente(), "agente"));
+        }
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Unauthorized");
     }
 }

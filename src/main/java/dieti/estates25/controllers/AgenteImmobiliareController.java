@@ -5,6 +5,7 @@ import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,8 @@ public class AgenteImmobiliareController {
     }
 
     @PostMapping("/register")
-    public void addAgent(@RequestBody AgenteImmobiliare agent) {
-        agentService.addAgent(agent);
+    public ResponseEntity<String> addAgent(@RequestBody AgenteImmobiliare agent) {
+        return agentService.addAgent(agent);
     }
 
     @PutMapping("/agenti/{mail}")
@@ -53,7 +54,7 @@ public class AgenteImmobiliareController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AgenteImmobiliare agent) {
+    public ResponseEntity<String> login(@RequestBody AgenteImmobiliare agent) {
         return agentService.verify(agent);
     }
 }

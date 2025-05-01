@@ -18,6 +18,12 @@
 
 \maketitle
 
+Cose da fare:
+\begin{itemize}
+  \item  Le immagini in Latex caricano solo a Simone perché noi non le abbiamo, andrebbe trovato il modo per farle vedere a tutti.
+  \item  Nella sezione "Persistenza dati" andrà aggiunto l'eventuale    database per le immagini, e le eventuali modifiche/aggiunte alla parte già esistente.
+\end{itemize}
+
 
 \newpage
 
@@ -351,9 +357,65 @@ TODO
 \subsubsection{TODO}
 
 \subsection{Linguaggi di programmazione utilizzati}
-TODO
-\subsection{Descrizione dello schema per la persistenza dati}
-TODO
+
+Per il lato backend è stato utilizzato java con il framework Spring, che ci ha permesso di avere una connessione al databse che non dipendesse dal DBMS utilizzato, e di rendere sicure le richieste fatte al server. Questo è stato possibile rispettivamente grazie a Spring-JPA (Java Persistence API) e Spring-security.
+
+
+
+
+
+\subsection{Persistenza dei Dati}
+
+\subsubsection{Architettura e Scelte Tecnologiche}
+
+Il sistema prevede la persistenza delle informazioni attraverso l'utilizzo di un database relazionale \textbf{PostgreSQL}. L'interazione tra il database e il backend Java è gestita tramite il modulo \textbf{Spring Data JPA}, che consente una forte astrazione rispetto al DBMS utilizzato. Questa configurazione permette di mantenere una struttura modulare e facilmente estendibile, agevolando un'eventuale migrazione verso altri database relazionali compatibili con lo standard JPA (Java Persistence API), come MySQL o Oracle DB.
+
+\subsubsection{Mapping e Gestione degli Oggetti Persistenti}
+
+Le entità del dominio applicativo (model) sono annotate con le classiche annotazioni JPA (\texttt{@Entity}, \texttt{@Id}, \texttt{@OneToMany}, ecc.), che permettono il mapping automatico tra classi Java e tabelle del database. L'utilizzo di \textbf{repository JPA} (interfacce che estendono \texttt{JpaRepository}) semplifica notevolmente l'implementazione delle operazioni CRUD (Create, Read, Update, Delete), eliminando la necessità di scrivere query SQL esplicite per la maggior parte dei casi.
+
+\subsubsection{Sicurezza dei Dati Sensibili}
+
+La gestione della sicurezza è un aspetto centrale del sistema. In particolare:
+
+\begin{itemize}
+  \item Le \textbf{password} degli utenti sono \textbf{criptate} prima di essere memorizzate nel database. Si utilizza l’algoritmo \textbf{BCrypt}, configurato con un fattore di cost (\texttt{strength}) pari a \texttt{12}. Questa scelta garantisce un buon compromesso tra sicurezza e prestazioni, rendendo complessi eventuali attacchi di forza bruta.
+  
+  \item La fase di \textbf{registrazione} include controlli per evitare la creazione di account con email già esistenti. In caso di duplicati, il sistema restituisce un messaggio di errore e non procede alla persistenza dei dati.
+  
+  \item La comunicazione tra client e server avviene tramite protocollo \textbf{HTTPS}, garantendo la cifratura end-to-end dei dati in transito.
+\end{itemize}
+
+\subsubsection{Autenticazione e Autorizzazione}
+
+Per il controllo degli accessi e la protezione delle API, viene utilizzato il framework \textbf{Spring Security}, in combinazione con una strategia basata su \textbf{JSON Web Token (JWT)}. Il funzionamento è il seguente:
+
+\begin{enumerate}
+  \item All’atto del login, il sistema genera un \textbf{token JWT} firmato, contenente le informazioni sull’identità e il ruolo dell’utente.
+  \item Il token viene restituito al client e successivamente allegato alle richieste HTTP tramite l’intestazione \texttt{Authorization: Bearer <token>}.
+  \item Il backend, tramite un \textbf{filtro personalizzato} (\texttt{JwtFilter}), intercetta ogni richiesta e valida il token. Se il token è valido e non scaduto, l’utente viene autenticato nel contesto di Spring Security.
+  \item È inoltre presente un meccanismo di \textbf{token blacklist}, che consente di invalidare token specifici (ad esempio in fase di logout), impedendone l’uso futuro.
+\end{enumerate}
+
+\subsubsection{Validazioni e Gestione degli Errori}
+
+Per garantire l’integrità dei dati, sono state implementate diverse validazioni sia lato backend (es. con annotazioni \texttt{@NotBlank}, \texttt{@Email}, ecc.), sia durante la comunicazione client-server. In caso di errori, il backend restituisce codici HTTP appropriati:
+
+\begin{itemize}
+  \item \texttt{200 OK} per richieste andate a buon fine.
+  \item \texttt{400 Bad Request} per input errati o parametri non validi.
+  \item \texttt{401 Unauthorized} se il token JWT è assente o non valido.
+  \item \texttt{409 Conflict} in caso di tentativo di registrazione con email già esistente.
+\end{itemize}
+
+\subsubsection{Estendibilità del Sistema}
+
+La combinazione di Spring Boot, Spring Security, e JPA rende il sistema facilmente estendibile. È possibile aggiungere nuove entità e ruoli, definire ulteriori livelli di autorizzazione (es. endpoint accessibili solo ad agenti o amministratori), oppure introdurre meccanismi di persistenza più sofisticati con interventi minimi sull’architettura esistente.
+
+
+
+
+
 \subsection{Scelte di design UI}
 TODO
 \subsection{Diagramma delle classi di design}

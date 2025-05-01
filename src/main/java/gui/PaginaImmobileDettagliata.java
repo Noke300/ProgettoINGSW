@@ -5,17 +5,18 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import controller.Controller;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
 public class PaginaImmobileDettagliata extends JPanel {
-    public PaginaImmobileDettagliata(JFrame frame) {
+    public PaginaImmobileDettagliata(JFrame frame, Controller control,String token) {
         initComponents();
 
 
@@ -50,14 +51,14 @@ public class PaginaImmobileDettagliata extends JPanel {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
 
-            frame.setContentPane(new LogIn(frame));
+            frame.setContentPane(new LogIn(frame, control, token));
             frame.revalidate();
             frame.repaint();
         });
 
         ricercaButton.addActionListener(e-> {
 
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
             frame.revalidate();
             frame.repaint();
         });

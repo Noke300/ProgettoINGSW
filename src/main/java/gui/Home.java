@@ -5,9 +5,12 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import controller.Controller;
 import net.miginfocom.swing.*;
 
 public class Home extends JPanel {
+
+    String token ="";
 
     public Home() {
         initComponents();
@@ -17,20 +20,20 @@ public class Home extends JPanel {
 
         accessoButton.setText("Entra");
         accessoButton.addActionListener(e -> {
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
+
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,new Controller(),token));
             frame.revalidate();
             frame.repaint();
+
         });
         return this; // restituisci il pannello corrente
     }
-
     @Override
     public void addNotify() {
         super.addNotify();
         // Assicurati che tutti i menu popup siano nascosti quando il pannello viene aggiunto
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
-
 
 
     public static void main(String[] args) {
@@ -55,31 +58,31 @@ public class Home extends JPanel {
         //======== this ========
         setPreferredSize(new Dimension(500, 600));
         setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
-        (0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
-        .TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt
-        .Color.red), getBorder())); addPropertyChangeListener(e-> {if("bord\u0065r".equals(e.getPropertyName()))throw new RuntimeException()
-        ;});
+                (0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
+                .TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt
+                .Color.red), getBorder())); addPropertyChangeListener(e-> {if("bord\u0065r".equals(e.getPropertyName()))throw new RuntimeException()
+                ;});
         setLayout(new MigLayout(
-            "insets 0,hidemode 3,align center center,gap 10 5",
-            // columns
-            "[grow 1,fill]",
-            // rows
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]"));
+                "insets 0,hidemode 3,align center center,gap 10 5",
+                // columns
+                "[grow 1,fill]",
+                // rows
+                "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]" +
+                        "[]"));
 
         //---- titolo ----
         titolo.setText("Label");

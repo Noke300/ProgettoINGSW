@@ -6,22 +6,21 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
+
 import com.formdev.flatlaf.extras.*;
 
+import controller.Controller;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
 public class LogIn extends JPanel {
-    public LogIn(JFrame frame) {
+    public LogIn(JFrame frame, Controller control, String token) {
         initComponents(frame);
 
          backButtonHome.addActionListener(e-> {
@@ -33,9 +32,37 @@ public class LogIn extends JPanel {
 
          ricercaButton.addActionListener(e-> {
 
-             frame.setContentPane(new Ricerca().createRicercaPanel(frame));
+             frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
              frame.revalidate();
              frame.repaint();
+
+         });
+         
+         buttonLogIn.addActionListener(e-> {
+             String token1;
+             try {
+                 token1 = control.logInClient(textFildEmail.getText(), passwordField1.getText());
+
+                 if (token1.isEmpty()) {
+                     JOptionPane.showMessageDialog(
+                             frame,
+                             "Login fallito. Riprova!",
+                             "Errore",
+                             JOptionPane.ERROR_MESSAGE
+                     );
+
+                 }else {
+                     frame.setContentPane(new Ricerca().createRicercaPanel(frame, control, token1));
+                     frame.revalidate();
+                     frame.repaint();
+                 }
+             } catch (IOException ex) {
+                 throw new RuntimeException(ex);
+             } catch (InterruptedException ex) {
+                 throw new RuntimeException(ex);
+             } catch (URISyntaxException ex) {
+                 throw new RuntimeException(ex);
+             }
          });
     }
 
@@ -46,22 +73,14 @@ public class LogIn extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    private void menuBar1MouseClicked(MouseEvent e) {
-        menuOpzioni.setVisible(false);
-        menuOpzioni.setVisible(false);
-        menuBarOpzioni.setEnabled(false);
-        menuOpzioni.setEnabled(false);
-
-    }
-
     private void initComponents(JFrame frame) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco GuIdo Scotto di Uccio
         labelTitolo = new JLabel();
         labelEmail = new JLabel();
-        passwordField1 = new JPasswordField();
-        labelPassword = new JLabel();
         textFildEmail = new JTextField();
+        labelPassword = new JLabel();
+        passwordField1 = new JPasswordField();
         buttonRegistrati = new JButton();
         buttonLogIn = new JButton();
         buttonGoogle = new JButton();
@@ -75,12 +94,13 @@ public class LogIn extends JPanel {
         LogoOpzioni = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -109,18 +129,18 @@ public class LogIn extends JPanel {
         labelEmail.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         add(labelEmail, "cell 0 1,alignx right,growx 0");
 
-        //---- passwordField1 ----
-        passwordField1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        add(passwordField1, "cell 1 1 2 1");
+        //---- textFildEmail ----
+        textFildEmail.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        add(textFildEmail, "cell 1 1 2 1,aligny center,growy 0");
 
         //---- labelPassword ----
         labelPassword.setText("Password :");
         labelPassword.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         add(labelPassword, "cell 0 2,alignx right,growx 0");
 
-        //---- textFildEmail ----
-        textFildEmail.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        add(textFildEmail, "cell 1 2 2 1,aligny center,growy 0");
+        //---- passwordField1 ----
+        passwordField1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        add(passwordField1, "cell 1 2 2 1,aligny center,growy 0");
 
         //---- buttonRegistrati ----
         buttonRegistrati.setText("Registrati");
@@ -203,9 +223,9 @@ public class LogIn extends JPanel {
     // Generated using JFormDesigner Evaluation license - Marco GuIdo Scotto di Uccio
     private JLabel labelTitolo;
     private JLabel labelEmail;
-    private JPasswordField passwordField1;
-    private JLabel labelPassword;
     private JTextField textFildEmail;
+    private JLabel labelPassword;
+    private JPasswordField passwordField1;
     private JButton buttonRegistrati;
     private JButton buttonLogIn;
     private JButton buttonGoogle;

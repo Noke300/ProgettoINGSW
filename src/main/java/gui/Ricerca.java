@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
+import controller.Controller;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import net.miginfocom.swing.*;
@@ -13,15 +14,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
-import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
@@ -35,9 +31,9 @@ public class Ricerca extends JPanel {
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
     private JPopupMenu popupMenu;
     IconClass iconSet = new IconClass();
+    String token;
     public Ricerca() {
         initComponents();
-        cursoreComponents();
         initializePopupMenu(); // Inizializza il menu
         addPopupToSearchField();// Collega il menu al searchField
     }
@@ -49,31 +45,30 @@ public class Ricerca extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public JPanel createRicercaPanel(JFrame frame) {
+    public JPanel createRicercaPanel(JFrame frame, Controller control, String token) {
 
-        labelTitolo.setIcon(iconSet.getHomeIcon());
+        this.token = token;
         internalFrameFiltri.setVisible(false);
 
+        setUpComponents();
         List<JCheckBox> checkBoxesList = new ArrayList<>();
         checkBoxesList.add(schoolsCheckBox);
         checkBoxesList.add(hospitalsCheckBox);
         checkBoxesList.add(parkCheckBox);
 
-
         // --- 3. Popup per i suggerimenti ---
         JPopupMenu suggestionPopup = new JPopupMenu();
 
         // --- 4. Auto-completamento ---
-        searchField.getDocument().addDocumentListener(createAutoSuggestListener(searchField, suggestionPopup, this::fetchAutocompleteSuggestions)
-        );
+        searchField.getDocument().addDocumentListener(createAutoSuggestListener(searchField, suggestionPopup, this::fetchAutocompleteSuggestions));
+
 
         // --- 5. Azione del pulsante "Cerca" ---
-        searchButton.setIcon(iconSet.getSearcherIcon());
         searchButton.addActionListener(e -> {
             GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
             if (geoPos != null) {
                 // Passa a un altro pannello, ad esempio una mappa (ipotesi: esiste MapPanel)
-                frame.setContentPane(new InterfacciaListaImmobili(frame,checkBoxesList,geoPos));
+                frame.setContentPane(new InterfacciaListaImmobili(frame,checkBoxesList,geoPos,control,this.token));
                 frame.revalidate();
                 frame.repaint();
             } else {
@@ -82,9 +77,6 @@ public class Ricerca extends JPanel {
         });
 
         //--- 6. Menu Opzioni ---
-
-
-
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
             menuOpzioni.setVisible(false);
@@ -94,27 +86,29 @@ public class Ricerca extends JPanel {
             frame.revalidate();
             frame.repaint();
         });
-        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
-
         logInButton.addActionListener(e -> {
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
+        if (this.token.isEmpty()) {
 
-            frame.setContentPane(new LogIn(frame));
+                menuOpzioni.setVisible(false);
+                menuBarOpzioni.setVisible(false);
+                frame.setContentPane(new LogIn(frame, control,this.token ));
+
+        }else {
+            this.token = "";
+            setUpLogInOutButton(this.token);
+        }
             frame.revalidate();
             frame.repaint();
         });
-        logInButton.setIcon(iconSet.getLogInIcon());
 
         buttonAccountAmministrazione.addActionListener(e -> {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new InterfacciaAgenteImmobiliare(frame));
+            frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
             frame.revalidate();
             frame.repaint();
         });
-        buttonAccountAmministrazione.setIcon(iconSet.getAccauntAministazioneIcon());
+
 
         
         //--- 7. Filtri  ---
@@ -135,12 +129,6 @@ public class Ricerca extends JPanel {
             parkCheckBox.setSelected(false);
             schoolsCheckBox.setSelected(false);
         });
-
-        labelPiani.setIcon(iconSet.getPianiIcon());
-        labelTipoVendita.setIcon(iconSet.getTipoVenditaIcon());
-        labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
-        labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
-        labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
 
         // --- 8. Prezzi ---
         menuPrezzi.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
@@ -212,9 +200,18 @@ public class Ricerca extends JPanel {
             }
         });
         //--9. button Mappa
-        mapButton.setIcon(iconSet.getMapIcon());
 
         return this;
+    }
+
+    private void setUpLogInOutButton(String token){
+        if (token.isEmpty()){
+            logInButton.setText("Login");
+            logInButton.setIcon(iconSet.getLogInIcon());
+        }else{
+            logInButton.setText("Logout");
+            logInButton.setIcon(iconSet.getLogOutIcon());
+        }
     }
 
     private DocumentListener createAutoSuggestListener(JTextField searchField, JPopupMenu suggestionPopup,
@@ -318,7 +315,8 @@ public class Ricerca extends JPanel {
         };
     }
 
-    private void cursoreComponents() {
+    private void setUpComponents() {
+        //--Cursor
         mapButton.addMouseListener(cursorButton());
         searchButton.addMouseListener(cursorButton());
         buttonFiltri.addMouseListener(cursorButton());
@@ -331,6 +329,20 @@ public class Ricerca extends JPanel {
         comboBoxTipVendita.addMouseListener(cursorButton());
         menuOpzioni.addMouseListener(cursorButton());
         comboBoxSuperfice.addMouseListener(cursorButton());
+
+        //--Icon
+        setUpLogInOutButton(this.token);
+        labelTitolo.setIcon(iconSet.getHomeIcon());
+        searchButton.setIcon(iconSet.getSearcherIcon());
+        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
+        mapButton.setIcon(iconSet.getMapIcon());
+        labelPiani.setIcon(iconSet.getPianiIcon());
+        labelTipoVendita.setIcon(iconSet.getTipoVenditaIcon());
+        labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
+        labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
+        labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
+        buttonAccountAmministrazione.setIcon(iconSet.getAccauntAministazioneIcon());
+
     }
 
     private List<String> fetchAutocompleteSuggestions(String input) {
@@ -448,18 +460,25 @@ public class Ricerca extends JPanel {
         schoolsCheckBox = new JCheckBox();
         parkCheckBox = new JCheckBox();
         hospitalsCheckBox = new JCheckBox();
+        label1 = new JLabel();
+        toggleButtonAscensore = new JToggleButton();
+        toggleButtonBalcone = new JToggleButton();
+        toggleButtonCantina = new JToggleButton();
+        toggleButtonClimatizzazione = new JToggleButton();
+        toggleButtonPortineria = new JToggleButton();
         separator1 = new JSeparator();
-        buttonConfermaFiltri = new JButton();
         buttonCancellaFiltri = new JButton();
+        buttonConfermaFiltri = new JButton();
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.
-        border.EmptyBorder(0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing.border.TitledBorder.CENTER
-        ,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069al\u006fg",java.awt.Font
-        .BOLD,12),java.awt.Color.red), getBorder())); addPropertyChangeListener(
-        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062or\u0064er"
-        .equals(e.getPropertyName()))throw new RuntimeException();}});
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing
+        .border.EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing.border.TitledBorder
+        .CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dialo\u0067",java.
+        awt.Font.BOLD,12),java.awt.Color.red), getBorder()))
+        ; addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
+        ){if("borde\u0072".equals(e.getPropertyName()))throw new RuntimeException();}})
+        ;
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -647,16 +666,18 @@ public class Ricerca extends JPanel {
             internalFrameFiltri.setLayout(new MigLayout(
                 "fill,hidemode 3,align center center",
                 // columns
-                "[94,fill]" +
-                "[fill]para" +
-                "[fill]0" +
-                "[102,fill]",
+                "[94,fill]rel" +
+                "[94,fill]rel" +
+                "[123,fill]",
                 // rows
                 "[22]" +
                 "[]" +
                 "[]" +
                 "[]" +
                 "[]" +
+                "[]0" +
+                "[]para" +
+                "[]para" +
                 "[]para" +
                 "[]para" +
                 "[]0" +
@@ -665,51 +686,61 @@ public class Ricerca extends JPanel {
             //---- labelTipoVendita ----
             labelTipoVendita.setText("Tipo Di Vendita");
             labelTipoVendita.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            internalFrameFiltri.add(labelTipoVendita, "cell 0 0 2 1");
+            labelTipoVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(labelTipoVendita, "cell 0 0");
 
             //---- comboBoxTipVendita ----
             comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
                 "Qualsiasi"
             }));
-            internalFrameFiltri.add(comboBoxTipVendita, "cell 3 0");
+            comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(comboBoxTipVendita, "cell 2 0");
 
             //---- labelNumeroBagni ----
             labelNumeroBagni.setText("Numero Bagni");
             labelNumeroBagni.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            internalFrameFiltri.add(labelNumeroBagni, "cell 0 1 2 1");
+            labelNumeroBagni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(labelNumeroBagni, "cell 0 1");
 
             //---- spinnerBagni ----
             spinnerBagni.setModel(new SpinnerListModel(new String[] {"Indifferente", "0", "1", "2", "3", "4", "5", "6+"}));
-            internalFrameFiltri.add(spinnerBagni, "cell 3 1");
+            spinnerBagni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(spinnerBagni, "cell 2 1");
 
             //---- labelStanze ----
             labelStanze.setText("Numero Stanze");
             labelStanze.setIcon(UIManager.getIcon("FileView.fileIcon"));
+            labelStanze.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(labelStanze, "cell 0 2 2 1");
 
             //---- spinnerStanze ----
             spinnerStanze.setModel(new SpinnerListModel(new String[] {"Indifferente", "1", "2", "3", "4", "5", "6+"}));
-            internalFrameFiltri.add(spinnerStanze, "cell 3 2");
+            spinnerStanze.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(spinnerStanze, "cell 2 2");
 
             //---- labelClasseE ----
             labelClasseE.setText("Classe Energetica");
             labelClasseE.setIcon(UIManager.getIcon("FileView.fileIcon"));
+            labelClasseE.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(labelClasseE, "cell 0 3 2 1");
 
             //---- comboBoxClasseE ----
             comboBoxClasseE.setModel(new DefaultComboBoxModel<>(new String[] {
                 "Qualsiasi"
             }));
-            internalFrameFiltri.add(comboBoxClasseE, "cell 3 3");
+            comboBoxClasseE.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(comboBoxClasseE, "cell 2 3");
 
             //---- labelPiani ----
             labelPiani.setText("Piano/i");
             labelPiani.setIcon(UIManager.getIcon("FileView.fileIcon"));
+            labelPiani.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(labelPiani, "cell 0 4 2 1");
 
             //---- spinnerPiani ----
             spinnerPiani.setModel(new SpinnerListModel(new String[] {"Indifferente", "Terra", "1", "2", "3", "4", "5+"}));
-            internalFrameFiltri.add(spinnerPiani, "cell 3 4");
+            spinnerPiani.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(spinnerPiani, "cell 2 4");
 
             //---- schoolsCheckBox ----
             schoolsCheckBox.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -727,23 +758,59 @@ public class Ricerca extends JPanel {
             hospitalsCheckBox.setText("Trasporti");
             hospitalsCheckBox.setToolTipText("");
             hospitalsCheckBox.setVerticalAlignment(SwingConstants.CENTER);
-            internalFrameFiltri.add(hospitalsCheckBox, "cell 3 5,align left bottom,grow 0 0");
+            internalFrameFiltri.add(hospitalsCheckBox, "cell 0 6,align left bottom,grow 0 0");
+
+            //---- label1 ----
+            label1.setText("Altre Caratteristiche");
+            label1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            label1.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            internalFrameFiltri.add(label1, "cell 0 7 3 1,alignx center,growx 0");
+
+            //---- toggleButtonAscensore ----
+            toggleButtonAscensore.setText("Ascensore");
+            toggleButtonAscensore.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            toggleButtonAscensore.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            internalFrameFiltri.add(toggleButtonAscensore, "cell 0 8");
+
+            //---- toggleButtonBalcone ----
+            toggleButtonBalcone.setText("Balcone ");
+            toggleButtonBalcone.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            toggleButtonBalcone.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            internalFrameFiltri.add(toggleButtonBalcone, "cell 1 8");
+
+            //---- toggleButtonCantina ----
+            toggleButtonCantina.setText("Cantina");
+            toggleButtonCantina.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            toggleButtonCantina.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            internalFrameFiltri.add(toggleButtonCantina, "cell 2 8");
+
+            //---- toggleButtonClimatizzazione ----
+            toggleButtonClimatizzazione.setText("Climatizzazione");
+            toggleButtonClimatizzazione.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            toggleButtonClimatizzazione.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            internalFrameFiltri.add(toggleButtonClimatizzazione, "cell 0 9");
+
+            //---- toggleButtonPortineria ----
+            toggleButtonPortineria.setText("Portineria");
+            toggleButtonPortineria.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            toggleButtonPortineria.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            internalFrameFiltri.add(toggleButtonPortineria, "cell 1 9");
 
             //---- separator1 ----
             separator1.setBackground(Color.black);
-            internalFrameFiltri.add(separator1, "cell 0 7 4 1,aligny bottom,grow 100 0");
-
-            //---- buttonConfermaFiltri ----
-            buttonConfermaFiltri.setText("Conferma");
-            buttonConfermaFiltri.setBackground(new Color(0x3b6b3d));
-            internalFrameFiltri.add(buttonConfermaFiltri, "cell 3 8");
+            internalFrameFiltri.add(separator1, "cell 0 10 3 1,aligny bottom,grow 100 0");
 
             //---- buttonCancellaFiltri ----
             buttonCancellaFiltri.setText("Cancella");
             buttonCancellaFiltri.setBackground(new Color(0x603c3e));
-            internalFrameFiltri.add(buttonCancellaFiltri, "cell 1 8");
+            internalFrameFiltri.add(buttonCancellaFiltri, "cell 1 11,alignx center,grow 0 100");
+
+            //---- buttonConfermaFiltri ----
+            buttonConfermaFiltri.setText("Conferma");
+            buttonConfermaFiltri.setBackground(new Color(0x3b6b3d));
+            internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
         }
-        add(internalFrameFiltri, "east,alignx center,grow 0 100");
+        add(internalFrameFiltri, "east");
 
         //---- LogoOpzioni2 ----
         LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
@@ -788,9 +855,15 @@ public class Ricerca extends JPanel {
     private JCheckBox schoolsCheckBox;
     private JCheckBox parkCheckBox;
     private JCheckBox hospitalsCheckBox;
+    private JLabel label1;
+    private JToggleButton toggleButtonAscensore;
+    private JToggleButton toggleButtonBalcone;
+    private JToggleButton toggleButtonCantina;
+    private JToggleButton toggleButtonClimatizzazione;
+    private JToggleButton toggleButtonPortineria;
     private JSeparator separator1;
-    private JButton buttonConfermaFiltri;
     private JButton buttonCancellaFiltri;
+    private JButton buttonConfermaFiltri;
     private JLabel LogoOpzioni2;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

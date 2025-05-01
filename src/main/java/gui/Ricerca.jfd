@@ -182,8 +182,8 @@ new FormModel {
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "fill,hidemode 3,align center center"
-				"$columnConstraints": "[94,fill][fill]para[fill]0[102,fill]"
-				"$rowConstraints": "[22][][][][][]para[]para[]0[27,center]"
+				"$columnConstraints": "[94,fill]rel[94,fill]rel[123,fill]"
+				"$rowConstraints": "[22][][][][][]0[]para[]para[]para[]para[]0[27,center]"
 			} ) {
 				name: "internalFrameFiltri"
 				"font": new java.awt.Font( "Inter", 0, 22 )
@@ -193,8 +193,9 @@ new FormModel {
 					name: "labelTipoVendita"
 					"text": "Tipo Di Vendita"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 0 2 1"
+					"value": "cell 0 0"
 				} )
 				add( new FormComponent( "javax.swing.JComboBox" ) {
 					name: "comboBoxTipVendita"
@@ -202,15 +203,17 @@ new FormModel {
 						selectedItem: "Qualsiasi"
 						addElement( "Qualsiasi" )
 					}
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 0"
+					"value": "cell 2 0"
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "labelNumeroBagni"
 					"text": "Numero Bagni"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 1 2 1"
+					"value": "cell 0 1"
 				} )
 				add( new FormComponent( "javax.swing.JSpinner" ) {
 					name: "spinnerBagni"
@@ -226,13 +229,15 @@ new FormModel {
 							add( "6+" )
 						}
 					}
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 1"
+					"value": "cell 2 1"
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "labelStanze"
 					"text": "Numero Stanze"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 0 2 2 1"
 				} )
@@ -249,13 +254,15 @@ new FormModel {
 							add( "6+" )
 						}
 					}
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 2"
+					"value": "cell 2 2"
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "labelClasseE"
 					"text": "Classe Energetica"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 0 3 2 1"
 				} )
@@ -265,13 +272,15 @@ new FormModel {
 						selectedItem: "Qualsiasi"
 						addElement( "Qualsiasi" )
 					}
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 3"
+					"value": "cell 2 3"
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "labelPiani"
 					"text": "Piano/i"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 0 4 2 1"
 				} )
@@ -288,8 +297,9 @@ new FormModel {
 							add( "5+" )
 						}
 					}
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 4"
+					"value": "cell 2 4"
 				} )
 				add( new FormComponent( "javax.swing.JCheckBox" ) {
 					name: "schoolsCheckBox"
@@ -313,30 +323,78 @@ new FormModel {
 					"toolTipText": ""
 					"verticalAlignment": 0
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 5,align left bottom,grow 0 0"
+					"value": "cell 0 6,align left bottom,grow 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label1"
+					"text": "Altre Caratteristiche"
+					"font": new java.awt.Font( "Segoe UI", 0, 18 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.listViewIcon" )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 7 3 1,alignx center,growx 0"
+				} )
+				add( new FormComponent( "javax.swing.JToggleButton" ) {
+					name: "toggleButtonAscensore"
+					"text": "Ascensore"
+					"font": new java.awt.Font( "Segoe UI", 0, 14 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.listViewIcon" )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 8"
+				} )
+				add( new FormComponent( "javax.swing.JToggleButton" ) {
+					name: "toggleButtonBalcone"
+					"text": "Balcone "
+					"font": new java.awt.Font( "Segoe UI", 0, 14 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.listViewIcon" )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 1 8"
+				} )
+				add( new FormComponent( "javax.swing.JToggleButton" ) {
+					name: "toggleButtonCantina"
+					"text": "Cantina"
+					"font": new java.awt.Font( "Segoe UI", 0, 14 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.listViewIcon" )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 2 8"
+				} )
+				add( new FormComponent( "javax.swing.JToggleButton" ) {
+					name: "toggleButtonClimatizzazione"
+					"text": "Climatizzazione"
+					"font": new java.awt.Font( "Segoe UI", 0, 14 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.listViewIcon" )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 9"
+				} )
+				add( new FormComponent( "javax.swing.JToggleButton" ) {
+					name: "toggleButtonPortineria"
+					"text": "Portineria"
+					"font": new java.awt.Font( "Segoe UI", 0, 14 )
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.listViewIcon" )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 1 9"
 				} )
 				add( new FormComponent( "javax.swing.JSeparator" ) {
 					name: "separator1"
 					"background": new java.awt.Color( 0, 0, 0, 255 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 7 4 1,aligny bottom,grow 100 0"
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonConfermaFiltri"
-					"text": "Conferma"
-					"background": new java.awt.Color( 59, 107, 61, 255 )
-				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 8"
+					"value": "cell 0 10 3 1,aligny bottom,grow 100 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonCancellaFiltri"
 					"text": "Cancella"
 					"background": new java.awt.Color( 96, 60, 62, 255 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 1 8"
+					"value": "cell 1 11,alignx center,grow 0 100"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonConfermaFiltri"
+					"text": "Conferma"
+					"background": new java.awt.Color( 59, 107, 61, 255 )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 2 11,alignx center,grow 0 100"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "east,alignx center,grow 0 100"
+				"value": "east"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "LogoOpzioni2"
@@ -346,8 +404,8 @@ new FormModel {
 				"value": "cell 0 7,align center bottom,grow 0 0"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 40, 15 )
-			"size": new java.awt.Dimension( 965, 510 )
+			"location": new java.awt.Point( 0, 15 )
+			"size": new java.awt.Dimension( 1040, 510 )
 		} )
 	}
 }

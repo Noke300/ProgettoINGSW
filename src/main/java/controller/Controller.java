@@ -2,6 +2,13 @@ package controller;
 
 import model.*;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class Controller {
 
     public Controller() {
@@ -79,4 +86,31 @@ public class Controller {
     public void setIndirizzo(Indirizzo indirizzo) {
         this.indirizzo = indirizzo;
     }
+
+    public String logInClient(String emailCliente , String password) throws IOException, InterruptedException, URISyntaxException {
+        HttpClient client = HttpClient.newHttpClient();
+
+        String requestBody = String.format("""
+        {
+            "emailCliente": "%s",
+            "passwordCliente": "%s"
+        }
+        """, emailCliente, password);
+
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8080/auth-cliente/login"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      System.out.println(response.statusCode()+"  "+response.body());
+        if(response.statusCode()!=200){
+          System.out.println("Errore log in");
+        return "";
+      }
+        return response.body();
+    }
+
 }

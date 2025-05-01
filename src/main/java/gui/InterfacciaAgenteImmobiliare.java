@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import controller.Controller;
 import gui.costum_components.MapLoader;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -31,15 +32,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
 
     private JPanel selectedPanel = null;
-    private final Color DEFAULT_COLOR = new Color(192, 192, 192);
-    private final Border SELECTED_BORDER = BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(DEFAULT_COLOR, 2, true),
+    private final Color defaultColor = new Color(192, 192, 192);
+    private final Border selectedBorder = BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(defaultColor, 2, true),
             new TitledBorder("Casa")
     );
     //--Border per gli immobili selected
-    private final Color BORDER_COLOR = new Color(24, 122, 26);
-    private final Color SELECTION_COLOR = new Color(24, 122, 26);
-    private final Font BORDER_FONT = new Font("Segoe UI", Font.BOLD, 18);
+    private final Color borderColor = new Color(24, 122, 26);
+    private final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
 
     private static class BorderStyler {
         public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
@@ -66,7 +66,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaAgenteImmobiliare(JFrame frame) {
+    public InterfacciaAgenteImmobiliare(JFrame frame, Controller control, String token) {
         initComponents();
 
         buttonCalendario.setIcon(calendarioIcon);
@@ -85,14 +85,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
 
-            frame.setContentPane(new LogIn(frame));
+            frame.setContentPane(new LogIn(frame,control,token));
             frame.revalidate();
             frame.repaint();
         });
 
         ricercaButton.addActionListener(e-> {
 
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
             frame.revalidate();
             frame.repaint();
         });
@@ -178,7 +178,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
     private JPanel createImmobileSingoloPanel(String casaName) {
         JPanel panel = new JPanel();
-        panel.setBorder(BorderStyler.createStyledBorder(casaName, BORDER_COLOR, 1, BORDER_FONT));
+        panel.setBorder(BorderStyler.createStyledBorder(casaName, borderColor, 1, borderFont));
         panel.setPreferredSize(new Dimension(700, 170));
         panel.setLayout(new MigLayout(
                 "hidemode 3",
@@ -232,7 +232,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         return panel;
     }
     private void selectPanel(JPanel panel) {
-        // Deselect previous panel if exists
+        // Deselect a previous panel if exists
         if (selectedPanel != null) {
             // Get the title from the current border
             String title;
@@ -248,7 +248,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             }
 
             // Restore standard styled border with the same title
-            selectedPanel.setBorder(BorderStyler.createStyledBorder(title, BORDER_COLOR, 1, BORDER_FONT));
+            selectedPanel.setBorder(BorderStyler.createStyledBorder(title, borderColor, 1, borderFont));
         }
 
         // Select a new panel
@@ -259,7 +259,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             String title = ((TitledBorder)panel.getBorder()).getTitle();
 
             // Apply the selected border with consistent styling
-            panel.setBorder(BorderStyler.createSelectedBorder(title, SELECTION_COLOR, BORDER_FONT));
+            panel.setBorder(BorderStyler.createSelectedBorder(title, borderColor, borderFont));
             buttonElimina.setEnabled(true);
         } else {
             // Clicking the same panel deselects it

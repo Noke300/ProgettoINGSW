@@ -4,6 +4,7 @@
 
 package gui;
 
+import controller.Controller;
 import gui.costum_components.MapLoader;
 import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -65,7 +66,7 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaListaImmobili(JFrame frame,  List<JCheckBox> checkBoxesList,GeoPosition geoPosition) {
+    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, Controller control,String token) {
         initComponents();
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
@@ -81,14 +82,14 @@ public class InterfacciaListaImmobili extends JPanel {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
 
-            frame.setContentPane(new LogIn(frame));
+            frame.setContentPane(new LogIn(frame, control, token));
             frame.revalidate();
             frame.repaint();
         });
 
         ricercaButton.addActionListener(e-> {
 
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame));
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
             frame.revalidate();
             frame.repaint();
         });
@@ -209,9 +210,7 @@ public class InterfacciaListaImmobili extends JPanel {
         if (frame != null) {
             // Example of navigation - replace with your actual details page class
             // You could pass the title or other identifying information to the details page
-            frame.setContentPane(new PaginaImmobileDettagliata(frame));
-            frame.revalidate();
-            frame.repaint();
+
         }
     }
 

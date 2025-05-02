@@ -99,7 +99,7 @@ public class Controller {
 
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8080/auth-cliente/login"))
+                .uri(new URI("http://localhost:8081/auth-cliente/login"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();

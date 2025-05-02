@@ -14,12 +14,14 @@ public class IconClass {
    private final FontIcon homeButtonIcon = FontIcon.of(FontAwesome.HOME, 24);
    private final FontIcon tipoVenditaIcon = FontIcon.of(FontAwesome.BUILDING_O, 24);
    private final FontIcon numeroBagniIcon = FontIcon.of(FontAwesome.SHOWER, 24);
-   private final FontIcon numeroStanzeIcon = FontIcon.of(FontAwesome.SQUARE_O, 24);
+   private final FontIcon numeroStanzeIcon = FontIcon.of(FontAwesome.DELICIOUS, 24);
    private final FontIcon classeEnergeticaIcon = FontIcon.of(FontAwesome.BOLT, 24);
    private final FontIcon pianiIcon = FontIcon.of(FontAwesomeSolid.ARROW_UP, 24);
    private final FontIcon accauntAministazioneIcon = FontIcon.of(FontAwesome.USERS, 24);
    private final FontIcon logInIcon = FontIcon.of(FontAwesomeSolid.DOOR_CLOSED,24);
    private final FontIcon logOutIcon = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
+   private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 24);
+   private final FontIcon balconeIcon = FontIcon.of(FontAwesome.ARROWS_H, 24);
 
     public FontIcon getSearcherIcon() {
         return searcherIcon;

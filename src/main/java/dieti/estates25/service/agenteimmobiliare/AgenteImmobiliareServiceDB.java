@@ -1,8 +1,10 @@
 package dieti.estates25.service.agenteimmobiliare;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
+import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +29,9 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
 
     @Autowired
     private AgenteImmobiliareRepository agentRepository;
+
+    @Autowired
+    private ImmobileRepository immobileRepository;
 
     @Autowired
     private JWTService jwtService;
@@ -71,6 +77,11 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         agentRepository.deleteById(mail);
     }
 
+    @Override
+    public List<Immobile> getAllImmobili() {
+        return immobileRepository.findAllByAgente_EmailAgente(getEmailAutenticato());
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -94,5 +105,14 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("Unauthorized");
+    }
+
+    public String getEmailAutenticato() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 }

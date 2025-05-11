@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "Visita")
+@Table(name = "visita")
 public class Visita {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "IdImmobile")
+    @JoinColumn(name = "idimmobile")
     private Immobile immobile;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "NomeCliente")
+    @JoinColumn(name = "nomecliente")
     private Cliente cliente;
 
-    @Column(name = "OraVisita", nullable = false)
+    @Column(name = "oravisita", nullable = false)
     private java.time.LocalTime oraVisita;
 
-    @Column(name = "DataVisita", nullable = false)
+    @Column(name = "datavisita", nullable = false)
     private Date dataVisita;
 
     // Getters and Setters

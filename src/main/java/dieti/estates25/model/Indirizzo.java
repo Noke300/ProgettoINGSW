@@ -4,30 +4,30 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "Indirizzo")
+@Table(name = "indirizzo")
 public class Indirizzo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdIndirizzo")
+    @Column(name = "idindirizzo")
     private Long idIndirizzo;
 
-    @Column(name = "Cap", nullable = false)
+    @Column(name = "cap", nullable = false)
     private int cap;
 
-    @Column(name = "Provincia", nullable = false)
+    @Column(name = "provincia", nullable = false)
     private String provincia;
 
-    @Column(name = "Citta", nullable = false)
+    @Column(name = "citta", nullable = false)
     private String citta;
 
-    @Column(name = "Via", nullable = false)
+    @Column(name = "via", nullable = false)
     private String via;
 
-    @Column(name = "NumeroCivico", nullable = false)
+    @Column(name = "numerocivico", nullable = false)
     private String numeroCivico;
 
-    @Column(name = "Regione", nullable = false)
+    @Column(name = "regione", nullable = false)
     private String regione;
 
     // Getters and Setters

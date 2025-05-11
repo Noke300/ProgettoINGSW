@@ -4,65 +4,65 @@ import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Immobile")
+@Table(name = "immobile")
 public class Immobile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdImmobile")
+    @Column(name = "idimmobile")
     private Long idImmobile;
 
     @ManyToOne
-    @JoinColumn(name = "IdIndirizzo")
+    @JoinColumn(name = "idindirizzo")
     private Indirizzo indirizzo;
 
     @ManyToOne
-    @JoinColumn(name = "NomeAgente")
+    @JoinColumn(name = "nomeagente")
     private AgenteImmobiliare agente;
 
-    @Column(name = "NomeAgenzia", nullable = false)
+    @Column(name = "nomeagenzia", nullable = false)
     private String nomeAgenzia;
 
-    @Column(name = "Prezzo", nullable = false)
+    @Column(name = "prezzo", nullable = false)
     private Double prezzo;
 
-    @Column(name = "TipoVendita", nullable = false)
+    @Column(name = "tipovendita", nullable = false)
     private String tipoVendita;
 
-    @Column(name = "Superficie", nullable = false)
+    @Column(name = "superficie", nullable = false)
     private int superficie;
 
-    @Column(name = "TipoImmobile", nullable = false)
+    @Column(name = "tipoimmobile", nullable = false)
     private String tipoImmobile;
 
-    @Column(name = "NumBagni", nullable = false)
+    @Column(name = "numbagni", nullable = false)
     private int numBagni;
 
-    @Column(name = "ClasseEnergetica", nullable = false)
+    @Column(name = "classeenergetica", nullable = false)
     private String classeEnergetica;
 
-    @Column(name = "NumStanze", nullable = false)
+    @Column(name = "numstanze", nullable = false)
     private int numStanze;
 
-    @Column(name = "Piano")
+    @Column(name = "piano")
     private Boolean piano;
 
-    @Column(name = "Ascensore")
+    @Column(name = "ascensore")
     private Boolean ascensore;
 
-    @Column(name = "Balcone")
+    @Column(name = "balcone")
     private Boolean balcone;
 
-    @Column(name = "Cantina")
+    @Column(name = "cantina")
     private Boolean cantina;
 
-    @Column(name = "Portineria")
+    @Column(name = "portineria")
     private Boolean portineria;
 
-    @Column(name = "Climatizzatione")
+    @Column(name = "climatizzatione")
     private Boolean climatizzazione;
 
-    @Column(name = "Venduto")
+    @Column(name = "venduto")
     private Boolean venduto;
 
     // Getters and Setters

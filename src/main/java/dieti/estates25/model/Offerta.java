@@ -5,26 +5,26 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "Offerta")
+@Table(name = "offerta")
 public class Offerta {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "IdImmobile")
+    @JoinColumn(name = "idimmobile")
     private Immobile immobile;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "NomeCliente")
+    @JoinColumn(name = "nomecliente")
     private Cliente cliente;
 
-    @Column(name = "PrezzoOfferta", nullable = false)
+    @Column(name = "prezzoofferta", nullable = false)
     private Double prezzoOfferta;
 
-    @Column(name = "DataOfferta", nullable = false)
+    @Column(name = "dataofferta", nullable = false)
     private Date dataOfferta;
 
-    @Column(name = "EsitoOfferta")
+    @Column(name = "esitoofferta")
     private Boolean esitoOfferta;
 
     // Getters and Setters

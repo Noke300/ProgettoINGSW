@@ -1,5 +1,6 @@
 package dieti.estates25.controllers;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,5 +57,10 @@ public class AgenteImmobiliareController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AgenteImmobiliare agent) {
         return agentService.verify(agent);
+    }
+
+    @GetMapping("/immobili")
+    public List<Immobile> getAllImmobili() {
+        return agentService.getAllImmobili();
     }
 }

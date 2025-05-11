@@ -1,5 +1,6 @@
 package dieti.estates25.service.agenteimmobiliare;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import org.springframework.http.ResponseEntity;
 
@@ -15,4 +16,6 @@ public interface AgenteImmobiliareService {
     void updateAgent(String mail, AgenteImmobiliare agent);
 
     void deleteAgent(String mail);
+
+    List<Immobile> getAllImmobili();
 }

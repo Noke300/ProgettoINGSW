@@ -266,6 +266,7 @@ INSERT INTO AgenteImmobiliare (NomeAgente, CognomeAgente, EmailAgente, PasswordA
 ('Elisa', 'Ferrari', 'elisa.ferrari@email.com', 'agente456!', 'ImmobiliareRoma'),
 ('Paolo', 'Ricci', 'paolo.ricci@email.com', 'agente789!', 'MilanCase'),
 ('Martina', 'De Luca', 'martina.deluca@email.com', 'agente101!', 'ViviCasa'),
+('Prova', 'Prova', 'prova@gmail.com', '$2a$12$lUaRC1xdQN8wTamPTVfDQeFLnweub8LWPf6GbNUZ6dqNd0SR.jaa6', 'CasaFacile'),
 ('Andrea', 'Conti', 'andrea.conti@email.com', 'agente102!', 'TorinoHome');
 
 -- Inserimento dati nella tabella AdminSupport
@@ -287,8 +288,8 @@ INSERT INTO Indirizzo (IdIndirizzo, Cap, Provincia, Citta, Via, NumeroCivico, Re
 -- Inserimento dati nella tabella Immobile
 INSERT INTO Immobile (IdImmobile, IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
 (1, 1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 80, 'Appartamento', 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
-(2, 2, 'elisa.ferrari@email.com', 'ImmobiliareRoma', 320000, 'Vendita', 100, 'Villa', 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
-(3, 3, 'paolo.ricci@email.com', 'MilanCase', 180000, 'Affitto', 60, 'Bilocale', 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+(2, 2, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 100, 'Villa', 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
+(3, 3, 'prova@gmail.com', 'MilanCase', 180000, 'Affitto', 60, 'Bilocale', 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
 (4, 4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 85, 'Attico', 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
 (5, 5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 75, 'Trilocale', 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
 

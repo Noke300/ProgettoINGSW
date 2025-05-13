@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "AdminSupport")
+@Table(name = "adminsupport")
 public class AdminSupport {
 
     @Id
-    @Column(name = "EmailSupport")
+    @Column(name = "emailsupport")
     private String emailSupport;
 
     @Column(name = "NomeSupport", nullable = false)

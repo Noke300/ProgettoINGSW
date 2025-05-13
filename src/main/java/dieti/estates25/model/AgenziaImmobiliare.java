@@ -4,23 +4,23 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "AgenziaImmobiliare")
+@Table(name = "agenziaimmobiliare")
 public class AgenziaImmobiliare {
 
     @Id
-    @Column(name = "NomeAgenzia")
+    @Column(name = "nomeagenzia")
     private String nomeAgenzia;
 
-    @Column(name = "EmailAgenzia", nullable = false, unique = true)
+    @Column(name = "emailagenzia", nullable = false, unique = true)
     private String emailAgenzia;
 
-    @Column(name = "EmailAdmin", nullable = false, unique = true)
+    @Column(name = "emailadmin", nullable = false, unique = true)
     private String emailAdmin;
 
-    @Column(name = "PasswordAdmin", nullable = false)
+    @Column(name = "passwordadmin", nullable = false)
     private String passwordAdmin;
 
-    @Column(name = "Regione", nullable = false)
+    @Column(name = "regione", nullable = false)
     private String regione;
 
     // Getters and Setters

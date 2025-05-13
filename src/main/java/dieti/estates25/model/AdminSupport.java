@@ -11,17 +11,17 @@ public class AdminSupport {
     @Column(name = "emailsupport")
     private String emailSupport;
 
-    @Column(name = "NomeSupport", nullable = false)
+    @Column(name = "nomesupport", nullable = false)
     private String nomeSupport;
 
-    @Column(name = "CognomeSupport", nullable = false)
+    @Column(name = "cognomesupport", nullable = false)
     private String cognomeSupport;
 
-    @Column(name = "PasswordSupport", nullable = false, unique = true)
+    @Column(name = "passwordsupport", nullable = false, unique = true)
     private String passwordSupport;
 
     //@ManyToOne
-    @JoinColumn(name = "NomeAgenzia")
+    @JoinColumn(name = "nomeagenzia")
     private String nomeAgenzia;
 
     // Getters and Setters

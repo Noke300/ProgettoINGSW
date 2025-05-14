@@ -1,0 +1,98 @@
+package dieti.estates25.service.adminsupport;
+
+import dieti.estates25.model.adminsupport.AdminSupport;
+import dieti.estates25.model.adminsupport.AdminSupportPrincipal;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
+import dieti.estates25.repositories.AdminSupportRepository;
+import dieti.estates25.service.JWTService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class AdminSupportServiceDB implements AdminSupportService, UserDetailsService {
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private AdminSupportRepository adminSupportRepository;
+
+    @Autowired
+    @Lazy
+    @Qualifier("adminSupportAuthenticationManager")
+    private AuthenticationManager authManager;
+
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    @Override
+    public List<AdminSupport> getAllAdminSupport() {
+        return adminSupportRepository.findAll();
+    }
+
+    @Override
+    public AdminSupport getAdminSupportByMail(String mail) {
+        Optional<AdminSupport> adminSupport = this.adminSupportRepository.findById(mail);
+        return  adminSupport.orElse(null);
+    }
+
+    @Override
+    public ResponseEntity<String> addAdminSupport(AdminSupport adminSupport) {
+        if (adminSupportRepository.findByEmailSupport(adminSupport.getEmailSupport()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("è già presente un account con questa mail");
+        }
+        adminSupport.setPasswordSupport(encoder.encode(adminSupport.getPasswordSupport()));
+        adminSupportRepository.save(adminSupport);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Admin Support creato correttamente");
+    }
+
+    @Override
+    public void updateAdminSupport(String mail, AdminSupport adminSupport) {
+        adminSupportRepository.save(adminSupport);
+    }
+
+    @Override
+    public void deleteAdminSupport(String mail) {
+        adminSupportRepository.deleteById(mail);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AdminSupport adminSupport = adminSupportRepository.findByEmailSupport(username);
+
+        if (adminSupport == null) {
+            throw new UsernameNotFoundException("Admin Support non trovato");
+        }
+
+        return new AdminSupportPrincipal(adminSupport);
+    }
+
+    public ResponseEntity<String> verify(AdminSupport adminSupport) {
+        Authentication authentication =
+                authManager.authenticate(new UsernamePasswordAuthenticationToken(adminSupport.getEmailSupport(), adminSupport.getPasswordSupport()));
+
+        if(authentication.isAuthenticated()){
+            return ResponseEntity.ok(jwtService.generateToken(adminSupport.getEmailSupport(), "adminSupport"));
+        }
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Unauthorized");
+    }
+}

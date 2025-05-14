@@ -1,7 +1,6 @@
-package dieti.estates25.model;
+package dieti.estates25.model.adminsupport;
 
 import jakarta.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "adminsupport")
@@ -21,7 +20,7 @@ public class AdminSupport {
     private String passwordSupport;
 
     //@ManyToOne
-    @JoinColumn(name = "nomeagenzia")
+    @Column(name = "nomeagenzia")
     private String nomeAgenzia;
 
     // Getters and Setters

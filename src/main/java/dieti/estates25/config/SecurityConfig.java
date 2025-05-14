@@ -1,5 +1,6 @@
 package dieti.estates25.config;
 
+import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import dieti.estates25.service.cliente.ClienteServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class SecurityConfig {
 
     @Autowired
     private AgenteImmobiliareServiceDB agentDetailsService;
+
+    @Autowired
+    private  AdminSupportServiceDB adminSupportDetailService;
 
     @Bean
     @Order(1)
@@ -70,6 +74,24 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(3)
+    public SecurityFilterChain adminSupportSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .securityMatcher("/auth-adminSupport/**")
+                .authenticationProvider(adminSupportAuthenticationProvider(adminSupportDetailService))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/auth-adminSupport/register", "/auth-adminSupport/login").permitAll()
+                        .requestMatchers("/auth-adminSupport/**").hasAuthority("adminSupport")
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
     public AuthenticationProvider clienteAuthenticationProvider(ClienteServiceDB clientDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
@@ -85,6 +107,14 @@ public class SecurityConfig {
         return provider;
     }
 
+    @Bean
+    public AuthenticationProvider adminSupportAuthenticationProvider(AdminSupportServiceDB adminSupportDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(adminSupportDetailsService);
+        return provider;
+    }
+
     @Primary
     @Bean(name = "clientAuthenticationManager")
     public AuthenticationManager clientAuthenticationManager(ClienteServiceDB clientDetailsService) {
@@ -94,6 +124,10 @@ public class SecurityConfig {
     @Bean(name = "agentAuthenticationManager")
     public AuthenticationManager agentAuthenticationManager(AgenteImmobiliareServiceDB agentDetailsService) {
         return new ProviderManager(agenteAuthenticationProvider(agentDetailsService));
+    }
+    @Bean(name = "adminSupportAuthenticationManager")
+    public AuthenticationManager adminSupportAuthenticationManager(AdminSupportServiceDB adminSupportDetailService) {
+        return new ProviderManager(adminSupportAuthenticationProvider(adminSupportDetailService));
     }
 
 }

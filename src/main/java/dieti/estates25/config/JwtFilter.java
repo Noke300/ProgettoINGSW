@@ -1,5 +1,6 @@
 package dieti.estates25.config;
 
+import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import dieti.estates25.service.cliente.ClienteServiceDB;
 import dieti.estates25.service.JWTService;
@@ -58,6 +59,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 userDetails = context.getBean(ClienteServiceDB.class).loadUserByUsername(email);
             } else if ("agente".equals(ruolo)) {
                 userDetails = context.getBean(AgenteImmobiliareServiceDB.class).loadUserByUsername(email);
+            } else if ("adminSupport".equals(ruolo)) {
+                userDetails = context.getBean(AdminSupportServiceDB.class).loadUserByUsername(email);
             } else {
                 throw new ServletException("Ruolo inesistente");
             }

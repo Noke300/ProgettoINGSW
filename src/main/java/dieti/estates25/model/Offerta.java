@@ -9,11 +9,14 @@ import java.util.*;
 public class Offerta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idOfferta")
+    private Long idOfferta;
+
     @ManyToOne
     @JoinColumn(name = "idimmobile")
     private Immobile immobile;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "nomecliente")
     private Cliente cliente;
@@ -29,6 +32,8 @@ public class Offerta {
 
     // Getters and Setters
 
+
+    public Long getIdOfferta() {return this.idOfferta; }
     public Immobile getImmobile() { return this.immobile; }
     public void setImmobile(Immobile immobile) { this.immobile = immobile; }
     public Cliente getCliente() { return this.cliente; }

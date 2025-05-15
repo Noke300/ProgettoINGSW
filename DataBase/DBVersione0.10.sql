@@ -71,12 +71,12 @@ CREATE TABLE Indirizzo(
  );
  
  CREATE TABLE Offerta(
+	 IdOfferta SERIAL PRIMARY KEY,
 	 IdImmobile  INT,
 	 NomeCliente VARCHAR(255),
 	 PrezzoOfferta DECIMAL(10,2) NOT NULL,
 	 DataOfferta DATE NOT NULL,
 	 EsitoOfferta BOOLEAN,
- PRIMARY KEY (IdImmobile, NomeCliente),
  FOREIGN KEY(IdImmobile) REFERENCES Immobile(IdImmobile),
  FOREIGN KEY(NomeCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
  

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import dieti.estates25.repositories.ClienteRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,12 +107,23 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
 
     public ResponseEntity<String> newOfferta(Offerta offerta) {
         //NON FUNZIONA
-        //TODO  
+        //TODO
+        offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
+        //offerta.setDataOfferta();
         System.out.println(offerta);
         offertaRepository.save(offerta);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Offerta inserita correttamente");
+    }
+
+    public String getEmailAutenticato() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 }
 

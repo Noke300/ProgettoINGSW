@@ -198,15 +198,12 @@ public class Ricerca extends JPanel {
         mapButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Pannello che conterrà la mappa nel dialogo
                 final JPanel mapPanelInDialog = new JPanel(); // Deve essere final per essere usato nel lambda
-                // Non impostare preferredSize qui, lascia che sia gestito da pack() o da dimensioni fisse del JDialog
-
                 // Crea il JDialog
                 final JDialog mapDialogInstance = new JDialog(frame, "Seleziona Indirizzo da Mappa", true);
                 mapDialogInstance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 mapDialogInstance.setSize(700, 550); // Imposta una dimensione per il dialogo della mappa
-                mapDialogInstance.setContentPane(mapPanelInDialog); // mapPanelInDialog verrà popolato da SimplifiedMapLoader
+                mapDialogInstance.setContentPane(mapPanelInDialog);
 
                 // Bottone di conferma e campo indirizzo (se vuoi mostrarlo nel dialogo)
                 final JTextField selectedAddressField = new JTextField(30);
@@ -259,7 +256,7 @@ public class Ricerca extends JPanel {
                         if (event.getAddress() != null) {
                             selectedAddressField.setText(event.getAddress());
                         } else {
-                            selectedAddressField.setText("Indirizzo non trovato");
+                            selectedAddressField.setText("Indirizzo non valido o fuori confine Italiano");
                         }
                     });
                 });

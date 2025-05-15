@@ -295,11 +295,11 @@ INSERT INTO Immobile (IdImmobile, IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, 
 
 -- Inserimento dati nella tabella Offerta
 INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta) VALUES
-(1, 'mario.rossi@email.com', 245000, '2024-01-10', FALSE),
-(2, 'luca.bianchi@email.com', 310000, '2024-01-12', FALSE),
-(3, 'giulia.verdi@email.com', 175000, '2024-01-15', TRUE),
-(4, 'anna.neri@email.com', 270000, '2024-01-18', FALSE),
-(5, 'marco.gialli@email.com', 215000, '2024-01-20', TRUE);
+(1, 'mario.rossi@email.com', 245000.00, '2024-01-10', FALSE),
+(2, 'luca.bianchi@email.com', 310000.00, '2024-01-12', FALSE),
+(3, 'giulia.verdi@email.com', 175000.00, '2024-01-15', TRUE),
+(4, 'anna.neri@email.com', 270000.00, '2024-01-18', FALSE),
+(5, 'marco.gialli@email.com', 215000.00, '2024-01-20', TRUE);
 
 -- Inserimento dati nella tabella Visita
 INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita) VALUES

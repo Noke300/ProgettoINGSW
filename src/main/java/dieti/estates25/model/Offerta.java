@@ -32,8 +32,8 @@ public class Offerta {
 
     // Getters and Setters
 
-
-    public Long getIdOfferta() {return this.idOfferta; }
+    public Long getIdOfferta() { return idOfferta; }
+    public void setIdOfferta(Long idOfferta) { this.idOfferta = idOfferta; }
     public Immobile getImmobile() { return this.immobile; }
     public void setImmobile(Immobile immobile) { this.immobile = immobile; }
     public Cliente getCliente() { return this.cliente; }
@@ -44,4 +44,9 @@ public class Offerta {
     public void setDataOfferta(Date dataOfferta) { this.dataOfferta = dataOfferta; }
     public Boolean getEsitoOfferta() { return this.esitoOfferta; }
     public void setEsitoOfferta(Boolean esitoOfferta) { this.esitoOfferta = esitoOfferta; }
+
+    @Override
+    public String toString() {
+        return idOfferta + " " + immobile + " " + cliente + " " + prezzoOfferta + " " + dataOfferta;
+    }
 }

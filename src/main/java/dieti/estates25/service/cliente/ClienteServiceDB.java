@@ -1,7 +1,9 @@
 package dieti.estates25.service.cliente;
 
+import dieti.estates25.model.Offerta;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.model.cliente.ClientePrincipal;
+import dieti.estates25.repositories.OffertaRepository;
 import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +28,9 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private OffertaRepository offertaRepository;
 
     @Autowired
     private JWTService jwtService;
@@ -96,6 +101,16 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("Unauthorized");
+    }
+
+    public ResponseEntity<String> newOfferta(Offerta offerta) {
+        //NON FUNZIONA
+        //TODO  
+        System.out.println(offerta);
+        offertaRepository.save(offerta);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Offerta inserita correttamente");
     }
 }
 

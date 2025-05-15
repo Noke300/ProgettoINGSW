@@ -1,5 +1,6 @@
 package dieti.estates25.controllers;
 
+import dieti.estates25.model.Offerta;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.cliente.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,6 +57,11 @@ public class ClienteController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Cliente cliente) {
         return clienteService.verify(cliente);
+    }
+
+    @PostMapping("/offerta")
+    public ResponseEntity<String> newOfferta(@RequestBody Offerta offerta) {
+        return clienteService.newOfferta(offerta);
     }
 
 }

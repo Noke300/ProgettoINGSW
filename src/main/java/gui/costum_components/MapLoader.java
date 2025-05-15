@@ -31,7 +31,7 @@ public class MapLoader {
 
     public static void createMapPanel(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel MapFrame) {
         // Barra di ricerca combinata
-
+        IconClass icon = new IconClass();
         // Interactive Map with Markers
         JXMapViewer mapViewer = new JXMapViewer();
 
@@ -60,7 +60,7 @@ public class MapLoader {
             int rotation = e.getWheelRotation();
             int zoom = mapViewer.getZoom();
 
-            if (rotation > 0 && zoom <= 13) {
+            if (rotation > 0 && zoom <= 12) {
                 // Zoom in
                 mapViewer.setZoom(zoom + 1);
             } else if (zoom > 0) {
@@ -75,7 +75,7 @@ public class MapLoader {
 
         // Add waypoint click listener
         waypoints.clear();
-        waypoints.add(new CustomWaypoint(geoPosition, Color.BLUE, "Indirizzo"));
+        waypoints.add(new CustomWaypoint(geoPosition, "Indirizzo",icon.getMapImmobiliIcon()));
         waypointPainter.setWaypoints(waypoints);
         mapViewer.setCenterPosition(geoPosition);
         mapViewer.repaint();
@@ -88,21 +88,21 @@ public class MapLoader {
                 // Fetch places using Geoapify Places API for schools
                 List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, Color.YELLOW, "Scuola"));
+                    waypoints.add(new CustomWaypoint(place, "Scuola",icon.getMapImmobiliIcon()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
             }else if(box.getText().equals("Trasporti") && box.isSelected()) {
                 List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, Color.RED, "Transport"));
+                    waypoints.add(new CustomWaypoint(place,"Transport",icon.getMapImmobiliIcon()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
             }else if(box.getText().equals("Parchi") && box.isSelected()) {
                 List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, Color.GREEN, "Parco"));
+                    waypoints.add(new CustomWaypoint(place, "Parco",icon.getMapImmobiliIcon()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
@@ -233,13 +233,27 @@ public class MapLoader {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(0);
                     double lat = Double.parseDouble((String) jsonObject.get("lat"));
                     double lon = Double.parseDouble((String) jsonObject.get("lon"));
-                    return new GeoPosition(lat, lon);
+
+                    // Check if coordinates are within the desired area
+                    if (isWithinTargetArea(lat, lon)) {
+                        return new GeoPosition(lat, lon);
+                    }
                 }
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    private static boolean isWithinTargetArea(double lat, double lon) {
+        // Define your target area boundaries here
+        // For example, if targeting Italy:
+        double minLat = 36.0; // Southern boundary of Italy
+        double maxLat = 47.5; // Northern boundary of Italy
+        double minLon = 6.5;  // Western boundary of Italy
+        double maxLon = 18.5; // Eastern boundary of Italy
+
+        return lat >= minLat && lat <= maxLat && lon >= minLon && lon <= maxLon;
     }
 
     //scan dei posti

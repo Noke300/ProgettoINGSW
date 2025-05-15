@@ -5,6 +5,7 @@ import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
+import gui.costum_components.SimplifiedMapLoader;
 import net.miginfocom.swing.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -60,22 +61,18 @@ public class Ricerca extends JPanel {
         JPopupMenu suggestionPopup = new JPopupMenu();
 
         // --- 4. Auto-completamento ---
+        suggestionPopup.setSize(searchField.getWidth(),searchField.getHeight());
         searchField.getDocument().addDocumentListener(createAutoSuggestListener(searchField, suggestionPopup, this::fetchAutocompleteSuggestions));
 
 
         // --- 5. Azione del pulsante "Cerca" ---
         searchButton.addActionListener(e -> {
-            GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
-            if (geoPos != null) {
-                // Passa a un altro pannello, ad esempio una mappa (ipotesi: esiste MapPanel)
-                frame.setContentPane(new InterfacciaListaImmobili(frame,checkBoxesList,geoPos,control,this.token));
-                frame.revalidate();
-                frame.repaint();
-            } else {
-                JOptionPane.showMessageDialog(this, "Indirizzo non valido.");
-            }
+            performSearchAction(frame,control,checkBoxesList);
         });
-
+        //Cerca con Invio
+        searchField.addActionListener(e -> {
+            searchButton.doClick();
+        });
         //--- 6. Menu Opzioni ---
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
@@ -112,9 +109,7 @@ public class Ricerca extends JPanel {
 
         
         //--- 7. Filtri  ---
-        buttonFiltri.addActionListener(e ->
-            // Alterna la visibilità del pannello interno dei filtri
-            internalFrameFiltri.setVisible(!internalFrameFiltri.isVisible()));
+        buttonFiltri.addActionListener(e -> internalFrameFiltri.setVisible(!internalFrameFiltri.isVisible()));
 
         buttonConfermaFiltri.addActionListener(e ->internalFrameFiltri.setVisible(false));
 
@@ -200,7 +195,79 @@ public class Ricerca extends JPanel {
             }
         });
         //--9. button Mappa
+        mapButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Pannello che conterrà la mappa nel dialogo
+                final JPanel mapPanelInDialog = new JPanel(); // Deve essere final per essere usato nel lambda
+                // Non impostare preferredSize qui, lascia che sia gestito da pack() o da dimensioni fisse del JDialog
 
+                // Crea il JDialog
+                final JDialog mapDialogInstance = new JDialog(frame, "Seleziona Indirizzo da Mappa", true);
+                mapDialogInstance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                mapDialogInstance.setSize(700, 550); // Imposta una dimensione per il dialogo della mappa
+                mapDialogInstance.setContentPane(mapPanelInDialog); // mapPanelInDialog verrà popolato da SimplifiedMapLoader
+
+                // Bottone di conferma e campo indirizzo (se vuoi mostrarlo nel dialogo)
+                final JTextField selectedAddressField = new JTextField(30);
+                selectedAddressField.setEditable(false); // L'utente non lo modifica direttamente
+                JButton confirmButton = new JButton("Usa questo indirizzo");
+
+                JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                bottomPanel.add(new JLabel("Indirizzo Selezionato:"));
+                bottomPanel.add(selectedAddressField);
+                bottomPanel.add(confirmButton);
+
+                // Aggiungi il pannello inferiore al dialogo (opzionale, se vuoi vedere l'indirizzo nel dialogo)
+                // Dovrai modificare mapPanelInDialog per essere un pannello che può contenere la mappa e questo bottomPanel
+                // Oppure aggiungi bottomPanel direttamente al content pane del JDialog se mapPanelInDialog occupa solo il centro.
+                // Per semplicità, modifichiamo mapPanelInDialog
+                mapPanelInDialog.setLayout(new BorderLayout());
+                // mapPanelInDialog.add(LA_MAPPA_VERRA_QUI, BorderLayout.CENTER); // Vedi sotto
+                mapPanelInDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+
+                confirmButton.addActionListener(h -> {
+                    if (!selectedAddressField.getText().isEmpty()) {
+                        searchField.setText(selectedAddressField.getText()); // searchField della classe Ricerca
+                        mapDialogInstance.setVisible(false);
+                        mapDialogInstance.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(mapDialogInstance,
+                                "Per favore, clicca sulla mappa per selezionare un indirizzo.",
+                                "Nessun indirizzo selezionato", JOptionPane.WARNING_MESSAGE);
+                    }
+                });
+
+                // Posizione iniziale (es. centro Italia o ultima posizione nota)
+                GeoPosition initialPos = new GeoPosition(41.902782, 12.496366); // Roma
+                // Prova a prendere le coordinate dall'indirizzo attuale in searchField, se presente e valido
+                String currentSearchText = searchField.getText();
+                if (currentSearchText != null && !currentSearchText.trim().isEmpty() && !currentSearchText.equals("Cerca Qualcosa")) {
+                    GeoPosition searchGeo = MapLoader.getCoordinatesFromAddress(currentSearchText); // Usa il tuo vecchio MapLoader.getCoordinatesFromAddress se lo hai ancora
+                    if (searchGeo != null) {
+                        initialPos = searchGeo;
+                    }
+                }
+                // Crea e aggiungi la mappa al mapPanelInDialog
+                // Il pannello della mappa vero e proprio verrà messo al centro di mapPanelInDialog
+                JPanel actualMapDisplayPanel = new JPanel(new BorderLayout()); // Pannello per JXMapViewer
+                mapPanelInDialog.add(actualMapDisplayPanel, BorderLayout.CENTER);
+
+                SimplifiedMapLoader.createClickableMap(actualMapDisplayPanel, initialPos, 10, event -> {
+                    SwingUtilities.invokeLater(() -> { // Assicurati che l'aggiornamento della UI sia sull'EDT
+                        if (event.getAddress() != null) {
+                            selectedAddressField.setText(event.getAddress());
+                        } else {
+                            selectedAddressField.setText("Indirizzo non trovato");
+                        }
+                    });
+                });
+
+                mapDialogInstance.setLocationRelativeTo(frame);
+                mapDialogInstance.setVisible(true); // Mostra il dialogo
+            }
+        });
         return this;
     }
 
@@ -214,8 +281,7 @@ public class Ricerca extends JPanel {
         }
     }
 
-    private DocumentListener createAutoSuggestListener(JTextField searchField, JPopupMenu suggestionPopup,
-                                                       Function<String, List<String>> fetchSuggestionsFn) {
+    private DocumentListener createAutoSuggestListener(JTextField searchField, JPopupMenu suggestionPopup,Function<String, List<String>> fetchSuggestionsFn) {
         return new DocumentListener() {
             private static final int TIMER_DELAY_MS = 700;
 
@@ -278,26 +344,41 @@ public class Ricerca extends JPanel {
             }
 
             private void displaySuggestionPopup() {
-                try {
-                    Rectangle2D caretCoords2D = searchField.modelToView2D(searchField.getCaretPosition());
-                    if (caretCoords2D != null) {
-                        Rectangle caretCoords = new Rectangle(
-                                (int) caretCoords2D.getX(),
-                                (int) caretCoords2D.getY(),
-                                (int) caretCoords2D.getWidth(),
-                                (int) caretCoords2D.getHeight()
-                        );
-                        Point popupLocation = new Point(caretCoords.x, caretCoords.y + caretCoords.height);
-                        SwingUtilities.convertPointToScreen(popupLocation, searchField);
-                        suggestionPopup.setLocation(popupLocation);
-                        suggestionPopup.setInvoker(searchField);
-                        suggestionPopup.setVisible(true);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                // Assicurati che ci siano suggerimenti da mostrare
+                if (suggestionPopup.getComponentCount() == 0) {
+                    suggestionPopup.setVisible(false);
+                    return;
                 }
+                // Imposta la larghezza del popup uguale a quella del searchField
+                int popupWidth = searchField.getWidth();
+
+                // Calcola l'altezza preferita del popup basata sui suoi contenuti (i JMenuItem)
+                // JPopupMenu.getPreferredSize() fa questo per te.
+                Dimension preferredSize = suggestionPopup.getPreferredSize();
+                int popupHeight = preferredSize.height;
+
+
+                 int maxPopupHeight = 200; // Imposta un'altezza massima desiderata
+                 if (popupHeight > maxPopupHeight) {
+                     popupHeight = maxPopupHeight;
+                 }
+                // Usa setPopupSize che è specifico per JPopupMenu
+                suggestionPopup.setFont(searchField.getFont());
+                suggestionPopup.setPopupSize(popupWidth, popupHeight);
+                suggestionPopup.show(searchField, 0, searchField.getHeight());
             }
         };
+    }
+
+    private void performSearchAction(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+        GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
+        if (geoPos != null) {
+            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token));
+            frame.revalidate();
+            frame.repaint();
+        } else {
+            JOptionPane.showMessageDialog(this, "Indirizzo non valido.");
+        }
     }
 
     //Funzione Cambio Cursore

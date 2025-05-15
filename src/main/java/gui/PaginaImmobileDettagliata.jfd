@@ -81,7 +81,12 @@ new FormModel {
 					"value": "West"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0,grow"
+				"value": "cell 0 0 3 2,grow"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "panelChart"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 2 2 3,grow"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 180, 65 )

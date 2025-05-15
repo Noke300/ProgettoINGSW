@@ -22,6 +22,8 @@ public class IconClass {
    private final FontIcon logOutIcon = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
    private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 24);
    private final FontIcon balconeIcon = FontIcon.of(FontAwesome.ARROWS_H, 24);
+   private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.BLUE);
+   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,12,new Color(0x59A869));
 
     public FontIcon getSearcherIcon() {
         return searcherIcon;
@@ -59,4 +61,8 @@ public class IconClass {
     public FontIcon getHomeButtonIcon() {
         return homeButtonIcon;
     }
+    public FontIcon getMapImmobiliIcon(){return mapImmobiliIcon;}
+    public FontIcon getAscensoreIcon() {return ascensoreIcon;}
+    public FontIcon getBalconeIcon() {return balconeIcon;}
+    public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
 }

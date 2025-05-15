@@ -11,6 +11,10 @@ import javax.swing.border.*;
 
 import controller.Controller;
 import net.miginfocom.swing.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  * @author marco
@@ -19,7 +23,22 @@ public class PaginaImmobileDettagliata extends JPanel {
     public PaginaImmobileDettagliata(JFrame frame, Controller control,String token) {
         initComponents();
 
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.addValue(200, "Sales", "January");
+        dataset.addValue(150, "Sales", "February");
+        dataset.addValue(180, "Sales", "March");
+        dataset.addValue(260, "Sales", "April");
+        dataset.addValue(300, "Sales", "May");
 
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Offerte Immobile",
+                "Month",
+                "Offerte",
+                dataset);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        panelChart.add(chartPanel, BorderLayout.CENTER);
         try {
             URL imageUrl = getClass().getResource("/CasaProva3.jpeg");
             if (imageUrl != null) {
@@ -67,7 +86,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Simone Sommella
+        // Generated using JFormDesigner Evaluation license - Marco
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -78,16 +97,15 @@ public class PaginaImmobileDettagliata extends JPanel {
         panelImmagineImmobile = new JPanel();
         button3 = new JButton();
         button4 = new JButton();
+        panelChart = new JPanel();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder (
-        new javax . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
-        , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
-        , new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 )
-        ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
-        new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
-        ) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
-        ;} } );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .
+        EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing
+        . border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,
+        java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
+        { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )
+        throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,hidemode 3",
             // columns
@@ -171,12 +189,18 @@ public class PaginaImmobileDettagliata extends JPanel {
             button4.setBackground(new Color(0x00ffffff, true));
             panelImmagineImmobile.add(button4, BorderLayout.WEST);
         }
-        add(panelImmagineImmobile, "cell 0 0,grow");
+        add(panelImmagineImmobile, "cell 0 0 3 2,grow");
+
+        //======== panelChart ========
+        {
+            panelChart.setLayout(new BorderLayout());
+        }
+        add(panelChart, "cell 3 2 2 3,grow");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Simone Sommella
+    // Generated using JFormDesigner Evaluation license - Marco
     private JPanel panelTopBar;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
@@ -187,5 +211,6 @@ public class PaginaImmobileDettagliata extends JPanel {
     private JPanel panelImmagineImmobile;
     private JButton button3;
     private JButton button4;
+    private JPanel panelChart;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -87,6 +87,7 @@ CREATE TABLE Indirizzo(
 	 NomeCliente VARCHAR(255),
 	 OraVisita TIME NOT NULL,
 	 DataVisita DATE NOT NULL,
+	 Conferma BOOLEAN,
  PRIMARY KEY (IdImmobile, NomeCliente),
  FOREIGN KEY(IdImmobile) REFERENCES Immobile(IdImmobile),
  FOREIGN KEY(NomeCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
@@ -302,9 +303,10 @@ INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoO
 (5, 'marco.gialli@email.com', 215000.00, '2024-01-20', TRUE);
 
 -- Inserimento dati nella tabella Visita
-INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita) VALUES
-(1, 'mario.rossi@email.com', '10:00', '2025-05-05'),
-(2, 'luca.bianchi@email.com', '14:30', '2025-09-06'),
-(3, 'giulia.verdi@email.com', '16:00', '2025-08-07'),
-(4, 'anna.neri@email.com', '11:00', '2025-07-08'),
-(5, 'marco.gialli@email.com', '13:00', '2025-06-09');
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma) VALUES
+(1, 'mario.rossi@email.com', '10:00', '2025-05-05', TRUE),
+(2, 'luca.bianchi@email.com', '14:30', '2025-09-06', FALSE),
+(3, 'giulia.verdi@email.com', '16:00', '2025-08-07', TRUE),
+(4, 'anna.neri@email.com', '11:00', '2025-07-08', FALSE),
+(5, 'marco.gialli@email.com', '13:00', '2025-06-09', TRUE);
+

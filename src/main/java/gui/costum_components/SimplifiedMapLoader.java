@@ -95,7 +95,7 @@ public class SimplifiedMapLoader {
                     CustomWaypoint waypoint = new CustomWaypoint(
                             clickedGeoPosition,
                             "Indirizzo", // Placeholder info
-                            ICON_CLASS.getMapImmobiliIcon() // Get the icon from your IconClass
+                            ICON_CLASS.getCursoreMapSelect() // Get the icon from your IconClass
                     );
 
                     // Add the waypoint to the set
@@ -119,7 +119,7 @@ public class SimplifiedMapLoader {
                             String address = null;
                             try {
                                 address = get();
-                                if(!address.isEmpty() && !address.toLowerCase().contains("italia")){
+                                if(!(address==null) && !address.toLowerCase().contains("italia")){
                                     address=null;
                                 }
                                 System.out.println("Address lookup result: " + (address != null ? address : "Indirizzo non valido o fuori confine Italiano"));
@@ -165,7 +165,7 @@ public class SimplifiedMapLoader {
     @Nullable
     public static String getAddressFromCoordinates(@NotNull GeoPosition g) {
         OkHttpClient client = new OkHttpClient();
-        String userAgent = "MySwingApp/1.0 (contact@example.com)"; // Update with your real contact info
+        String userAgent = "DieteEstate/1.0 (marco.scotto2002@gmail.com)"; // Update with your real contact info
         String url = String.format(Locale.US,
                 "https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&addressdetails=1&accept-language=it",
                 g.getLatitude(), g.getLongitude());

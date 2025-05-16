@@ -5,6 +5,8 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class IconClass {
 
@@ -23,7 +25,7 @@ public class IconClass {
    private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 24);
    private final FontIcon balconeIcon = FontIcon.of(FontAwesome.ARROWS_H, 24);
    private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.BLUE);
-   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,12,new Color(0x59A869));
+   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,28,new Color(0x59A869));
 
     public FontIcon getSearcherIcon() {
         return searcherIcon;
@@ -65,4 +67,19 @@ public class IconClass {
     public FontIcon getAscensoreIcon() {return ascensoreIcon;}
     public FontIcon getBalconeIcon() {return balconeIcon;}
     public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
+
+
+    public MouseAdapter cursorButton(){
+        return new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Ripristina il cursore quando il mouse esce dal bottone
+                e.getComponent().setCursor(Cursor.getDefaultCursor());
+            }
+        };
+    }
 }

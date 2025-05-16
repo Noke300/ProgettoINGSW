@@ -143,8 +143,7 @@ public class MapLoader {
                         break;
                     }
                 }
-                mapViewer.setCursor(hovering ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
-                        : Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                mapViewer.setCursor(hovering ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             }
         });
 

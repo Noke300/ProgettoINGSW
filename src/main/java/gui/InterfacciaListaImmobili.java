@@ -5,32 +5,31 @@
 package gui;
 
 import controller.Controller;
+import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
+import gui.costum_components.SimplifiedMapLoader;
 import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author marco
  */
 public class InterfacciaListaImmobili extends JPanel {
-    MapLoader mapLoader = new MapLoader();
     private static final String fontName = "Segue UI";
-    
-    /*
-    Dati di prova Eliminare
-     */
-    GeoPosition napoli = new GeoPosition(45.464170, 11.885890);
-    GeoPosition roma = new GeoPosition(41.893333, 12.482778);
-    GeoPosition milano = new GeoPosition(45.468555, 9.182440);
+    private static final IconClass iconSet = new IconClass();
+    String token;
 
     private JPanel selectedPanel = null;
     private final Color defaultColor = new Color(192, 192, 192);
@@ -69,50 +68,22 @@ public class InterfacciaListaImmobili extends JPanel {
     }
 
     public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, Controller control,String token) {
+        this.token=token;
         initComponents();
 
         internalFrameFiltri.setVisible(false);
+        setUpOpzioniMenu(frame,control,checkBoxesList);
+        setUpComponents();
 
-        backButtonHome.addActionListener(e -> {
-            // Supponiamo che la classe Home abbia il metodo createHomePanel
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new Home().createHomePanel(frame));
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        logInButton.addActionListener(e -> {
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new LogIn(frame, control, token));
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        ricercaButton.addActionListener(e-> {
-
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
-            frame.revalidate();
-            frame.repaint();
-        });
-        
-        buttonCerca.addActionListener(e -> {
+        searchButton.addActionListener(e -> {
             panelMap.removeAll();
-            mapLoader.createMapPanel(roma,checkBoxesList,panelMap);
+            MapLoader.createMapPanel(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())),checkBoxesList,panelMap);
             panelMap.revalidate();
             panelMap.repaint();
             
         });
         //--- 7. Filtri  ---
-        buttonFiltri.addActionListener(e ->
-                // Alterna la visibilità del pannello interno dei filtri
-                internalFrameFiltri.setVisible(!internalFrameFiltri.isVisible()));
-
-
-
+        buttonFiltri.addActionListener(e -> internalFrameFiltri.setVisible(!internalFrameFiltri.isVisible()));
         buttonConfermaFiltri.addActionListener(e -> {
             internalFrameFiltri.setVisible(false);
 
@@ -130,7 +101,7 @@ public class InterfacciaListaImmobili extends JPanel {
             schoolsCheckBox.setSelected(false);
         });
         
-        mapLoader.createMapPanel(geoPosition,checkBoxesList,panelMap);
+        MapLoader.createMapPanel(geoPosition,checkBoxesList,panelMap);
         // Create and add the first panel
 
         // In the initComponents method, replace the GridLayout with MigLayout
@@ -154,6 +125,70 @@ public class InterfacciaListaImmobili extends JPanel {
         JPanel fifthPanel = createImmobileSingoloPanel("Casa 5",control,token);
         panelListaImmobile.add(fifthPanel,"align center");
         // Launch map loading in the background
+
+        mapButton.addActionListener(e -> {
+            final JPanel mapPanelInDialog = new JPanel(); // Deve essere final per essere usato nel lambda
+            // Crea il JDialog
+            final JDialog mapDialogInstance = new JDialog(frame, "Seleziona Indirizzo da Mappa", true);
+            mapDialogInstance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            mapDialogInstance.setSize(700, 550); // Imposta una dimensione per il dialogo della mappa
+            mapDialogInstance.setContentPane(mapPanelInDialog);
+
+            // Bottone di conferma e campo indirizzo (se vuoi mostrarlo nel dialogo)
+            final JTextField selectedAddressField = new JTextField(30);
+            selectedAddressField.setEditable(false); // L'utente non lo modifica direttamente
+            JButton confirmButton = new JButton("Usa questo indirizzo");
+
+            JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            bottomPanel.add(new JLabel("Indirizzo Selezionato:"));
+            bottomPanel.add(selectedAddressField);
+            bottomPanel.add(confirmButton);
+
+            mapPanelInDialog.setLayout(new BorderLayout());
+            mapPanelInDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+
+            confirmButton.addActionListener(h -> {
+                if (!selectedAddressField.getText().isEmpty()) {
+                    searchField.setText(selectedAddressField.getText()); // searchField della classe Ricerca
+                    mapDialogInstance.setVisible(false);
+                    mapDialogInstance.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(mapDialogInstance,
+                            "Per favore, clicca sulla mappa per selezionare un indirizzo.",
+                            "Nessun indirizzo selezionato", JOptionPane.WARNING_MESSAGE);
+                }
+            });
+
+            // Posizione iniziale (es. Centro Italia o ultima posizione nota)
+            GeoPosition initialPos = geoPosition; // Roma
+            // Prova a prendere le coordinate dall'indirizzo attuale in searchField, se presente e valido
+            String currentSearchText = searchField.getText();
+            if (currentSearchText != null && !currentSearchText.trim().isEmpty() && !currentSearchText.equals("Cerca Qualcosa")) {
+                GeoPosition searchGeo = MapLoader.getCoordinatesFromAddress(currentSearchText); // Usa il tuo vecchio MapLoader.getCoordinatesFromAddress se lo hai ancora
+                if (searchGeo != null) {
+                    initialPos = searchGeo;
+                }
+            }
+            // Crea e aggiungi la mappa al mapPanelInDialog
+            // Il pannello della mappa vero e proprio verrà messo al centro di mapPanelInDialog
+            JPanel actualMapDisplayPanel = new JPanel(new BorderLayout()); // Pannello per JXMapViewer
+            mapPanelInDialog.add(actualMapDisplayPanel, BorderLayout.CENTER);
+
+            SimplifiedMapLoader.createClickableMap(actualMapDisplayPanel, initialPos, 10, event -> {
+                SwingUtilities.invokeLater(() -> { // Assicurati che l'aggiornamento della UI sia sull'EDT
+                    if (event.getAddress() != null) {
+                        selectedAddressField.setText(event.getAddress());
+                    } else {
+                        selectedAddressField.setText("Indirizzo non valido o fuori confine Italiano");
+                    }
+                });
+            });
+
+            mapDialogInstance.setLocationRelativeTo(frame);
+            mapDialogInstance.setVisible(true); // Mostra il dialogo
+        });
+
     }
 
     private JPanel createImmobileSingoloPanel(String casaName,Controller control,String token) {
@@ -247,8 +282,85 @@ public class InterfacciaListaImmobili extends JPanel {
             System.err.println("Parent frame not found for navigation.");
         }
     }
+    private void setUpLogInOutButton(String token){
+        if (token.isEmpty()){
+            logInButton.setText("Login");
+            logInButton.setIcon(iconSet.getLogInIcon());
+        }else{
+            logInButton.setText("Logout");
+            logInButton.setIcon(iconSet.getLogOutIcon());
+        }
+    }
+    private void setUpOpzioniMenu(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+        backButtonHome.addActionListener(e -> {
+            // Supponiamo che la classe Home abbia il metodo createHomePanel
+            menuOpzioni.setVisible(false);
+            menuBarOpzioni.setVisible(false);
 
-        private void selectPanel(JPanel panel) {
+            frame.setContentPane(new Home().createHomePanel(frame));
+            frame.revalidate();
+            frame.repaint();
+        });
+        logInButton.addActionListener(e -> {
+            if (this.token.isEmpty()) {
+
+                menuOpzioni.setVisible(false);
+                menuBarOpzioni.setVisible(false);
+                frame.setContentPane(new LogIn(frame, control,this.token ));
+
+            }else {
+                this.token = "";
+                setUpLogInOutButton(this.token);
+            }
+            frame.revalidate();
+            frame.repaint();
+        });
+
+        buttonAccountAmministrazione.addActionListener(e -> {
+            menuOpzioni.setVisible(false);
+            menuBarOpzioni.setVisible(false);
+            frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
+            frame.revalidate();
+            frame.repaint();
+        });
+
+        ricercaButton.addActionListener(e-> {
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
+            frame.revalidate();
+            frame.repaint();
+        });
+
+    }
+
+    private void setUpComponents() {
+        //--Cursor
+
+        mapButton.addMouseListener(iconSet.cursorButton());
+        buttonFiltri.addMouseListener(iconSet.cursorButton());
+        buttonConfermaFiltri.addMouseListener(iconSet.cursorButton());
+        buttonCancellaFiltri.addMouseListener(iconSet.cursorButton());
+        logInButton.addMouseListener(iconSet.cursorButton());
+        buttonAccountAmministrazione.addMouseListener(iconSet.cursorButton());
+        backButtonHome.addMouseListener(iconSet.cursorButton());
+        listaTipi.addMouseListener(iconSet.cursorButton());
+        comboBoxTipVendita.addMouseListener(iconSet.cursorButton());
+        menuOpzioni.addMouseListener(iconSet.cursorButton());
+        comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
+
+        //--Icon
+        setUpLogInOutButton(this.token);
+        mapButton.setIcon(iconSet.getMapIcon());
+        searchButton.setIcon(iconSet.getSearcherIcon());
+        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
+        labelPiani.setIcon(iconSet.getPianiIcon());
+        labelTipoVendita.setIcon(iconSet.getTipoVenditaIcon());
+        labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
+        labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
+        labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
+        buttonAccountAmministrazione.setIcon(iconSet.getAccauntAministazioneIcon());
+
+    }
+    private void selectPanel(JPanel panel) {
         // Deselect a previous panel if exists
         if (selectedPanel != null) {
             // Get the title from the current border
@@ -290,20 +402,19 @@ public class InterfacciaListaImmobili extends JPanel {
         return selectedPanel;
     }
 
-    private void menuBar1MouseClicked(MouseEvent e) {
-        // TODO add your code here
-    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Simone Sommella
+        // Generated using JFormDesigner Evaluation license - Marco
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         logInButton = new JButton();
         ricercaButton = new JButton();
+        buttonAccountAmministrazione = new JButton();
         backButtonHome = new JButton();
-        buttonCerca = new JButton();
+        mapButton = new JButton();
+        searchButton = new JButton();
         searchField = new JTextField();
         listaTipi = new JComboBox<>();
         menuBarContenitorePrezziBox = new JMenuBar();
@@ -344,11 +455,13 @@ public class InterfacciaListaImmobili extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
-        0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
-        . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
-        red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
-        beans. PropertyChangeEvent e) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax .
+        swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border
+        . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog"
+        , java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) , getBorder
+        () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java
+        . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException
+        ( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -356,7 +469,7 @@ public class InterfacciaListaImmobili extends JPanel {
             "[139,fill]0" +
             "[117,fill]0" +
             "[fill]0" +
-            "[96,grow,fill]0" +
+            "[106,grow,center]0" +
             "[96,fill]0" +
             "[96,grow,fill]0" +
             "[93,fill]0" +
@@ -382,6 +495,7 @@ public class InterfacciaListaImmobili extends JPanel {
             panelTopBar.setLayout(new MigLayout(
                 "fill,hidemode 3,aligny center",
                 // columns
+                "[fill]" +
                 "[662,grow]0" +
                 "[662,grow]0" +
                 "[662,grow]0" +
@@ -398,12 +512,6 @@ public class InterfacciaListaImmobili extends JPanel {
                 menuBarOpzioni.setBorderPainted(false);
                 menuBarOpzioni.setBackground(new Color(0x4e5052));
                 menuBarOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-                menuBarOpzioni.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        menuBar1MouseClicked(e);
-                    }
-                });
 
                 //======== menuOpzioni ========
                 {
@@ -422,6 +530,12 @@ public class InterfacciaListaImmobili extends JPanel {
                     ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                     menuOpzioni.add(ricercaButton);
 
+                    //---- buttonAccountAmministrazione ----
+                    buttonAccountAmministrazione.setText("Account Amministrazione");
+                    buttonAccountAmministrazione.setIcon(UIManager.getIcon("FileChooser.newFolderIcon"));
+                    buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuOpzioni.add(buttonAccountAmministrazione);
+
                     //---- backButtonHome ----
                     backButtonHome.setText("Home");
                     backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
@@ -430,21 +544,30 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
-            panelTopBar.add(menuBarOpzioni, "cell 4 0 2 1,align right top,grow 0 0");
+            panelTopBar.add(menuBarOpzioni, "cell 5 0 2 1,aligny top,grow 100 0");
 
-            //---- buttonCerca ----
-            buttonCerca.setSelectedIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-            buttonCerca.setMinimumSize(new Dimension(50, 36));
-            buttonCerca.setMaximumSize(new Dimension(50, 36));
-            buttonCerca.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-            buttonCerca.setBorder(null);
-            buttonCerca.setBorderPainted(false);
-            panelTopBar.add(buttonCerca, "cell 3 1,align right center,grow 0 0");
+            //---- mapButton ----
+            mapButton.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+            mapButton.setMaximumSize(new Dimension(34, 35));
+            mapButton.setMinimumSize(new Dimension(34, 35));
+            mapButton.setBorder(null);
+            mapButton.setBorderPainted(false);
+            mapButton.setBackground(new Color(0x00ffffff, true));
+            panelTopBar.add(mapButton, "cell 0 1,aligny center,growy 0");
+
+            //---- searchButton ----
+            searchButton.setSelectedIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+            searchButton.setMinimumSize(new Dimension(50, 36));
+            searchButton.setMaximumSize(new Dimension(50, 36));
+            searchButton.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+            searchButton.setBorder(null);
+            searchButton.setBorderPainted(false);
+            panelTopBar.add(searchButton, "cell 4 1,align right center,grow 0 0");
 
             //---- searchField ----
             searchField.setBackground(Color.white);
             searchField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-            panelTopBar.add(searchField, "cell 0 1 4 1,aligny center,grow 100 0");
+            panelTopBar.add(searchField, "cell 1 1 4 1,aligny center,grow 100 0");
 
             //---- listaTipi ----
             listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -453,7 +576,7 @@ public class InterfacciaListaImmobili extends JPanel {
             }));
             listaTipi.setSelectedIndex(0);
             listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(listaTipi, "cell 0 2,align center center,grow 0 0");
+            panelTopBar.add(listaTipi, "cell 1 2,align left center,grow 0 0");
 
             //======== menuBarContenitorePrezziBox ========
             {
@@ -489,7 +612,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarContenitorePrezziBox.add(menuPrezzi);
             }
-            panelTopBar.add(menuBarContenitorePrezziBox, "cell 1 2,align center center,grow 0 0");
+            panelTopBar.add(menuBarContenitorePrezziBox, "cell 2 2,align center center,grow 0 0");
 
             //---- comboBoxSuperfice ----
             comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -497,22 +620,22 @@ public class InterfacciaListaImmobili extends JPanel {
             }));
             comboBoxSuperfice.setForeground(Color.black);
             comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(comboBoxSuperfice, "cell 2 2,align center center,grow 0 0");
+            panelTopBar.add(comboBoxSuperfice, "cell 3 2,align left center,grow 0 0");
 
             //---- buttonFiltri ----
             buttonFiltri.setText("Filtri");
             buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
             buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(buttonFiltri, "cell 3 2,align center center,grow 0 0");
+            panelTopBar.add(buttonFiltri, "cell 4 2,align left center,grow 0 0");
         }
-        add(panelTopBar, "cell 0 0 13 2,grow");
+        add(panelTopBar, "north,aligny top,growy 0");
 
         //======== panelMap ========
         {
             panelMap.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 2, true));
             panelMap.setLayout(new BorderLayout());
         }
-        add(panelMap, "cell 5 3 8 5,grow");
+        add(panelMap, "cell 5 0 8 8,grow");
 
         //======== panelListaImmobileScroll ========
         {
@@ -526,7 +649,7 @@ public class InterfacciaListaImmobili extends JPanel {
             }
             panelListaImmobileScroll.setViewportView(panelListaImmobile);
         }
-        add(panelListaImmobileScroll, "cell 1 3 4 5,grow");
+        add(panelListaImmobileScroll, "cell 1 0 4 8,grow");
 
         //======== panelBottomBar ========
         {
@@ -560,12 +683,12 @@ public class InterfacciaListaImmobili extends JPanel {
         {
             internalFrameFiltri.setFont(new Font("Inter", Font.PLAIN, 22));
             internalFrameFiltri.setBorder(null);
-            internalFrameFiltri.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
-            EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing
-            .border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),
-            java.awt.Color.red),internalFrameFiltri. getBorder()));internalFrameFiltri. addPropertyChangeListener(new java.beans.PropertyChangeListener()
-            {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))
-            throw new RuntimeException();}});
+            internalFrameFiltri.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
+            (0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
+            .TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt
+            .Color.red),internalFrameFiltri. getBorder()));internalFrameFiltri. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
+            propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException()
+            ;}});
             internalFrameFiltri.setLayout(new MigLayout(
                 "fill,hidemode 3,align center center",
                 // columns
@@ -717,14 +840,16 @@ public class InterfacciaListaImmobili extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Simone Sommella
+    // Generated using JFormDesigner Evaluation license - Marco
     private JPanel panelTopBar;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JButton logInButton;
     private JButton ricercaButton;
+    private JButton buttonAccountAmministrazione;
     private JButton backButtonHome;
-    private JButton buttonCerca;
+    private JButton mapButton;
+    private JButton searchButton;
     private JTextField searchField;
     private JComboBox<String> listaTipi;
     private JMenuBar menuBarContenitorePrezziBox;

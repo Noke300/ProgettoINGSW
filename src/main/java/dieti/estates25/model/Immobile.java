@@ -2,6 +2,8 @@ package dieti.estates25.model;
 
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "immobile")
@@ -11,10 +13,6 @@ public class Immobile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idimmobile")
     private Long idImmobile;
-
-    @ManyToOne
-    @JoinColumn(name = "idindirizzo")
-    private Indirizzo indirizzo;
 
     @ManyToOne
     @JoinColumn(name = "nomeagente")
@@ -34,6 +32,13 @@ public class Immobile {
 
     @Column(name = "tipoimmobile", nullable = false)
     private String tipoImmobile;
+
+    @Column(precision = 9, scale = 6)
+    private BigDecimal latitudine;
+
+    @Column(precision = 9, scale = 6)
+    private BigDecimal longitudine;
+
 
     @Column(name = "numbagni", nullable = false)
     private int numBagni;
@@ -69,8 +74,6 @@ public class Immobile {
 
     public Long getIdImmobile() { return this.idImmobile; }
     public void setIdImmobile(Long idImmobile) { this.idImmobile = idImmobile; }
-    public Indirizzo getIndirizzo() { return this.indirizzo; }
-    public void setIndirizzo(Indirizzo indirizzo) { this.indirizzo = indirizzo; }
     public AgenteImmobiliare getAgente() { return this.agente; }
     public void setAgente(AgenteImmobiliare agente) { this.agente = agente; }
     public String getNomeAgenzia() { return this.nomeAgenzia; }
@@ -83,6 +86,13 @@ public class Immobile {
     public void setSuperficie(int superficie) { this.superficie = superficie; }
     public String getTipoImmobile() { return this.tipoImmobile; }
     public void setTipoImmobile(String tipoImmobile) { this.tipoImmobile = tipoImmobile; }
+
+    public BigDecimal getLatitudine() {return latitudine; }
+    public void setLatitudine(BigDecimal latitudine) {this.latitudine = latitudine; }
+
+    public BigDecimal getLongitudine() {return longitudine; }
+    public void setLongitudine(BigDecimal longitudine) {this.longitudine = longitudine; }
+
     public int getNumBagni() { return this.numBagni; }
     public void setNumBagni(int numBagni) { this.numBagni = numBagni; }
     public String getClasseEnergetica() { return this.classeEnergetica; }

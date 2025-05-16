@@ -24,6 +24,9 @@ public class Visita {
     @Column(name = "datavisita", nullable = false)
     private Date dataVisita;
 
+    @Column(name = "conferma")
+    private Boolean conferma;
+
     // Getters and Setters
 
     public Immobile getImmobile() { return this.immobile; }
@@ -34,4 +37,5 @@ public class Visita {
     public void setOraVisita(java.time.LocalTime oraVisita) { this.oraVisita = oraVisita; }
     public Date getDataVisita() { return this.dataVisita; }
     public void setDataVisita(Date dataVisita) { this.dataVisita = dataVisita; }
+    public boolean getConferma() { return this.conferma; }
 }

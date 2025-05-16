@@ -34,24 +34,18 @@ CREATE TABLE AdminSupport(
 	
 );
 
-CREATE TABLE Indirizzo(
-	IdIndirizzo SERIAL PRIMARY KEY,
-   	Cap DECIMAL(5,0) NOT NULL,
-	Provincia VARCHAR(255) NOT NULL,
-        Citta VARCHAR(255) NOT NULL,
-	Via VARCHAR(255) NOT NULL,
-	NumeroCivico VARCHAR(10) NOT NULL,
-	Regione VARCHAR(255) NOT NULL
- );
+
  
  CREATE TABLE Immobile(
          IdImmobile SERIAL PRIMARY KEY,
-	 IdIndirizzo INT,
 	 NomeAgente VARCHAR(255),
          NomeAgenzia VARCHAR(255) NOT NULL,
+
 	 
 	 Prezzo DECIMAL(10,2) NOT NULL,
 	 TipoVendita VARCHAR(255) NOT NULL,
+	 Latitudine DECIMAL(9,6),
+	 Longitudine DECIMAL(9,6),
 	 Superficie INT NOT NULL,
 	 TipoImmobile VARCHAR(255) NOT NULL,
 	 NumBagni INT NOT NULL,
@@ -64,7 +58,7 @@ CREATE TABLE Indirizzo(
 	 Portineria BOOLEAN,
 	 Climatizzatione BOOLEAN,
 	 Venduto BOOLEAN DEFAULT FALSE,
- FOREIGN KEY(IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo),
+
  FOREIGN KEY(NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
  FOREIGN KEY (NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 
@@ -122,9 +116,6 @@ CHECK (
 	CHECK(AgenteImmobiliare.EmailAgente LIKE '_%@%.__%');
 	
 
-	--Indirizzo
-		--Possibili Constrains per limitare errori con le API da valutare 
-		
 	--Immobile
 
 		ALTER TABLE Immobile ADD CONSTRAINT PrezzoImmobile
@@ -278,21 +269,14 @@ INSERT INTO AdminSupport (NomeSupport, CognomeSupport, EmailSupport, PasswordSup
 ('Lucia', 'Marini', 'support.marini@email.com', 'support101!', 'ViviCasa'),
 ('Roberto', 'Serra', 'support.serra@email.com', 'support102!', 'TorinoHome');
 
--- Inserimento dati nella tabella Indirizzo
-INSERT INTO Indirizzo (IdIndirizzo, Cap, Provincia, Citta, Via, NumeroCivico, Regione) VALUES
-(1, 20121, 'Milano', 'Milano', 'Via Roma', '10', 'Lombardia'),
-(2, 00100, 'Roma', 'Roma', 'Viale Europa', '50', 'Lazio'),
-(3, 35122, 'Padova', 'Padova', 'Corso Milano', '25', 'Veneto'),
-(4, 10121, 'Torino', 'Torino', 'Piazza Castello', '8', 'Piemonte'),
-(5, 50123, 'Firenze', 'Firenze', 'Via Tornabuoni', '5', 'Toscana');
 
 -- Inserimento dati nella tabella Immobile
-INSERT INTO Immobile (IdImmobile, IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
-(1, 1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 80, 'Appartamento', 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
-(2, 2, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 100, 'Villa', 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
-(3, 3, 'prova@gmail.com', 'MilanCase', 180000, 'Affitto', 60, 'Bilocale', 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
-(4, 4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 85, 'Attico', 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
-(5, 5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 75, 'Trilocale', 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
+INSERT INTO Immobile (IdImmobile, IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, TipoImmobile, Latitudine, Longitudine, Superficie, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
+(1, 1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 'Appartamento', 41.902782, 12.496366, 80, 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
+(2, 2, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 'Villa', 41.891930, 12.511330, 100, 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
+(3, 3, 'prova@gmail.com', 'MilanCase', 180000, 'Affitto', 'Bilocale', 45.464664, 9.188540, 60, 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+(4, 4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 'Attico', 45.465422, 9.185924, 85, 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
+(5, 5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 'Trilocale', 45.070339, 7.686864, 75, 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
 
 -- Inserimento dati nella tabella Offerta
 INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta) VALUES

@@ -21,7 +21,6 @@ import javax.swing.Timer;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -31,8 +30,9 @@ public class Ricerca extends JPanel {
 
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
     private JPopupMenu popupMenu;
+    private final String FilterString = "Indifferente" ;
     private static final IconClass iconSet = new IconClass();
-    String token;
+    private String token;
     public Ricerca() {
         initComponents();
         initializePopupMenu(); // Inizializza il menu
@@ -77,10 +77,10 @@ public class Ricerca extends JPanel {
         buttonCancellaFiltri.addActionListener(e -> {
             comboBoxTipVendita.setSelectedIndex(0);
             for (JSpinner jSpinner : Arrays.asList(spinnerBagni, spinnerStanze)) {
-                jSpinner.setValue("Indifferente");
+                jSpinner.setValue(FilterString);
             }
             comboBoxClasseE.setSelectedIndex(0);
-            spinnerPiani.setValue("Indifferente");
+            spinnerPiani.setValue(FilterString);
             hospitalsCheckBox.setSelected(false);
             parkCheckBox.setSelected(false);
             schoolsCheckBox.setSelected(false);
@@ -205,15 +205,13 @@ public class Ricerca extends JPanel {
             JPanel actualMapDisplayPanel = new JPanel(new BorderLayout()); // Pannello per JXMapViewer
             mapPanelInDialog.add(actualMapDisplayPanel, BorderLayout.CENTER);
 
-            SimplifiedMapLoader.createClickableMap(actualMapDisplayPanel, initialPos, 10, event -> {
-                SwingUtilities.invokeLater(() -> { // Assicurati che l'aggiornamento della UI sia sull'EDT
-                    if (event.getAddress() != null) {
-                        selectedAddressField.setText(event.getAddress());
-                    } else {
-                        selectedAddressField.setText("Indirizzo non valido o fuori confine Italiano");
-                    }
-                });
-            });
+            SimplifiedMapLoader.createClickableMap(actualMapDisplayPanel, initialPos, 10, event -> SwingUtilities.invokeLater(() -> { // Assicurati che l'aggiornamento della UI sia sull'EDT
+                if (event.getAddress() != null) {
+                    selectedAddressField.setText(event.getAddress());
+                } else {
+                    selectedAddressField.setText("Indirizzo non valido o fuori confine Italiano");
+                }
+            }));
 
             mapDialogInstance.setLocationRelativeTo(frame);
             mapDialogInstance.setVisible(true); // Mostra il dialogo
@@ -323,7 +321,7 @@ public class Ricerca extends JPanel {
     private void performSearchAction(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
-            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token));
+            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token,internalFrameFiltri));
             frame.revalidate();
             frame.repaint();
         } else {
@@ -361,7 +359,7 @@ public class Ricerca extends JPanel {
         buttonAccountAmministrazione.addActionListener(e -> {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
-            frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
             frame.revalidate();
             frame.repaint();
         });
@@ -398,7 +396,7 @@ public class Ricerca extends JPanel {
         labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
         labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
         labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
-        buttonAccountAmministrazione.setIcon(iconSet.getAccauntAministazioneIcon());
+        buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
 
     }
 
@@ -483,6 +481,7 @@ public class Ricerca extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // Generated using JFormDesigner Evaluation license - Marco
         labelTitolo = new JLabel();
         mapButton = new JButton();
         searchButton = new JButton();
@@ -528,6 +527,11 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
+        0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
+        . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
+        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
+        beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -870,7 +874,7 @@ public class Ricerca extends JPanel {
 
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Evaluation license - Simone Sommella
+    // Generated using JFormDesigner Evaluation license - Marco
     private JLabel labelTitolo;
     private JButton mapButton;
     private JButton searchButton;

@@ -34,13 +34,15 @@ new FormModel {
 					"value": "cell 1 0,align center center,grow 0 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonCalendario"
-					"icon": new com.jformdesigner.model.SwingIcon( 2, "OptionPane.informationIcon" )
+					name: "buttonClendario"
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+					"horizontalTextPosition": 0
+					"verticalTextPosition": 3
+					"font": new java.awt.Font( "Segoe UI", 0, 14 )
 					"background": new java.awt.Color( 255, 255, 255, 0 )
 					"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
-					"borderPainted": false
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 2 0,align center center,grow 0 0"
+					"value": "cell 2 0,grow"
 				} )
 				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 					name: "menuBarOpzioni"
@@ -71,7 +73,7 @@ new FormModel {
 						} )
 					} )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 4 0,align trailing top,grow 0 0"
+					"value": "cell 4 0,alignx trailing,grow 0 100"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "north"
@@ -98,7 +100,7 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "insets 0,hidemode 3,gap 5 5"
 				"$columnConstraints": "[88,grow 1,fill][grow 1,fill][grow 1,fill][grow 1,fill]"
-				"$rowConstraints": "[33,fill]"
+				"$rowConstraints": "[33,fill][]"
 			} ) {
 				name: "panelBottomBar"
 				"border": new javax.swing.border.EtchedBorder( 1, null, null )
@@ -131,7 +133,14 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 30, 20 )
-			"size": new java.awt.Dimension( 660, 435 )
+			"size": new java.awt.Dimension( 655, 435 )
+		} )
+		add( new FormComponent( "com.toedter.calendar.JCalendar" ) {
+			name: "calendar"
+			"weekOfYearVisible": false
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 130, 480 )
+			"size": new java.awt.Dimension( 370, 258 )
 		} )
 	}
 }

@@ -17,7 +17,6 @@ public class Home extends JPanel {
     }
     public JPanel createHomePanel(JFrame frame) {
         titolo.setText("Benvenuto nella Home");
-
         accessoButton.setText("Entra");
         accessoButton.addActionListener(e -> {
 
@@ -42,7 +41,7 @@ public class Home extends JPanel {
         JFrame frame = new JFrame("Home");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setMinimumSize(new Dimension(1000, 800));
         frame.setLocationRelativeTo(null);
         frame.setContentPane(new Home().createHomePanel(frame));// Schermata iniziale
@@ -50,19 +49,12 @@ public class Home extends JPanel {
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Simone Sommella
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
+        // Generated using JFormDesigner Evaluation license - Marco
         titolo = new JLabel();
         accessoButton = new JButton();
 
         //======== this ========
-        setPreferredSize(new Dimension(500, 600));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
-        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER
-        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font
-        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
-        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er"
-        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -98,8 +90,8 @@ public class Home extends JPanel {
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Simone Sommella
+    // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
+    // Generated using JFormDesigner Evaluation license - Marco
     private JLabel titolo;
     private JButton accessoButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

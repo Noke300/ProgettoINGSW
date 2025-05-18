@@ -8,18 +8,15 @@ import controller.Controller;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import gui.costum_components.SimplifiedMapLoader;
+import model.Immobile;
 import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,20 +24,16 @@ import java.util.Objects;
  * @author marco
  */
 public class InterfacciaListaImmobili extends JPanel {
-    private static final String fontName = "Segue UI";
+    private static final String FONT_NAME = "Segue UI";
     private static final IconClass iconSet = new IconClass();
     String token;
 
     private JPanel selectedPanel = null;
-    private final Color defaultColor = new Color(192, 192, 192);
-    private final Border compoundBorder = BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(defaultColor, 2, true),
-            new TitledBorder("Casa")
-    );
+
     //--Border per gli immobili selected
     private final Color borderColor = new Color(24, 122, 26);
     private final Color selectionColor = new Color(24, 122, 26);
-    private final Font borderFont = new Font(fontName, Font.BOLD, 18);
+    private final Font borderFont = new Font(FONT_NAME, Font.BOLD, 18);
 
     private static class BorderStyler {
         public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
@@ -67,38 +60,50 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, Controller control,String token) {
+    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, Controller control,String token,JPanel internalFrameFiltri) {
         this.token=token;
         initComponents();
 
         internalFrameFiltri.setVisible(false);
-        setUpOpzioniMenu(frame,control,checkBoxesList);
+        setUpOpzioniMenu(frame,control);
         setUpComponents();
 
         searchButton.addActionListener(e -> {
-            panelMap.removeAll();
-            MapLoader.createMapPanel(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())),checkBoxesList,panelMap);
-            panelMap.revalidate();
-            panelMap.repaint();
+            if(!searchField.getText().isEmpty()) {
+                panelMap.removeAll();
+                MapLoader.createMapPanel(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap);
+                panelMap.revalidate();
+                panelMap.repaint();
+            }else{
+                JOptionPane.showMessageDialog(frame,
+                        "Per favore, inserisci un indirizzo.",
+                        "Nessun indirizzo inserito", JOptionPane.WARNING_MESSAGE);
+            }
             
         });
         //--- 7. Filtri  ---
-        buttonFiltri.addActionListener(e -> internalFrameFiltri.setVisible(!internalFrameFiltri.isVisible()));
-        buttonConfermaFiltri.addActionListener(e -> {
-            internalFrameFiltri.setVisible(false);
+        JButton buttonConfermaFiltri = new JButton("Conferma");
+        internalFrameFiltri.remove(21);
+        internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
 
-        });
-        
-        buttonCancellaFiltri.addActionListener(e -> {
-            comboBoxTipVendita.setSelectedIndex(0);
-            for (JSpinner jSpinner : Arrays.asList(spinnerBagni, spinnerStanze)) {
-                jSpinner.setValue("Indifferente");
-            }
-            comboBoxClasseE.setSelectedIndex(0);
-            spinnerPiani.setValue("Indifferente");
-            hospitalsCheckBox.setSelected(false);
-            parkCheckBox.setSelected(false);
-            schoolsCheckBox.setSelected(false);
+
+        buttonFiltri.addActionListener(e -> {
+            internalFrameFiltri.setVisible(true);
+            final JDialog filterDialog = new JDialog(frame, "Filtri", true);
+            filterDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            filterDialog.setSize(700, 550);
+            filterDialog.setResizable(false);
+            filterDialog.setContentPane(internalFrameFiltri);
+
+            ActionListener actionListener = e1 -> {
+               internalFrameFiltri.setVisible(false);
+                filterDialog.setVisible(false);
+                filterDialog.dispose();
+            };
+
+            buttonConfermaFiltri.addActionListener(actionListener);
+            filterDialog.setLocationRelativeTo(frame);
+            filterDialog.setVisible(true);
         });
         
         MapLoader.createMapPanel(geoPosition,checkBoxesList,panelMap);
@@ -256,20 +261,6 @@ public class InterfacciaListaImmobili extends JPanel {
     }
     private void navigateToDetailsPage(JPanel panel,Controller control,String token) {
         // Get the property name/ID from the panel border
-        String title;
-        Border currentBorder = panel.getBorder();
-
-        if (currentBorder instanceof CompoundBorder) {
-            // Extract title from an inner border if it's a CompoundBorder
-            TitledBorder innerBorder = (TitledBorder) ((CompoundBorder) currentBorder).getInsideBorder();
-            title = innerBorder.getTitle();
-        } else if (currentBorder instanceof TitledBorder) {
-            // Extract title directly for a simple TitledBorder
-            title = ((TitledBorder) currentBorder).getTitle();
-        } else {
-            // If no title is found, assign a default value
-            title = "Unknown";
-        }
         // Create and navigate to the details page
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (frame != null) {
@@ -282,6 +273,19 @@ public class InterfacciaListaImmobili extends JPanel {
             System.err.println("Parent frame not found for navigation.");
         }
     }
+
+    private void caricametoImmobili(List<JPanel> list,Controller control,String token) {
+        // Crea un nuovo JPanel per ogni immobile
+        for (Immobile immobile : control.getImmos()) {
+            JPanel panel = createImmobileSingoloPanel(immobile.getTipoVendita(),control,token);
+            list.add(panel);
+        }
+        // Aggiungi i pannelli al panelListaImmobile
+        panelListaImmobile.removeAll();
+        for (JPanel panel : list) {
+            panelListaImmobile.add(panel);
+        }
+    }
     private void setUpLogInOutButton(String token){
         if (token.isEmpty()){
             logInButton.setText("Login");
@@ -291,7 +295,8 @@ public class InterfacciaListaImmobili extends JPanel {
             logInButton.setIcon(iconSet.getLogOutIcon());
         }
     }
-    private void setUpOpzioniMenu(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+    private void setUpOpzioniMenu(JFrame frame, Controller control) {
+
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
             menuOpzioni.setVisible(false);
@@ -319,7 +324,7 @@ public class InterfacciaListaImmobili extends JPanel {
         buttonAccountAmministrazione.addActionListener(e -> {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
-            frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
             frame.revalidate();
             frame.repaint();
         });
@@ -331,33 +336,28 @@ public class InterfacciaListaImmobili extends JPanel {
         });
 
     }
-
     private void setUpComponents() {
         //--Cursor
 
         mapButton.addMouseListener(iconSet.cursorButton());
         buttonFiltri.addMouseListener(iconSet.cursorButton());
-        buttonConfermaFiltri.addMouseListener(iconSet.cursorButton());
-        buttonCancellaFiltri.addMouseListener(iconSet.cursorButton());
+       
         logInButton.addMouseListener(iconSet.cursorButton());
         buttonAccountAmministrazione.addMouseListener(iconSet.cursorButton());
         backButtonHome.addMouseListener(iconSet.cursorButton());
         listaTipi.addMouseListener(iconSet.cursorButton());
-        comboBoxTipVendita.addMouseListener(iconSet.cursorButton());
+
         menuOpzioni.addMouseListener(iconSet.cursorButton());
         comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
 
         //--Icon
         setUpLogInOutButton(this.token);
+        ricercaButton.setIcon(iconSet.getSearcherIcon());
         mapButton.setIcon(iconSet.getMapIcon());
         searchButton.setIcon(iconSet.getSearcherIcon());
         backButtonHome.setIcon(iconSet.getHomeButtonIcon());
-        labelPiani.setIcon(iconSet.getPianiIcon());
-        labelTipoVendita.setIcon(iconSet.getTipoVenditaIcon());
-        labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
-        labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
-        labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
-        buttonAccountAmministrazione.setIcon(iconSet.getAccauntAministazioneIcon());
+       
+        buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
 
     }
     private void selectPanel(JPanel panel) {
@@ -416,52 +416,27 @@ public class InterfacciaListaImmobili extends JPanel {
         mapButton = new JButton();
         searchButton = new JButton();
         searchField = new JTextField();
+        buttonFiltri = new JButton();
         listaTipi = new JComboBox<>();
         menuBarContenitorePrezziBox = new JMenuBar();
         menuPrezzi = new JMenu();
         comboBoxPrezzoMax = new JComboBox<>();
         comboBoxPrezzoMinimo = new JComboBox<>();
         comboBoxSuperfice = new JComboBox<>();
-        buttonFiltri = new JButton();
         panelMap = new JPanel();
         panelListaImmobileScroll = new JScrollPane();
         panelListaImmobile = new JPanel();
         panelBottomBar = new JPanel();
         buttonAggiungImmobile = new JButton();
         buttonAggiungiOfferta = new JButton();
-        internalFrameFiltri = new JPanel();
-        labelTipoVendita = new JLabel();
-        comboBoxTipVendita = new JComboBox<>();
-        labelNumeroBagni = new JLabel();
-        spinnerBagni = new JSpinner();
-        labelStanze = new JLabel();
-        spinnerStanze = new JSpinner();
-        labelClasseE = new JLabel();
-        comboBoxClasseE = new JComboBox<>();
-        labelPiani = new JLabel();
-        spinnerPiani = new JSpinner();
-        schoolsCheckBox = new JCheckBox();
-        parkCheckBox = new JCheckBox();
-        hospitalsCheckBox = new JCheckBox();
-        label1 = new JLabel();
-        toggleButtonAscensore = new JToggleButton();
-        toggleButtonBalcone = new JToggleButton();
-        toggleButtonCantina = new JToggleButton();
-        toggleButtonClimatizzazione = new JToggleButton();
-        toggleButtonPortineria = new JToggleButton();
-        separator1 = new JSeparator();
-        buttonCancellaFiltri = new JButton();
-        buttonConfermaFiltri = new JButton();
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax .
-        swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border
-        . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog"
-        , java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) , getBorder
-        () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java
-        . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException
-        ( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
+        0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
+        . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
+        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
+        beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -496,16 +471,17 @@ public class InterfacciaListaImmobili extends JPanel {
                 "fill,hidemode 3,aligny center",
                 // columns
                 "[fill]" +
-                "[662,grow]0" +
-                "[662,grow]0" +
-                "[662,grow]0" +
+                "[159,grow]rel" +
+                "[96,grow]rel" +
+                "[123,grow]rel" +
                 "[fill]0" +
-                "[255,grow,center]" +
+                "[255,grow,center]0" +
+                "[255,grow,center]para" +
                 "[fill]",
                 // rows
                 "[22,grow,fill]0" +
                 "[75,grow,top]0" +
-                "[45,grow,shrink 0,fill]para"));
+                "[]para"));
 
             //======== menuBarOpzioni ========
             {
@@ -518,6 +494,8 @@ public class InterfacciaListaImmobili extends JPanel {
                     menuOpzioni.setText("Opzioni");
                     menuOpzioni.setIcon(UIManager.getIcon("Table.descendingSortIcon"));
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+                    menuOpzioni.setHorizontalAlignment(SwingConstants.CENTER);
+                    menuOpzioni.setHorizontalTextPosition(SwingConstants.LEFT);
 
                     //---- logInButton ----
                     logInButton.setText("Log In");
@@ -544,7 +522,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
-            panelTopBar.add(menuBarOpzioni, "cell 5 0 2 1,aligny top,grow 100 0");
+            panelTopBar.add(menuBarOpzioni, "cell 5 0 3 1,align right top,grow 0 0");
 
             //---- mapButton ----
             mapButton.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
@@ -562,12 +540,18 @@ public class InterfacciaListaImmobili extends JPanel {
             searchButton.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
             searchButton.setBorder(null);
             searchButton.setBorderPainted(false);
-            panelTopBar.add(searchButton, "cell 4 1,align right center,grow 0 0");
+            panelTopBar.add(searchButton, "cell 5 1 2 1,align right center,grow 0 0");
 
             //---- searchField ----
             searchField.setBackground(Color.white);
             searchField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-            panelTopBar.add(searchField, "cell 1 1 4 1,aligny center,grow 100 0");
+            panelTopBar.add(searchField, "cell 1 1 6 1,aligny center,grow 100 0");
+
+            //---- buttonFiltri ----
+            buttonFiltri.setText("Filtri");
+            buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
+            buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            panelTopBar.add(buttonFiltri, "cell 1 2,align left center,grow 0 0");
 
             //---- listaTipi ----
             listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -576,7 +560,7 @@ public class InterfacciaListaImmobili extends JPanel {
             }));
             listaTipi.setSelectedIndex(0);
             listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(listaTipi, "cell 1 2,align left center,grow 0 0");
+            panelTopBar.add(listaTipi, "cell 2 2,align left center,grow 0 0");
 
             //======== menuBarContenitorePrezziBox ========
             {
@@ -612,7 +596,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarContenitorePrezziBox.add(menuPrezzi);
             }
-            panelTopBar.add(menuBarContenitorePrezziBox, "cell 2 2,align center center,grow 0 0");
+            panelTopBar.add(menuBarContenitorePrezziBox, "cell 3 2,align left center,grow 0 0");
 
             //---- comboBoxSuperfice ----
             comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -620,13 +604,7 @@ public class InterfacciaListaImmobili extends JPanel {
             }));
             comboBoxSuperfice.setForeground(Color.black);
             comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(comboBoxSuperfice, "cell 3 2,align left center,grow 0 0");
-
-            //---- buttonFiltri ----
-            buttonFiltri.setText("Filtri");
-            buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-            buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(buttonFiltri, "cell 4 2,align left center,grow 0 0");
+            panelTopBar.add(comboBoxSuperfice, "cell 5 2,align left center,grow 0 0");
         }
         add(panelTopBar, "north,aligny top,growy 0");
 
@@ -678,165 +656,7 @@ public class InterfacciaListaImmobili extends JPanel {
             panelBottomBar.add(buttonAggiungiOfferta, "cell 3 0 1 2,aligny center,growy 0");
         }
         add(panelBottomBar, "south");
-
-        //======== internalFrameFiltri ========
-        {
-            internalFrameFiltri.setFont(new Font("Inter", Font.PLAIN, 22));
-            internalFrameFiltri.setBorder(null);
-            internalFrameFiltri.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
-            (0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
-            .TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt
-            .Color.red),internalFrameFiltri. getBorder()));internalFrameFiltri. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
-            propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException()
-            ;}});
-            internalFrameFiltri.setLayout(new MigLayout(
-                "fill,hidemode 3,align center center",
-                // columns
-                "[94,fill]rel" +
-                "[94,fill]rel" +
-                "[123,fill]",
-                // rows
-                "[22]" +
-                "[]" +
-                "[]" +
-                "[]" +
-                "[]" +
-                "[]0" +
-                "[]para" +
-                "[]para" +
-                "[]para" +
-                "[]para" +
-                "[]0" +
-                "[27,center]"));
-
-            //---- labelTipoVendita ----
-            labelTipoVendita.setText("Tipo Di Vendita");
-            labelTipoVendita.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            labelTipoVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(labelTipoVendita, "cell 0 0");
-
-            //---- comboBoxTipVendita ----
-            comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Qualsiasi"
-            }));
-            comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(comboBoxTipVendita, "cell 2 0");
-
-            //---- labelNumeroBagni ----
-            labelNumeroBagni.setText("Numero Bagni");
-            labelNumeroBagni.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            labelNumeroBagni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(labelNumeroBagni, "cell 0 1");
-
-            //---- spinnerBagni ----
-            spinnerBagni.setModel(new SpinnerListModel(new String[] {"Indifferente", "0", "1", "2", "3", "4", "5", "6+"}));
-            spinnerBagni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(spinnerBagni, "cell 2 1");
-
-            //---- labelStanze ----
-            labelStanze.setText("Numero Stanze");
-            labelStanze.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            labelStanze.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(labelStanze, "cell 0 2");
-
-            //---- spinnerStanze ----
-            spinnerStanze.setModel(new SpinnerListModel(new String[] {"Indifferente", "1", "2", "3", "4", "5", "6+"}));
-            spinnerStanze.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(spinnerStanze, "cell 2 2");
-
-            //---- labelClasseE ----
-            labelClasseE.setText("Classe Energetica");
-            labelClasseE.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            labelClasseE.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(labelClasseE, "cell 0 3");
-
-            //---- comboBoxClasseE ----
-            comboBoxClasseE.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Qualsiasi"
-            }));
-            comboBoxClasseE.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(comboBoxClasseE, "cell 2 3");
-
-            //---- labelPiani ----
-            labelPiani.setText("Piano/i");
-            labelPiani.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            labelPiani.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(labelPiani, "cell 0 4 2 1");
-
-            //---- spinnerPiani ----
-            spinnerPiani.setModel(new SpinnerListModel(new String[] {"Indifferente", "Terra", "1", "2", "3", "4", "5+"}));
-            spinnerPiani.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(spinnerPiani, "cell 2 4");
-
-            //---- schoolsCheckBox ----
-            schoolsCheckBox.setHorizontalAlignment(SwingConstants.TRAILING);
-            schoolsCheckBox.setText("Scuole");
-            schoolsCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
-            internalFrameFiltri.add(schoolsCheckBox, "cell 0 5,align left bottom,grow 0 0");
-
-            //---- parkCheckBox ----
-            parkCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            parkCheckBox.setText("Parchi");
-            internalFrameFiltri.add(parkCheckBox, "cell 1 5,align left bottom,grow 0 0");
-
-            //---- hospitalsCheckBox ----
-            hospitalsCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            hospitalsCheckBox.setText("Trasporti");
-            hospitalsCheckBox.setToolTipText("");
-            hospitalsCheckBox.setVerticalAlignment(SwingConstants.CENTER);
-            internalFrameFiltri.add(hospitalsCheckBox, "cell 0 6,align left bottom,grow 0 0");
-
-            //---- label1 ----
-            label1.setText("Altre Caratteristiche");
-            label1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            label1.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(label1, "cell 0 7 3 1,alignx center,growx 0");
-
-            //---- toggleButtonAscensore ----
-            toggleButtonAscensore.setText("Ascensore");
-            toggleButtonAscensore.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            toggleButtonAscensore.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonAscensore, "cell 0 8");
-
-            //---- toggleButtonBalcone ----
-            toggleButtonBalcone.setText("Balcone ");
-            toggleButtonBalcone.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            toggleButtonBalcone.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonBalcone, "cell 1 8");
-
-            //---- toggleButtonCantina ----
-            toggleButtonCantina.setText("Cantina");
-            toggleButtonCantina.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            toggleButtonCantina.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonCantina, "cell 2 8");
-
-            //---- toggleButtonClimatizzazione ----
-            toggleButtonClimatizzazione.setText("Climatizzazione");
-            toggleButtonClimatizzazione.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            toggleButtonClimatizzazione.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonClimatizzazione, "cell 0 9");
-
-            //---- toggleButtonPortineria ----
-            toggleButtonPortineria.setText("Portineria");
-            toggleButtonPortineria.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            toggleButtonPortineria.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonPortineria, "cell 1 9");
-
-            //---- separator1 ----
-            separator1.setBackground(Color.black);
-            internalFrameFiltri.add(separator1, "cell 0 10 3 1,aligny bottom,grow 100 0");
-
-            //---- buttonCancellaFiltri ----
-            buttonCancellaFiltri.setText("Cancella");
-            buttonCancellaFiltri.setBackground(new Color(0x603c3e));
-            internalFrameFiltri.add(buttonCancellaFiltri, "cell 1 11,alignx center,grow 0 100");
-
-            //---- buttonConfermaFiltri ----
-            buttonConfermaFiltri.setText("Conferma");
-            buttonConfermaFiltri.setBackground(new Color(0x3b6b3d));
-            internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
-        }
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+        // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -851,41 +671,18 @@ public class InterfacciaListaImmobili extends JPanel {
     private JButton mapButton;
     private JButton searchButton;
     private JTextField searchField;
+    private JButton buttonFiltri;
     private JComboBox<String> listaTipi;
     private JMenuBar menuBarContenitorePrezziBox;
     private JMenu menuPrezzi;
     private JComboBox<String> comboBoxPrezzoMax;
     private JComboBox<String> comboBoxPrezzoMinimo;
     private JComboBox<String> comboBoxSuperfice;
-    private JButton buttonFiltri;
     private JPanel panelMap;
     private JScrollPane panelListaImmobileScroll;
     private JPanel panelListaImmobile;
     private JPanel panelBottomBar;
     private JButton buttonAggiungImmobile;
     private JButton buttonAggiungiOfferta;
-    private JPanel internalFrameFiltri;
-    private JLabel labelTipoVendita;
-    private JComboBox<String> comboBoxTipVendita;
-    private JLabel labelNumeroBagni;
-    private JSpinner spinnerBagni;
-    private JLabel labelStanze;
-    private JSpinner spinnerStanze;
-    private JLabel labelClasseE;
-    private JComboBox<String> comboBoxClasseE;
-    private JLabel labelPiani;
-    private JSpinner spinnerPiani;
-    private JCheckBox schoolsCheckBox;
-    private JCheckBox parkCheckBox;
-    private JCheckBox hospitalsCheckBox;
-    private JLabel label1;
-    private JToggleButton toggleButtonAscensore;
-    private JToggleButton toggleButtonBalcone;
-    private JToggleButton toggleButtonCantina;
-    private JToggleButton toggleButtonClimatizzazione;
-    private JToggleButton toggleButtonPortineria;
-    private JSeparator separator1;
-    private JButton buttonCancellaFiltri;
-    private JButton buttonConfermaFiltri;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -137,6 +137,13 @@
       <artifactId>jfreechart</artifactId>
       <version>1.5.4</version>
     </dependency>
+    <!--Calendario -->
+    <dependency>
+      <groupId>com.toedter</groupId>
+      <artifactId>jcalendar</artifactId>
+      <version>1.4</version>
+    </dependency>
+
 
   </dependencies>
 </project>

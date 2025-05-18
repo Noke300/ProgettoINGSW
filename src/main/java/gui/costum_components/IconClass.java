@@ -19,13 +19,15 @@ public class IconClass {
    private final FontIcon numeroStanzeIcon = FontIcon.of(FontAwesome.DELICIOUS, 24);
    private final FontIcon classeEnergeticaIcon = FontIcon.of(FontAwesome.BOLT, 24);
    private final FontIcon pianiIcon = FontIcon.of(FontAwesomeSolid.ARROW_UP, 24);
-   private final FontIcon accauntAministazioneIcon = FontIcon.of(FontAwesome.USERS, 24);
+   private final FontIcon accountAministazioneIcon = FontIcon.of(FontAwesome.USERS, 24);
    private final FontIcon logInIcon = FontIcon.of(FontAwesomeSolid.DOOR_CLOSED,24);
    private final FontIcon logOutIcon = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
    private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 24);
    private final FontIcon balconeIcon = FontIcon.of(FontAwesome.ARROWS_H, 24);
    private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.BLUE);
    private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,28,new Color(0x59A869));
+   private final FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
+
 
     public FontIcon getSearcherIcon() {
         return searcherIcon;
@@ -51,8 +53,8 @@ public class IconClass {
     public FontIcon getPianiIcon() {
         return pianiIcon;
     }
-    public FontIcon getAccauntAministazioneIcon() {
-        return accauntAministazioneIcon;
+    public FontIcon getAccountAministazioneIcon() {
+        return accountAministazioneIcon;
     }
     public FontIcon getLogInIcon() {
         return logInIcon;
@@ -67,7 +69,7 @@ public class IconClass {
     public FontIcon getAscensoreIcon() {return ascensoreIcon;}
     public FontIcon getBalconeIcon() {return balconeIcon;}
     public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
-
+    public FontIcon getCalendarioIcon() {return calendarioIcon;}
 
     public MouseAdapter cursorButton(){
         return new MouseAdapter() {

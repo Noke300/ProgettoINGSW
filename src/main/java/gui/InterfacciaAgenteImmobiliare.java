@@ -9,38 +9,36 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+
+import java.time.LocalDate;
+import java.util.*;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
+import com.toedter.calendar.*;
 
 import controller.Controller;
+import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
-import org.kordamp.ikonli.swing.FontIcon;
+
 
 /**
  * @author marco
  */
 public class InterfacciaAgenteImmobiliare extends JPanel {
     MapLoader mapLoader = new MapLoader();
+    private static final IconClass iconSet = new IconClass();
     GeoPosition napoli = new GeoPosition(45.464170, 11.885890);
     List<JCheckBox> checkBoxesList = new ArrayList<>();
-    FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
-
     private JPanel selectedPanel = null;
-    private final Color defaultColor = new Color(192, 192, 192);
-    private final Border selectedBorder = BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(defaultColor, 2, true),
-            new TitledBorder("Casa")
-    );
     //--Border per gli immobili selected
     private final Color borderColor = new Color(24, 122, 26);
     private final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
 
+  
     private static class BorderStyler {
         public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
             TitledBorder titledBorder = new TitledBorder(title);
@@ -69,8 +67,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     public InterfacciaAgenteImmobiliare(JFrame frame, Controller control, String token) {
         initComponents();
 
-        buttonCalendario.setIcon(calendarioIcon);
-
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
             menuOpzioni.setVisible(false);
@@ -96,7 +92,8 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             frame.revalidate();
             frame.repaint();
         });
-        
+
+
         mapLoader.createMapPanel(napoli,checkBoxesList,panelMap);
         // Create and add the first panel
 
@@ -131,49 +128,25 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 panelListaImmobile.repaint();
             }
         });
+
+        //--Calendario
+        buttonClendario.setIcon(iconSet.getCalendarioIcon());
+        buttonClendario.setText(LocalDate.now().toString());
+        calendar.setLocale(new Locale("it", "IT"));
+
+        buttonClendario.addActionListener(e -> {
+            final JDialog calendarPopup = new JDialog(frame, "Calendario", true);
+            calendarPopup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            calendarPopup.setSize(500, 350);
+            calendarPopup.setResizable(false);
+            calendarPopup.setContentPane(calendar);
+
+
+            calendarPopup.setLocationRelativeTo(frame);
+            calendarPopup.setVisible(true);
+        });
+
         
-        
-    }
-
-    public static class BackgroundImagePane extends JPanel {
-        private Image backgroundImage;
-
-        public BackgroundImagePane(String resourcePath) {
-            try {
-                URL resourceUrl = getClass().getResource(resourcePath);
-                if (resourceUrl != null) {
-                    // Load the image using ImageIO, which can tell us if it's valid
-                    try {
-                        BufferedImage buffImg = ImageIO.read(resourceUrl);
-                        if (buffImg != null) {
-                            backgroundImage = buffImg;
-                            System.out.println("Successfully loaded valid image: " +
-                                    buffImg.getWidth() + "x" + buffImg.getHeight());
-                        } else {
-                            System.err.println("ImageIO could not read the image - format may be invalid");
-                        }
-                    } catch (IOException ioe) {
-                        System.err.println("Error reading image: " + ioe.getMessage());
-                    }
-                }
-            } catch (Exception e) {
-                // Error handling
-            }
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (backgroundImage != null) {
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-            } else {
-                // Draw a placeholder indicating the image wasn't found
-                g.setColor(Color.RED);
-                g.fillRect(0, 0, getWidth(), getHeight());
-                g.setColor(Color.WHITE);
-                g.drawString("Image not found", 10, 20);
-            }
-        }
     }
 
     private JPanel createImmobileSingoloPanel(String casaName) {
@@ -239,7 +212,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             Border currentBorder = selectedPanel.getBorder();
 
             if (currentBorder instanceof CompoundBorder) {
-                // It's currently selected - extract title from inner border
+                // It's currently selected - extract title from an inner border
                 TitledBorder innerBorder = (TitledBorder)((CompoundBorder)currentBorder).getInsideBorder();
                 title = innerBorder.getTitle();
             } else {
@@ -275,17 +248,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         return selectedPanel;
     }
 
-    private void menuBar1MouseClicked(MouseEvent e) {
-        // TODO add your code here
-    }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Simone Sommella
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
+        // Generated using JFormDesigner Evaluation license - Marco
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
         labelNotifiche = new JLabel();
-        buttonCalendario = new JButton();
+        buttonClendario = new JButton();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         logInButton = new JButton();
@@ -298,17 +268,9 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         buttonAggiungImmobile = new JButton();
         buttonAggiungiOfferta = new JButton();
         buttonElimina = new JButton();
+        calendar = new JCalendar();
 
         //======== this ========
-        setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder (
-        new javax . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion"
-        , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
-        , new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 )
-        ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
-        new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
-        ) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
-        ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -362,12 +324,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             labelNotifiche.setFont(new Font("Segoe UI", Font.PLAIN, 18));
             panelOpzioni.add(labelNotifiche, "cell 1 0,align center center,grow 0 0");
 
-            //---- buttonCalendario ----
-            buttonCalendario.setIcon(UIManager.getIcon("OptionPane.informationIcon"));
-            buttonCalendario.setBackground(new Color(0x00ffffff, true));
-            buttonCalendario.setBorder(null);
-            buttonCalendario.setBorderPainted(false);
-            panelOpzioni.add(buttonCalendario, "cell 2 0,align center center,grow 0 0");
+            //---- buttonClendario ----
+            buttonClendario.setIcon(UIManager.getIcon("FileView.fileIcon"));
+            buttonClendario.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonClendario.setVerticalTextPosition(SwingConstants.BOTTOM);
+            buttonClendario.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            buttonClendario.setBackground(new Color(0x00ffffff, true));
+            buttonClendario.setBorder(null);
+            panelOpzioni.add(buttonClendario, "cell 2 0,grow");
 
             //======== menuBarOpzioni ========
             {
@@ -400,7 +364,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
-            panelOpzioni.add(menuBarOpzioni, "cell 4 0,align trailing top,grow 0 0");
+            panelOpzioni.add(menuBarOpzioni, "cell 4 0,alignx trailing,grow 0 100");
         }
         add(panelOpzioni, "north");
 
@@ -437,7 +401,8 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 "[grow 1,fill]" +
                 "[grow 1,fill]",
                 // rows
-                "[33,fill]"));
+                "[33,fill]" +
+                "[]"));
 
             //---- buttonAggiungImmobile ----
             buttonAggiungImmobile.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
@@ -457,15 +422,18 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             panelBottomBar.add(buttonElimina, "cell 3 0,aligny center,grow 100 0");
         }
         add(panelBottomBar, "south");
+
+        //---- calendar ----
+        calendar.setWeekOfYearVisible(false);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Simone Sommella
+    // Generated using JFormDesigner Evaluation license - Marco
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
     private JLabel labelNotifiche;
-    private JButton buttonCalendario;
+    private JButton buttonClendario;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JButton logInButton;
@@ -478,5 +446,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     private JButton buttonAggiungImmobile;
     private JButton buttonAggiungiOfferta;
     private JButton buttonElimina;
+    private JCalendar calendar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

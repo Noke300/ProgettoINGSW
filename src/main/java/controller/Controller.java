@@ -113,4 +113,7 @@ public class Controller {
         return response.body();
     }
 
+    public Immobile[] getImmos() {
+        return null;
+    }
 }

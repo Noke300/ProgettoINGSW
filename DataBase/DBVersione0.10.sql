@@ -289,7 +289,7 @@ INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoO
 
 -- Inserimento dati nella tabella Visita
 INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma) VALUES
-(1, 'mario.rossi@email.com', '10:00', '2025-05-05', TRUE),
+(1, 'mario.rossi@email.com', '10:00', '2025-12-05', TRUE),
 (2, 'luca.bianchi@email.com', '14:30', '2025-09-06', FALSE),
 (3, 'giulia.verdi@email.com', '16:00', '2025-08-07', TRUE),
 (4, 'anna.neri@email.com', '11:00', '2025-07-08', FALSE),

@@ -85,6 +85,43 @@ public class Ricerca extends JPanel {
             parkCheckBox.setSelected(false);
             schoolsCheckBox.setSelected(false);
         });
+       toggleButtonCantina.addActionListener(e -> {
+           if (toggleButtonCantina.isSelected()){
+               toggleButtonCantina.setBackground(iconSet.getMainColor());
+           }else{
+               toggleButtonCantina.setBackground(Color.WHITE);
+           }
+       });
+        toggleButtonBalcone.addActionListener(e -> {
+            if (toggleButtonBalcone.isSelected()){
+                toggleButtonBalcone.setBackground(iconSet.getMainColor());
+            }else{
+                toggleButtonBalcone.setBackground(Color.WHITE);
+            }
+        });
+        toggleButtonAscensore.addActionListener(e -> {
+            if (toggleButtonAscensore.isSelected()){
+                toggleButtonAscensore.setBackground(iconSet.getMainColor());
+            }else{
+                toggleButtonAscensore.setBackground(Color.WHITE);
+            }
+        });
+        toggleButtonPortineria.addActionListener(e -> {
+            if (toggleButtonPortineria.isSelected()){
+                toggleButtonPortineria.setBackground(iconSet.getMainColor());
+            }else {
+                toggleButtonPortineria.setBackground(Color.WHITE);
+            }
+        });
+        toggleButtonClimatizzazione.addActionListener(e -> {
+            if (toggleButtonClimatizzazione.isSelected()){
+                toggleButtonClimatizzazione.setBackground(iconSet.getMainColor());
+            }else{
+                toggleButtonClimatizzazione.setBackground(Color.WHITE);
+            }
+        });
+
+
 
         // --- 8. Prezzi ---
         menuPrezzi.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
@@ -375,6 +412,9 @@ public class Ricerca extends JPanel {
         for (JButton jButton : Arrays.asList(mapButton, searchButton, buttonFiltri, buttonConfermaFiltri, buttonCancellaFiltri, logInButton, buttonAccountAmministrazione, backButtonHome)) {
             jButton.addMouseListener(iconSet.cursorButton());
         }
+        for(JToggleButton toggleButton : Arrays.asList(toggleButtonAscensore, toggleButtonBalcone, toggleButtonCantina, toggleButtonClimatizzazione, toggleButtonPortineria)){
+            toggleButton.addMouseListener(iconSet.cursorButton());
+        }
         listaTipi.addMouseListener(iconSet.cursorButton());
         comboBoxTipVendita.addMouseListener(iconSet.cursorButton());
         menuOpzioni.addMouseListener(iconSet.cursorButton());
@@ -393,6 +433,11 @@ public class Ricerca extends JPanel {
         labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
         buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
 
+        toggleButtonAscensore.setIcon(iconSet.getAscensoreIcon());
+        toggleButtonBalcone.setIcon(iconSet.getBalconeIcon());
+        toggleButtonCantina.setIcon(iconSet.getCantinaIcon());
+        toggleButtonClimatizzazione.setIcon(iconSet.getClimatizzazioneIcon());
+        toggleButtonPortineria.setIcon(iconSet.getPortineriaIcon());
     }
 
     private List<String> fetchAutocompleteSuggestions(String input) {
@@ -522,11 +567,12 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
-        0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
-        . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-        beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
+        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
+        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ),
+        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
+        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () ))
+        throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -855,7 +901,7 @@ public class Ricerca extends JPanel {
 
             //---- buttonConfermaFiltri ----
             buttonConfermaFiltri.setText("Conferma");
-            buttonConfermaFiltri.setBackground(new Color(0x3b6b3d));
+            buttonConfermaFiltri.setBackground(UIManager.getColor("Actions.Green"));
             internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
         }
         add(internalFrameFiltri, "east");

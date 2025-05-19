@@ -6,21 +6,18 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import com.toedter.calendar.*;
 
 import controller.Controller;
-import gui.costum_components.IconClass;
-import gui.costum_components.MapLoader;
+
+import gui.costum_components.*;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -37,8 +34,10 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     //--Border per gli immobili selected
     private final Color borderColor = new Color(24, 122, 26);
     private final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
+    private List<ColoredDate> coloredDates = new ArrayList<>();
 
-  
+
+
     private static class BorderStyler {
         public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
             TitledBorder titledBorder = new TitledBorder(title);
@@ -130,21 +129,90 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
 
         //--Calendario
-        buttonClendario.setIcon(iconSet.getCalendarioIcon());
-        buttonClendario.setText(LocalDate.now().toString());
-        calendar.setLocale(new Locale("it", "IT"));
+        // Then in your initialization or constructor method
+        buttonCalendario.setIcon(iconSet.getCalendarioIcon());
+        buttonCalendario.setText(LocalDate.now().toString());
 
-        buttonClendario.addActionListener(e -> {
+        JCalendar calendar = new JCalendar();
+        calendar.setLocale(Locale.ITALY);
+        JDayChooser dayChooser = calendar.getDayChooser();
+
+// Create a new implementation of DateColorManager
+        DateColorManager dateColorManager = new DateColorManager(dayChooser);
+
+// Create dates properly using Calendar
+        Calendar cal = Calendar.getInstance();
+        cal.set(2025, Calendar.MAY, 14);
+        coloredDates.add(new ColoredDate(cal.getTime()));
+        cal.set(2025, Calendar.MAY, 20);
+        coloredDates.add(new ColoredDate(cal.getTime()));
+
+// Initialize the date manager with the colored dates right away
+        dateColorManager.setColoredDates(coloredDates);
+
+        calendar.addPropertyChangeListener(evt -> {
+            if ("calendar".equals(evt.getPropertyName())) {
+                dateColorManager.updateDayColors();
+            }
+        });
+
+        JPanel controlPanel = new JPanel(new BorderLayout());
+        JButton addDateButton = new JButton("Info Giorno");
+        controlPanel.add(addDateButton, BorderLayout.SOUTH);
+
+        buttonCalendario.addActionListener(e -> {
             final JDialog calendarPopup = new JDialog(frame, "Calendario", true);
             calendarPopup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            calendarPopup.setSize(500, 350);
+            calendarPopup.setSize(700, 450);
             calendarPopup.setResizable(false);
-            calendarPopup.setContentPane(calendar);
-
-
+            calendarPopup.add(calendar, BorderLayout.CENTER);
+            calendarPopup.add(controlPanel, BorderLayout.SOUTH);
             calendarPopup.setLocationRelativeTo(frame);
             calendarPopup.setVisible(true);
+
+            // We don't need to add this listener every time the calendar button is clicked
+            // This should be set up once outside the action listener
         });
+
+// Set up the addDateButton action listener outside the calendar button action listener
+        addDateButton.addActionListener(h -> {
+            // Get the currently selected date from the calendar
+            Date selectedDate = calendar.getDate();
+            //selectedDate.setDate(selectedDate.getDate() + 7);
+            // Create a new Calendar instance for the selected date
+            Calendar selectedCal = Calendar.getInstance();
+            selectedCal.setTime(selectedDate);
+
+            // Create a properly normalized date to ensure we're working with the exact date selected
+            Calendar normalizedCal = Calendar.getInstance();
+            normalizedCal.clear(); // Clear all fields
+            normalizedCal.set(Calendar.YEAR, selectedCal.get(Calendar.YEAR));
+            normalizedCal.set(Calendar.MONTH, selectedCal.get(Calendar.MONTH));
+            normalizedCal.set(Calendar.DAY_OF_MONTH, selectedCal.get(Calendar.DAY_OF_MONTH));
+
+            // Create ColoredDate with the normalized date
+            ColoredDate newColoredDate = new ColoredDate(normalizedCal.getTime());
+
+            // Check if this date is already colored to avoid duplicates
+            boolean dateAlreadyExists = false;
+            for (ColoredDate existingDate : coloredDates) {
+                if (existingDate.isSameDay(normalizedCal.getTime())) {
+                    dateAlreadyExists = true;
+                    break;
+                }
+            }
+
+            // Only add if it's a new date
+            if (!dateAlreadyExists) {
+                coloredDates.add(newColoredDate);
+                dateColorManager.setColoredDates(coloredDates);
+                System.out.println("Added colored date: " + normalizedCal.getTime());
+            } else {
+                System.out.println("Date already colored: " + normalizedCal.getTime());
+            }
+        });
+
+// Set up the addDateButton action listener outside the calendar button action listener
 
         
     }
@@ -255,7 +323,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
         labelNotifiche = new JLabel();
-        buttonClendario = new JButton();
+        buttonCalendario = new JButton();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         logInButton = new JButton();
@@ -268,9 +336,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         buttonAggiungImmobile = new JButton();
         buttonAggiungiOfferta = new JButton();
         buttonElimina = new JButton();
-        calendar = new JCalendar();
 
         //======== this ========
+        setBorder(new BevelBorder(BevelBorder.LOWERED));
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
+        0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
+        . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
+        red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
+        beans. PropertyChangeEvent e) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -324,14 +397,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             labelNotifiche.setFont(new Font("Segoe UI", Font.PLAIN, 18));
             panelOpzioni.add(labelNotifiche, "cell 1 0,align center center,grow 0 0");
 
-            //---- buttonClendario ----
-            buttonClendario.setIcon(UIManager.getIcon("FileView.fileIcon"));
-            buttonClendario.setHorizontalTextPosition(SwingConstants.CENTER);
-            buttonClendario.setVerticalTextPosition(SwingConstants.BOTTOM);
-            buttonClendario.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            buttonClendario.setBackground(new Color(0x00ffffff, true));
-            buttonClendario.setBorder(null);
-            panelOpzioni.add(buttonClendario, "cell 2 0,grow");
+            //---- buttonCalendario ----
+            buttonCalendario.setIcon(UIManager.getIcon("FileView.fileIcon"));
+            buttonCalendario.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonCalendario.setVerticalTextPosition(SwingConstants.BOTTOM);
+            buttonCalendario.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            buttonCalendario.setBackground(new Color(0x00ffffff, true));
+            buttonCalendario.setBorder(null);
+            panelOpzioni.add(buttonCalendario, "cell 2 0,grow");
 
             //======== menuBarOpzioni ========
             {
@@ -422,9 +495,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             panelBottomBar.add(buttonElimina, "cell 3 0,aligny center,grow 100 0");
         }
         add(panelBottomBar, "south");
-
-        //---- calendar ----
-        calendar.setWeekOfYearVisible(false);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -433,7 +503,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
     private JLabel labelNotifiche;
-    private JButton buttonClendario;
+    private JButton buttonCalendario;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JButton logInButton;
@@ -446,6 +516,5 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     private JButton buttonAggiungImmobile;
     private JButton buttonAggiungiOfferta;
     private JButton buttonElimina;
-    private JCalendar calendar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

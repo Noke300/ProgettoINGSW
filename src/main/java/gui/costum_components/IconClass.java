@@ -9,10 +9,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class IconClass {
-
+   private final Color mainColor = new Color(0x59A869);
    private final FontIcon searcherIcon = FontIcon.of(FontAwesome.SEARCH_PLUS, 24);
    private final FontIcon mapIcon = FontIcon.of(FontAwesome.GLOBE, 24);
-   private final FontIcon homeIcon = FontIcon.of(FontAwesome.HOME,100,new Color(0x59A869));
+   private final FontIcon homeIcon = FontIcon.of(FontAwesome.HOME,100,this.mainColor);
    private final FontIcon homeButtonIcon = FontIcon.of(FontAwesome.HOME, 24);
    private final FontIcon tipoVenditaIcon = FontIcon.of(FontAwesome.BUILDING_O, 24);
    private final FontIcon numeroBagniIcon = FontIcon.of(FontAwesome.SHOWER, 24);
@@ -24,8 +24,8 @@ public class IconClass {
    private final FontIcon logOutIcon = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
    private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 24);
    private final FontIcon balconeIcon = FontIcon.of(FontAwesome.ARROWS_H, 24);
-   private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.BLUE);
-   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,28,new Color(0x59A869));
+   private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,this.mainColor);
+   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,28,this.mainColor);
    private final FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
 
 
@@ -70,6 +70,7 @@ public class IconClass {
     public FontIcon getBalconeIcon() {return balconeIcon;}
     public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
     public FontIcon getCalendarioIcon() {return calendarioIcon;}
+    public Color getMainColor() {return mainColor;}
 
     public MouseAdapter cursorButton(){
         return new MouseAdapter() {

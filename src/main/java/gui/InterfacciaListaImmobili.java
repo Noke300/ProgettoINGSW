@@ -17,6 +17,7 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -339,14 +340,10 @@ public class InterfacciaListaImmobili extends JPanel {
     private void setUpComponents() {
         //--Cursor
 
-        mapButton.addMouseListener(iconSet.cursorButton());
-        buttonFiltri.addMouseListener(iconSet.cursorButton());
-       
-        logInButton.addMouseListener(iconSet.cursorButton());
-        buttonAccountAmministrazione.addMouseListener(iconSet.cursorButton());
-        backButtonHome.addMouseListener(iconSet.cursorButton());
+        for (JButton jButton : Arrays.asList(mapButton, buttonFiltri, logInButton, buttonAccountAmministrazione, backButtonHome)) {
+            jButton.addMouseListener(iconSet.cursorButton());
+        }
         listaTipi.addMouseListener(iconSet.cursorButton());
-
         menuOpzioni.addMouseListener(iconSet.cursorButton());
         comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
 

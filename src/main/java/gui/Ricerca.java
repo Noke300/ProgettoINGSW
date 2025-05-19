@@ -372,14 +372,9 @@ public class Ricerca extends JPanel {
 
     private void setUpComponents() {
         //--Cursor
-        mapButton.addMouseListener(iconSet.cursorButton());
-        searchButton.addMouseListener(iconSet.cursorButton());
-        buttonFiltri.addMouseListener(iconSet.cursorButton());
-        buttonConfermaFiltri.addMouseListener(iconSet.cursorButton());
-        buttonCancellaFiltri.addMouseListener(iconSet.cursorButton());
-        logInButton.addMouseListener(iconSet.cursorButton());
-        buttonAccountAmministrazione.addMouseListener(iconSet.cursorButton());
-        backButtonHome.addMouseListener(iconSet.cursorButton());
+        for (JButton jButton : Arrays.asList(mapButton, searchButton, buttonFiltri, buttonConfermaFiltri, buttonCancellaFiltri, logInButton, buttonAccountAmministrazione, backButtonHome)) {
+            jButton.addMouseListener(iconSet.cursorButton());
+        }
         listaTipi.addMouseListener(iconSet.cursorButton());
         comboBoxTipVendita.addMouseListener(iconSet.cursorButton());
         menuOpzioni.addMouseListener(iconSet.cursorButton());

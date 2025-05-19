@@ -34,7 +34,7 @@ new FormModel {
 					"value": "cell 1 0,align center center,grow 0 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonClendario"
+					name: "buttonCalendario"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
 					"horizontalTextPosition": 0
 					"verticalTextPosition": 3
@@ -134,13 +134,6 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 30, 20 )
 			"size": new java.awt.Dimension( 655, 435 )
-		} )
-		add( new FormComponent( "com.toedter.calendar.JCalendar" ) {
-			name: "calendar"
-			"weekOfYearVisible": false
-		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 130, 480 )
-			"size": new java.awt.Dimension( 370, 258 )
 		} )
 	}
 }

@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.List;
 
@@ -179,6 +180,9 @@ public class MapLoader {
         });
     }
 
+
+
+
     public static Point2D calcoloPosizione(JXMapViewer mapViewer,Waypoint waypoint, Rectangle viewport){
         GeoPosition wpGeo = waypoint.getPosition();
         // Ottieni le coordinate assolute del waypoint sulla mappa
@@ -215,19 +219,53 @@ public class MapLoader {
         return null;
     }
 
+
     public static GeoPosition getCoordinatesFromAddress(String address) {
+        if (address == null || address.trim().isEmpty()) {
+            System.out.println("Empty address provided");
+            return null;
+        }
+
         OkHttpClient client = new OkHttpClient();
-        String url = String.format("%s?q=%s&format=json&limit=1&accept-language=it", NOMINATIM_URL, address.replace(" ", "+"));
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .addHeader("Accept-Language", "it")
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
+
+        try {
+            // Properly encode the address to handle special characters
+            String encodedAddress = URLEncoder.encode(address, "UTF-8");
+            String url = String.format("%s?q=%s&format=json&limit=1&accept-language=it", NOMINATIM_URL, encodedAddress);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("Accept-Language", "it")
+                    .addHeader("User-Agent", "YourAppName/1.0") // Nominatim requires a User-Agent header
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    System.out.println("Error response: " + response.code() + " - " + response.message());
+                    return null;
+                }
+
+                if (response.body() == null) {
+                    System.out.println("Empty response body");
+                    return null;
+                }
+
                 String jsonData = response.body().string();
+
+                // Debug the response to see what's being returned
+                System.out.println("Response: " + jsonData);
+
+                // Check if response starts with '<' character (HTML response instead of JSON)
+                if (jsonData.trim().startsWith("<")) {
+                    System.out.println("Received HTML instead of JSON. Possible error page returned.");
+                    return null;
+                }
+
+                // Using JSON Simple library as in your original code
                 JSONParser parser = new JSONParser();
                 JSONArray jsonArray = (JSONArray) parser.parse(jsonData);
+
                 if (!jsonArray.isEmpty()) {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(0);
                     double lat = Double.parseDouble((String) jsonObject.get("lat"));
@@ -236,14 +274,24 @@ public class MapLoader {
                     // Check if coordinates are within the desired area
                     if (isWithinTargetArea(lat, lon)) {
                         return new GeoPosition(lat, lon);
+                    } else {
+                        System.out.println("Coordinates not within target area: " + lat + ", " + lon);
                     }
+                } else {
+                    System.out.println("No results found for address: " + address);
                 }
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
+            System.out.println("Network error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (ParseException e) {
+            System.out.println("JSON parsing error: " + e.getMessage());
             e.printStackTrace();
         }
+
         return null;
     }
+
     private static boolean isWithinTargetArea(double lat, double lon) {
         // Define your target area boundaries here
         // For example, if targeting Italy:

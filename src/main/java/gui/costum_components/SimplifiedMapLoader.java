@@ -80,7 +80,7 @@ public class SimplifiedMapLoader {
 
         System.out.println("Map initialized with waypoint painter");
 
-        // Add double-click listener for waypoint creation
+        // Add a double-click listener for waypoint creation
         mapViewer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -138,6 +138,7 @@ public class SimplifiedMapLoader {
                         }
                     }.execute();
                 }
+
             }
         });
 

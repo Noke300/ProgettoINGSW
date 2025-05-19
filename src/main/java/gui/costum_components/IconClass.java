@@ -9,7 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class IconClass {
-   private final Color mainColor = new Color(0x059A869, true);
+   private final Color mainColor = Color.decode("#59A869");
    private final FontIcon searcherIcon = FontIcon.of(FontAwesome.SEARCH_PLUS, 24);
    private final FontIcon mapIcon = FontIcon.of(FontAwesome.GLOBE, 24);
    private final FontIcon homeIcon = FontIcon.of(FontAwesome.HOME,100,this.mainColor);
@@ -25,11 +25,28 @@ public class IconClass {
    private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 22);
    private final FontIcon balconeIcon = FontIcon.of(FontAwesome.COLUMNS, 22);
    private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,this.mainColor);
-   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesome.MAP_PIN,28,this.mainColor);
+   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesomeSolid.MAP_MARKER,28,this.mainColor);
    private final FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
    private final FontIcon cantinaIcon = FontIcon.of(FontAwesomeSolid.DUNGEON,22);
    private final FontIcon climatizzazioneIcon = FontIcon.of(FontAwesomeSolid.FIRE_ALT,22);
    private final FontIcon portineriaIcon = FontIcon.of(FontAwesomeSolid.USER_LOCK,22);
+
+    public Color getMainColor() {return mainColor;}
+
+    public MouseAdapter cursorButton(){
+        return new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Ripristina il cursore quando il mouse esce dal bottone
+                e.getComponent().setCursor(Cursor.getDefaultCursor());
+            }
+        };
+    }
+
 
     public FontIcon getSearcherIcon() {
         return searcherIcon;
@@ -72,22 +89,8 @@ public class IconClass {
     public FontIcon getBalconeIcon() {return balconeIcon;}
     public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
     public FontIcon getCalendarioIcon() {return calendarioIcon;}
-    public Color getMainColor() {return mainColor;}
     public FontIcon getPortineriaIcon() {return portineriaIcon;}
     public FontIcon getClimatizzazioneIcon() {return climatizzazioneIcon;}
     public FontIcon getCantinaIcon() {return cantinaIcon;}
 
-    public MouseAdapter cursorButton(){
-        return new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                // Ripristina il cursore quando il mouse esce dal bottone
-                e.getComponent().setCursor(Cursor.getDefaultCursor());
-            }
-        };
-    }
 }

@@ -271,12 +271,13 @@ INSERT INTO AdminSupport (NomeSupport, CognomeSupport, EmailSupport, PasswordSup
 
 
 -- Inserimento dati nella tabella Immobile
-INSERT INTO Immobile (IdImmobile, IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, TipoImmobile, Latitudine, Longitudine, Superficie, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
-(1, 1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 'Appartamento', 41.902782, 12.496366, 80, 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
-(2, 2, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 'Villa', 41.891930, 12.511330, 100, 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
-(3, 3, 'prova@gmail.com', 'MilanCase', 180000, 'Affitto', 'Bilocale', 45.464664, 9.188540, 60, 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
-(4, 4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 'Attico', 45.465422, 9.185924, 85, 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
-(5, 5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 'Trilocale', 45.070339, 7.686864, 75, 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
+INSERT INTO Immobile (IdImmobile, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, TipoImmobile, Latitudine, Longitudine, Superficie, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
+(1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 'Appartamento', 41.902782, 12.496366, 80, 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
+(2, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 'Villa', 41.891930, 12.511330, 100, 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
+(3, 'prova@gmail.com', 'MilanCase', 180000, 'Affitto', 'Bilocale', 45.464664, 9.188540, 60, 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+(4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 'Attico', 45.465422, 9.185924, 85, 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
+(5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 'Trilocale', 45.070339, 7.686864, 75, 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
+
 
 -- Inserimento dati nella tabella Offerta
 INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta) VALUES

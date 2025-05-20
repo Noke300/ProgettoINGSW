@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import dieti.estates25.repositories.ClienteRepository;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -106,15 +107,17 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
     }
 
     public ResponseEntity<String> newOfferta(Offerta offerta) {
-        //NON FUNZIONA
-        //TODO
         offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
-        //offerta.setDataOfferta();
-        System.out.println(offerta);
-        offertaRepository.save(offerta);
+        offerta.setDataOfferta(new Timestamp(new Date().getTime()));
+        offerta.setEsitoOfferta(false);
+        if(offertaRepository.save(offerta) != null){
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body("Offerta inserita correttamente");
+        }
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("Offerta inserita correttamente");
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Non è stato possibile inserire correttamente l'offerta");
     }
 
     public String getEmailAutenticato() {

@@ -33,12 +33,11 @@ public class Immobile {
     @Column(name = "tipoimmobile", nullable = false)
     private String tipoImmobile;
 
-    @Column(precision = 9, scale = 6)
+    @Column(name = "latitudine", precision = 9, scale = 6)
     private BigDecimal latitudine;
 
-    @Column(precision = 9, scale = 6)
+    @Column(name = "longitudine", precision = 9, scale = 6)
     private BigDecimal longitudine;
-
 
     @Column(name = "numbagni", nullable = false)
     private int numBagni;

@@ -10,7 +10,7 @@ public class Offerta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idOfferta")
+    @Column(name = "idofferta")
     private Long idOfferta;
 
     @ManyToOne

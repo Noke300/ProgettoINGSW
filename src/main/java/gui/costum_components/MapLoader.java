@@ -21,18 +21,22 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
 public class MapLoader {
     private static final String GEOAPIFY_API_KEY = "8f5bca3082a24dadb72c4f3546cacd4c";
     private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
+    protected static final IconClass ICON_CLASS = new IconClass();
 
-    public MapLoader() { /* TODO document why this constructor is empty */ }
+    public MapLoader() {
+        //Costruttore Vuoto per l'eredita dei metodi in SimplifiedML
+    }
 
-    public static void createMapPanel(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel MapFrame) {
+    public MapLoader(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel mapFrame) {
         // Barra di ricerca combinata
-        IconClass icon = new IconClass();
+
         // Interactive Map with Markers
         JXMapViewer mapViewer = new JXMapViewer();
 
@@ -70,13 +74,13 @@ public class MapLoader {
             }
         });
         // Add a map to the center of the frame
-        MapFrame.add(mapViewer, BorderLayout.CENTER);
-        MapFrame.revalidate();
-        MapFrame.repaint();
+        mapFrame.add(mapViewer, BorderLayout.CENTER);
+        mapFrame.revalidate();
+        mapFrame.repaint();
 
         // Add waypoint click listener
         waypoints.clear();
-        waypoints.add(new CustomWaypoint(geoPosition, "Indirizzo",icon.getMapImmobiliIcon()));
+        waypoints.add(new CustomWaypoint(geoPosition, "Indirizzo",ICON_CLASS.getMapImmobiliIcon()));
         waypointPainter.setWaypoints(waypoints);
         mapViewer.setCenterPosition(geoPosition);
         mapViewer.repaint();
@@ -89,21 +93,21 @@ public class MapLoader {
                 // Fetch places using Geoapify Places API for schools
                 List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, "Scuola",icon.getMapImmobiliIcon()));
+                    waypoints.add(new CustomWaypoint(place, "Scuola",ICON_CLASS.getMapImmobiliIcon()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
             }else if(box.getText().equals("Trasporti") && box.isSelected()) {
                 List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place,"Transport",icon.getMapImmobiliIcon()));
+                    waypoints.add(new CustomWaypoint(place,"Transport",ICON_CLASS.getMapImmobiliIcon()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
             }else if(box.getText().equals("Parchi") && box.isSelected()) {
                 List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, "Parco",icon.getMapImmobiliIcon()));
+                    waypoints.add(new CustomWaypoint(place, "Parco",ICON_CLASS.getMapImmobiliIcon()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
@@ -127,7 +131,7 @@ public class MapLoader {
         detailsPanel.setVisible(false);
 
 // Aggiungiamo il pannello al frame (al lato destro)
-        MapFrame.add(detailsPanel, BorderLayout.WEST);
+        mapFrame.add(detailsPanel, BorderLayout.WEST);
 
 
 // Listener per cambiare il cursore quando il mouse passa sopra un marker
@@ -179,10 +183,6 @@ public class MapLoader {
             }
         });
     }
-
-
-
-
     public static Point2D calcoloPosizione(JXMapViewer mapViewer,Waypoint waypoint, Rectangle viewport){
         GeoPosition wpGeo = waypoint.getPosition();
         // Ottieni le coordinate assolute del waypoint sulla mappa
@@ -230,7 +230,7 @@ public class MapLoader {
 
         try {
             // Properly encode the address to handle special characters
-            String encodedAddress = URLEncoder.encode(address, "UTF-8");
+            String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
             String url = String.format("%s?q=%s&format=json&limit=1&accept-language=it", NOMINATIM_URL, encodedAddress);
 
             Request request = new Request.Builder()
@@ -293,8 +293,8 @@ public class MapLoader {
     }
 
     private static boolean isWithinTargetArea(double lat, double lon) {
-        // Define your target area boundaries here
-        // For example, if targeting Italy:
+        // Define your target area boundaries here,
+        // For example, if focusing on Italy:
         double minLat = 36.0; // Southern boundary of Italy
         double maxLat = 47.5; // Northern boundary of Italy
         double minLon = 6.5;  // Western boundary of Italy

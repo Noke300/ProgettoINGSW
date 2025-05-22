@@ -26,7 +26,7 @@ import org.jxmapviewer.viewer.GeoPosition;
  * @author marco
  */
 public class InterfacciaAgenteImmobiliare extends JPanel {
-    MapLoader mapLoader = new MapLoader();
+    MapLoader mapLoader;
     private static final IconClass iconSet = new IconClass();
     GeoPosition napoli = new GeoPosition(45.464170, 11.885890);
     List<JCheckBox> checkBoxesList = new ArrayList<>();
@@ -93,7 +93,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
 
 
-        mapLoader.createMapPanel(napoli,checkBoxesList,panelMap);
+        mapLoader = new MapLoader(napoli,checkBoxesList,panelMap);
         // Create and add the first panel
 
         // In the initComponents method, replace the GridLayout with MigLayout
@@ -339,11 +339,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
-        0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
-        . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
-        red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
-        beans. PropertyChangeEvent e) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
+        border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
+        ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
+        . BOLD ,12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
+        new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
+        .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns

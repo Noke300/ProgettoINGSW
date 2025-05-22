@@ -72,7 +72,7 @@ public class InterfacciaListaImmobili extends JPanel {
         searchButton.addActionListener(e -> {
             if(!searchField.getText().isEmpty()) {
                 panelMap.removeAll();
-                MapLoader.createMapPanel(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap);
+                new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap);
                 panelMap.revalidate();
                 panelMap.repaint();
             }else{
@@ -107,7 +107,7 @@ public class InterfacciaListaImmobili extends JPanel {
             filterDialog.setVisible(true);
         });
         
-        MapLoader.createMapPanel(geoPosition,checkBoxesList,panelMap);
+        new MapLoader(geoPosition,checkBoxesList,panelMap);
         // Create and add the first panel
 
         // In the initComponents method, replace the GridLayout with MigLayout
@@ -429,11 +429,11 @@ public class InterfacciaListaImmobili extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
-        0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
-        . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-        beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
+        , 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
+         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns

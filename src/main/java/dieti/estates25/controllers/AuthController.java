@@ -40,13 +40,16 @@ public class AuthController {
     public List<Immobile> findImmobiliVicini(@RequestBody Immobile immobile) {
         double centroLat = immobile.getLatitudine().doubleValue();
         double centroLon = immobile.getLongitudine().doubleValue();
-        double raggioKm = 10;
-        double delta = raggioKm / 111.0; // approx conversion km to degrees
+        double raggioKm = 3;
+        double delta1 = kmToDegreesLatitude(raggioKm);
+        double delta2 = kmToDegreesLongitude(raggioKm, delta1);
 
         List<Immobile> candidati = immobileRepository.findWithinBounds(
-                centroLat - delta, centroLat + delta,
-                centroLon - delta, centroLon + delta
+                centroLat - delta1, centroLat + delta1,
+                centroLon - delta2, centroLon + delta2
         );
+
+        System.out.println(candidati);
 
         return candidati.stream()
                 .filter(i -> calcolaDistanza(
@@ -66,5 +69,18 @@ public class AuthController {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return raggioTerra * c;
     }
+
+    // Conversione km -> gradi latitudine
+    private double kmToDegreesLatitude(double km) {
+        return km / 111.32;
+    }
+
+    // Conversione km -> gradi longitudine (serve la latitudine in gradi)
+    private double kmToDegreesLongitude(double km, double latitudeDegrees) {
+        double latitudeRadians = Math.toRadians(latitudeDegrees);
+        double kmPerDegree = 111.32 * Math.cos(latitudeRadians);
+        return km / kmPerDegree;
+    }
+
 
 }

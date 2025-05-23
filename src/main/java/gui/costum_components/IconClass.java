@@ -24,12 +24,14 @@ public class IconClass {
    private final FontIcon logOutIcon = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
    private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 22);
    private final FontIcon balconeIcon = FontIcon.of(FontAwesome.COLUMNS, 22);
-   private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,this.mainColor);
+   private final FontIcon mapCenterMarker = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,20,this.mainColor);
    private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesomeSolid.MAP_MARKER,28,this.mainColor);
    private final FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
    private final FontIcon cantinaIcon = FontIcon.of(FontAwesomeSolid.DUNGEON,22);
    private final FontIcon climatizzazioneIcon = FontIcon.of(FontAwesomeSolid.FIRE_ALT,22);
    private final FontIcon portineriaIcon = FontIcon.of(FontAwesomeSolid.USER_LOCK,22);
+   private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.green);
+
 
     public Color getMainColor() {return mainColor;}
 
@@ -84,7 +86,7 @@ public class IconClass {
     public FontIcon getHomeButtonIcon() {
         return homeButtonIcon;
     }
-    public FontIcon getMapImmobiliIcon(){return mapImmobiliIcon;}
+    public FontIcon getMapCenterMarker(){return mapCenterMarker;}
     public FontIcon getAscensoreIcon() {return ascensoreIcon;}
     public FontIcon getBalconeIcon() {return balconeIcon;}
     public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
@@ -92,5 +94,6 @@ public class IconClass {
     public FontIcon getPortineriaIcon() {return portineriaIcon;}
     public FontIcon getClimatizzazioneIcon() {return climatizzazioneIcon;}
     public FontIcon getCantinaIcon() {return cantinaIcon;}
+    public FontIcon getMapImmobiliIcon() {return mapImmobiliIcon;}
 
 }

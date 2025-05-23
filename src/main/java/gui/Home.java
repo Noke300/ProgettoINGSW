@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import controller.Controller;
+import controller.ControllerClienti;
 import net.miginfocom.swing.*;
 
 public class Home extends JPanel {
@@ -20,7 +20,7 @@ public class Home extends JPanel {
         accessoButton.setText("Entra");
         accessoButton.addActionListener(e -> {
 
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,new Controller(),token));
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,new ControllerClienti(),token));
             frame.revalidate();
             frame.repaint();
 

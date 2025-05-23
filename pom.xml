@@ -85,7 +85,7 @@
     </dependency>
 
     <!-- FontAwesome Solid (if available in another package) -->
-    
+
     <dependency>
       <groupId>org.kordamp.ikonli</groupId>
       <artifactId>ikonli-fontawesome6-pack</artifactId>

@@ -1,6 +1,8 @@
 package model;
 
-public abstract class Immobile {
+import org.jxmapviewer.viewer.GeoPosition;
+
+public class Immobile {
     private double prezzo;
     private String tipoVendita;
     private int superficie;
@@ -11,16 +13,18 @@ public abstract class Immobile {
     private boolean cantina;
     private boolean climatizzazione;
     private boolean venduto;
+    private final GeoPosition geoPositionImobbile;
 
     private final AgenziaImmobiliare agenziaImmobiliare;
     private AgenteImmobiliare agenteImmobiliare;
     private final Indirizzo indirizzo;
 
-    public Immobile(double prezzo, String tipoVendita, int superficie, String classeEnergetica, AgenziaImmobiliare agenziaImmobiliare, AgenteImmobiliare agenteImmobiliare, Indirizzo indirizzo) {
+    public Immobile(double prezzo, String tipoVendita, int superficie, String classeEnergetica, GeoPosition geoPositionImobbile, AgenziaImmobiliare agenziaImmobiliare, AgenteImmobiliare agenteImmobiliare, Indirizzo indirizzo) {
         this.prezzo = prezzo;
         this.tipoVendita = tipoVendita;
         this.superficie = superficie;
         this.classeEnergetica = classeEnergetica;
+        this.geoPositionImobbile = geoPositionImobbile;
         this.agenziaImmobiliare = agenziaImmobiliare;
         this.agenteImmobiliare = agenteImmobiliare;
         this.indirizzo = indirizzo;
@@ -129,4 +133,23 @@ public abstract class Immobile {
         this.venduto = venduto;
     }
 
+    public boolean isAscensore() {
+        return ascensore;
+    }
+
+    public boolean isCantina() {
+        return cantina;
+    }
+
+    public boolean isClimatizzazione() {
+        return climatizzazione;
+    }
+
+    public boolean isVenduto() {
+        return venduto;
+    }
+
+    public GeoPosition getGeoPositionImobbile() {
+        return geoPositionImobbile;
+    }
 }

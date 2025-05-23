@@ -4,7 +4,7 @@
 
 package gui;
 
-import controller.Controller;
+import controller.ControllerClienti;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import gui.costum_components.SimplifiedMapLoader;
@@ -61,7 +61,7 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, Controller control,String token,JPanel internalFrameFiltri) {
+    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, ControllerClienti control, String token, JPanel internalFrameFiltri,List<Immobile> immobili) {
         this.token=token;
         initComponents();
 
@@ -80,7 +80,7 @@ public class InterfacciaListaImmobili extends JPanel {
                         "Per favore, inserisci un indirizzo.",
                         "Nessun indirizzo inserito", JOptionPane.WARNING_MESSAGE);
             }
-            
+
         });
         //--- 7. Filtri  ---
         JButton buttonConfermaFiltri = new JButton("Conferma");
@@ -106,31 +106,17 @@ public class InterfacciaListaImmobili extends JPanel {
             filterDialog.setLocationRelativeTo(frame);
             filterDialog.setVisible(true);
         });
-        
+
         new MapLoader(geoPosition,checkBoxesList,panelMap);
         // Create and add the first panel
 
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
-        JPanel firstPanel = createImmobileSingoloPanel("Casa 1",control,token);
-        panelListaImmobile.add(firstPanel,"align center");
-
-        // Create and add the second panel
-        JPanel secondPanel = createImmobileSingoloPanel("Casa 2",control,token);
-        panelListaImmobile.add(secondPanel,"align center");
-
-        JPanel thirdPanel = createImmobileSingoloPanel("Casa 3",control,token);
-        thirdPanel.setBorder(new TitledBorder("Appartamento"));
-        panelListaImmobile.add(thirdPanel,"align center");
-
-        JPanel forthPanel = createImmobileSingoloPanel("Casa 4",control,token);
-        forthPanel.setBorder(new TitledBorder("Appartamento"));
-        panelListaImmobile.add(forthPanel,"align center");
-
-        JPanel fifthPanel = createImmobileSingoloPanel("Casa 5",control,token);
-        panelListaImmobile.add(fifthPanel,"align center");
-        // Launch map loading in the background
+        for (Immobile immobile : immobili) {
+            JPanel panel = createImmobileSingoloPanel(immobile.getTipoVendita(),control,token);
+            panelListaImmobile.add(panel);
+        }
 
         mapButton.addActionListener(e -> {
             final JPanel mapPanelInDialog = new JPanel(); // Deve essere final per essere usato nel lambda
@@ -197,7 +183,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
     }
 
-    private JPanel createImmobileSingoloPanel(String casaName,Controller control,String token) {
+    private JPanel createImmobileSingoloPanel(String casaName, ControllerClienti control, String token) {
         JPanel panel = new JPanel();
         panel.setBorder(BorderStyler.createStyledBorder(casaName, borderColor, 1, borderFont));
         panel.setPreferredSize(new Dimension(780, 170));
@@ -260,7 +246,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
         return panel;
     }
-    private void navigateToDetailsPage(JPanel panel,Controller control,String token) {
+    private void navigateToDetailsPage(JPanel panel, ControllerClienti control, String token) {
         // Get the property name/ID from the panel border
         // Create and navigate to the details page
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -275,7 +261,7 @@ public class InterfacciaListaImmobili extends JPanel {
         }
     }
 
-    private void caricametoImmobili(List<JPanel> list,Controller control,String token) {
+    private void caricametoImmobili(List<JPanel> list, ControllerClienti control, String token) {
         // Crea un nuovo JPanel per ogni immobile
         for (Immobile immobile : control.getImmos()) {
             JPanel panel = createImmobileSingoloPanel(immobile.getTipoVendita(),control,token);
@@ -296,7 +282,7 @@ public class InterfacciaListaImmobili extends JPanel {
             logInButton.setIcon(iconSet.getLogOutIcon());
         }
     }
-    private void setUpOpzioniMenu(JFrame frame, Controller control) {
+    private void setUpOpzioniMenu(JFrame frame, ControllerClienti control) {
 
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
@@ -401,7 +387,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
@@ -428,12 +414,6 @@ public class InterfacciaListaImmobili extends JPanel {
         buttonAggiungiOfferta = new JButton();
 
         //======== this ========
-        setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
-        , 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
-        , new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
-         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
-        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns

@@ -1,5 +1,6 @@
 package gui.costum_components;
 
+import model.Immobile;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -26,15 +27,16 @@ import java.util.*;
 import java.util.List;
 
 public class MapLoader {
-    private static final String GEOAPIFY_API_KEY = "8f5bca3082a24dadb72c4f3546cacd4c";
-    private static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
+    protected static final String GEOAPIFY_API_KEY = "8f5bca3082a24dadb72c4f3546cacd4c";
+    protected static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
     protected static final IconClass ICON_CLASS = new IconClass();
 
     public MapLoader() {
         //Costruttore Vuoto per l'eredita dei metodi in SimplifiedML
     }
 
-    public MapLoader(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel mapFrame) {
+
+    public MapLoader(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel mapFrame, List<Immobile> immobiles) {
         // Barra di ricerca combinata
 
         // Interactive Map with Markers
@@ -80,34 +82,40 @@ public class MapLoader {
 
         // Add waypoint click listener
         waypoints.clear();
-        waypoints.add(new CustomWaypoint(geoPosition, "Indirizzo",ICON_CLASS.getMapImmobiliIcon()));
+        waypoints.add(new CustomWaypoint(geoPosition, "Indirizzo",ICON_CLASS.getMapCenterMarker()));
         waypointPainter.setWaypoints(waypoints);
         mapViewer.setCenterPosition(geoPosition);
         mapViewer.repaint();
         mapViewer.setZoom(6);
 
-        //inserimento Filtro non toccare so che è sbagliato 0>1
+        for(Immobile immobile : immobiles) {
+            waypoints.add(new CustomWaypoint(immobile.getGeoPositionImobbile(), immobile.getTipoVendita(),ICON_CLASS.getMapImmobiliIcon()));
+            waypointPainter.setWaypoints(waypoints);
+            mapViewer.repaint();
+        }
+
+        //inserimento Filtro da modificae per la presenza o no questo probabilmente sara' spostato in inserimento immobile
         for(JCheckBox box : checkBoxesList) {
 
             if(box.getText().equals("Scuole") && box.isSelected()) {
                 // Fetch places using Geoapify Places API for schools
                 List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, "Scuola",ICON_CLASS.getMapImmobiliIcon()));
+                    waypoints.add(new CustomWaypoint(place, "Scuola",ICON_CLASS.getMapCenterMarker()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
             }else if(box.getText().equals("Trasporti") && box.isSelected()) {
                 List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place,"Transport",ICON_CLASS.getMapImmobiliIcon()));
+                    waypoints.add(new CustomWaypoint(place,"Transport",ICON_CLASS.getMapCenterMarker()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
             }else if(box.getText().equals("Parchi") && box.isSelected()) {
                 List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
                 for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, "Parco",ICON_CLASS.getMapImmobiliIcon()));
+                    waypoints.add(new CustomWaypoint(place, "Parco",ICON_CLASS.getMapCenterMarker()));
                 }
                 waypointPainter.setWaypoints(waypoints);
                 mapViewer.repaint();
@@ -183,6 +191,157 @@ public class MapLoader {
             }
         });
     }
+    //mapLoader senza immobili da eliminare qunado l'applicativo sara completamente integrato con il DB
+    public MapLoader(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel mapFrame) {
+        // Barra di ricerca combinata
+
+        // Interactive Map with Markers
+        JXMapViewer mapViewer = new JXMapViewer();
+
+        TileFactoryInfo info =  new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+        mapViewer.setTileFactory(tileFactory);
+
+        // Initial Position
+        mapViewer.setCenterPosition(new GeoPosition(geoPosition.getLatitude(), geoPosition.getLongitude())); // Indirizzi da address
+        mapViewer.setZoom(5);
+
+        // List of markers
+        Set<CustomWaypoint> waypoints = new HashSet<>();
+        WaypointPainter<CustomWaypoint> waypointPainter = new WaypointPainter<>();
+        waypointPainter.setRenderer(new CustomWaypointRenderer());
+        waypointPainter.setWaypoints(waypoints);
+        mapViewer.setOverlayPainter(waypointPainter);
+
+        // Enable panning with the mouse
+        PanMouseInputListener panListener = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(panListener);
+        mapViewer.addMouseMotionListener(panListener);
+
+        // Enable zoom with the mouse wheel
+        mapViewer.addMouseWheelListener(e -> {
+            int rotation = e.getWheelRotation();
+            int zoom = mapViewer.getZoom();
+
+            if (rotation > 0 && zoom <= 12) {
+                // Zoom in
+                mapViewer.setZoom(zoom + 1);
+            } else if (zoom > 0) {
+                // Zoom out
+                mapViewer.setZoom(zoom - 1);
+            }
+        });
+        // Add a map to the center of the frame
+        mapFrame.add(mapViewer, BorderLayout.CENTER);
+        mapFrame.revalidate();
+        mapFrame.repaint();
+
+        // Add waypoint click listener
+        waypoints.clear();
+        waypoints.add(new CustomWaypoint(geoPosition, "Indirizzo",ICON_CLASS.getMapCenterMarker()));
+        waypointPainter.setWaypoints(waypoints);
+        mapViewer.setCenterPosition(geoPosition);
+        mapViewer.repaint();
+        mapViewer.setZoom(6);
+
+        //inserimento Filtro non toccare so che è sbagliato 0>1
+        for(JCheckBox box : checkBoxesList) {
+
+            if(box.getText().equals("Scuole") && box.isSelected()) {
+                // Fetch places using Geoapify Places API for schools
+                List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
+                for (GeoPosition place : places) {
+                    waypoints.add(new CustomWaypoint(place, "Scuola",ICON_CLASS.getMapCenterMarker()));
+                }
+                waypointPainter.setWaypoints(waypoints);
+                mapViewer.repaint();
+            }else if(box.getText().equals("Trasporti") && box.isSelected()) {
+                List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
+                for (GeoPosition place : places) {
+                    waypoints.add(new CustomWaypoint(place,"Transport",ICON_CLASS.getMapCenterMarker()));
+                }
+                waypointPainter.setWaypoints(waypoints);
+                mapViewer.repaint();
+            }else if(box.getText().equals("Parchi") && box.isSelected()) {
+                List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
+                for (GeoPosition place : places) {
+                    waypoints.add(new CustomWaypoint(place, "Parco",ICON_CLASS.getMapCenterMarker()));
+                }
+                waypointPainter.setWaypoints(waypoints);
+                mapViewer.repaint();
+
+            }
+        }
+
+        final int HITBOX_RADIUS = 25;
+
+        // Creiamo il pannello laterale per le informazioni
+        final JPanel detailsPanel = new JPanel(new BorderLayout());
+        detailsPanel.setPreferredSize(new Dimension(400, 600));  // dimensioni personalizzabili
+        final JTextArea detailsTextArea = new JTextArea();
+        detailsTextArea.setEditable(false);
+        detailsTextArea.setLineWrap(true);
+        detailsTextArea.setWrapStyleWord(true);
+        detailsTextArea.setFont(new Font("Arial", Font.BOLD, 24));
+        detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
+
+// Inizialmente il pannello non è visibile (oppure lo lasciamo vuoto)
+        detailsPanel.setVisible(false);
+
+// Aggiungiamo il pannello al frame (al lato destro)
+        mapFrame.add(detailsPanel, BorderLayout.WEST);
+
+
+// Listener per cambiare il cursore quando il mouse passa sopra un marker
+        mapViewer.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point mousePos = e.getPoint();
+                Rectangle viewport = mapViewer.getViewportBounds();
+                boolean hovering = false;
+                for (CustomWaypoint waypoint : waypoints) {
+                    Point2D markerPoint = calcoloPosizione(mapViewer,waypoint,viewport);
+                    if (mousePos.distance(markerPoint) < HITBOX_RADIUS-10) {
+                        hovering = true;
+                        break;
+                    }
+                }
+                mapViewer.setCursor(hovering ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+
+// Se il click avviene vicino a un marker, viene mostrato il popup con le info.
+// Se non è su un marker, la mappa viene centrata sul punto cliccato.
+        mapViewer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Point clickedPoint = e.getPoint();
+                Rectangle viewport = mapViewer.getViewportBounds();
+                boolean markerFound = false;
+
+                // Scorri tutti i waypoint per vedere se il click è vicino aduno di essi
+                for (CustomWaypoint waypoint : waypoints) {
+
+                    Point2D markerPoint = calcoloPosizione(mapViewer,waypoint,viewport);
+                    if (clickedPoint.distance(markerPoint) < HITBOX_RADIUS+7) {
+                        markerFound = true;
+                        // Aggiorna il pannello con le informazioni del waypoint
+                        detailsTextArea.setText("Informazioni: " + waypoint.getInfo() + "\n" +
+                                "Indirizzo: " + getAddressFromCoordinates(waypoint.getPosition()));
+                        detailsPanel.setVisible(true);  // Rendi visibile il pannello
+                        break;
+                    }
+                }
+
+                if (!markerFound) {
+                    // Se il click non è su un marker, nascondi o svuota il pannello
+                    detailsTextArea.setText("");
+                    detailsPanel.setVisible(false);
+                }
+            }
+        });
+    }
+
     public static Point2D calcoloPosizione(JXMapViewer mapViewer,Waypoint waypoint, Rectangle viewport){
         GeoPosition wpGeo = waypoint.getPosition();
         // Ottieni le coordinate assolute del waypoint sulla mappa

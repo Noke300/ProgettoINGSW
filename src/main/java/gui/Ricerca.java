@@ -2,10 +2,12 @@ package gui;
 
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
-import controller.Controller;
+import controller.ControllerAdministration;
+import controller.ControllerClienti;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import gui.costum_components.SimplifiedMapLoader;
+import model.Immobile;
 import net.miginfocom.swing.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,6 +24,7 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
@@ -46,7 +49,7 @@ public class Ricerca extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public JPanel createRicercaPanel(JFrame frame, Controller control, String token) {
+    public JPanel createRicercaPanel(JFrame frame, ControllerClienti control, String token) {
 
         this.token = token;
         internalFrameFiltri.setVisible(false);
@@ -318,6 +321,8 @@ public class Ricerca extends JPanel {
 
             private void populateSuggestions(List<String> suggestions) {
                 suggestionPopup.removeAll();
+                suggestionPopup.setSize(searchField.getWidth(),searchField.getHeight());
+
                 for (String suggestion : suggestions) {
                     JMenuItem item = new JMenuItem(suggestion);
                     item.addActionListener((ActionEvent ev) -> {
@@ -335,30 +340,29 @@ public class Ricerca extends JPanel {
                     return;
                 }
                 // Imposta la larghezza del popup uguale a quella del searchField
-                int popupWidth = searchField.getWidth();
+
 
                 // Calcola l'altezza preferita del popup basata sui suoi contenuti (i JMenuItem)
                 // JPopupMenu.getPreferredSize() fa questo per te.
-                Dimension preferredSize = suggestionPopup.getPreferredSize();
-                int popupHeight = preferredSize.height;
 
 
-                 int maxPopupHeight = 200; // Imposta un'altezza massima desiderata
-                 if (popupHeight > maxPopupHeight) {
-                     popupHeight = maxPopupHeight;
-                 }
                 // Usa setPopupSize che è specifico per JPopupMenu
                 suggestionPopup.setFont(searchField.getFont());
-                suggestionPopup.setPopupSize(popupWidth, popupHeight);
+                suggestionPopup.setPopupSize(searchField.getWidth(), suggestionPopup.getPreferredSize().height+50);
                 suggestionPopup.show(searchField, 0, searchField.getHeight());
             }
+
         };
+
     }
 
-    private void performSearchAction(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+    private void performSearchAction(JFrame frame, ControllerClienti control, List<JCheckBox> checkBoxesList) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
-            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token,internalFrameFiltri));
+
+            ControllerAdministration controlAdmin = new ControllerAdministration();
+            List<Immobile> immobiles = controlAdmin.ricerca(token, BigDecimal.valueOf(geoPos.getLatitude()), BigDecimal.valueOf(geoPos.getLongitude()));
+            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token,internalFrameFiltri,immobiles));
             frame.revalidate();
             frame.repaint();
         } else {
@@ -368,7 +372,7 @@ public class Ricerca extends JPanel {
 
     //Funzione Cambio Cursore
 
-    private void setUpOpzioniMenu(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+    private void setUpOpzioniMenu(JFrame frame, ControllerClienti control, List<JCheckBox> checkBoxesList) {
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel
             menuOpzioni.setVisible(false);
@@ -567,13 +571,6 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-        swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border
-        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg"
-        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
-        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-        .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException
-        ( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns

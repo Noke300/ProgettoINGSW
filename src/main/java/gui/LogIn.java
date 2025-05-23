@@ -5,7 +5,6 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javax.swing.*;
@@ -13,14 +12,14 @@ import javax.swing.border.*;
 
 import com.formdev.flatlaf.extras.*;
 
-import controller.Controller;
+import controller.ControllerClienti;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
 public class LogIn extends JPanel {
-    public LogIn(JFrame frame, Controller control, String token) {
+    public LogIn(JFrame frame, ControllerClienti control, String token) {
         initComponents(frame);
 
          backButtonHome.addActionListener(e-> {

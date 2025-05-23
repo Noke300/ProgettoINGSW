@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class ControllerClienti {
 
-    private static final String LOGIN_URL = "http://localhost:8081/auth-cliente/login";
+    private static final String LOGIN_URL = "http://localhost:8080/auth-cliente/login";
     private static final Gson gson = new Gson();
 
     public ControllerClienti() {

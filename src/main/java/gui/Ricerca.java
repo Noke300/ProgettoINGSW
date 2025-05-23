@@ -361,7 +361,7 @@ public class Ricerca extends JPanel {
         if (geoPos != null) {
 
             ControllerAdministration controlAdmin = new ControllerAdministration();
-            List<Immobile> immobiles = controlAdmin.ricerca(token, BigDecimal.valueOf(geoPos.getLatitude()), BigDecimal.valueOf(geoPos.getLongitude()));
+            List<Immobile> immobiles = controlAdmin.ricerca(BigDecimal.valueOf(geoPos.getLatitude()), BigDecimal.valueOf(geoPos.getLongitude()));
             frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token,internalFrameFiltri,immobiles));
             frame.revalidate();
             frame.repaint();

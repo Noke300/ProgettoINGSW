@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE AgenziaImmobiliare (
 	NomeAgenzia VARCHAR(255) PRIMARY KEY,
 	EmailAgenzia VARCHAR(255) NOT NULL UNIQUE,
@@ -35,66 +37,64 @@ CREATE TABLE AdminSupport(
 );
 
 CREATE TABLE Indirizzo (
-    id SERIAL PRIMARY KEY,
-    via TEXT NOT NULL,
-    citta TEXT NOT NULL,
-	Latitudine DECIMAL(9,6),
-	Longitudine DECIMAL(9,6),
-    provincia TEXT NOT NULL,
-    numero_civico INTEGER NOT NULL,
-    cap INTEGER NOT NULL,
-    regione TEXT NOT NULL
+    IdIndirizzo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    Via TEXT NOT NULL,
+    Citta TEXT NOT NULL,
+    Latitudine DOUBLE PRECISION,
+    Longitudine DOUBLE PRECISION,
+    Provincia TEXT NOT NULL,
+    NumeroCivico INTEGER NOT NULL,
+    Cap INTEGER NOT NULL,
+    Regione TEXT NOT NULL
 );
- 
- CREATE TABLE Immobile(
-         IdImmobile SERIAL PRIMARY KEY,
-	 NomeAgente VARCHAR(255),
-         NomeAgenzia VARCHAR(255) NOT NULL,
 
-	 
-	 Prezzo DECIMAL(10,2) NOT NULL,
-	 TipoVendita VARCHAR(255) NOT NULL,
-	 Superficie INT NOT NULL,
-	 TipoImmobile VARCHAR(255) NOT NULL,
-	 NumBagni INT NOT NULL,
-	 ClasseEnergetica VARCHAR(10) NOT NULL,
-	 NumStanze INT NOT NULL,
-	 Piano BOOLEAN,
-	 Ascensore BOOLEAN,
-	 Balcone BOOLEAN,
-	 Cantina BOOLEAN,
-	 Portineria BOOLEAN,
-	 Climatizzatione BOOLEAN,
-	 Venduto BOOLEAN DEFAULT FALSE,
+CREATE TABLE Immobile (
+    IdImmobile UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	
+	IdIndirizzo UUID,
+    NomeAgente VARCHAR(255),
+    NomeAgenzia VARCHAR(255) NOT NULL,
+    Prezzo DECIMAL(10,2) NOT NULL,
+    TipoVendita VARCHAR(255) NOT NULL,
+    Superficie INT NOT NULL,
+    TipoImmobile VARCHAR(255) NOT NULL,
+    NumBagni INT NOT NULL,
+    ClasseEnergetica VARCHAR(10) NOT NULL,
+    NumStanze INT NOT NULL,
+    Piano INT NOT NULL,
+    Ascensore BOOLEAN,
+    Balcone BOOLEAN,
+    Cantina BOOLEAN,
+    Portineria BOOLEAN,
+    Climatizzatione BOOLEAN,
+    Venduto BOOLEAN DEFAULT FALSE,
+	
+	FOREIGN KEY (IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo),
+    FOREIGN KEY (NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
+    FOREIGN KEY (NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
+);
 
- FOREIGN KEY(NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
- FOREIGN KEY (NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
+CREATE TABLE Offerta (
+    IdOfferta UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    IdImmobile UUID,
+    NomeCliente VARCHAR(255),
+    PrezzoOfferta DECIMAL(10,2) NOT NULL,
+    DataOfferta DATE NOT NULL,
+    EsitoOfferta BOOLEAN,
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile),
+    FOREIGN KEY (NomeCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
+);
 
- );
- 
- CREATE TABLE Offerta(
-	 IdOfferta SERIAL PRIMARY KEY,
-	 IdImmobile  INT,
-	 NomeCliente VARCHAR(255),
-	 PrezzoOfferta DECIMAL(10,2) NOT NULL,
-	 DataOfferta DATE NOT NULL,
-	 EsitoOfferta BOOLEAN,
- FOREIGN KEY(IdImmobile) REFERENCES Immobile(IdImmobile),
- FOREIGN KEY(NomeCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
- 
- );
- 
- CREATE TABLE Visita(
-	 IdImmobile  INT,
-	 NomeCliente VARCHAR(255),
-	 OraVisita TIME NOT NULL,
-	 DataVisita DATE NOT NULL,
-	 Conferma BOOLEAN,
- PRIMARY KEY (IdImmobile, NomeCliente),
- FOREIGN KEY(IdImmobile) REFERENCES Immobile(IdImmobile),
- FOREIGN KEY(NomeCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
-
- );
+CREATE TABLE Visita (
+    IdImmobile UUID,
+    NomeCliente VARCHAR(255),
+    OraVisita TIME NOT NULL,
+    DataVisita DATE NOT NULL,
+    Conferma BOOLEAN,
+    PRIMARY KEY (IdImmobile, NomeCliente),
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile),
+    FOREIGN KEY (NomeCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
+);
  
  --Constreins
  	--Cliente
@@ -110,6 +110,7 @@ CHECK (
 	-- AgenziaImmobiliare
 	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAgenziaImmobiliare
 	CHECK(AgenziaImmobiliare.EmailAgenzia LIKE '_%@%.__%');
+
 	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAdmin
 	CHECK(AgenziaImmobiliare.EmailAdmin LIKE '_%@%.__%');
 
@@ -151,74 +152,13 @@ CHECK (
 
 --Agenzia Immobiliare
 
-CREATE OR REPLACE FUNCTION CheckPasswordAgenziaImmobiliare()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.PasswordAdmin !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
-        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-
-
-CREATE TRIGGER AgenziaImmobiliarePasswordTrigger
-BEFORE INSERT OR UPDATE ON AgenziaImmobiliare
-FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordAgenziaImmobiliare();
 
 --Cliente
 
-CREATE OR REPLACE FUNCTION CheckPasswordCliente()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.PasswordCliente !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
-        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER ClientePasswordTrigger
-BEFORE INSERT OR UPDATE ON Cliente
-FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordCliente();
 
 --Agente Immobiliare
 
-CREATE OR REPLACE FUNCTION CheckPasswordAgenteImmobiliare()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.PasswordAgente !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
-        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER AgenteImmobiliarePasswordTrigger
-BEFORE INSERT OR UPDATE ON AgenteImmobiliare
-FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordAgenteImmobiliare();
-
 --Admin Support
-
-CREATE OR REPLACE FUNCTION CheckPasswordAdmin()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.PasswordSupport !~ '^(?=.*\d)(?=.*[\W_]).{8,}$' THEN
-        RAISE EXCEPTION 'La password deve essere lunga almeno 8 caratteri, contenere almeno un numero e un carattere speciale.';
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER AdminSupportPasswordTrigger
-BEFORE INSERT OR UPDATE ON AdminSupport
-FOR EACH ROW
-EXECUTE FUNCTION CheckPasswordAdmin();
-
 
 
 --Trigger Cancellazione Offerte e Visita in caso di Venduto = TRUE:
@@ -278,34 +218,141 @@ INSERT INTO AdminSupport (NomeSupport, CognomeSupport, EmailSupport, PasswordSup
 ('Roberto', 'Serra', 'support.serra@email.com', 'support102!', 'TorinoHome');
 
 --Inserimento dati nella tabella Indirizzo
-INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, numero_civico, cap, regione) VALUES
+INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, NumeroCivico, cap, regione) VALUES
 ('Via Roma', 'Torino', 45.0703, 7.6869, 'TO', 12, 10121, 'Piemonte'),
 ('Corso Italia', 'Milano', 45.4642, 9.1900, 'MI', 25, 20122, 'Lombardia'),
 ('Via Mazzini', 'Firenze', 43.7696, 11.2558, 'FI', 5, 50122, 'Toscana'),
 ('Via Garibaldi', 'Genova', 44.4056, 8.9463, 'GE', 18, 16124, 'Liguria'),
 ('Via Dante', 'Palermo', 38.1157, 13.3615, 'PA', 30, 90141, 'Sicilia');
 
--- Inserimento dati nella tabella Immobile (senza IdImmobile, Latitudine e Longitudine)
-INSERT INTO Immobile (NomeAgente, NomeAgenzia, Prezzo, TipoVendita, TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
-('giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 'Appartamento', 80, 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
-('prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 'Villa', 100, 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
-('prova@gmail.com', 'MilanCase', 180000, 'Affitto', 'Bilocale', 60, 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
-('martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 'Attico', 85, 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
-('andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 'Trilocale', 75, 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
+
+WITH new_indirizzo AS (
+    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
+    VALUES ('Via Roma', 'Torino', 0.0, 0.0, '', 12, 00000, '')
+    RETURNING IdIndirizzo
+),
+new_immobile AS (
+    INSERT INTO Immobile (
+        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    )
+    SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita',
+           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
+    FROM new_indirizzo
+    RETURNING IdImmobile
+),
+insert_offerta AS (
+    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+    SELECT IdImmobile, 'mario.rossi@email.com', 245000, '2024-01-11', TRUE
+    FROM new_immobile
+)
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT IdImmobile, 'mario.rossi@email.com', '10:00', '2025-12-01', TRUE
+FROM new_immobile;
+
+-- Inserimento indirizzo Milano
+WITH new_indirizzo AS (
+    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
+    VALUES ('Corso Italia', 'Milano', 0.0, 0.0, '', 25, 00000, '')
+    RETURNING IdIndirizzo
+),
+new_immobile AS (
+    INSERT INTO Immobile (
+        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    )
+    SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita',
+           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
+    FROM new_indirizzo
+    RETURNING IdImmobile
+),
+insert_offerta AS (
+    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+    SELECT IdImmobile, 'luca.bianchi@email.com', 315000, '2024-01-12', FALSE
+    FROM new_immobile
+)
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT IdImmobile, 'luca.bianchi@email.com', '10:00', '2025-12-02', FALSE
+FROM new_immobile;
+
+-- Inserimento indirizzo Firenze
+WITH new_indirizzo AS (
+    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
+    VALUES ('Via Mazzini', 'Firenze', 0.0, 0.0, '', 5, 00000, '')
+    RETURNING IdIndirizzo
+),
+new_immobile AS (
+    INSERT INTO Immobile (
+        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    )
+    SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 180000, 'Vendita',
+           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
+    FROM new_indirizzo
+    RETURNING IdImmobile
+),
+insert_offerta AS (
+    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+    SELECT IdImmobile, 'giulia.verdi@email.com', 175000, '2024-01-13', TRUE
+    FROM new_immobile
+)
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT IdImmobile, 'giulia.verdi@email.com', '10:00', '2025-12-03', TRUE
+FROM new_immobile;
+
+-- Inserimento indirizzo Genova
+WITH new_indirizzo AS (
+    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
+    VALUES ('Via Garibaldi', 'Genova', 0.0, 0.0, '', 18, 00000, '')
+    RETURNING IdIndirizzo
+),
+new_immobile AS (
+    INSERT INTO Immobile (
+        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    )
+    SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita',
+           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
+    FROM new_indirizzo
+    RETURNING IdImmobile
+),
+insert_offerta AS (
+    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+    SELECT IdImmobile, 'anna.neri@email.com', 270000, '2024-01-14', FALSE
+    FROM new_immobile
+)
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT IdImmobile, 'anna.neri@email.com', '10:00', '2025-12-04', FALSE
+FROM new_immobile;
+
+-- Inserimento indirizzo Palermo
+WITH new_indirizzo AS (
+    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
+    VALUES ('Via Dante', 'Palermo', 0.0, 0.0, '', 30, 00000, '')
+    RETURNING IdIndirizzo
+),
+new_immobile AS (
+    INSERT INTO Immobile (
+        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    )
+    SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Vendita',
+           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
+    FROM new_indirizzo
+    RETURNING IdImmobile
+),
+insert_offerta AS (
+    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+    SELECT IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
+    FROM new_immobile
+)
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT IdImmobile, 'marco.gialli@email.com', '10:00', '2025-12-05', TRUE
+FROM new_immobile;
 
 
--- Inserimento dati nella tabella Offerta
-INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta) VALUES
-(1, 'mario.rossi@email.com', 245000.00, '2024-01-10', FALSE),
-(2, 'luca.bianchi@email.com', 310000.00, '2024-01-12', FALSE),
-(3, 'giulia.verdi@email.com', 175000.00, '2024-01-15', TRUE),
-(4, 'anna.neri@email.com', 270000.00, '2024-01-18', FALSE),
-(5, 'marco.gialli@email.com', 215000.00, '2024-01-20', TRUE);
-
--- Inserimento dati nella tabella Visita
-INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma) VALUES
-(1, 'mario.rossi@email.com', '10:00', '2025-12-05', TRUE),
-(2, 'luca.bianchi@email.com', '14:30', '2025-09-06', FALSE),
-(3, 'giulia.verdi@email.com', '16:00', '2025-08-07', TRUE),
-(4, 'anna.neri@email.com', '11:00', '2025-07-08', FALSE),
-(5, 'marco.gialli@email.com', '13:00', '2025-06-09', TRUE);

@@ -34,7 +34,17 @@ CREATE TABLE AdminSupport(
 	
 );
 
-
+CREATE TABLE Indirizzo (
+    id SERIAL PRIMARY KEY,
+    via TEXT NOT NULL,
+    citta TEXT NOT NULL,
+	Latitudine DECIMAL(9,6),
+	Longitudine DECIMAL(9,6),
+    provincia TEXT NOT NULL,
+    numero_civico INTEGER NOT NULL,
+    cap INTEGER NOT NULL,
+    regione TEXT NOT NULL
+);
  
  CREATE TABLE Immobile(
          IdImmobile SERIAL PRIMARY KEY,
@@ -44,8 +54,6 @@ CREATE TABLE AdminSupport(
 	 
 	 Prezzo DECIMAL(10,2) NOT NULL,
 	 TipoVendita VARCHAR(255) NOT NULL,
-	 Latitudine DECIMAL(9,6),
-	 Longitudine DECIMAL(9,6),
 	 Superficie INT NOT NULL,
 	 TipoImmobile VARCHAR(255) NOT NULL,
 	 NumBagni INT NOT NULL,
@@ -269,14 +277,21 @@ INSERT INTO AdminSupport (NomeSupport, CognomeSupport, EmailSupport, PasswordSup
 ('Lucia', 'Marini', 'support.marini@email.com', 'support101!', 'ViviCasa'),
 ('Roberto', 'Serra', 'support.serra@email.com', 'support102!', 'TorinoHome');
 
+--Inserimento dati nella tabella Indirizzo
+INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, numero_civico, cap, regione) VALUES
+('Via Roma', 'Torino', 45.0703, 7.6869, 'TO', 12, 10121, 'Piemonte'),
+('Corso Italia', 'Milano', 45.4642, 9.1900, 'MI', 25, 20122, 'Lombardia'),
+('Via Mazzini', 'Firenze', 43.7696, 11.2558, 'FI', 5, 50122, 'Toscana'),
+('Via Garibaldi', 'Genova', 44.4056, 8.9463, 'GE', 18, 16124, 'Liguria'),
+('Via Dante', 'Palermo', 38.1157, 13.3615, 'PA', 30, 90141, 'Sicilia');
 
--- Inserimento dati nella tabella Immobile
-INSERT INTO Immobile (IdImmobile, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, TipoImmobile, Latitudine, Longitudine, Superficie, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
-(1, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 'Appartamento', 41.902782, 12.496366, 80, 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
-(2, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 'Villa', 41.891930, 12.511330, 100, 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
-(3, 'prova@gmail.com', 'MilanCase', 180000, 'Affitto', 'Bilocale', 45.464664, 9.188540, 60, 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
-(4, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 'Attico', 45.465422, 9.185924, 85, 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
-(5, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 'Trilocale', 45.070339, 7.686864, 75, 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
+-- Inserimento dati nella tabella Immobile (senza IdImmobile, Latitudine e Longitudine)
+INSERT INTO Immobile (NomeAgente, NomeAgenzia, Prezzo, TipoVendita, TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze, Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto) VALUES
+('giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita', 'Appartamento', 80, 2, 'A+', 3, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
+('prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita', 'Villa', 100, 3, 'A', 5, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE),
+('prova@gmail.com', 'MilanCase', 180000, 'Affitto', 'Bilocale', 60, 1, 'B', 2, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+('martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita', 'Attico', 85, 2, 'A+', 4, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
+('andrea.conti@email.com', 'TorinoHome', 220000, 'Affitto', 'Trilocale', 75, 1, 'B', 3, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE);
 
 
 -- Inserimento dati nella tabella Offerta
@@ -294,4 +309,3 @@ INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma) VA
 (3, 'giulia.verdi@email.com', '16:00', '2025-08-07', TRUE),
 (4, 'anna.neri@email.com', '11:00', '2025-07-08', FALSE),
 (5, 'marco.gialli@email.com', '13:00', '2025-06-09', TRUE);
-

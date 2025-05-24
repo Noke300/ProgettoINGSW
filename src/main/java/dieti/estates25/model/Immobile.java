@@ -33,12 +33,6 @@ public class Immobile {
     @Column(name = "tipoimmobile", nullable = false)
     private String tipoImmobile;
 
-    @Column(name = "latitudine", precision = 9, scale = 6)
-    private BigDecimal latitudine;
-
-    @Column(name = "longitudine", precision = 9, scale = 6)
-    private BigDecimal longitudine;
-
     @Column(name = "numbagni", nullable = false)
     private int numBagni;
 
@@ -85,13 +79,6 @@ public class Immobile {
     public void setSuperficie(int superficie) { this.superficie = superficie; }
     public String getTipoImmobile() { return this.tipoImmobile; }
     public void setTipoImmobile(String tipoImmobile) { this.tipoImmobile = tipoImmobile; }
-
-    public BigDecimal getLatitudine() {return latitudine; }
-    public void setLatitudine(BigDecimal latitudine) {this.latitudine = latitudine; }
-
-    public BigDecimal getLongitudine() {return longitudine; }
-    public void setLongitudine(BigDecimal longitudine) {this.longitudine = longitudine; }
-
     public int getNumBagni() { return this.numBagni; }
     public void setNumBagni(int numBagni) { this.numBagni = numBagni; }
     public String getClasseEnergetica() { return this.classeEnergetica; }

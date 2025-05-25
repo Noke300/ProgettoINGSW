@@ -99,8 +99,9 @@ CREATE TABLE Visita (
  --Constreins
  	--Cliente
 
-ALTER TABLE Cliente ADD CONSTRAINT EmailClienteValida 
-CHECK(Cliente.EmailCliente LIKE '_%@%.__%');
+ALTER TABLE Cliente
+ADD CONSTRAINT EmailClienteValida
+CHECK (Cliente.EmailCliente ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 
  ALTER TABLE Cliente ADD CONSTRAINT DataNascita
 CHECK (
@@ -109,7 +110,7 @@ CHECK (
 
 	-- AgenziaImmobiliare
 	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAgenziaImmobiliare
-	CHECK(AgenziaImmobiliare.EmailAgenzia LIKE '_%@%.__%');
+	CHECK (AgenziaImmobiliare.EmailAgenzia ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 
 	ALTER TABLE AgenziaImmobiliare ADD CONSTRAINT EmailAdmin
 	CHECK(AgenziaImmobiliare.EmailAdmin LIKE '_%@%.__%');
@@ -122,7 +123,7 @@ CHECK (
 	--AgenteImmobiliare
 	
 	ALTER TABLE AgenteImmobiliare ADD CONSTRAINT EmailAgenteImmobiliareValida 
-	CHECK(AgenteImmobiliare.EmailAgente LIKE '_%@%.__%');
+	CHECK (AgenteImmobiliare.EmailAgente ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 	
 
 	--Immobile
@@ -269,7 +270,7 @@ INSERT INTO Immobile (
 )
 SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 280000, 'Affitto',
        'Casa', 120, 2, 'B', 4, 0, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE
-FROM Indirizzo
+FROM Indirizzo ind
 WHERE ind.Via = 'Via Garibaldi' AND ind.NumeroCivico = 18;
 
 -- Palermo - andrea.conti@email.com - TorinoHome
@@ -280,7 +281,7 @@ INSERT INTO Immobile (
 )
 SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto',
        'Appartamento', 95, 2, 'A', 4, 1, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE
-FROM Indirizzo
+FROM Indirizzo ind
 WHERE ind.Citta = 'Palermo' AND ind.Provincia = 'PA';
 
 
@@ -358,3 +359,4 @@ SELECT i.IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
 FROM Immobile i
 JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
 WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
+

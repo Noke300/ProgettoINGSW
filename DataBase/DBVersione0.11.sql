@@ -37,11 +37,11 @@ CREATE TABLE AdminSupport(
 );
 
 CREATE TABLE Indirizzo (
-    IdIndirizzo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    IdIndirizzo VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
     Via TEXT NOT NULL,
     Citta TEXT NOT NULL,
-    Latitudine DOUBLE PRECISION NOT NULL,
-    Longitudine DOUBLE PRECISION NOT NULL,
+    Latitudine DOUBLE PRECISION,
+    Longitudine DOUBLE PRECISION,
     Provincia TEXT NOT NULL,
     NumeroCivico INTEGER NOT NULL,
     Cap INTEGER NOT NULL,
@@ -49,9 +49,9 @@ CREATE TABLE Indirizzo (
 );
 
 CREATE TABLE Immobile (
-    IdImmobile UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    IdImmobile VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
 	
-	IdIndirizzo UUID,
+	IdIndirizzo VARCHAR(36),
     NomeAgente VARCHAR(255),
     NomeAgenzia VARCHAR(255) NOT NULL,
     Prezzo DECIMAL(10,2) NOT NULL,
@@ -75,8 +75,8 @@ CREATE TABLE Immobile (
 );
 
 CREATE TABLE Offerta (
-    IdOfferta UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    IdImmobile UUID,
+    IdOfferta VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+    IdImmobile VARCHAR(36),
     NomeCliente VARCHAR(255),
     PrezzoOfferta DECIMAL(10,2) NOT NULL,
     DataOfferta DATE NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE Offerta (
 );
 
 CREATE TABLE Visita (
-    IdImmobile UUID,
+    IdImmobile VARCHAR(36),
     NomeCliente VARCHAR(255),
     OraVisita TIME NOT NULL,
     DataVisita DATE NOT NULL,
@@ -226,133 +226,135 @@ INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, NumeroCiv
 ('Via Dante', 'Palermo', 38.1157, 13.3615, 'PA', 30, 90141, 'Sicilia');
 
 
-WITH new_indirizzo AS (
-    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
-    VALUES ('Via Roma', 'Torino', 0.0, 0.0, '', 12, 00000, '')
-    RETURNING IdIndirizzo
-),
-new_immobile AS (
-    INSERT INTO Immobile (
-        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
-    )
-    SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 250000, 'Vendita',
-           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
-    FROM new_indirizzo
-    RETURNING IdImmobile
-),
-insert_offerta AS (
-    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
-    SELECT IdImmobile, 'mario.rossi@email.com', 245000, '2024-01-11', TRUE
-    FROM new_immobile
+--INSERIMENTO IMMOBILE
+
+-- Torino - Giovanni Moretti - CasaFacile
+INSERT INTO Immobile (
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
 )
-INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
-SELECT IdImmobile, 'mario.rossi@email.com', '10:00', '2025-12-01', TRUE
-FROM new_immobile;
+SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 260000, 'Affitto',
+       'Appartamento', 110, 2, 'A', 4, 2, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE
+FROM Indirizzo
+WHERE Via = 'Via Roma' AND Cap = 10121;
 
--- Inserimento indirizzo Milano
-WITH new_indirizzo AS (
-    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
-    VALUES ('Corso Italia', 'Milano', 0.0, 0.0, '', 25, 00000, '')
-    RETURNING IdIndirizzo
-),
-new_immobile AS (
-    INSERT INTO Immobile (
-        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
-    )
-    SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 320000, 'Vendita',
-           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
-    FROM new_indirizzo
-    RETURNING IdImmobile
-),
-insert_offerta AS (
-    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
-    SELECT IdImmobile, 'luca.bianchi@email.com', 315000, '2024-01-12', FALSE
-    FROM new_immobile
+-- Milano - prova@gmail.com - ImmobiliareRoma
+INSERT INTO Immobile (
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
 )
-INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
-SELECT IdImmobile, 'luca.bianchi@email.com', '10:00', '2025-12-02', FALSE
-FROM new_immobile;
+SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 370000, 'Vendita',
+       'Casa', 135, 2, 'B', 5, 1, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE
+FROM Indirizzo
+WHERE NumeroCivico = 25 AND Provincia = 'MI';
 
--- Inserimento indirizzo Firenze
-WITH new_indirizzo AS (
-    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
-    VALUES ('Via Mazzini', 'Firenze', 0.0, 0.0, '', 5, 00000, '')
-    RETURNING IdIndirizzo
-),
-new_immobile AS (
-    INSERT INTO Immobile (
-        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
-    )
-    SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 180000, 'Vendita',
-           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
-    FROM new_indirizzo
-    RETURNING IdImmobile
-),
-insert_offerta AS (
-    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
-    SELECT IdImmobile, 'giulia.verdi@email.com', 175000, '2024-01-13', TRUE
-    FROM new_immobile
+-- Firenze - prova@gmail.com - MilanCase
+INSERT INTO Immobile (
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
 )
-INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
-SELECT IdImmobile, 'giulia.verdi@email.com', '10:00', '2025-12-03', TRUE
-FROM new_immobile;
+SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 195000, 'Vendita',
+       'Appartamento', 85, 1, 'A', 3, 1, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE
+FROM Indirizzo
+WHERE Regione = 'Toscana' AND Citta = 'Firenze';
 
--- Inserimento indirizzo Genova
-WITH new_indirizzo AS (
-    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
-    VALUES ('Via Garibaldi', 'Genova', 0.0, 0.0, '', 18, 00000, '')
-    RETURNING IdIndirizzo
-),
-new_immobile AS (
-    INSERT INTO Immobile (
-        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
-    )
-    SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 275000, 'Vendita',
-           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
-    FROM new_indirizzo
-    RETURNING IdImmobile
-),
-insert_offerta AS (
-    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
-    SELECT IdImmobile, 'anna.neri@email.com', 270000, '2024-01-14', FALSE
-    FROM new_immobile
+-- Genova - martina.deluca@email.com - ViviCasa
+INSERT INTO Immobile (
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
 )
-INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
-SELECT IdImmobile, 'anna.neri@email.com', '10:00', '2025-12-04', FALSE
-FROM new_immobile;
+SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 280000, 'Affitto',
+       'Casa', 120, 2, 'B', 4, 0, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE
+FROM Indirizzo
+WHERE ind.Via = 'Via Garibaldi' AND ind.NumeroCivico = 18;
 
--- Inserimento indirizzo Palermo
-WITH new_indirizzo AS (
-    INSERT INTO Indirizzo (Via, Citta, Latitudine, Longitudine, Provincia, NumeroCivico, Cap, Regione)
-    VALUES ('Via Dante', 'Palermo', 0.0, 0.0, '', 30, 00000, '')
-    RETURNING IdIndirizzo
-),
-new_immobile AS (
-    INSERT INTO Immobile (
-        IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-        TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-        Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
-    )
-    SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 220000, 'Vendita',
-           'Tipo', 100, 2, 'A', 4, 1, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE
-    FROM new_indirizzo
-    RETURNING IdImmobile
-),
-insert_offerta AS (
-    INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
-    SELECT IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
-    FROM new_immobile
+-- Palermo - andrea.conti@email.com - TorinoHome
+INSERT INTO Immobile (
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
+    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
 )
+SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto',
+       'Appartamento', 95, 2, 'A', 4, 1, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE
+FROM Indirizzo
+WHERE ind.Citta = 'Palermo' AND ind.Provincia = 'PA';
+
+
+--INSERIMENTO VISITA
+
+-- Visita per immobile a Torino da Mario Rossi
 INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
-SELECT IdImmobile, 'marco.gialli@email.com', '10:00', '2025-12-05', TRUE
-FROM new_immobile;
+SELECT i.IdImmobile, 'mario.rossi@email.com', '10:00', '2025-12-01', TRUE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Roma' AND ind.Citta = 'Torino';
+
+-- Visita per immobile a Milano da Luca Bianchi
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT i.IdImmobile, 'luca.bianchi@email.com', '10:00', '2025-12-02', FALSE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Corso Italia' AND ind.Citta = 'Milano';
+
+-- Visita per immobile a Firenze da Giulia Verdi
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT i.IdImmobile, 'giulia.verdi@email.com', '10:00', '2025-12-03', TRUE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Mazzini' AND ind.Citta = 'Firenze';
+
+-- Visita per immobile a Genova da Anna Neri
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT i.IdImmobile, 'anna.neri@email.com', '10:00', '2025-12-04', FALSE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Garibaldi' AND ind.Citta = 'Genova';
+
+-- Visita per immobile a Palermo da Marco Gialli
+INSERT INTO Visita (IdImmobile, NomeCliente, OraVisita, DataVisita, Conferma)
+SELECT i.IdImmobile, 'marco.gialli@email.com', '10:00', '2025-12-05', TRUE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
 
 
+--INSERIMENTO OFFERTA
+
+-- Offerta per immobile a Torino da Mario Rossi
+INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+SELECT i.IdImmobile, 'mario.rossi@email.com', 245000, '2024-01-11', TRUE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Roma' AND ind.Citta = 'Torino';
+
+-- Offerta per immobile a Milano da Luca Bianchi
+INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+SELECT i.IdImmobile, 'luca.bianchi@email.com', 315000, '2024-01-12', FALSE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Corso Italia' AND ind.Citta = 'Milano';
+
+-- Offerta per immobile a Firenze da Giulia Verdi
+INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+SELECT i.IdImmobile, 'giulia.verdi@email.com', 175000, '2024-01-13', TRUE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Mazzini' AND ind.Citta = 'Firenze';
+
+-- Offerta per immobile a Genova da Anna Neri
+INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+SELECT i.IdImmobile, 'anna.neri@email.com', 270000, '2024-01-14', FALSE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Garibaldi' AND ind.Citta = 'Genova';
+
+-- Offerta per immobile a Palermo da Marco Gialli
+INSERT INTO Offerta (IdImmobile, NomeCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
+SELECT i.IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
+FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';

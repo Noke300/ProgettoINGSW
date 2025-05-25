@@ -2,6 +2,7 @@ package dieti.estates25.controllers;
 
 import dieti.estates25.config.TokenBlacklist;
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.Indirizzo;
 import dieti.estates25.repositories.ImmobileRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class AuthController {
     }
 
     @PostMapping("/cerca-immobili")
-    public List<Immobile> findImmobiliVicini(@RequestBody Immobile immobile) {
-        double centroLat = immobile.getLatitudine().doubleValue();
-        double centroLon = immobile.getLongitudine().doubleValue();
+    public List<Immobile> findImmobiliVicini(@RequestBody Indirizzo indirizzo) {
+        double centroLat = indirizzo.getLatitudine();
+        double centroLon = indirizzo.getLongitudine();
         double raggioKm = 3;
         double delta1 = kmToDegreesLatitude(raggioKm);
         double delta2 = kmToDegreesLongitude(raggioKm, delta1);
@@ -53,7 +54,7 @@ public class AuthController {
 
         return candidati.stream()
                 .filter(i -> calcolaDistanza(
-                        i.getLatitudine().doubleValue(), i.getLongitudine().doubleValue(),
+                        i.getIndirizzo().getLatitudine(), i.getIndirizzo().getLongitudine(),
                         centroLat, centroLon) <= raggioKm)
                 .collect(Collectors.toList());
     }

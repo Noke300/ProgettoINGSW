@@ -2,7 +2,6 @@ package dieti.estates25.model;
 
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 
 
 @Entity
@@ -12,7 +11,11 @@ public class Immobile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idimmobile")
-    private Long idImmobile;
+    private String idImmobile;
+
+    @ManyToOne
+    @JoinColumn(name = "idindirizzo")
+    private Indirizzo indirizzo;
 
     @ManyToOne
     @JoinColumn(name = "nomeagente")
@@ -65,8 +68,8 @@ public class Immobile {
 
     // Getters and Setters
 
-    public Long getIdImmobile() { return this.idImmobile; }
-    public void setIdImmobile(Long idImmobile) { this.idImmobile = idImmobile; }
+    public String getIdImmobile() { return this.idImmobile; }
+    public void setIdImmobile(String idImmobile) { this.idImmobile = idImmobile; }
     public AgenteImmobiliare getAgente() { return this.agente; }
     public void setAgente(AgenteImmobiliare agente) { this.agente = agente; }
     public String getNomeAgenzia() { return this.nomeAgenzia; }
@@ -99,4 +102,8 @@ public class Immobile {
     public void setClimatizzazione(Boolean climatizzazione) { this.climatizzazione = climatizzazione; }
     public Boolean getVenduto() { return this.venduto; }
     public void setVenduto(Boolean venduto) { this.venduto = venduto; }
+
+    public Indirizzo getIndirizzo() {
+        return indirizzo;
+    }
 }

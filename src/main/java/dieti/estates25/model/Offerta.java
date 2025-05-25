@@ -11,7 +11,7 @@ public class Offerta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idofferta")
-    private Long idOfferta;
+    private String idOfferta;
 
     @ManyToOne
     @JoinColumn(name = "idimmobile")
@@ -32,8 +32,8 @@ public class Offerta {
 
     // Getters and Setters
 
-    public Long getIdOfferta() { return idOfferta; }
-    public void setIdOfferta(Long idOfferta) { this.idOfferta = idOfferta; }
+    public String getIdOfferta() { return idOfferta; }
+    public void setIdOfferta(String idOfferta) { this.idOfferta = idOfferta; }
     public Immobile getImmobile() { return this.immobile; }
     public void setImmobile(Immobile immobile) { this.immobile = immobile; }
     public Cliente getCliente() { return this.cliente; }

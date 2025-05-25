@@ -1,11 +1,13 @@
 package dieti.estates25.service.agenteimmobiliare;
 
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
 import dieti.estates25.repositories.AgenziaImmobiliareRepository;
 import dieti.estates25.repositories.ImmobileRepository;
+import dieti.estates25.repositories.VisitaRepository;
 import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +36,9 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
 
     @Autowired
     private ImmobileRepository immobileRepository;
+
+    @Autowired
+    private VisitaRepository visitaRepository;
 
     @Autowired
     private JWTService jwtService;
@@ -116,5 +121,11 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
             return userDetails.getUsername();
         }
         return null;
+    }
+
+
+    public List<Visita> getVisite() {
+        List<Immobile> immobiles = immobileRepository.findAllByAgente_EmailAgente(getEmailAutenticato());
+        return visitaRepository.findByImmobileIn(immobiles);
     }
 }

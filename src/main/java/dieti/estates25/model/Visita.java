@@ -8,13 +8,16 @@ import java.util.*;
 @Table(name = "visita")
 public class Visita {
 
-    @Id
+    @EmbeddedId
+    private VisitaId id;
+
     @ManyToOne
+    @MapsId("immobileId")
     @JoinColumn(name = "idimmobile")
     private Immobile immobile;
 
-    @Id
     @ManyToOne
+    @MapsId("clienteId")
     @JoinColumn(name = "nomecliente")
     private Cliente cliente;
 
@@ -29,6 +32,10 @@ public class Visita {
 
     // Getters and Setters
 
+
+    public VisitaId getId() {
+        return id;
+    }
     public Immobile getImmobile() { return this.immobile; }
     public void setImmobile(Immobile immobile) { this.immobile = immobile; }
     public Cliente getCliente() { return this.cliente; }

@@ -9,7 +9,7 @@ import jakarta.persistence.*;
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "idindirizzo")
-        private Long idIndirizzo;
+        private String idIndirizzo;
 
         @Column(name = "via", nullable = false)
         private String via;
@@ -17,10 +17,10 @@ import jakarta.persistence.*;
         @Column(name = "citta", nullable = false)
         private String citta;
 
-        @Column(name = "Latitudine", nullable = false)
+        @Column(name = "latitudine", nullable = false)
         private Double latitudine;
 
-        @Column(name = "Longitudine", nullable = false)
+        @Column(name = "longitudine", nullable = false)
         private Double longitudine;
 
         @Column(name = "provincia", nullable = false)
@@ -34,7 +34,7 @@ import jakarta.persistence.*;
         @Column(name = "regione", nullable = false)
         private String regione;
 
-        public Long getIdIndirizzo() {return idIndirizzo; }
+        public String getIdIndirizzo() {return idIndirizzo; }
 
         public Double getLatitudine() {return latitudine; }
 

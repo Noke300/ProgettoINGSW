@@ -3,6 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Immobile;
+import model.Visita;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -23,6 +24,7 @@ public class ControllerAdministration {
     private static final String LOGIN_URL = "http://localhost:8080/auth-agente/login";
     private static final String IMMOBILI_URL = "http://localhost:8080/auth-agente/immobili";
     private static final String RICERCA_URL = "http://localhost:8080/cerca-immobili";
+    private static final String DATE_URL = "http://localhost:8080/auth-agente/date";
     private static final Gson gson = new Gson();  //oggetto che serve a fare i Json
 
     public String loginAgente(String email, String password) {
@@ -134,6 +136,38 @@ public class ControllerAdministration {
         } else {
             throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
         }
+    }
+
+    public ArrayList<Visita> recuperoData(String token) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = null;
+        HttpResponse<String> response;
+
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(DATE_URL))
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (response.statusCode() == 200) {
+            Type listType = new TypeToken<ArrayList<Visita>>() {}.getType();
+            return gson.fromJson(response.body(), listType);
+        } else {
+            throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
+        }
+
     }
 }
 

@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import com.toedter.calendar.*;
 
+import controller.ControllerAdministration;
 import controller.ControllerClienti;
 
 import gui.costum_components.*;
@@ -65,6 +66,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
     public InterfacciaAgenteImmobiliare(JFrame frame, ControllerClienti control, String token) {
         initComponents();
+
+        /*
+        ControllerAdministration controller = new ControllerAdministration();
+        ArrayList date = new ArrayList();
+
+        date = controller.recuperoData(token);
+         */
+
 
         backButtonHome.addActionListener(e -> {
             // Supponiamo che la classe Home abbia il metodo createHomePanel

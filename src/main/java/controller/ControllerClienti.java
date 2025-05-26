@@ -12,10 +12,7 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ControllerClienti {
-
-    private static final String LOGIN_URL = "http://localhost:8080/auth-cliente/login";
-    private static final Gson gson = new Gson();
+public class ControllerClienti extends Controller {
 
     public ControllerClienti() {
         setAdminSupport(null);
@@ -82,7 +79,7 @@ public class ControllerClienti {
         String requestBody = gson.toJson(bodyMap);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(LOGIN_URL))
+                .uri(new URI(LOGIN_URL_CLIENTE))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();

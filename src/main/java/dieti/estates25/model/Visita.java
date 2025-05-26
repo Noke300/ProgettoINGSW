@@ -18,7 +18,7 @@ public class Visita {
 
     @ManyToOne
     @MapsId("clienteId")
-    @JoinColumn(name = "nomecliente")
+    @JoinColumn(name = "EmailCliente")
     private Cliente cliente;
 
     @Column(name = "oravisita", nullable = false)

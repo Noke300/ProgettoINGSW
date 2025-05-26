@@ -18,7 +18,7 @@ public class Offerta {
     private Immobile immobile;
 
     @ManyToOne
-    @JoinColumn(name = "nomecliente")
+    @JoinColumn(name = "EmailCliente")
     private Cliente cliente;
 
     @Column(name = "prezzoofferta", nullable = false)

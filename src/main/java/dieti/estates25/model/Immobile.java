@@ -46,7 +46,7 @@ public class Immobile {
     private int numStanze;
 
     @Column(name = "piano")
-    private Boolean piano;
+    private int piano;
 
     @Column(name = "ascensore")
     private Boolean ascensore;
@@ -88,8 +88,8 @@ public class Immobile {
     public void setClasseEnergetica(String classeEnergetica) { this.classeEnergetica = classeEnergetica; }
     public int getNumStanze() { return this.numStanze; }
     public void setNumStanze(int numStanze) { this.numStanze = numStanze; }
-    public Boolean getPiano() { return this.piano; }
-    public void setPiano(Boolean piano) { this.piano = piano; }
+    public int getPiano() { return this.piano; }
+    public void setPiano(int piano) { this.piano = piano; }
     public Boolean getAscensore() { return this.ascensore; }
     public void setAscensore(Boolean ascensore) { this.ascensore = ascensore; }
     public Boolean getBalcone() { return this.balcone; }

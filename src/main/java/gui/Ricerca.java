@@ -4,6 +4,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerAdministration;
 import controller.ControllerClienti;
+import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import gui.costum_components.SimplifiedMapLoader;
@@ -36,6 +37,7 @@ public class Ricerca extends JPanel {
     private final String FilterString = "Indifferente" ;
     private static final IconClass iconSet = new IconClass();
     private String token;
+    private final BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     public Ricerca() {
         initComponents();
         initializePopupMenu(); // Inizializza il menu
@@ -60,6 +62,7 @@ public class Ricerca extends JPanel {
         checkBoxesList.add(hospitalsCheckBox);
         checkBoxesList.add(parkCheckBox);
 
+
         // --- 3. Popup per i suggerimenti ---
         JPopupMenu suggestionPopup = new JPopupMenu();
 
@@ -69,6 +72,7 @@ public class Ricerca extends JPanel {
 
 
         // --- 5. Azione del pulsante "Cerca" ---//--- 6. Menu Opzioni ---
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
 
         setUpOpzioniMenu(frame,control,checkBoxesList);
 
@@ -88,43 +92,12 @@ public class Ricerca extends JPanel {
             parkCheckBox.setSelected(false);
             schoolsCheckBox.setSelected(false);
         });
-       toggleButtonCantina.addActionListener(e -> {
-           if (toggleButtonCantina.isSelected()){
-               toggleButtonCantina.setBackground(iconSet.getMainColor());
-           }else{
-               toggleButtonCantina.setBackground(Color.WHITE);
-           }
-       });
-        toggleButtonBalcone.addActionListener(e -> {
-            if (toggleButtonBalcone.isSelected()){
-                toggleButtonBalcone.setBackground(iconSet.getMainColor());
-            }else{
-                toggleButtonBalcone.setBackground(Color.WHITE);
-            }
-        });
-        toggleButtonAscensore.addActionListener(e -> {
-            if (toggleButtonAscensore.isSelected()){
-                toggleButtonAscensore.setBackground(iconSet.getMainColor());
-            }else{
-                toggleButtonAscensore.setBackground(Color.WHITE);
-            }
-        });
-        toggleButtonPortineria.addActionListener(e -> {
-            if (toggleButtonPortineria.isSelected()){
-                toggleButtonPortineria.setBackground(iconSet.getMainColor());
-            }else {
-                toggleButtonPortineria.setBackground(Color.WHITE);
-            }
-        });
-        toggleButtonClimatizzazione.addActionListener(e -> {
-            if (toggleButtonClimatizzazione.isSelected()){
-                toggleButtonClimatizzazione.setBackground(iconSet.getMainColor());
-            }else{
-                toggleButtonClimatizzazione.setBackground(Color.WHITE);
-            }
-        });
-
-
+        // Usage for each button
+        configureToggleButton(toggleButtonCantina);
+        configureToggleButton(toggleButtonBalcone);
+        configureToggleButton(toggleButtonAscensore);
+        configureToggleButton(toggleButtonPortineria);
+        configureToggleButton(toggleButtonClimatizzazione);
 
         // --- 8. Prezzi ---
         menuPrezzi.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
@@ -259,15 +232,6 @@ public class Ricerca extends JPanel {
         return this;
     }
 
-    private void setUpLogInOutButton(String token){
-        if (token.isEmpty()){
-            logInButton.setText("Login");
-            logInButton.setIcon(iconSet.getLogInIcon());
-        }else{
-            logInButton.setText("Logout");
-            logInButton.setIcon(iconSet.getLogOutIcon());
-        }
-    }
 
     private DocumentListener createAutoSuggestListener(JTextField searchField, JPopupMenu suggestionPopup,Function<String, List<String>> fetchSuggestionsFn) {
         return new DocumentListener() {
@@ -362,7 +326,7 @@ public class Ricerca extends JPanel {
 
             ControllerAdministration controlAdmin = new ControllerAdministration();
             List<Immobile> immobiles = controlAdmin.ricerca(geoPos.getLatitude(),geoPos.getLongitude());
-            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList, geoPos, control, this.token,internalFrameFiltri,immobiles));
+            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
             frame.revalidate();
             frame.repaint();
         } else {
@@ -370,40 +334,15 @@ public class Ricerca extends JPanel {
         }
     }
 
+    private void configureToggleButton(JToggleButton button) {
+        button.addActionListener(e -> {
+            button.setBackground(button.isSelected() ? iconSet.getMainColor() : Color.WHITE);
+        });
+    }
+
     //Funzione Cambio Cursore
 
     private void setUpOpzioniMenu(JFrame frame, ControllerClienti control, List<JCheckBox> checkBoxesList) {
-        backButtonHome.addActionListener(e -> {
-            // Supponiamo che la classe Home abbia il metodo createHomePanel
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new Home().createHomePanel(frame));
-            frame.revalidate();
-            frame.repaint();
-        });
-        logInButton.addActionListener(e -> {
-            if (this.token.isEmpty()) {
-
-                menuOpzioni.setVisible(false);
-                menuBarOpzioni.setVisible(false);
-                frame.setContentPane(new LogIn(frame, control,this.token ));
-
-            }else {
-                this.token = "";
-                setUpLogInOutButton(this.token);
-            }
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        buttonAccountAmministrazione.addActionListener(e -> {
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
-            frame.revalidate();
-            frame.repaint();
-        });
 
         searchButton.addActionListener(e -> performSearchAction(frame,control,checkBoxesList));
         //Cerca con Invio
@@ -413,7 +352,7 @@ public class Ricerca extends JPanel {
 
     private void setUpComponents() {
         //--Cursor
-        for (JButton jButton : Arrays.asList(mapButton, searchButton, buttonFiltri, buttonConfermaFiltri, buttonCancellaFiltri, logInButton, buttonAccountAmministrazione, backButtonHome)) {
+        for (JButton jButton : Arrays.asList(mapButton, searchButton, buttonFiltri, buttonConfermaFiltri, buttonCancellaFiltri)) {
             jButton.addMouseListener(iconSet.cursorButton());
         }
         for(JToggleButton toggleButton : Arrays.asList(toggleButtonAscensore, toggleButtonBalcone, toggleButtonCantina, toggleButtonClimatizzazione, toggleButtonPortineria)){
@@ -425,17 +364,15 @@ public class Ricerca extends JPanel {
         comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
 
         //--Icon
-        setUpLogInOutButton(this.token);
         labelTitolo.setIcon(iconSet.getHomeIcon());
         searchButton.setIcon(iconSet.getSearcherIcon());
-        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
         mapButton.setIcon(iconSet.getMapIcon());
+
         labelPiani.setIcon(iconSet.getPianiIcon());
         labelTipoVendita.setIcon(iconSet.getTipoVenditaIcon());
         labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
         labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
         labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
-        buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
 
         toggleButtonAscensore.setIcon(iconSet.getAscensoreIcon());
         toggleButtonBalcone.setIcon(iconSet.getBalconeIcon());
@@ -541,9 +478,6 @@ public class Ricerca extends JPanel {
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        buttonAccountAmministrazione = new JButton();
-        backButtonHome = new JButton();
         LogoOpzioni = new JLabel();
         internalFrameFiltri = new JPanel();
         labelTipoVendita = new JLabel();
@@ -571,6 +505,12 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
+        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER
+        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font
+        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er"
+        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -717,27 +657,6 @@ public class Ricerca extends JPanel {
                     menuOpzioni.setForeground(new Color(0x66ff66));
                     menuOpzioni.setBackground(Color.green);
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-
-                    //---- logInButton ----
-                    logInButton.setText("Log In");
-                    logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(logInButton);
-
-                    //---- buttonAccountAmministrazione ----
-                    buttonAccountAmministrazione.setText("Account Amministrazione");
-                    buttonAccountAmministrazione.setIcon(UIManager.getIcon("FileChooser.newFolderIcon"));
-                    buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(buttonAccountAmministrazione);
-
-                    //---- backButtonHome ----
-                    backButtonHome.setHorizontalTextPosition(SwingConstants.RIGHT);
-                    backButtonHome.setText("Home");
-                    backButtonHome.setVerticalAlignment(SwingConstants.TOP);
-                    backButtonHome.setVerticalTextPosition(SwingConstants.TOP);
-                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
@@ -929,9 +848,6 @@ public class Ricerca extends JPanel {
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton buttonAccountAmministrazione;
-    private JButton backButtonHome;
     private JLabel LogoOpzioni;
     private JPanel internalFrameFiltri;
     private JLabel labelTipoVendita;

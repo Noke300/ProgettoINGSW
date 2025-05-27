@@ -7,7 +7,6 @@ import model.Visita;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;

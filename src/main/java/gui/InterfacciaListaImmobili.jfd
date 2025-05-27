@@ -18,6 +18,13 @@ new FormModel {
 				name: "panelTopBar"
 				"background": new com.jformdesigner.model.SwingColor( "Actions.Green" )
 				"border": new javax.swing.border.LineBorder( sfield java.awt.Color black, 2, false )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "ricercaButton"
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
+					"font": new java.awt.Font( "Segoe UI", 0, 16 )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 0,grow"
+				} )
 				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 					name: "menuBarOpzioni"
 					"borderPainted": false
@@ -30,29 +37,6 @@ new FormModel {
 						"font": new java.awt.Font( "Segoe UI", 0, 20 )
 						"horizontalAlignment": 0
 						"horizontalTextPosition": 2
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "logInButton"
-							"text": "Log In"
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "ricercaButton"
-							"text": "Ricerca"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "buttonAccountAmministrazione"
-							"text": "Account Amministrazione"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.newFolderIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "backButtonHome"
-							"text": "Home"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
 					} )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 5 0 3 1,align right top,grow 0 0"
@@ -66,7 +50,7 @@ new FormModel {
 					"borderPainted": false
 					"background": new java.awt.Color( 255, 255, 255, 0 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 1,aligny center,growy 0"
+					"value": "cell 0 1,align center center,grow 0 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "searchButton"

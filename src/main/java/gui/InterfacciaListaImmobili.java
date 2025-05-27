@@ -5,6 +5,7 @@
 package gui;
 
 import controller.ControllerClienti;
+import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import gui.costum_components.SimplifiedMapLoader;
@@ -61,10 +62,10 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, GeoPosition geoPosition, ControllerClienti control, String token, JPanel internalFrameFiltri,List<Immobile> immobili) {
+    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, ControllerClienti control, String token, JPanel internalFrameFiltri, List<Immobile> immobili) {
         this.token=token;
         initComponents();
-
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,this.token,menuBarOpzioni,menuOpzioni);
         internalFrameFiltri.setVisible(false);
         setUpOpzioniMenu(frame,control);
         setUpComponents();
@@ -273,50 +274,8 @@ public class InterfacciaListaImmobili extends JPanel {
             panelListaImmobile.add(panel);
         }
     }
-    private void setUpLogInOutButton(String token){
-        if (token.isEmpty()){
-            logInButton.setText("Login");
-            logInButton.setIcon(iconSet.getLogInIcon());
-        }else{
-            logInButton.setText("Logout");
-            logInButton.setIcon(iconSet.getLogOutIcon());
-        }
-    }
     private void setUpOpzioniMenu(JFrame frame, ControllerClienti control) {
-
-        backButtonHome.addActionListener(e -> {
-            // Supponiamo che la classe Home abbia il metodo createHomePanel
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new Home().createHomePanel(frame));
-            frame.revalidate();
-            frame.repaint();
-        });
-        logInButton.addActionListener(e -> {
-            if (this.token.isEmpty()) {
-
-                menuOpzioni.setVisible(false);
-                menuBarOpzioni.setVisible(false);
-                frame.setContentPane(new LogIn(frame, control,this.token ));
-
-            }else {
-                this.token = "";
-                setUpLogInOutButton(this.token);
-            }
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        buttonAccountAmministrazione.addActionListener(e -> {
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,control,this.token));
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        ricercaButton.addActionListener(e-> {
+            ricercaButton.addActionListener(e-> {
             frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
             frame.revalidate();
             frame.repaint();
@@ -326,7 +285,7 @@ public class InterfacciaListaImmobili extends JPanel {
     private void setUpComponents() {
         //--Cursor
 
-        for (JButton jButton : Arrays.asList(mapButton, buttonFiltri, logInButton, buttonAccountAmministrazione, backButtonHome)) {
+        for (JButton jButton : Arrays.asList(mapButton, buttonFiltri)) {
             jButton.addMouseListener(iconSet.cursorButton());
         }
         listaTipi.addMouseListener(iconSet.cursorButton());
@@ -334,13 +293,9 @@ public class InterfacciaListaImmobili extends JPanel {
         comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
 
         //--Icon
-        setUpLogInOutButton(this.token);
         ricercaButton.setIcon(iconSet.getSearcherIcon());
         mapButton.setIcon(iconSet.getMapIcon());
         searchButton.setIcon(iconSet.getSearcherIcon());
-        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
-       
-        buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
 
     }
     private void selectPanel(JPanel panel) {
@@ -390,12 +345,9 @@ public class InterfacciaListaImmobili extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco
         panelTopBar = new JPanel();
+        ricercaButton = new JButton();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        ricercaButton = new JButton();
-        buttonAccountAmministrazione = new JButton();
-        backButtonHome = new JButton();
         mapButton = new JButton();
         searchButton = new JButton();
         searchField = new JTextField();
@@ -414,6 +366,13 @@ public class InterfacciaListaImmobili extends JPanel {
         buttonAggiungiOfferta = new JButton();
 
         //======== this ========
+        setBorder(new BevelBorder(BevelBorder.LOWERED));
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
+        EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing
+        .border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),
+        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
+        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))
+        throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -460,6 +419,11 @@ public class InterfacciaListaImmobili extends JPanel {
                 "[75,grow,top]0" +
                 "[]para"));
 
+            //---- ricercaButton ----
+            ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
+            ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            panelTopBar.add(ricercaButton, "cell 0 0,grow");
+
             //======== menuBarOpzioni ========
             {
                 menuBarOpzioni.setBorderPainted(false);
@@ -473,29 +437,6 @@ public class InterfacciaListaImmobili extends JPanel {
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 20));
                     menuOpzioni.setHorizontalAlignment(SwingConstants.CENTER);
                     menuOpzioni.setHorizontalTextPosition(SwingConstants.LEFT);
-
-                    //---- logInButton ----
-                    logInButton.setText("Log In");
-                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(logInButton);
-
-                    //---- ricercaButton ----
-                    ricercaButton.setText("Ricerca");
-                    ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
-                    ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(ricercaButton);
-
-                    //---- buttonAccountAmministrazione ----
-                    buttonAccountAmministrazione.setText("Account Amministrazione");
-                    buttonAccountAmministrazione.setIcon(UIManager.getIcon("FileChooser.newFolderIcon"));
-                    buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(buttonAccountAmministrazione);
-
-                    //---- backButtonHome ----
-                    backButtonHome.setText("Home");
-                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
@@ -508,7 +449,7 @@ public class InterfacciaListaImmobili extends JPanel {
             mapButton.setBorder(null);
             mapButton.setBorderPainted(false);
             mapButton.setBackground(new Color(0x00ffffff, true));
-            panelTopBar.add(mapButton, "cell 0 1,aligny center,growy 0");
+            panelTopBar.add(mapButton, "cell 0 1,align center center,grow 0 0");
 
             //---- searchButton ----
             searchButton.setSelectedIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
@@ -639,12 +580,9 @@ public class InterfacciaListaImmobili extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Marco
     private JPanel panelTopBar;
+    private JButton ricercaButton;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton ricercaButton;
-    private JButton buttonAccountAmministrazione;
-    private JButton backButtonHome;
     private JButton mapButton;
     private JButton searchButton;
     private JTextField searchField;

@@ -54,23 +54,6 @@ new FormModel {
 						"text": "Opzioni"
 						"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
 						"font": new java.awt.Font( "Segoe UI", 0, 22 )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "logInButton"
-							"text": "Log In"
-							"font": new java.awt.Font( "Segoe UI", 0, 20 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "ricercaButton"
-							"text": "Ricerca"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 20 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "backButtonHome"
-							"text": "Home"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 20 )
-						} )
 					} )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 4 0,alignx trailing,grow 0 100"

@@ -64,8 +64,9 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaAgenteImmobiliare(JFrame frame, ControllerClienti control, String token) {
+    public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerClienti control, String token) {
         initComponents();
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
 
         /*
         ControllerAdministration controller = new ControllerAdministration();
@@ -73,34 +74,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         date = controller.recuperoData(token);
          */
-
-
-        backButtonHome.addActionListener(e -> {
-            // Supponiamo che la classe Home abbia il metodo createHomePanel
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new Home().createHomePanel(frame));
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        logInButton.addActionListener(e -> {
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new LogIn(frame,control,token));
-            frame.revalidate();
-            frame.repaint();
-        });
-
-        ricercaButton.addActionListener(e-> {
-
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
-            frame.revalidate();
-            frame.repaint();
-        });
-
 
         mapLoader = new MapLoader(napoli,checkBoxesList,panelMap);
         // Create and add the first panel
@@ -335,9 +308,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         buttonCalendario = new JButton();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        ricercaButton = new JButton();
-        backButtonHome = new JButton();
         panelListaImmobileScroll = new JScrollPane();
         panelListaImmobile = new JPanel();
         panelMap = new JPanel();
@@ -348,11 +318,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0
-        ,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM
-        ,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt.Color.red),
-         getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
-        ){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException();}});
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .
+        EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing
+        . border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,
+        java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
+        { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )
+        throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -426,23 +397,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                     menuOpzioni.setText("Opzioni");
                     menuOpzioni.setIcon(UIManager.getIcon("Table.descendingSortIcon"));
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-
-                    //---- logInButton ----
-                    logInButton.setText("Log In");
-                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-                    menuOpzioni.add(logInButton);
-
-                    //---- ricercaButton ----
-                    ricercaButton.setText("Ricerca");
-                    ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
-                    ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-                    menuOpzioni.add(ricercaButton);
-
-                    //---- backButtonHome ----
-                    backButtonHome.setText("Home");
-                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
@@ -515,9 +469,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     private JButton buttonCalendario;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton ricercaButton;
-    private JButton backButtonHome;
     private JScrollPane panelListaImmobileScroll;
     private JPanel panelListaImmobile;
     private JPanel panelMap;

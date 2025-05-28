@@ -58,9 +58,9 @@ public class LogInAmministrazione extends JPanel {
                  }else {
                      this.token = token1;
                      ControllerAdministration controlAdmin = new ControllerAdministration();
-                     List<Immobile> immobiles = controlAdmin.fetchImmobili(token1);
+                     List<Immobile> immobili = controlAdmin.fetchImmobili(token1);
                      BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobiles));
+                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobili));
                      frame.revalidate();
                      frame.repaint();
                  }

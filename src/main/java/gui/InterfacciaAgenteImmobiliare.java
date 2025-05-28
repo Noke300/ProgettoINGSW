@@ -31,7 +31,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 public class InterfacciaAgenteImmobiliare extends JPanel {
     MapLoader mapLoader;
     private static final IconClass iconSet = new IconClass();
-    GeoPosition napoli = new GeoPosition(45.464170, 11.885890);
+    private GeoPosition geoPos = new GeoPosition(45.464170, 11.885890);
     List<JCheckBox> checkBoxesList = new ArrayList<>();
     private JPanel selectedPanel = null;
     private ImmobilePanelSingolo immobilePanelSingolo = new ImmobilePanelSingolo();
@@ -49,7 +49,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<Immobile> immobili) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
-
         /*
         ControllerAdministration controller = new ControllerAdministration();
         ArrayList date = new ArrayList();
@@ -57,12 +56,18 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         date = controller.recuperoData(token);
          */
 
-        mapLoader = new MapLoader(napoli,checkBoxesList,panelMap,immobili);
-        // Create and add the first panel
 
+        mapLoader = new MapLoader(geoPos, checkBoxesList, panelMap, immobili);
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
+        Dimension dim  = new Dimension(820,289);
+        for (Immobile immobile : immobili) {
+            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
+            panel.setMaximumSize(dim);
+            panel.setPreferredSize(dim);
+            panelListaImmobile.add(panel);
+        }
 
         buttonElimina.addActionListener(e -> {
             if (selectedPanel != null) {
@@ -73,7 +78,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 panelListaImmobile.repaint();
             }
         });
-
         //--Calendario
         // Then in your initialization or constructor method
         buttonCalendario.setIcon(iconSet.getCalendarioIcon());
@@ -157,16 +161,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 System.out.println("Date already colored: " + normalizedCal.getTime());
             }
         });
-
-
-        Dimension dim  = new Dimension(820,289);
-        for (Immobile immobile : immobili) {
-            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
-            panel.setMaximumSize(dim);
-            panel.setPreferredSize(dim);
-            panelListaImmobile.add(panel);
-        }
-
         buttonAggiungImmobile.setIcon(iconSet.getPlusImmobile());
 
     }

@@ -13,21 +13,21 @@ public class Immobile {
     private boolean cantina;
     private boolean climatizzazione;
     private boolean venduto;
-    private final GeoPosition geoPositionImobbile;
+    private GeoPosition geoPositionImobbile;
 
     private final AgenziaImmobiliare agenziaImmobiliare;
     private AgenteImmobiliare agenteImmobiliare;
     private final Indirizzo indirizzo;
 
-    public Immobile(double prezzo, String tipoVendita, int superficie, String classeEnergetica, GeoPosition geoPositionImobbile, AgenziaImmobiliare agenziaImmobiliare, AgenteImmobiliare agenteImmobiliare, Indirizzo indirizzo) {
+    public Immobile(double prezzo, String tipoVendita, int superficie, String classeEnergetica, AgenziaImmobiliare agenziaImmobiliare, AgenteImmobiliare agenteImmobiliare, Indirizzo indirizzo) {
         this.prezzo = prezzo;
         this.tipoVendita = tipoVendita;
         this.superficie = superficie;
         this.classeEnergetica = classeEnergetica;
-        this.geoPositionImobbile = new GeoPosition(geoPositionImobbile.getLatitude(), geoPositionImobbile.getLongitude());
         this.agenziaImmobiliare = agenziaImmobiliare;
         this.agenteImmobiliare = agenteImmobiliare;
         this.indirizzo = indirizzo;
+        this.geoPositionImobbile = new GeoPosition(this.indirizzo.getLatitudine(), this.indirizzo.getLongitudine());
 
         this.numBagni = 1;
         this.numStanze = 1;
@@ -148,9 +148,6 @@ public class Immobile {
     public boolean isVenduto() {
         return venduto;
     }
-
-
-
     public GeoPosition getGeoPositionImobbile() {
         return geoPositionImobbile;
     }

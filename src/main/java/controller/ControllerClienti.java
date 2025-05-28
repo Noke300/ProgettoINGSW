@@ -61,6 +61,7 @@ public class ControllerClienti extends Controller {
     public void setAgenteImmobiliare(AgenteImmobiliare agenteImmobiliare) {
         this.agenteImmobiliare = agenteImmobiliare;
     }
+
     public Indirizzo getIndirizzo() {
         return indirizzo;
     }
@@ -69,8 +70,4 @@ public class ControllerClienti extends Controller {
         this.indirizzo = indirizzo;
     }
 
-
-    public Immobile[] getImmos() {
-        return null;
-    }
 }

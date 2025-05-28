@@ -45,7 +45,7 @@ public class ImmobilePanelSingolo {
         panel.setPreferredSize(new Dimension(780, 170));
         panel.setLayout(new MigLayout(
                 "hidemode 3",
-                "[325][325][325]",
+                "[325][250][325]",
                 "[95][95][95][95]"));
 
         // Panel with the image as a background
@@ -67,27 +67,28 @@ public class ImmobilePanelSingolo {
         }
         Font font = new Font("Segoe UI", Font.PLAIN, 20);
         // Adding other components to the main pane
-        JLabel labelIndirizzo = new JLabel(immobile.getIndirizzo().toString());//getAddressFromCoordinates(milano) mega lag
+        JLabel labelIndirizzo = new JLabel("<html>" + immobile.getIndirizzo().toString() + "</html>");
         labelIndirizzo.setFont(font);
         panel.add(labelIndirizzo, "cell 2 0 2 1");
+
 
         JLabel labelNStanze = new JLabel("Numero Stanze : "+immobile.getNumStanze());
         labelNStanze.setFont(font);
         panel.add(labelNStanze, "cell 2 1");
 
-        JLabel labelNBagni = new JLabel("Numero Bagni :"+immobile.getNumBagni());
+        JLabel labelNBagni = new JLabel("Numero Bagni : "+immobile.getNumBagni());
         labelNBagni.setFont(font);
         panel.add(labelNBagni, "cell 3 1");
 
-        JLabel labelPrezzo = new JLabel("Prezzo :"+immobile.getPrezzo());
+        JLabel labelPrezzo = new JLabel("Prezzo : "+immobile.getPrezzo());
         labelPrezzo.setFont(font);
-        panel.add(labelPrezzo, "cell 0 2 2 2,alignx center,growx 0");
+        panel.add(labelPrezzo, "cell 0 2 2 2,alignx left,growx 0");
 
-        JLabel labelMetriQuadri = new JLabel("Merti Quadri :"+immobile.getSuperficie());
+        JLabel labelMetriQuadri = new JLabel("Merti Quadri : "+immobile.getSuperficie());
         labelMetriQuadri.setFont(font);
         panel.add(labelMetriQuadri, "cell 2 2");
 
-        JLabel labelClasseEnergetica = new JLabel("Classe Energetica :"+immobile.getClasseEnergetica());
+        JLabel labelClasseEnergetica = new JLabel("Classe Energetica : "+immobile.getClasseEnergetica());
         labelClasseEnergetica.setFont(font);
         panel.add(labelClasseEnergetica, "cell 3 2");
 

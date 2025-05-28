@@ -95,8 +95,11 @@ public class InterfacciaListaImmobili extends JPanel {
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
+        Dimension dim  = new Dimension(820,289);
         for (Immobile immobile : immobili) {
             JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
+            panel.setMaximumSize(dim);
+            panel.setPreferredSize(dim);
             panelListaImmobile.add(panel);
         }
 
@@ -221,12 +224,14 @@ public class InterfacciaListaImmobili extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
-        (0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
-        .TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt
-        .Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
-        propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException()
-        ;}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (
+        new javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
+        , javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 )
+        , java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -385,7 +390,7 @@ public class InterfacciaListaImmobili extends JPanel {
             panelMap.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 2, true));
             panelMap.setLayout(new BorderLayout());
         }
-        add(panelMap, "cell 6 0 7 8,grow");
+        add(panelMap, "cell 5 0 8 8,grow");
 
         //======== panelListaImmobileScroll ========
         {
@@ -399,7 +404,7 @@ public class InterfacciaListaImmobili extends JPanel {
             }
             panelListaImmobileScroll.setViewportView(panelListaImmobile);
         }
-        add(panelListaImmobileScroll, "cell 1 0 5 8,grow");
+        add(panelListaImmobileScroll, "cell 1 0 4 8,grow");
 
         //======== panelBottomBar ========
         {

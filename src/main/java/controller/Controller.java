@@ -123,7 +123,7 @@ public class Controller {
             return response.body().replace("\"", ""); // rimuove doppi apici
         } else {
             System.out.println("Login fallito. Codice risposta: " + response.statusCode());
-            return null;
+            return "";
         }
     }
 

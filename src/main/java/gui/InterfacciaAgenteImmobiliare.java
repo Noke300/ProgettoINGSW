@@ -159,9 +159,11 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
 
 
-
+        Dimension dim  = new Dimension(820,289);
         for (Immobile immobile : immobili) {
             JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
+            panel.setMaximumSize(dim);
+            panel.setPreferredSize(dim);
             panelListaImmobile.add(panel);
         }
 
@@ -193,17 +195,16 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
+        .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax
+        . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,
+        12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans
+        .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e.
+        getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
-            "[fill]0" +
-            "[139,grow,fill]0" +
+            "0[139,grow,fill]0" +
             "[117,fill]0" +
             "[96,fill]0" +
             "[96,fill]0" +
@@ -291,14 +292,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             }
             panelListaImmobileScroll.setViewportView(panelListaImmobile);
         }
-        add(panelListaImmobileScroll, "cell 0 0 4 8,grow");
+        add(panelListaImmobileScroll, "cell 0 0 3 8,grow");
 
         //======== panelMap ========
         {
             panelMap.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 3, true));
             panelMap.setLayout(new BorderLayout());
         }
-        add(panelMap, "cell 4 0 10 5,grow");
+        add(panelMap, "cell 3 0 10 5,grow");
 
         //======== panelBottomBar ========
         {
@@ -325,13 +326,13 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             buttonAggiungiOfferta.setText("Aggiungi Offerta");
             buttonAggiungiOfferta.setBorderPainted(false);
             buttonAggiungiOfferta.setBackground(UIManager.getColor("Actions.Green"));
-            panelBottomBar.add(buttonAggiungiOfferta, "cell 2 0,aligny center,growy 0");
+            panelBottomBar.add(buttonAggiungiOfferta, "cell 2 0 1 2,aligny center,growy 0");
 
             //---- buttonElimina ----
             buttonElimina.setText("Elimina");
             buttonElimina.setBorder(new EmptyBorder(5, 5, 5, 5));
             buttonElimina.setBackground(UIManager.getColor("Actions.Green"));
-            panelBottomBar.add(buttonElimina, "cell 3 0,aligny center,grow 100 0");
+            panelBottomBar.add(buttonElimina, "cell 3 0 1 2,aligny center,grow 100 0");
         }
         add(panelBottomBar, "south");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on

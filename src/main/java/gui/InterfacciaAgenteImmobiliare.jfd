@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center"
-			"$columnConstraints": "[fill]0[139,grow,fill]0[117,fill]0[96,fill]0[96,fill]0[93,fill]0[fill]0[112,fill]0[0,fill]0[71,fill]0[0,center]0[24,grow,fill]0[9,fill]0[14,grow,fill]"
+			"$columnConstraints": "0[139,grow,fill]0[117,fill]0[96,fill]0[96,fill]0[93,fill]0[fill]0[112,fill]0[0,fill]0[71,fill]0[0,center]0[24,grow,fill]0[9,fill]0[14,grow,fill]"
 			"$rowConstraints": "[48,grow,fill][48,grow,fill][48,grow,center][grow,center][grow,fill][grow,fill][grow,fill][grow,fill]"
 		} ) {
 			name: "this"
@@ -72,13 +72,13 @@ new FormModel {
 					"border": new javax.swing.border.LineBorder( #SwingColor0, 2, true )
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 4 8,grow"
+				"value": "cell 0 0 3 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "panelMap"
 				"border": new javax.swing.border.LineBorder( #SwingColor0, 3, true )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 4 0 10 5,grow"
+				"value": "cell 3 0 10 5,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "insets 0,hidemode 3,gap 5 5"
@@ -102,7 +102,7 @@ new FormModel {
 					"borderPainted": false
 					"background": #SwingColor0
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 2 0,aligny center,growy 0"
+					"value": "cell 2 0 1 2,aligny center,growy 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonElimina"
@@ -110,7 +110,7 @@ new FormModel {
 					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 					"background": #SwingColor0
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 0,aligny center,grow 100 0"
+					"value": "cell 3 0 1 2,aligny center,grow 100 0"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "south"

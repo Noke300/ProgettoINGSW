@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import controller.Controller;
 import controller.ControllerClienti;
 import net.miginfocom.swing.*;
 import org.jfree.chart.ChartFactory;
@@ -20,7 +21,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * @author marco
  */
 public class PaginaImmobileDettagliata extends JPanel {
-    public PaginaImmobileDettagliata(JFrame frame, ControllerClienti control, String token) {
+    public PaginaImmobileDettagliata(JFrame frame, Controller control, String token) {
         initComponents();
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();

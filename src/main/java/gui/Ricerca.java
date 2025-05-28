@@ -2,12 +2,10 @@ package gui;
 
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
+import controller.Controller;
 import controller.ControllerAdministration;
 import controller.ControllerClienti;
-import gui.costum_components.BottoniOpzioni;
-import gui.costum_components.IconClass;
-import gui.costum_components.MapLoader;
-import gui.costum_components.SimplifiedMapLoader;
+import gui.costum_components.*;
 import model.Immobile;
 import net.miginfocom.swing.*;
 import okhttp3.OkHttpClient;
@@ -32,12 +30,12 @@ import java.util.function.Function;
 
 public class Ricerca extends JPanel {
 
-    private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
     private JPopupMenu popupMenu;
     private final String FilterString = "Indifferente" ;
     private static final IconClass iconSet = new IconClass();
     private String token;
     private final BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    private final AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
     public Ricerca() {
         initComponents();
         initializePopupMenu(); // Inizializza il menu
@@ -51,7 +49,7 @@ public class Ricerca extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public JPanel createRicercaPanel(JFrame frame, ControllerClienti control, String token) {
+    public JPanel createRicercaPanel(JFrame frame, Controller control, String token) {
 
         this.token = token;
         internalFrameFiltri.setVisible(false);
@@ -63,12 +61,9 @@ public class Ricerca extends JPanel {
         checkBoxesList.add(parkCheckBox);
 
 
-        // --- 3. Popup per i suggerimenti ---
-        JPopupMenu suggestionPopup = new JPopupMenu();
 
         // --- 4. Auto-completamento ---
-        suggestionPopup.setSize(searchField.getWidth(),searchField.getHeight());
-        searchField.getDocument().addDocumentListener(createAutoSuggestListener(searchField, suggestionPopup, this::fetchAutocompleteSuggestions));
+        autoCompleteAddress.setupSearchAutocomplete(searchField);
 
 
         // --- 5. Azione del pulsante "Cerca" ---//--- 6. Menu Opzioni ---
@@ -232,100 +227,10 @@ public class Ricerca extends JPanel {
         return this;
     }
 
-
-    private DocumentListener createAutoSuggestListener(JTextField searchField, JPopupMenu suggestionPopup,Function<String, List<String>> fetchSuggestionsFn) {
-        return new DocumentListener() {
-            private static final int TIMER_DELAY_MS = 700;
-
-            private Timer initializeTimer() {
-                Timer timer = new Timer(TIMER_DELAY_MS, e -> handleSuggestionInput());
-                timer.setRepeats(false);
-                return timer;
-            }
-
-            private final Timer timer = initializeTimer();
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                timer.restart();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                timer.restart();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                timer.restart();
-            }
-
-            private void handleSuggestionInput() {
-                SwingUtilities.invokeLater(() -> {
-                    String inputText = searchField.getText().trim();
-                    if (inputText.isEmpty()) {
-                        hideSuggestions();
-                        return;
-                    }
-
-                    List<String> suggestions = fetchSuggestionsFn.apply(inputText);
-                    if (suggestions.isEmpty()) {
-                        hideSuggestions();
-                        return;
-                    }
-
-                    populateSuggestions(suggestions);
-                    displaySuggestionPopup();
-                });
-            }
-
-            private void hideSuggestions() {
-                suggestionPopup.setVisible(false);
-            }
-
-            private void populateSuggestions(List<String> suggestions) {
-                suggestionPopup.removeAll();
-                suggestionPopup.setSize(searchField.getWidth(),searchField.getHeight());
-
-                for (String suggestion : suggestions) {
-                    JMenuItem item = new JMenuItem(suggestion);
-                    item.addActionListener((ActionEvent ev) -> {
-                        searchField.setText(suggestion);
-                        suggestionPopup.setVisible(false);
-                    });
-                    suggestionPopup.add(item);
-                }
-            }
-
-            private void displaySuggestionPopup() {
-                // Assicurati che ci siano suggerimenti da mostrare
-                if (suggestionPopup.getComponentCount() == 0) {
-                    suggestionPopup.setVisible(false);
-                    return;
-                }
-                // Imposta la larghezza del popup uguale a quella del searchField
-
-
-                // Calcola l'altezza preferita del popup basata sui suoi contenuti (i JMenuItem)
-                // JPopupMenu.getPreferredSize() fa questo per te.
-
-
-                // Usa setPopupSize che è specifico per JPopupMenu
-                suggestionPopup.setFont(searchField.getFont());
-                suggestionPopup.setPopupSize(searchField.getWidth(), suggestionPopup.getPreferredSize().height+50);
-                suggestionPopup.show(searchField, 0, searchField.getHeight());
-            }
-
-        };
-
-    }
-
-    private void performSearchAction(JFrame frame, ControllerClienti control, List<JCheckBox> checkBoxesList) {
+    private void performSearchAction(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
-
-            ControllerAdministration controlAdmin = new ControllerAdministration();
-            List<Immobile> immobiles = controlAdmin.ricerca(geoPos.getLatitude(),geoPos.getLongitude());
+            List<Immobile> immobiles = control.ricerca(geoPos);
             frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
             frame.revalidate();
             frame.repaint();
@@ -342,7 +247,7 @@ public class Ricerca extends JPanel {
 
     //Funzione Cambio Cursore
 
-    private void setUpOpzioniMenu(JFrame frame, ControllerClienti control, List<JCheckBox> checkBoxesList) {
+    private void setUpOpzioniMenu(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
 
         searchButton.addActionListener(e -> performSearchAction(frame,control,checkBoxesList));
         //Cerca con Invio
@@ -379,46 +284,6 @@ public class Ricerca extends JPanel {
         toggleButtonCantina.setIcon(iconSet.getCantinaIcon());
         toggleButtonClimatizzazione.setIcon(iconSet.getClimatizzazioneIcon());
         toggleButtonPortineria.setIcon(iconSet.getPortineriaIcon());
-    }
-
-    private List<String> fetchAutocompleteSuggestions(String input) {
-        List<String> results = new ArrayList<>();
-        Set<String> uniqueLocations = new HashSet<>(); // Usa un Set per rimuovere duplicati
-
-        OkHttpClient client = new OkHttpClient();
-        String url = String.format("https://api.geoapify.com/v1/geocode/autocomplete?text=%s&limit=7&lang=it&filter=countrycode:it&apiKey=%s",
-                input, GEOAPIFY_API_KEY);
-
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
-                String jsonData = response.body().string();
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
-                JSONArray features = (JSONArray) jsonObject.get("features");
-
-                for (Object o : features) {
-                    JSONObject feature = (JSONObject) o;
-                    JSONObject properties = (JSONObject) feature.get("properties");
-                    String formatted = (String) properties.get("formatted");
-
-                    // Normalizza il nome rimuovendo "Italia" o "Italy" dalla fine
-                    String normalized = formatted.replaceAll(",?\\s*(Italia|Italy)\\s*$", "").trim();
-
-                    if (uniqueLocations.add(normalized)) {
-                        results.add(formatted); // Mantiene il formato originale
-                    }
-                }
-            }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-
-        return results;
     }
 
     private void initializePopupMenu() {
@@ -505,12 +370,6 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
-        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER
-        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font
-        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
-        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er"
-        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns

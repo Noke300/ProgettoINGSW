@@ -4,12 +4,11 @@
 
 package gui;
 
+import controller.Controller;
 import controller.ControllerClienti;
-import gui.costum_components.BottoniOpzioni;
-import gui.costum_components.IconClass;
-import gui.costum_components.MapLoader;
-import gui.costum_components.SimplifiedMapLoader;
+import gui.costum_components.*;
 import model.Immobile;
+import model.Indirizzo;
 import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -28,32 +27,14 @@ import java.util.Objects;
 public class InterfacciaListaImmobili extends JPanel {
     private static final String FONT_NAME = "Segue UI";
     private static final IconClass iconSet = new IconClass();
+    private final ImmobilePanelSingolo  immobilePanelSingolo = new ImmobilePanelSingolo();
     String token;
 
     private JPanel selectedPanel = null;
 
     //--Border per gli immobili selected
-    private final Color borderColor = new Color(24, 122, 26);
-    private final Color selectionColor = new Color(24, 122, 26);
-    private final Font borderFont = new Font(FONT_NAME, Font.BOLD, 18);
 
-    private static class BorderStyler {
-        public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
-            TitledBorder titledBorder = new TitledBorder(title);
-            titledBorder.setBorder(BorderFactory.createLineBorder(lineColor, thickness));
-            titledBorder.setTitleColor(new Color(0, 0, 0));
-            titledBorder.setTitleFont(font);
-            return titledBorder;
-        }
-        public static Border createSelectedBorder(String title, Color lineColor, Font font) {
-            TitledBorder innerBorder = createStyledBorder(title, lineColor, 1, font);
-            return BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(lineColor, 2, true),
-                    innerBorder
-            );
-        }
 
-    }
 //Rimuove i popup quando la pagina viene caricata
     @Override
     public void addNotify() {
@@ -62,7 +43,7 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, ControllerClienti control, String token, JPanel internalFrameFiltri, List<Immobile> immobili) {
+    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, Controller control, String token, JPanel internalFrameFiltri, List<Immobile> immobili) {
         this.token=token;
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,this.token,menuBarOpzioni,menuOpzioni);
@@ -73,7 +54,7 @@ public class InterfacciaListaImmobili extends JPanel {
         searchButton.addActionListener(e -> {
             if(!searchField.getText().isEmpty()) {
                 panelMap.removeAll();
-                new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap);
+                new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap,immobili);
                 panelMap.revalidate();
                 panelMap.repaint();
             }else{
@@ -108,14 +89,14 @@ public class InterfacciaListaImmobili extends JPanel {
             filterDialog.setVisible(true);
         });
 
-        new MapLoader(geoPosition,checkBoxesList,panelMap);
+        new MapLoader(geoPosition,checkBoxesList,panelMap,immobili);
         // Create and add the first panel
 
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
         for (Immobile immobile : immobili) {
-            JPanel panel = createImmobileSingoloPanel(immobile.getTipoVendita(),control,token);
+            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
             panelListaImmobile.add(panel);
         }
 
@@ -183,98 +164,7 @@ public class InterfacciaListaImmobili extends JPanel {
         });
 
     }
-
-    private JPanel createImmobileSingoloPanel(String casaName, ControllerClienti control, String token) {
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderStyler.createStyledBorder(casaName, borderColor, 1, borderFont));
-        panel.setPreferredSize(new Dimension(780, 170));
-        panel.setLayout(new MigLayout(
-                "hidemode 3",
-                "[325][325][325]",
-                "[95][95][95][95]"));
-
-        // Panel with the image as a background
-        try {
-            URL imageUrl = getClass().getResource("/CasaProva2.jpeg");
-            if (imageUrl != null) {
-                ImageIcon icon = new ImageIcon(imageUrl);
-                JLabel imageLabel = new JLabel(icon);
-                imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                panel.add(imageLabel, "cell 0 0 2 2");
-            } else {
-                JLabel errorLabel = new JLabel("Image not found");
-                errorLabel.setBackground(Color.RED);
-                errorLabel.setOpaque(true);
-                panel.add(errorLabel, "cell 0 0 2 2");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Adding other components to the main pane
-        JLabel labelIndirizzo = new JLabel("Indirizzo");//getAddressFromCoordinates(milano) mega lag
-        panel.add(labelIndirizzo, "cell 2 0 2 1");
-
-        JLabel labelNStanze = new JLabel("Numero Stanze");
-        panel.add(labelNStanze, "cell 2 1");
-
-        JLabel labelNBagni = new JLabel("Numero Bagni");
-        panel.add(labelNBagni, "cell 3 1");
-
-        JLabel labelPrezzo = new JLabel("Prezzo");
-        panel.add(labelPrezzo, "cell 0 2 2 2,alignx center,growx 0");
-
-        JLabel labelMetriQuadri = new JLabel("M^2");
-        panel.add(labelMetriQuadri, "cell 2 2");
-
-        JLabel labelClasseEnergetica = new JLabel("A4");
-        panel.add(labelClasseEnergetica, "cell 3 2");
-
-        // MouseAdaptor doppio click
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    // Single click - select/deselect the panel
-                    selectPanel(panel);
-                } else if (e.getClickCount() == 2) {
-                    // Double-click - navigate to the details page
-                    navigateToDetailsPage(panel,control,token);
-                }
-            }
-        });
-
-
-        return panel;
-    }
-    private void navigateToDetailsPage(JPanel panel, ControllerClienti control, String token) {
-        // Get the property name/ID from the panel border
-        // Create and navigate to the details page
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (frame != null) {
-            // Navigate to the details page, passing the `title` to the new JPanel or JFrame
-            PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame,control,token);
-            frame.setContentPane(detailsPage);
-            frame.revalidate();
-            frame.repaint();
-        } else {
-            System.err.println("Parent frame not found for navigation.");
-        }
-    }
-
-    private void caricametoImmobili(List<JPanel> list, ControllerClienti control, String token) {
-        // Crea un nuovo JPanel per ogni immobile
-        for (Immobile immobile : control.getImmos()) {
-            JPanel panel = createImmobileSingoloPanel(immobile.getTipoVendita(),control,token);
-            list.add(panel);
-        }
-        // Aggiungi i pannelli al panelListaImmobile
-        panelListaImmobile.removeAll();
-        for (JPanel panel : list) {
-            panelListaImmobile.add(panel);
-        }
-    }
-    private void setUpOpzioniMenu(JFrame frame, ControllerClienti control) {
+    private void setUpOpzioniMenu(JFrame frame, Controller control) {
             ricercaButton.addActionListener(e-> {
             frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
             frame.revalidate();
@@ -297,42 +187,6 @@ public class InterfacciaListaImmobili extends JPanel {
         mapButton.setIcon(iconSet.getMapIcon());
         searchButton.setIcon(iconSet.getSearcherIcon());
 
-    }
-    private void selectPanel(JPanel panel) {
-        // Deselect a previous panel if exists
-        if (selectedPanel != null) {
-            // Get the title from the current border
-            String title;
-            Border currentBorder = selectedPanel.getBorder();
-
-            if (currentBorder instanceof CompoundBorder) {
-                // It's currently selected - extract title from an inner border
-                TitledBorder innerBorder = (TitledBorder)((CompoundBorder)currentBorder).getInsideBorder();
-                title = innerBorder.getTitle();
-            } else {
-                // It's a simple TitledBorder
-                title = ((TitledBorder)currentBorder).getTitle();
-            }
-
-            // Restore standard styled border with the same title
-            selectedPanel.setBorder(BorderStyler.createStyledBorder(title, borderColor, 1, borderFont));
-        }
-
-        // Select a new panel
-        if (panel != selectedPanel) {
-            selectedPanel = panel;
-
-            // Get the title from the current border
-            String title = ((TitledBorder)panel.getBorder()).getTitle();
-
-            // Apply the selected border with consistent styling
-            panel.setBorder(BorderStyler.createSelectedBorder(title, selectionColor, borderFont));
-        } else {
-            // Clicking the same panel deselects it
-            selectedPanel = null;
-        }
-
-        repaint();
     }
 
 
@@ -367,12 +221,12 @@ public class InterfacciaListaImmobili extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
-        EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing
-        .border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),
-        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
-        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))
-        throw new RuntimeException();}});
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
+        (0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
+        .TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt
+        .Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
+        propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException()
+        ;}});
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -531,7 +385,7 @@ public class InterfacciaListaImmobili extends JPanel {
             panelMap.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 2, true));
             panelMap.setLayout(new BorderLayout());
         }
-        add(panelMap, "cell 5 0 8 8,grow");
+        add(panelMap, "cell 6 0 7 8,grow");
 
         //======== panelListaImmobileScroll ========
         {
@@ -545,7 +399,7 @@ public class InterfacciaListaImmobili extends JPanel {
             }
             panelListaImmobileScroll.setViewportView(panelListaImmobile);
         }
-        add(panelListaImmobileScroll, "cell 1 0 4 8,grow");
+        add(panelListaImmobileScroll, "cell 1 0 5 8,grow");
 
         //======== panelBottomBar ========
         {
@@ -565,7 +419,8 @@ public class InterfacciaListaImmobili extends JPanel {
             //---- buttonAggiungImmobile ----
             buttonAggiungImmobile.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
             buttonAggiungImmobile.setBackground(UIManager.getColor("Actions.Green"));
-            panelBottomBar.add(buttonAggiungImmobile, "cell 0 0 1 2,aligny center,grow 100 0");
+            buttonAggiungImmobile.setText("Aggiungi Immobile");
+            panelBottomBar.add(buttonAggiungImmobile, "cell 0 1,alignx left,grow 0 100");
 
             //---- buttonAggiungiOfferta ----
             buttonAggiungiOfferta.setText("Aggiungi Offerta");

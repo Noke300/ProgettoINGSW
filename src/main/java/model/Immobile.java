@@ -24,7 +24,7 @@ public class Immobile {
         this.tipoVendita = tipoVendita;
         this.superficie = superficie;
         this.classeEnergetica = classeEnergetica;
-        this.geoPositionImobbile = geoPositionImobbile;
+        this.geoPositionImobbile = new GeoPosition(geoPositionImobbile.getLatitude(), geoPositionImobbile.getLongitude());
         this.agenziaImmobiliare = agenziaImmobiliare;
         this.agenteImmobiliare = agenteImmobiliare;
         this.indirizzo = indirizzo;
@@ -148,6 +148,8 @@ public class Immobile {
     public boolean isVenduto() {
         return venduto;
     }
+
+
 
     public GeoPosition getGeoPositionImobbile() {
         return geoPositionImobbile;

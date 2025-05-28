@@ -144,7 +144,7 @@ new FormModel {
 				name: "panelMap"
 				"border": new javax.swing.border.LineBorder( &SwingColor0 new com.jformdesigner.model.SwingColor( "Actions.Green" ), 2, true )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 5 0 8 8,grow"
+				"value": "cell 6 0 7 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "panelListaImmobileScroll"
@@ -157,7 +157,7 @@ new FormModel {
 					"border": new javax.swing.border.LineBorder( #SwingColor0, 2, true )
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 0 4 8,grow"
+				"value": "cell 1 0 5 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "insets 0,hidemode 3,gap 5 5"
@@ -171,8 +171,9 @@ new FormModel {
 					name: "buttonAggiungImmobile"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
 					"background": #SwingColor0
+					"text": "Aggiungi Immobile"
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 0 1 2,aligny center,grow 100 0"
+					"value": "cell 0 1,alignx left,grow 0 100"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonAggiungiOfferta"
@@ -186,7 +187,7 @@ new FormModel {
 				"value": "south"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 410, 20 )
+			"location": new java.awt.Point( 15, 10 )
 			"size": new java.awt.Dimension( 720, 700 )
 		} )
 	}

@@ -1,29 +1,29 @@
 package gui.costum_components;
 
+import controller.Controller;
 import controller.ControllerAdministration;
 import controller.ControllerClienti;
 import gui.*;
 import model.Immobile;
-import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.Arrays;
 import java.util.List;
-
 
 
 public class BottoniOpzioni extends JPanel {
 
 private final IconClass iconSet = new IconClass();
 private final JButton logInButton = new JButton();
-private final JButton buttonAccountAmministrazioneLogin = new JButton();
 private final JButton buttonAccountClienti = new JButton();
 private final JButton backButtonHome = new JButton();
 private final JButton buttonAccountAmministrazione = new JButton();
 private String token;
 
-    public void setUpOpzioniMenu(JFrame frame, ControllerClienti control,String token, JMenuBar menuBarOpzioni, JMenu menuOpzioni) {
+    public void setUpOpzioniMenu(JFrame frame, Controller control, String token, JMenuBar menuBarOpzioni, JMenu menuOpzioni) {
         this.token = token;
         setBottoniSetUpJForm();
 
@@ -35,6 +35,8 @@ private String token;
             frame.revalidate();
             frame.repaint();
         });
+
+        //TODO Cambio comportamento bottone log in in caso di log out
         logInButton.addActionListener(e -> {
             if (this.token.isEmpty()) {
                 menuOpzioni.setVisible(false);
@@ -55,17 +57,16 @@ private String token;
                 menuBarOpzioni.setVisible(false);
                 frame.setContentPane(new LogInAmministrazione(frame, control,this.token ));
                 frame.revalidate();
-
             }else {
                 menuOpzioni.setVisible(false);
                 menuBarOpzioni.setVisible(false);
-                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,this,control, this.token));
+                ControllerAdministration controlAdmin = new ControllerAdministration();
+                List<Immobile> immobiles = controlAdmin.fetchImmobili(token);
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,this,controlAdmin, this.token,immobiles ));
                 frame.revalidate();
                 frame.repaint();
             }
         });
-
-
 
         for (JButton jButton : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome)) {
             jButton.addMouseListener(iconSet.cursorButton());
@@ -93,18 +94,22 @@ private String token;
         logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
 
-        setUpLogInOutButton(this.token);
+        if(setUpLogInOutButton(this.token)){
+
+        }
+
         backButtonHome.setIcon(iconSet.getHomeButtonIcon());
         buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
     }
-    private void setUpLogInOutButton(String token){
-
+    private boolean setUpLogInOutButton(String token){
         if (token.isEmpty()){
             logInButton.setText("Login");
             logInButton.setIcon(iconSet.getLogInIcon());
+            return false;
         }else{
             logInButton.setText("Logout");
             logInButton.setIcon(iconSet.getLogOutIcon());
+            return true;
         }
     }
 

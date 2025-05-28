@@ -31,6 +31,7 @@ public class IconClass {
    private final FontIcon climatizzazioneIcon = FontIcon.of(FontAwesomeSolid.FIRE_ALT,22);
    private final FontIcon portineriaIcon = FontIcon.of(FontAwesomeSolid.USER_LOCK,22);
    private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.green);
+   private final FontIcon plusImmobile = FontIcon.of(FontAwesomeSolid.PLUS_CIRCLE,24);
 
 
     public Color getMainColor() {return mainColor;}
@@ -95,5 +96,6 @@ public class IconClass {
     public FontIcon getClimatizzazioneIcon() {return climatizzazioneIcon;}
     public FontIcon getCantinaIcon() {return cantinaIcon;}
     public FontIcon getMapImmobiliIcon() {return mapImmobiliIcon;}
+    public FontIcon getPlusImmobile() {return plusImmobile;}
 
 }

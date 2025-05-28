@@ -20,43 +20,6 @@ import java.util.HashMap;
 //TODO dobbiamo gestire meglio le Exception di questa classe
 public class ControllerAdministration extends Controller{
 
-    public String loginAgente(String email, String password) {
-        HttpClient client = HttpClient.newHttpClient();
-
-        Map<String, String> bodyMap = new HashMap<>();
-        bodyMap.put("emailAgente", email);
-        bodyMap.put("passwordAgente", password);
-
-        String requestBody = gson.toJson(bodyMap);
-
-        HttpRequest request;
-        try {
-            request = HttpRequest.newBuilder()
-                    .uri(new URI(LOGIN_URL_AGENTE))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-       // client.close();
-
-        if (response.statusCode() == 200) {
-            return response.body().replace("\"", ""); // rimuove doppi apici
-        } else {
-            System.out.println("Login fallito. Codice risposta: " + response.statusCode());
-            return null;
-        }
-    }
 
     public List<Immobile> fetchImmobili(String token) {
         HttpClient client = HttpClient.newHttpClient();

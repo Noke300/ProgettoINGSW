@@ -7,19 +7,25 @@ package gui;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
 import com.formdev.flatlaf.extras.*;
 
+import controller.Controller;
+import controller.ControllerAdministration;
 import controller.ControllerClienti;
+import gui.costum_components.BottoniOpzioni;
+import model.Immobile;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
 public class LogInAmministrazione extends JPanel {
-    public LogInAmministrazione(JFrame frame, ControllerClienti control, String token) {
+    private String token;
+    public LogInAmministrazione(JFrame frame, Controller control, String token) {
         initComponents(frame);
 
          backButtonHome.addActionListener(e-> {
@@ -39,7 +45,7 @@ public class LogInAmministrazione extends JPanel {
          buttonLogIn.addActionListener(e-> {
              String token1;
              try {
-                 token1 = control.logInClient(textFildEmail.getText(), passwordField1.getText());
+                 token1 = control.loginAgente(textFildEmail.getText(), passwordField1.getText());
 
                  if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
@@ -50,15 +56,15 @@ public class LogInAmministrazione extends JPanel {
                      );
 
                  }else {
-                     frame.setContentPane(new Ricerca().createRicercaPanel(frame, control, token1));
+                     this.token = token1;
+                     ControllerAdministration controlAdmin = new ControllerAdministration();
+                     List<Immobile> immobiles = controlAdmin.fetchImmobili(token1);
+                     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobiles));
                      frame.revalidate();
                      frame.repaint();
                  }
-             } catch (IOException ex) {
-                 throw new RuntimeException(ex);
-             } catch (InterruptedException ex) {
-                 throw new RuntimeException(ex);
-             } catch (URISyntaxException ex) {
+             } catch (RuntimeException ex) {
                  throw new RuntimeException(ex);
              }
          });
@@ -92,13 +98,12 @@ public class LogInAmministrazione extends JPanel {
         LogoOpzioni = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.
-        swing.border.EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border
-        .TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog"
-        ,java.awt.Font.BOLD,12),java.awt.Color.red), getBorder
-        ())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java
-        .beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.getPropertyName()))throw new RuntimeException
-        ();}});
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .
+        EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing
+        . border .TitledBorder . BOTTOM, new java. awt .Font ( "Dialo\u0067", java .awt . Font. BOLD ,12 ) ,
+        java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
+        { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "borde\u0072" .equals ( e. getPropertyName () ) )
+        throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns

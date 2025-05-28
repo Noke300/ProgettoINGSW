@@ -12,6 +12,7 @@ import javax.swing.border.*;
 
 import com.formdev.flatlaf.extras.*;
 
+import controller.Controller;
 import controller.ControllerClienti;
 import net.miginfocom.swing.*;
 
@@ -19,7 +20,7 @@ import net.miginfocom.swing.*;
  * @author marco
  */
 public class LogIn extends JPanel {
-    public LogIn(JFrame frame, ControllerClienti control, String token) {
+    public LogIn(JFrame frame, Controller control, String token) {
         initComponents(frame);
 
          backButtonHome.addActionListener(e-> {

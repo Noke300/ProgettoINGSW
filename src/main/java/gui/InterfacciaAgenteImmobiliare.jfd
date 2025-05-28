@@ -72,7 +72,7 @@ new FormModel {
 					"border": new javax.swing.border.LineBorder( #SwingColor0, 2, true )
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 4 7,grow"
+				"value": "cell 0 0 4 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "panelMap"
@@ -92,8 +92,9 @@ new FormModel {
 					name: "buttonAggiungImmobile"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
 					"background": #SwingColor0
+					"text": "Aggiungi Immobile"
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 0,aligny center,grow 100 0"
+					"value": "cell 0 0 1 2,align left center,grow 0 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonAggiungiOfferta"

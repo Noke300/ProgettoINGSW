@@ -7,6 +7,8 @@ public class Indirizzo {
     private int numeroCivico;
     private int cap;
     private String regione;
+    private Double latitudine;
+    private Double longitudine;
 
     public String getVia() {
         return via;
@@ -54,5 +56,26 @@ public class Indirizzo {
 
     public void setRegione(String regione) {
         this.regione = regione;
+    }
+
+    public Double getLatitudine() {
+        return latitudine;
+    }
+
+    public void setLatitudine(Double latitudine) {
+        this.latitudine = latitudine;
+    }
+
+    public Double getLongitudine() {
+        return longitudine;
+    }
+
+    public void setLongitudine(Double longitudine) {
+        this.longitudine = longitudine;
+    }
+
+    @Override
+    public String toString() {
+        return "Indirizzo : "+ via +" "+ citta + " " + provincia + " "+ numeroCivico + " " + cap + " " + regione + " ";
     }
 }

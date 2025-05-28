@@ -69,30 +69,6 @@ public class ControllerClienti extends Controller {
         this.indirizzo = indirizzo;
     }
 
-    public static String logInClient(String emailCliente, String password) throws IOException, InterruptedException, URISyntaxException {
-        HttpClient client = HttpClient.newHttpClient();
-
-        Map<String, String> bodyMap = new HashMap<>();
-        bodyMap.put("emailCliente", emailCliente);
-        bodyMap.put("passwordCliente", password);
-
-        String requestBody = gson.toJson(bodyMap);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(LOGIN_URL_CLIENTE))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            return response.body().replace("\"", ""); // Rimuove doppi apici
-        } else {
-            System.out.println("Login fallito. Codice risposta: " + response.statusCode());
-            return null;
-        }
-    }
 
     public Immobile[] getImmos() {
         return null;

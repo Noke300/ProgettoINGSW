@@ -5,7 +5,6 @@ import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
-import dieti.estates25.repositories.AgenziaImmobiliareRepository;
 import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.VisitaRepository;
 import dieti.estates25.service.JWTService;
@@ -23,8 +22,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

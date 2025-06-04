@@ -1,6 +1,5 @@
 package dieti.estates25.model.agenteimmobiliare;
 
-import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

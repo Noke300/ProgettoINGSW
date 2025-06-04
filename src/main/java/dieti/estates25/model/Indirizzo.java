@@ -1,6 +1,5 @@
 package dieti.estates25.model;
 
-import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import jakarta.persistence.*;
     @Entity
     @Table(name = "indirizzo")

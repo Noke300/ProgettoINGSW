@@ -230,7 +230,7 @@ public class Ricerca extends JPanel {
     private void performSearchAction(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
-            List<Immobile> immobiles = control.ricerca(geoPos);
+            List<Immobile> immobiles = control.ricerca(geoPos, fetchFiltri());
             frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
             frame.revalidate();
             frame.repaint();
@@ -323,6 +323,27 @@ public class Ricerca extends JPanel {
                 }
             }
         });
+    }
+
+    private Map<String, Object> fetchFiltri(){
+        Map<String, Object> filtri = new HashMap<>();
+
+        //filtri.put("prezzoMax", comboBoxPrezzoMax.getSelectedItem());
+        //filtri.put("prezzoMin", comboBoxPrezzoMinimo.getSelectedItem());
+        //filtri.put("superficie", comboBoxSuperfice.getSelectedItem());
+        //filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
+        //filtri.put("tipoImmobile", listaTipi.getSelectedItem());
+        //filtri.put("numBagni", spinnerBagni.getValue());
+        //filtri.put("numStanze", spinnerStanze.getValue());
+        //filtri.put("classeEnergetica", comboBoxClasseE.getSelectedItem());
+        //filtri.put("piano", spinnerPiani.getValue());
+        filtri.put("ascensore", toggleButtonAscensore.isSelected());
+        filtri.put("balcone", toggleButtonBalcone.isSelected());
+        filtri.put("cantina", toggleButtonCantina.isSelected());
+        filtri.put("climatizzazione", toggleButtonClimatizzazione.isSelected());
+        filtri.put("portineria", toggleButtonPortineria.isSelected());
+
+        return filtri;
     }
 
     private void initComponents() {

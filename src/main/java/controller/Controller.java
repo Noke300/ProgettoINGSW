@@ -12,10 +12,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Controller {
 
@@ -26,16 +23,23 @@ public class Controller {
     protected static final String DATE_URL = "http://localhost:8081/auth-agente/date";
     protected static final Gson gson = new Gson();  //oggetto che serve a fare i Json
 
-    public List<Immobile> ricerca(GeoPosition geoPos) {
+    public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = null;
         HttpResponse<String> response;
 
-        Map<String, Double> bodyMap = new HashMap<>();
+        System.out.println(filtri);
+
+        Map<String, Map<String, Object>> jsonMap = new HashMap<>();
+
+        Map<String, Object> bodyMap = new HashMap<>();
         bodyMap.put("latitudine", geoPos.getLatitude());
         bodyMap.put("longitudine", geoPos.getLongitude());
 
-        String requestBody = gson.toJson(bodyMap);
+        jsonMap.put("indirizzo", bodyMap);
+        jsonMap.put("filtri", filtri);
+
+        String requestBody = gson.toJson(jsonMap);
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(RICERCA_URL))

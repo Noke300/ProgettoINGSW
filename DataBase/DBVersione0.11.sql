@@ -81,7 +81,7 @@ CREATE TABLE Offerta (
     PrezzoOfferta DECIMAL(10,2) NOT NULL,
     DataOfferta DATE NOT NULL,
     EsitoOfferta BOOLEAN,
-    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile),
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
     FOREIGN KEY (EmailCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
 );
 

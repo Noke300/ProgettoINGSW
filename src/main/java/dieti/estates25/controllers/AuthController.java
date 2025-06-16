@@ -4,13 +4,17 @@ import dieti.estates25.config.TokenBlacklist;
 import dieti.estates25.model.CoordinateFiltri;
 import dieti.estates25.model.Filtri;
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.Offerta;
 import dieti.estates25.repositories.ImmobileRepository;
+import dieti.estates25.repositories.OffertaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +25,9 @@ public class AuthController {
 
     @Autowired
     private ImmobileRepository immobileRepository;
+
+    @Autowired
+    private OffertaRepository offertaRepository;
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -35,6 +42,13 @@ public class AuthController {
         return ResponseEntity
                 .badRequest()
                 .body("Token non presente o non valido");
+    }
+
+    @PostMapping("/visualizza-offerte")
+    public List<Offerta> visualizzaOfferte(@RequestBody Immobile immobile) {
+        if (immobile.getIdImmobile() == null) return new ArrayList<>();
+        //TODO maagri meglio lanciare un eccezione o dare un messaggio d'errore
+        return offertaRepository.findAllByImmobileIdImmobileEquals(immobile.getIdImmobile());
     }
 
     @PostMapping("/cerca-immobili")

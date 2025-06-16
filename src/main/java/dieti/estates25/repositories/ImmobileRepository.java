@@ -15,4 +15,5 @@ public interface ImmobileRepository extends JpaRepository<Immobile, Long> {
     List<Immobile> findWithinBounds(double minLat, double maxLat, double minLon, double maxLon);
 
 
+    Immobile findImmobileByIdImmobile(String idImmobile);
 }

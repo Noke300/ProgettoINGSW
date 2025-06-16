@@ -120,9 +120,33 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return null;
     }
 
-
     public List<Visita> getVisite() {
         List<Immobile> immobiles = immobileRepository.findAllByAgente_EmailAgente(getEmailAutenticato());
         return visitaRepository.findByImmobileIn(immobiles);
+    }
+
+    public ResponseEntity<String> eliminaImmobile(Immobile immobile) {
+        if (immobile.getIdImmobile() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Immobile non trovato");
+        }
+
+        immobile = immobileRepository.findImmobileByIdImmobile(immobile.getIdImmobile());
+
+        if (immobile == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Immobile non trovato");
+        }
+
+        if (!immobile.getAgente().getEmailAgente().equals(getEmailAutenticato())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Stai cercando di eliminare un immobile che non gestisci tu");
+        }
+        immobileRepository.delete(immobile);
+        //TODO Idealmente mandare delle notifiche ai clienti che hanno fatto un offerta/prenotato una visita all'immobile
+        return ResponseEntity.ok("Immobile eliminato correttamente");
     }
 }

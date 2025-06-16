@@ -69,4 +69,9 @@ public class AgenteImmobiliareController {
     public List<Visita> getVisite() {
         return agentService.getVisite();
     }
+
+    @DeleteMapping("elimina-immobile")
+    public ResponseEntity<String> eliminaImmobile(@RequestBody Immobile immobile) {
+        return agentService.eliminaImmobile(immobile);
+    }
 }

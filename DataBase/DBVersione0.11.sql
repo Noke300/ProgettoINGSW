@@ -92,7 +92,7 @@ CREATE TABLE Visita (
     DataVisita DATE NOT NULL,
     Conferma BOOLEAN,
     PRIMARY KEY (IdImmobile, EmailCliente),
-    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile),
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
     FOREIGN KEY (EmailCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
 );
  

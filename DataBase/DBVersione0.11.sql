@@ -76,7 +76,7 @@ CREATE TABLE Immobile (
 
 CREATE TABLE Offerta (
     IdOfferta VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
-    IdImmobile VARCHAR(36),
+    IdImmobile VARCHAR(36) NOT NULL,
     EmailCliente VARCHAR(255),
     PrezzoOfferta DECIMAL(10,2) NOT NULL,
     DataOfferta DATE NOT NULL,

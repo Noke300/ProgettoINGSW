@@ -87,5 +87,30 @@ public class ControllerAdministration extends Controller{
         }
 
     }
+
+    public boolean eliminaImmobile(Immobile immobile, String token) {
+        HttpClient client = HttpClient.newHttpClient();
+        String requestBody = gson.toJson(immobile);
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(ELIMINA_IMM))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Errore nella URI: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante l’eliminazione: " + e.getMessage());
+        }
+    }
+
 }
 

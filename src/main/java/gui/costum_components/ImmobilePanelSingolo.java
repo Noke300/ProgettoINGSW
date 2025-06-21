@@ -101,7 +101,7 @@ public class ImmobilePanelSingolo {
                     selectPanel(panel,selectedPanel);
                 } else if (e.getClickCount() == 2) {
                     // Double-click - navigate to the details page
-                    navigateToDetailsPage(frame,panel,control,token);
+                    navigateToDetailsPage(frame,immobile,control,token);
                 }
             }
         });
@@ -110,12 +110,12 @@ public class ImmobilePanelSingolo {
         return panel;
     }
 
-    private void navigateToDetailsPage(JFrame frame,JPanel panel, Controller control, String token) {
+    private void navigateToDetailsPage(JFrame frame,Immobile immobile, Controller control, String token) {
         // Get the property name/ID from the panel border
         // Create and navigate to the details page
         if (frame != null) {
             // Navigate to the details page, passing the `title` to the new JPanel or JFrame
-            PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame,control,token);
+            PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame,immobile,control,token);
             frame.setContentPane(detailsPage);
             frame.revalidate();
             frame.repaint();
@@ -147,17 +147,13 @@ public class ImmobilePanelSingolo {
         // Select a new panel
         if (panel != selectedPanel) {
             selectedPanel = panel;
-
             // Get the title from the current border
             String title = ((TitledBorder)panel.getBorder()).getTitle();
-
             // Apply the selected border with consistent styling
             panel.setBorder(BorderStyler.createSelectedBorder(title, borderColor, borderFont));
-            //buttonElimina.setEnabled(true);
         } else {
             // Clicking the same panel deselects it
             selectedPanel = null;
-            //buttonElimina.setEnabled(false);
         }
         panel.repaint();
     }

@@ -2,7 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import model.Immobile;
+import model.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.io.IOException;
@@ -21,6 +21,11 @@ public class Controller {
     protected static final String IMMOBILI_URL = "http://localhost:8081/auth-agente/immobili";
     protected static final String RICERCA_URL = "http://localhost:8081/cerca-immobili";
     protected static final String DATE_URL = "http://localhost:8081/auth-agente/date";
+    protected static final String OFFERTA_URL = "http://localhost:8081/auth-cliente/offerta";
+    protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
+
+    protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
+
     protected static final Gson gson = new Gson();  //oggetto che serve a fare i Json
 
     public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
@@ -131,5 +136,55 @@ public class Controller {
         }
     }
 
+    ///TODO Questo sara usato per gli immobili servira una con la sepicifica di un agente immobiliare
+    public List<Offerta> getOffertePerImmobile(Long idImmobile) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request;
+        try {
+            URI uri = new URI(OFFERTA_LIST + idImmobile); // endpoint esempio
+            request = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                Type listType = new TypeToken<List<Offerta>>() {}.getType();
+                return gson.fromJson(response.body(), listType);
+            } else {
+                throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante richiesta offerte: " + e.getMessage());
+        }
+    }
+
+    public boolean inviaOfferta(Offerta offerta) {
+        HttpClient client = HttpClient.newHttpClient();
+        String requestBody = gson.toJson(offerta);
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(OFFERTA_URL)) // aggiorna se diverso
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante invio offerta: " + e.getMessage());
+        }
+    }
 
 }

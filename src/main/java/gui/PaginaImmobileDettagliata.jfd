@@ -89,7 +89,7 @@ new FormModel {
 				"value": "cell 3 2 2 3,grow"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 180, 65 )
+			"location": new java.awt.Point( 35, 60 )
 			"size": new java.awt.Dimension( 625, 520 )
 		} )
 	}

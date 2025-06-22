@@ -36,7 +36,7 @@ private String token;
             frame.repaint();
         });
 
-        //TODO Cambio comportamento bottone log in in caso di log out
+        //TODO Cambio comportamento bottone log in in caso di log out //Alessio non legge
         logInButton.addActionListener(e -> {
             if (this.token.isEmpty()) {
                 menuOpzioni.setVisible(false);

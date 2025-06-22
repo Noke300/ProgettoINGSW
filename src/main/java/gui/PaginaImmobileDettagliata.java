@@ -11,6 +11,7 @@ import javax.swing.border.*;
 
 import controller.Controller;
 import controller.ControllerClienti;
+import gui.costum_components.BottoniOpzioni;
 import model.Immobile;
 import net.miginfocom.swing.*;
 import org.jfree.chart.ChartFactory;
@@ -22,22 +23,26 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * @author marco
  */
 public class PaginaImmobileDettagliata extends JPanel {
+    BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     public PaginaImmobileDettagliata(JFrame frame, Immobile immobile, Controller control, String token) {
         initComponents();
 
         //TODO da rendere come funzione ausilare che carica i dati nella chiamata (Thread)
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(200, "Sales", "January");
+        dataset.addValue(200, "Marco", "January");
+        dataset.addValue(100, "Alessio", "January");
+        dataset.addValue(500, "Simone", "January");
 
-        JFreeChart chart = ChartFactory.createBarChart(
+
+        JFreeChart chart = ChartFactory.createLineChart(
                 "Offerte Immobile",
-                "Month",
-                "Offerte",
+                "Valore",
+                "Tempo",
                 dataset);
 
         ChartPanel chartPanel = new ChartPanel(chart);
-
         panelChart.add(chartPanel, BorderLayout.CENTER);
+
         try {
             URL imageUrl = getClass().getResource("/CasaProva3.jpeg");
             if (imageUrl != null) {
@@ -54,32 +59,57 @@ public class PaginaImmobileDettagliata extends JPanel {
             e.printStackTrace();
         }
         
-        
-        backButtonHome.addActionListener(e -> {
-            // Supponiamo che la classe Home abbia il metodo createHomePanel
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new Home().createHomePanel(frame));
-            frame.revalidate();
-            frame.repaint();
+        //TODO migrare alla classe ausiliare per le opzioni
+         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+        //Bottoni
+        buttonOfferta.addActionListener(e -> {
+            if(token !="") {
+                final JDialog offerteDialog = new JDialog(frame, "Offerta", true);
+                offerteDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                offerteDialog.setSize(700, 550);
+                offerteDialog.setResizable(false);
+            }else{
+               frame.setContentPane(new LogIn(frame,control,token));
+            }
         });
 
-        logInButton.addActionListener(e -> {
-            menuOpzioni.setVisible(false);
-            menuBarOpzioni.setVisible(false);
-
-            frame.setContentPane(new LogIn(frame, control, token));
-            frame.revalidate();
-            frame.repaint();
+        buttonVisita.addActionListener(e -> {
+            if(token !="") {
+                final JDialog visitaDialog = new JDialog(frame, "Visita", true);
+                visitaDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                visitaDialog.setSize(700, 550);
+                visitaDialog.setResizable(false);
+            }else{
+                frame.setContentPane(new LogIn(frame,control,token));
+            }
         });
 
-        ricercaButton.addActionListener(e-> {
+        //Pannello Dettagli
+        JPanel pannelloContenuto = new JPanel();
+        pannelloContenuto.setLayout(new BoxLayout(pannelloContenuto, BoxLayout.Y_AXIS));
 
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
-            frame.revalidate();
-            frame.repaint();
-        });
+// Descrizione
+        pannelloContenuto.add(new JLabel("Descrizione:"));
+        JTextArea areaDescrizione = new JTextArea(5, 30);
+        areaDescrizione.setLineWrap(true);
+        areaDescrizione.setWrapStyleWord(true);
+        pannelloContenuto.add(new JScrollPane(areaDescrizione));
+
+        JPanel paramPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        for (int i = 1; i <= 6; i++) {
+            paramPanel.add(new JLabel("Parametro " + i));
+            paramPanel.add(new JTextField(10));
+        }
+        pannelloContenuto.add(paramPanel);
+
+        pannelloContenuto.add(new JLabel("Indirizzo: Via Esempio 123, Napoli"));
+
+        JPanel mappaPanel = new JPanel(new BorderLayout());
+        mappaPanel.add(new JLabel("Qui verrà la mappa"), BorderLayout.CENTER);
+        pannelloContenuto.add(mappaPanel);
+
+        scrollPaneDettagli = new JScrollPane(pannelloContenuto);
+
     }
 
 
@@ -89,23 +119,23 @@ public class PaginaImmobileDettagliata extends JPanel {
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        ricercaButton = new JButton();
-        backButtonHome = new JButton();
-        button1 = new JButton();
+        buttonBack = new JButton();
         panelImmagineImmobile = new JPanel();
-        button3 = new JButton();
-        button4 = new JButton();
+        buttonDestraImg = new JButton();
+        buttonSinistraImg = new JButton();
+        buttonOfferta = new JButton();
+        buttonVisita = new JButton();
+        scrollPaneDettagli = new JScrollPane();
         panelChart = new JPanel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
-        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing
-        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
-        Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
-        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
-        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName (
-        ) )) throw new RuntimeException( ); }} );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing
+        . border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmDes\u0069gner \u0045valua\u0074ion" , javax. swing .border . TitledBorder
+        . CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "D\u0069alog", java .
+        awt . Font. BOLD ,12 ) ,java . awt. Color .red ) , getBorder () ) )
+        ;  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
+        ) { if( "\u0062order" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } )
+        ;
         setLayout(new MigLayout(
             "fill,hidemode 3",
             // columns
@@ -115,7 +145,7 @@ public class PaginaImmobileDettagliata extends JPanel {
             "[174,center]" +
             "[174,center]",
             // rows
-            "[452]" +
+            "rel[452]" +
             "[452]" +
             "[452]" +
             "[452,grow]" +
@@ -139,36 +169,19 @@ public class PaginaImmobileDettagliata extends JPanel {
                     menuOpzioni.setText("Opzioni");
                     menuOpzioni.setIcon(UIManager.getIcon("Table.descendingSortIcon"));
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 26));
-
-                    //---- logInButton ----
-                    logInButton.setText("Log In");
-                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(logInButton);
-
-                    //---- ricercaButton ----
-                    ricercaButton.setText("Ricerca");
-                    ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
-                    ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(ricercaButton);
-
-                    //---- backButtonHome ----
-                    backButtonHome.setText("Home");
-                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
             panelTopBar.add(menuBarOpzioni, BorderLayout.LINE_END);
 
-            //---- button1 ----
-            button1.setText("Back");
-            button1.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-            button1.setIcon(UIManager.getIcon("Tree.openIcon"));
-            button1.setBackground(UIManager.getColor("Actions.Green"));
-            button1.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-            button1.setBorderPainted(false);
-            panelTopBar.add(button1, BorderLayout.LINE_START);
+            //---- buttonBack ----
+            buttonBack.setText("Back");
+            buttonBack.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+            buttonBack.setIcon(UIManager.getIcon("Tree.openIcon"));
+            buttonBack.setBackground(UIManager.getColor("Actions.Green"));
+            buttonBack.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+            buttonBack.setBorderPainted(false);
+            panelTopBar.add(buttonBack, BorderLayout.LINE_START);
         }
         add(panelTopBar, "north");
 
@@ -177,25 +190,38 @@ public class PaginaImmobileDettagliata extends JPanel {
             panelImmagineImmobile.setBorder(new EtchedBorder(EtchedBorder.RAISED, UIManager.getColor("Actions.Green"), null));
             panelImmagineImmobile.setLayout(new BorderLayout(1, 1));
 
-            //---- button3 ----
-            button3.setText(">");
-            button3.setFont(new Font("Segoe UI", Font.BOLD, 24));
-            button3.setBackground(new Color(0x00ffffff, true));
-            panelImmagineImmobile.add(button3, BorderLayout.EAST);
+            //---- buttonDestraImg ----
+            buttonDestraImg.setText(">");
+            buttonDestraImg.setFont(new Font("Segoe UI", Font.BOLD, 24));
+            buttonDestraImg.setBackground(new Color(0x00ffffff, true));
+            panelImmagineImmobile.add(buttonDestraImg, BorderLayout.EAST);
 
-            //---- button4 ----
-            button4.setText("<");
-            button4.setFont(new Font("Segoe UI", Font.BOLD, 24));
-            button4.setBackground(new Color(0x00ffffff, true));
-            panelImmagineImmobile.add(button4, BorderLayout.WEST);
+            //---- buttonSinistraImg ----
+            buttonSinistraImg.setText("<");
+            buttonSinistraImg.setFont(new Font("Segoe UI", Font.BOLD, 24));
+            buttonSinistraImg.setBackground(new Color(0x00ffffff, true));
+            panelImmagineImmobile.add(buttonSinistraImg, BorderLayout.WEST);
         }
         add(panelImmagineImmobile, "cell 0 0 3 2,grow");
 
+        //---- buttonOfferta ----
+        buttonOfferta.setText("Aggiungi Offerta");
+        add(buttonOfferta, "cell 3 0 2 1");
+
+        //---- buttonVisita ----
+        buttonVisita.setText("Richiedi Visita");
+        add(buttonVisita, "cell 3 1 2 1");
+        add(scrollPaneDettagli, "cell 0 2 3 3,grow");
+
         //======== panelChart ========
         {
+            panelChart.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
+            0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder
+            .BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt.Color.
+            red),panelChart. getBorder()));panelChart. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.
+            beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.getPropertyName()))throw new RuntimeException();}});
             panelChart.setLayout(new BorderLayout());
         }
-        add(panelChart, "cell 3 2 2 3,grow");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -204,13 +230,13 @@ public class PaginaImmobileDettagliata extends JPanel {
     private JPanel panelTopBar;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton ricercaButton;
-    private JButton backButtonHome;
-    private JButton button1;
+    private JButton buttonBack;
     private JPanel panelImmagineImmobile;
-    private JButton button3;
-    private JButton button4;
+    private JButton buttonDestraImg;
+    private JButton buttonSinistraImg;
+    private JButton buttonOfferta;
+    private JButton buttonVisita;
+    private JScrollPane scrollPaneDettagli;
     private JPanel panelChart;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

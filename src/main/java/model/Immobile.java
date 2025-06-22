@@ -3,6 +3,7 @@ package model;
 import org.jxmapviewer.viewer.GeoPosition;
 
 public class Immobile {
+    private String id;
     private double prezzo;
     private String tipoVendita;
     private int superficie;
@@ -19,7 +20,8 @@ public class Immobile {
     private AgenteImmobiliare agenteImmobiliare;
     private final Indirizzo indirizzo;
 
-    public Immobile(double prezzo, String tipoVendita, int superficie, String classeEnergetica, AgenziaImmobiliare agenziaImmobiliare, AgenteImmobiliare agenteImmobiliare, Indirizzo indirizzo) {
+    public Immobile(String id,double prezzo, String tipoVendita, int superficie, String classeEnergetica, AgenziaImmobiliare agenziaImmobiliare, AgenteImmobiliare agenteImmobiliare, Indirizzo indirizzo) {
+        this.id = id;
         this.prezzo = prezzo;
         this.tipoVendita = tipoVendita;
         this.superficie = superficie;
@@ -150,5 +152,13 @@ public class Immobile {
     }
     public GeoPosition getGeoPositionImobbile() {
         return geoPositionImobbile;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

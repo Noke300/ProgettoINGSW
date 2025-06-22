@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -6,7 +6,7 @@ new FormModel {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,hidemode 3"
 			"$columnConstraints": "[188,fill][174,center][174,center][174,center][174,center]"
-			"$rowConstraints": "[452][452][452][452,grow][452]0[106,grow]"
+			"$rowConstraints": "rel[452][452][452][452,grow][452]0[106,grow]"
 		} ) {
 			name: "this"
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
@@ -23,29 +23,12 @@ new FormModel {
 						"text": "Opzioni"
 						"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
 						"font": new java.awt.Font( "Segoe UI", 0, 26 )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "logInButton"
-							"text": "Log In"
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "ricercaButton"
-							"text": "Ricerca"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "backButtonHome"
-							"text": "Home"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "After"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "button1"
+					name: "buttonBack"
 					"text": "Back"
 					"font": new java.awt.Font( "Segoe UI", 0, 24 )
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "Tree.openIcon" )
@@ -65,7 +48,7 @@ new FormModel {
 				name: "panelImmagineImmobile"
 				"border": new javax.swing.border.EtchedBorder( 0, #SwingColor0, null )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "button3"
+					name: "buttonDestraImg"
 					"text": ">"
 					"font": new java.awt.Font( "Segoe UI", 1, 24 )
 					"background": new java.awt.Color( 255, 255, 255, 0 )
@@ -73,7 +56,7 @@ new FormModel {
 					"value": "East"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "button4"
+					name: "buttonSinistraImg"
 					"text": "<"
 					"font": new java.awt.Font( "Segoe UI", 1, 24 )
 					"background": new java.awt.Color( 255, 255, 255, 0 )
@@ -83,14 +66,32 @@ new FormModel {
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0 3 2,grow"
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
-				name: "panelChart"
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonOfferta"
+				"text": "Aggiungi Offerta"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 2 2 3,grow"
+				"value": "cell 3 0 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonVisita"
+				"text": "Richiedi Visita"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 1 2 1"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPaneDettagli"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2 3 3,grow"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 35, 60 )
 			"size": new java.awt.Dimension( 625, 520 )
+		} )
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "panelChart"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 35, 590 )
+			"size": new java.awt.Dimension( 240, 286 )
 		} )
 	}
 }

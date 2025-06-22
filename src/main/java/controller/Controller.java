@@ -137,14 +137,21 @@ public class Controller {
     }
 
     ///TODO Questo sara usato per gli immobili servira una con la sepicifica di un agente immobiliare
-    public List<Offerta> getOffertePerImmobile(Long idImmobile) {
+    public List<Offerta> getOffertePerImmobile(String idImmobile) {
         HttpClient client = HttpClient.newHttpClient();
-
         HttpRequest request;
+
+        Map<String, String> bodyMap = new HashMap<>();
+        bodyMap.put("id", idImmobile);
+
+
+        String requestBody = gson.toJson(bodyMap);
+
         try {
-            URI uri = new URI(OFFERTA_LIST + idImmobile); // endpoint esempio
+            URI uri = new URI(OFFERTA_LIST); // endpoint esempio
             request = HttpRequest.newBuilder()
                     .uri(uri)
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .GET()
                     .build();
         } catch (URISyntaxException e) {

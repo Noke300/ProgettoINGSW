@@ -60,11 +60,6 @@ public class ClienteController {
         return clienteService.verify(cliente);
     }
 
-    @PostMapping("/offerta")
-    public ResponseEntity<String> newOfferta(@RequestBody Offerta offerta) {
-        return clienteService.newOfferta(offerta);
-    }
-
     @PostMapping("/visita")
     public ResponseEntity<String> newVisita(@RequestBody Visita visita) {
         //TODO organizzare con Marco su come gestire internamente le visite

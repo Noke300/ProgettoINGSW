@@ -6,6 +6,7 @@ import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
 import dieti.estates25.repositories.ImmobileRepository;
+import dieti.estates25.repositories.IndirizzoRepository;
 import dieti.estates25.repositories.VisitaRepository;
 import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
 
     @Autowired
     private VisitaRepository visitaRepository;
+
+    @Autowired
+    private IndirizzoRepository indirizzoRepository;
 
     @Autowired
     private JWTService jwtService;
@@ -144,6 +148,10 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Stai cercando di eliminare un immobile che non gestisci tu");
+        }
+        //TODO Da testare
+        if (immobileRepository.countByIndirizzo(immobile.getIndirizzo()) <= 1){
+            indirizzoRepository.deleteById(immobile.getIndirizzo().getIdIndirizzo());
         }
         immobileRepository.delete(immobile);
         //TODO Idealmente mandare delle notifiche ai clienti che hanno fatto un offerta/prenotato una visita all'immobile

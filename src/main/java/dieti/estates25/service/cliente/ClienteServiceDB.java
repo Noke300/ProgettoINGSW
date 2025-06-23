@@ -106,20 +106,6 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
                 .body("Unauthorized");
     }
 
-    public ResponseEntity<String> newOfferta(Offerta offerta) {
-        offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
-        offerta.setDataOfferta(new Timestamp(new Date().getTime()));
-        offerta.setEsitoOfferta(false);
-        if(offertaRepository.save(offerta) != null){
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body("Offerta inserita correttamente");
-        }
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Non è stato possibile inserire correttamente l'offerta");
-    }
-
     public String getEmailAutenticato() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {

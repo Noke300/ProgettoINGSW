@@ -1,6 +1,7 @@
 package dieti.estates25.repositories;
 
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.Indirizzo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface ImmobileRepository extends JpaRepository<Immobile, Long> {
 
 
     Immobile findImmobileByIdImmobile(String idImmobile);
+
+    long countByIndirizzo(Indirizzo indirizzo);
 }

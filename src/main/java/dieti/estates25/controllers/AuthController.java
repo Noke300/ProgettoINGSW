@@ -5,16 +5,23 @@ import dieti.estates25.model.CoordinateFiltri;
 import dieti.estates25.model.Filtri;
 import dieti.estates25.model.Immobile;
 import dieti.estates25.model.Offerta;
+import dieti.estates25.repositories.ClienteRepository;
 import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.OffertaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,6 +35,9 @@ public class AuthController {
 
     @Autowired
     private OffertaRepository offertaRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -74,6 +84,20 @@ public class AuthController {
 
         if(couple.getFiltri() != null) return filtraImmobili(candidati, couple.getFiltri());
         return candidati;
+    }
+
+    @PostMapping("/offerta")
+    public ResponseEntity<String> newOfferta(@RequestBody Offerta offerta) {
+        if(getAuthorities() == null) return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        if(getAuthorities().equals("[CLIENT]")){
+            offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
+        }
+        offerta.setDataOfferta(new Timestamp(new Date().getTime()));
+        offerta.setEsitoOfferta(false);
+        offertaRepository.save(offerta);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Offerta inserita correttamente");
     }
 
 
@@ -137,6 +161,24 @@ public class AuthController {
         if (filtri.getTipoVendita() != null) candidati = candidati.stream().filter(i -> i.getTipoVendita().equals(filtri.getTipoVendita()))
                 .toList();
         return candidati;
+    }
+
+    public String getAuthorities() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getAuthorities().toString();
+        }
+        return null;
+    }
+
+    public String getEmailAutenticato() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 
 

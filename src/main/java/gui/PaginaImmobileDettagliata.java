@@ -102,6 +102,8 @@ public class PaginaImmobileDettagliata extends JPanel {
         }
         pannelloContenuto.add(paramPanel);
 
+        pannelloContenuto.add(panelChart);
+
         pannelloContenuto.add(new JLabel("Indirizzo: Via Esempio 123, Napoli"));
 
         JPanel mappaPanel = new JPanel(new BorderLayout());

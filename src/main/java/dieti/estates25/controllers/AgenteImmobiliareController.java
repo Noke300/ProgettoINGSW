@@ -65,7 +65,7 @@ public class AgenteImmobiliareController {
         return agentService.getAllImmobili();
     }
 
-    @GetMapping("/date")
+    @GetMapping("/visite")
     public List<Visita> getVisite() {
         return agentService.getVisite();
     }

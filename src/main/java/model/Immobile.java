@@ -15,7 +15,6 @@ public class Immobile {
     private boolean cantina;
     private boolean climatizzazione;
     private boolean venduto;
-    private GeoPosition geoPositionImobbile;
 
     private final AgenziaImmobiliare agenziaImmobiliare;
     private AgenteImmobiliare agenteImmobiliare;
@@ -30,7 +29,6 @@ public class Immobile {
         this.agenziaImmobiliare = agenziaImmobiliare;
         this.agenteImmobiliare = agenteImmobiliare;
         this.indirizzo = indirizzo;
-        this.geoPositionImobbile = new GeoPosition(indirizzo.getLatitudine(),indirizzo.getLongitudine());
 
         this.numBagni = 1;
         this.numStanze = 1;
@@ -159,15 +157,17 @@ public class Immobile {
     public boolean isVenduto() {
         return venduto;
     }
-    public GeoPosition getGeoPositionImobbile() {
-        return geoPositionImobbile;
-    }
 
-    public String getId() {
-        return idImmobile;
-    }
-
+    public String getId() {return idImmobile;}
     public void setId(String id) {
         this.idImmobile = id;
     }
+
+    public Double getLongIm(){
+        return this.indirizzo.getLongitudine();
+    }
+    public Double getLanIm(){
+        return this.indirizzo.getLatitudine();
+    }
+
 }

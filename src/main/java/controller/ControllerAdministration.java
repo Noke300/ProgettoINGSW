@@ -14,8 +14,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 //TODO dobbiamo gestire meglio le Exception di questa classe
 public class ControllerAdministration extends Controller{
@@ -56,41 +54,39 @@ public class ControllerAdministration extends Controller{
         }
     }
 
-    public ArrayList<Visita> recuperoData(String token) {
+    public List<Visita> getVisite(String token) {
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = null;
-        HttpResponse<String> response;
+        HttpRequest request;
 
         try {
             request = HttpRequest.newBuilder()
-                    .uri(new URI(DATE_URL))
+                    .uri(new URI(VISITE_IMM))
                     .header("Authorization", "Bearer " + token)
                     .GET()
                     .build();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("URI non valido: " + e.getMessage());
         }
 
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                Type listType = new TypeToken<List<Visita>>() {}.getType();
+                return gson.fromJson(response.body(), listType);
+            } else {
+                throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante richiesta visite: " + e.getMessage());
         }
-
-        if (response.statusCode() == 200) {
-            Type listType = new TypeToken<ArrayList<Visita>>() {}.getType();
-            return gson.fromJson(response.body(), listType);
-        } else {
-            throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
-        }
-
     }
 
-    public boolean eliminaImmobile(Immobile immobile, String token) {
+
+    public boolean eliminaImmobile(String immobile, String token) {
+
+        Immobile immTemp = new Immobile(immobile);
         HttpClient client = HttpClient.newHttpClient();
-        String requestBody = gson.toJson(immobile);
+        String requestBody = gson.toJson(immTemp);
 
         HttpRequest request;
         try {

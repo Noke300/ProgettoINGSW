@@ -12,17 +12,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.*;
 
 import controller.Controller;
-import controller.ControllerClienti;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import model.Immobile;
@@ -43,8 +39,10 @@ import org.json.JSONObject;
  * @author marco
  */
 public class PaginaImmobileDettagliata extends JPanel {
+    private static final int GIORNI_METEO = 14;
     IconClass iconSet = new IconClass();
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+
     public PaginaImmobileDettagliata(JFrame frame, Immobile immobile, Controller control, String token) {
         initComponents();
 
@@ -99,11 +97,10 @@ public class PaginaImmobileDettagliata extends JPanel {
             e.printStackTrace();
         }
 
-        //TODO migrare alla classe ausiliare per le opzioni
-         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
         //Bottoni
         buttonOfferta.addActionListener(e -> {
-            if(token !="") {
+            if(!"".equals(token)) {
                 JDialog offerteDialog = new JDialog(frame, "Offerta", true);
                 offerteDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 offerteDialog.setSize(700, 550);
@@ -169,7 +166,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         });
 
         buttonVisita.addActionListener(e -> {
-            if(token !="") {
+            if(!"".equals(token)) {
                 // Impostazioni iniziali della finestra
                 JDialog visitaDialog = new JDialog(frame, "Visita", true);
                 visitaDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -184,12 +181,11 @@ public class PaginaImmobileDettagliata extends JPanel {
                 ButtonGroup dayGroup = new ButtonGroup();
 
 // Chiamata API meteo
-                String[] temperatureMax = new String[14];
-                String[] temperatureMin = new String[14];
+                String[] temperatureMax = new String[GIORNI_METEO];
+                String[] temperatureMin = new String[GIORNI_METEO];
                 try {
-                    String endpoint = "https://api.open-meteo.com/v1/forecast?latitude=" + immobile.getIndirizzo().getLatitudine() +
-                            "&longitude=" + immobile.getIndirizzo().getLongitudine() +
-                            "&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=14";
+                    String endpoint = "https://api.open-meteo.com/v1/forecast?latitude=" + immobile.getLanIm() +
+                            "&longitude=" + immobile.getLongIm() + "&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days="+GIORNI_METEO;
 
                     HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
                     conn.setRequestMethod("GET");
@@ -206,21 +202,21 @@ public class PaginaImmobileDettagliata extends JPanel {
                     JSONArray tempsMax = json.getJSONObject("daily").getJSONArray("temperature_2m_max");
                     JSONArray tempsMin = json.getJSONObject("daily").getJSONArray("temperature_2m_min");
 
-                    for (int i = 0; i < 14; i++) {
+                    for (int i = 0; i < GIORNI_METEO; i++) {
                         temperatureMax[i] = tempsMax.getDouble(i) + "°C";
                         temperatureMin[i] = tempsMin.getDouble(i) + "°C";
                     }
 
                 } catch (Exception E) {
                     E.printStackTrace();
-                    for (int i = 0; i < 14; i++) {
+                    for (int i = 0; i < GIORNI_METEO; i++) {
                         temperatureMax[i] = "?°C";
                         temperatureMin[i] = "?°C";
                     }
                 }
 
 // Creazione dei bottoni con meteo associato
-                for (int i = 0; i < 14; i++) {
+                for (int i = 0; i < GIORNI_METEO; i++) {
                     LocalDate day = LocalDate.now().plusDays(i);
                     String giorno = String.valueOf(day.getDayOfMonth());
                     String mese = day.getMonth().getDisplayName(java.time.format.TextStyle.FULL, locale);
@@ -357,9 +353,6 @@ public class PaginaImmobileDettagliata extends JPanel {
         buttonSinistraImg = new JButton();
 
         //======== this ========
-        setBorder ( new CompoundBorder ( new TitledBorder ( new EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , TitledBorder. CENTER ,TitledBorder . BOTTOM, new Font ( "D\u0069al\u006fg", Font. BOLD ,
-        12 ) ,Color .red ) , getBorder () ) );  addPropertyChangeListener( new PropertyChangeListener ( ){ @Override public void propertyChange ( PropertyChangeEvent e) { if( "\u0062or\u0064er" .equals ( e.
-        getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,hidemode 3",
             // columns

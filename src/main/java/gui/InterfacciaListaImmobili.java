@@ -29,7 +29,7 @@ public class InterfacciaListaImmobili extends JPanel {
     private final ImmobilePanelSingolo  immobilePanelSingolo = new ImmobilePanelSingolo();
     String token;
 
-    private JPanel selectedPanel = null;
+    private JPanel[] selectedPanel = new JPanel[1]; // inizialmente vuoto
 
     //--Border per gli immobili selected
 
@@ -193,7 +193,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
 
     public JPanel getSelectedPanel() {
-        return selectedPanel;
+        return selectedPanel[0];
     }
 
 

@@ -33,7 +33,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     private static final IconClass iconSet = new IconClass();
     private GeoPosition geoPos = new GeoPosition(45.464170, 11.885890);
     List<JCheckBox> checkBoxesList = new ArrayList<>();
-    private JPanel selectedPanel = null;
+    private JPanel[] selectedPanel = new JPanel[1]; // inizialmente vuoto
     private ImmobilePanelSingolo immobilePanelSingolo = new ImmobilePanelSingolo();
     //--Border per gli immobili selected
     private List<ColoredDate> coloredDates = new ArrayList<>();
@@ -64,14 +64,28 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         Dimension dim  = new Dimension(820,289);
         for (Immobile immobile : immobili) {
             JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
+            panel.setName(immobile.getId());
             panel.setMaximumSize(dim);
             panel.setPreferredSize(dim);
             panelListaImmobile.add(panel);
+
+
+            panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (selectedPanel[0] == null) {
+                       buttonElimina.setEnabled(false);
+                    }else{
+                        buttonElimina.setEnabled(true);
+                    }
+                }
+            });
         }
 
         buttonElimina.addActionListener(e -> {
             if (selectedPanel != null) {
-                panelListaImmobile.remove(selectedPanel);
+                control.eliminaImmobile(selectedPanel[0].getName(),token);
+                panelListaImmobile.remove(selectedPanel[0]);
                 selectedPanel = null;
                 buttonElimina.setEnabled(false);
                 panelListaImmobile.revalidate();
@@ -166,13 +180,13 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     }
 
     public JPanel getSelectedPanel() {
-        return selectedPanel;
+        return selectedPanel[0];
     }
 
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco
+        // Generated using JFormDesigner Evaluation license - Marco Scotto
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
         labelNotifiche = new JLabel();
@@ -189,12 +203,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
-        .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax
-        . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,
-        12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans
-        .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e.
-        getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
+        .EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax
+        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,
+        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
+        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.
+        getPropertyName()))throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -326,14 +340,15 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             buttonElimina.setText("Elimina");
             buttonElimina.setBorder(new EmptyBorder(5, 5, 5, 5));
             buttonElimina.setBackground(UIManager.getColor("Actions.Green"));
-            panelBottomBar.add(buttonElimina, "cell 3 0 1 2,aligny center,grow 100 0");
+            buttonElimina.setEnabled(false);
+            panelBottomBar.add(buttonElimina, "cell 3 0 1 2,grow");
         }
         add(panelBottomBar, "south");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco
+    // Generated using JFormDesigner Evaluation license - Marco Scotto
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
     private JLabel labelNotifiche;

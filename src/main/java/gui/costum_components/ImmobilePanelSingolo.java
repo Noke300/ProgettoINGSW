@@ -17,146 +17,110 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 
 public class ImmobilePanelSingolo {
-
     private final Color borderColor = new Color(24, 122, 26);
-    private final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
+        private final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
 
-    protected static class BorderStyler {
-        public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
-            TitledBorder titledBorder = new TitledBorder(title);
-            titledBorder.setBorder(BorderFactory.createLineBorder(lineColor, thickness));
-            titledBorder.setTitleColor(new Color(0, 0, 0));
-            titledBorder.setTitleFont(font);
-            return titledBorder;
-        }
-        public static Border createSelectedBorder(String title, Color lineColor, Font font) {
-            TitledBorder innerBorder = createStyledBorder(title, lineColor, 1, font);
-            return BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(lineColor, 2, true),
-                    innerBorder
-            );
-        }
-
-    }
-
-    public JPanel createImmobileSingoloPanel(JFrame frame,Immobile immobile, Controller control, String token, JPanel selectedPanel) {
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderStyler.createStyledBorder(immobile.getTipoVendita(), borderColor, 1, borderFont));
-        panel.setPreferredSize(new Dimension(780, 170));
-        panel.setLayout(new MigLayout(
-                "hidemode 3",
-                "[325][250][325]",
-                "[95][95][95][95]"));
-
-        // Panel with the image as a background
-        try {
-            URL imageUrl = getClass().getResource("/CasaProva2.jpeg");
-            if (imageUrl != null) {
-                ImageIcon icon = new ImageIcon(imageUrl);
-                JLabel imageLabel = new JLabel(icon);
-                imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                panel.add(imageLabel, "cell 0 0 2 2");
-            } else {
-                JLabel errorLabel = new JLabel("Image not found");
-                errorLabel.setBackground(Color.RED);
-                errorLabel.setOpaque(true);
-                panel.add(errorLabel, "cell 0 0 2 2");
+        protected static class BorderStyler {
+            public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
+                TitledBorder titledBorder = new TitledBorder(title);
+                titledBorder.setBorder(BorderFactory.createLineBorder(lineColor, thickness));
+                titledBorder.setTitleColor(new Color(0, 0, 0));
+                titledBorder.setTitleFont(font);
+                return titledBorder;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            public static Border createSelectedBorder(String title, Color lineColor, Font font) {
+                TitledBorder innerBorder = createStyledBorder(title, lineColor, 1, font);
+                return BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(lineColor, 2, true),
+                        innerBorder
+                );
+            }
         }
-        Font font = new Font("Segoe UI", Font.PLAIN, 20);
-        // Adding other components to the main pane
-        JLabel labelIndirizzo = new JLabel("<html>" + immobile.getIndirizzo().toString() + "</html>");
-        labelIndirizzo.setFont(font);
-        panel.add(labelIndirizzo, "cell 2 0 2 1");
 
+        public JPanel createImmobileSingoloPanel(JFrame frame, Immobile immobile, Controller control, String token, JPanel[] selectedPanelRef) {
+            JPanel panel = new JPanel();
+            panel.setBorder(BorderStyler.createStyledBorder(immobile.getTipoVendita(), borderColor, 1, borderFont));
+            panel.setPreferredSize(new Dimension(780, 170));
+            panel.setLayout(new MigLayout("hidemode 3", "[325][250][325]", "[95][95][95][95]"));
 
-        JLabel labelNStanze = new JLabel("Numero Stanze : "+immobile.getNumStanze());
-        labelNStanze.setFont(font);
-        panel.add(labelNStanze, "cell 2 1");
+            try {
+                URL imageUrl = getClass().getResource("/CasaProva2.jpeg");
+                if (imageUrl != null) {
+                    JLabel imageLabel = new JLabel(new ImageIcon(imageUrl));
+                    imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    panel.add(imageLabel, "cell 0 0 2 2");
+                } else {
+                    JLabel errorLabel = new JLabel("Image not found");
+                    errorLabel.setBackground(Color.RED);
+                    errorLabel.setOpaque(true);
+                    panel.add(errorLabel, "cell 0 0 2 2");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        JLabel labelNBagni = new JLabel("Numero Bagni : "+immobile.getNumBagni());
-        labelNBagni.setFont(font);
-        panel.add(labelNBagni, "cell 3 1");
+            Font font = new Font("Segoe UI", Font.PLAIN, 20);
+            panel.add(new JLabel(("<html>" + immobile.getIndirizzo().toString() + "</html>")), "cell 2 0 2 1");
+            panel.add(new JLabel("Numero Stanze : " + immobile.getNumStanze()), "cell 2 1");
+            panel.add(new JLabel("Numero Bagni : " + immobile.getNumBagni()), "cell 3 1");
+            panel.add(new JLabel("Prezzo : " + immobile.getPrezzo()), "cell 0 2 2 2");
+            panel.add(new JLabel("Metri Quadri : " + immobile.getSuperficie()), "cell 2 2");
+            panel.add(new JLabel("Classe Energetica : " + immobile.getClasseEnergetica()), "cell 3 2");
 
-        JLabel labelPrezzo = new JLabel("Prezzo : "+immobile.getPrezzo());
-        labelPrezzo.setFont(font);
-        panel.add(labelPrezzo, "cell 0 2 2 2,alignx left,growx 0");
+            panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 1) {
+                        selectPanel(panel, selectedPanelRef);
+                    } else if (e.getClickCount() == 2) {
+                        navigateToDetailsPage(frame, immobile, control, token);
+                    }
+                }
+            });
 
-        JLabel labelMetriQuadri = new JLabel("Merti Quadri : "+immobile.getSuperficie());
-        labelMetriQuadri.setFont(font);
-        panel.add(labelMetriQuadri, "cell 2 2");
+            return panel;
+        }
 
-        JLabel labelClasseEnergetica = new JLabel("Classe Energetica : "+immobile.getClasseEnergetica());
-        labelClasseEnergetica.setFont(font);
-        panel.add(labelClasseEnergetica, "cell 3 2");
+        private void navigateToDetailsPage(JFrame frame, Immobile immobile, Controller control, String token) {
+            if (frame != null) {
+                PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame, immobile, control, token);
+                frame.setContentPane(detailsPage);
+                frame.revalidate();
+                frame.repaint();
+            } else {
+                System.err.println("Parent frame not found for navigation.");
+            }
+        }
 
-        // MouseAdaptor doppio click
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    // Single click - select/deselect the panel
-                    selectPanel(panel,selectedPanel);
-                } else if (e.getClickCount() == 2) {
-                    // Double-click - navigate to the details page
-                    navigateToDetailsPage(frame,immobile,control,token);
+        private void selectPanel(JPanel panel, JPanel[] selectedPanelRef) {
+            JPanel selectedPanel = selectedPanelRef[0];
+
+            if (selectedPanel != null) {
+                String title = extractBorderTitle(selectedPanel.getBorder());
+                selectedPanel.setBorder(BorderStyler.createStyledBorder(title, borderColor, 1, borderFont));
+            }
+
+            if (panel != selectedPanel) {
+                selectedPanelRef[0] = panel;
+                String title = extractBorderTitle(panel.getBorder());
+                panel.setBorder(BorderStyler.createSelectedBorder(title, borderColor, borderFont));
+            } else {
+                selectedPanelRef[0] = null;
+            }
+
+            panel.repaint();
+        }
+
+        private String extractBorderTitle(Border border) {
+            if (border instanceof TitledBorder) {
+                return ((TitledBorder) border).getTitle();
+            } else if (border instanceof CompoundBorder) {
+                Border inside = ((CompoundBorder) border).getInsideBorder();
+                if (inside instanceof TitledBorder) {
+                    return ((TitledBorder) inside).getTitle();
                 }
             }
-        });
-
-
-        return panel;
-    }
-
-    private void navigateToDetailsPage(JFrame frame,Immobile immobile, Controller control, String token) {
-        // Get the property name/ID from the panel border
-        // Create and navigate to the details page
-        if (frame != null) {
-            // Navigate to the details page, passing the `title` to the new JPanel or JFrame
-            PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame,immobile,control,token);
-            frame.setContentPane(detailsPage);
-            frame.revalidate();
-            frame.repaint();
-        } else {
-            System.err.println("Parent frame not found for navigation.");
+            return "Senza titolo";
         }
     }
-
-    private void selectPanel(JPanel panel,JPanel selectedPanel) {
-        // Deselect a previous panel if exists
-        if (selectedPanel != null) {
-            // Get the title from the current border
-            String title;
-            Border currentBorder = selectedPanel.getBorder();
-
-            if (currentBorder instanceof CompoundBorder) {
-                // It's currently selected - extract title from an inner border
-                TitledBorder innerBorder = (TitledBorder)((CompoundBorder)currentBorder).getInsideBorder();
-                title = innerBorder.getTitle();
-            } else {
-                // It's a simple TitledBorder
-                title = ((TitledBorder)currentBorder).getTitle();
-            }
-
-            // Restore standard styled border with the same title
-            selectedPanel.setBorder(BorderStyler.createStyledBorder(title, borderColor, 1, borderFont));
-        }
-
-        // Select a new panel
-        if (panel != selectedPanel) {
-            selectedPanel = panel;
-            // Get the title from the current border
-            String title = ((TitledBorder)panel.getBorder()).getTitle();
-            // Apply the selected border with consistent styling
-            panel.setBorder(BorderStyler.createSelectedBorder(title, borderColor, borderFont));
-        } else {
-            // Clicking the same panel deselects it
-            selectedPanel = null;
-        }
-        panel.repaint();
-    }
-
-
-}

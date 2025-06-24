@@ -20,10 +20,9 @@ public class Controller {
     protected static final String LOGIN_URL_CLIENTE = "http://localhost:8081/auth-cliente/login";
     protected static final String IMMOBILI_URL = "http://localhost:8081/auth-agente/immobili";
     protected static final String RICERCA_URL = "http://localhost:8081/cerca-immobili";
-    protected static final String DATE_URL = "http://localhost:8081/auth-agente/date";
+    protected static final String VISITE_IMM = "http://localhost:8081/auth-agente/visita";
     protected static final String OFFERTA_URL = "http://localhost:8081/auth-cliente/offerta";
     protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
-
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
 
     protected static final Gson gson = new Gson();  //oggetto che serve a fare i Json

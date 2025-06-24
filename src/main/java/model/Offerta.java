@@ -22,13 +22,17 @@ public class Offerta {
     @Nullable
     private Boolean esitoOfferta;
 
+    public Offerta(Immobile immobile,Double prezzoOfferta) {
+        this.immobile = immobile;
+        this.prezzoOfferta = prezzoOfferta;
+    }
 
     public Offerta(@Nullable Cliente cliente, Date dataOfferta, Double prezzoOfferta, String nominativo, Immobile immobile) {
         this.esitoOfferta = null;
         this.cliente = cliente;
         this.dataOfferta = dataOfferta;
         this.prezzoOfferta = prezzoOfferta;
-        this.nominativo = nominativo;
+        this.nominativo = cliente.getCognome();
         this.immobile = immobile;
     }
 

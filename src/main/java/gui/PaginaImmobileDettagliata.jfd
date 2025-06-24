@@ -6,7 +6,7 @@ new FormModel {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,hidemode 3"
 			"$columnConstraints": "[188,fill][174,center][174,center][174,center][174,center]"
-			"$rowConstraints": "rel[452][452][452][452,grow][452]0[106,grow]"
+			"$rowConstraints": "rel[452]rel[452][452][452][452,grow][452]0[106,grow]"
 		} ) {
 			name: "this"
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
@@ -41,57 +41,67 @@ new FormModel {
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "north"
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
-				"hgap": 1
-				"vgap": 1
-			} ) {
-				name: "panelImmagineImmobile"
-				"border": new javax.swing.border.EtchedBorder( 0, #SwingColor0, null )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonDestraImg"
-					"text": ">"
-					"font": new java.awt.Font( "Segoe UI", 1, 24 )
-					"background": new java.awt.Color( 255, 255, 255, 0 )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "East"
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonSinistraImg"
-					"text": "<"
-					"font": new java.awt.Font( "Segoe UI", 1, 24 )
-					"background": new java.awt.Color( 255, 255, 255, 0 )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "West"
-				} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "scrollPaneDettagli"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 3 2,grow"
+				"value": "cell 0 0 4 6,grow"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelPrezzo"
+				"text": "Prezzob"
+				"border": new javax.swing.border.TitledBorder( null, "Prezzo", 4, 0, new java.awt.Font( "Segoe UI", 2, 16 ), null )
+				"horizontalTextPosition": 0
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 0,grow"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonOfferta"
 				"text": "Aggiungi Offerta"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 0 2 1"
+				"value": "cell 4 1"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonVisita"
 				"text": "Richiedi Visita"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 1 2 1"
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPaneDettagli"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 2 3 3,grow"
+				"value": "cell 4 2"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 35, 60 )
+			"location": new java.awt.Point( 45, 85 )
 			"size": new java.awt.Dimension( 625, 520 )
 		} )
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "panelChart"
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 35, 590 )
-			"size": new java.awt.Dimension( 240, 286 )
+			"location": new java.awt.Point( 325, 630 )
+			"size": new java.awt.Dimension( 110, 66 )
+		} )
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+			"hgap": 1
+			"vgap": 1
+		} ) {
+			name: "panelImmagineImmobile"
+			"border": new javax.swing.border.EtchedBorder( 0, #SwingColor0, null )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonDestraImg"
+				"text": ">"
+				"font": new java.awt.Font( "Segoe UI", 1, 24 )
+				"background": new java.awt.Color( 255, 255, 255, 0 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "East"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonSinistraImg"
+				"text": "<"
+				"font": new java.awt.Font( "Segoe UI", 1, 24 )
+				"background": new java.awt.Color( 255, 255, 255, 0 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "West"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 725, 10 )
+			"size": new java.awt.Dimension( 379, 152 )
 		} )
 	}
 }

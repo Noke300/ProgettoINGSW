@@ -137,12 +137,12 @@ public class Controller {
     }
 
     ///TODO Questo sara usato per gli immobili servira una con la sepicifica di un agente immobiliare
-    public List<Offerta> getOffertePerImmobile(String idImmobile) {
+    public List<Offerta> getOffertePerImmobile(Immobile idImmobile) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request;
 
         Map<String, String> bodyMap = new HashMap<>();
-        bodyMap.put("id", idImmobile);
+        bodyMap.put("idImmobile", idImmobile.getId());
 
 
         String requestBody = gson.toJson(bodyMap);
@@ -151,8 +151,8 @@ public class Controller {
             URI uri = new URI(OFFERTA_LIST); // endpoint esempio
             request = HttpRequest.newBuilder()
                     .uri(uri)
+                    .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .GET()
                     .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI non valido: " + e.getMessage());
@@ -171,15 +171,16 @@ public class Controller {
         }
     }
 
-    public boolean inviaOfferta(Offerta offerta) {
+    public boolean inviaOfferta(Offerta offerta,String token) {
         HttpClient client = HttpClient.newHttpClient();
         String requestBody = gson.toJson(offerta);
+        System.out.println("\n"+requestBody);
 
         HttpRequest request;
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(OFFERTA_URL)) // aggiorna se diverso
-                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + token)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
         } catch (URISyntaxException e) {

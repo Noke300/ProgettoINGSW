@@ -129,14 +129,16 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return visitaRepository.findByImmobileIn(immobiles);
     }
 
-    public ResponseEntity<String> eliminaImmobile(Immobile immobile) {
-        if (immobile.getIdImmobile() == null) {
+    public ResponseEntity<String> eliminaImmobile(String idImmobile) {
+        if (idImmobile == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Immobile non trovato");
         }
 
-        immobile = immobileRepository.findImmobileByIdImmobile(immobile.getIdImmobile());
+        Immobile immobile;
+
+        immobile = immobileRepository.findImmobileByIdImmobile(idImmobile);
 
         if (immobile == null) {
             return ResponseEntity

@@ -71,7 +71,7 @@ public class AgenteImmobiliareController {
     }
 
     @DeleteMapping("elimina-immobile")
-    public ResponseEntity<String> eliminaImmobile(@RequestBody Immobile immobile) {
-        return agentService.eliminaImmobile(immobile);
+    public ResponseEntity<String> eliminaImmobile(@RequestBody String idImmobile) {
+        return agentService.eliminaImmobile(idImmobile);
     }
 }

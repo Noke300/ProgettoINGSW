@@ -56,6 +56,7 @@ CREATE TABLE Immobile (
     NomeAgenzia VARCHAR(255) NOT NULL,
     Prezzo DECIMAL(10,2) NOT NULL,
     TipoVendita VARCHAR(255) NOT NULL,
+    Descrizione VARCHAR(255) NOT NULL,
     Superficie INT NOT NULL,
     TipoImmobile VARCHAR(255) NOT NULL,
     NumBagni INT NOT NULL,
@@ -68,6 +69,9 @@ CREATE TABLE Immobile (
     Portineria BOOLEAN,
     Climatizzatione BOOLEAN,
     Venduto BOOLEAN DEFAULT FALSE,
+    Scuole BOOLEAN DEFAULT FALSE,
+    Parchi BOOLEAN DEFAULT FALSE,
+    TransportoPubblico BOOLEAN DEFAULT FALSE,
 	
 	FOREIGN KEY (IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo),
     FOREIGN KEY (NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
@@ -229,58 +233,68 @@ INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, NumeroCiv
 
 --INSERIMENTO IMMOBILE
 
--- Torino - Giovanni Moretti - CasaFacile
+-- Torino - giovanni.moretti@email.com - CasaFacile
 INSERT INTO Immobile (
-    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
+    Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Venduto, Scuole, Parchi, TransportoPubblico
 )
-SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 260000, 'Affitto',
-       'Appartamento', 110, 2, 'A', 4, 2, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE
+SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 260000, 'Affitto', 'Appartamento moderno vicino al centro',
+       110, 'Appartamento', 2, 'A', 4, 2, TRUE, TRUE, TRUE, FALSE, TRUE,
+       FALSE, TRUE, FALSE, TRUE
 FROM Indirizzo
 WHERE Via = 'Via Roma' AND Cap = 10121;
 
 -- Milano - prova@gmail.com - ImmobiliareRoma
 INSERT INTO Immobile (
-    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
+    Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Venduto, Scuole, Parchi, TransportoPubblico
 )
-SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 370000, 'Vendita',
-       'Casa', 135, 2, 'B', 5, 1, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE
+SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 370000, 'Vendita', 'Casa indipendente con ampio giardino',
+       135, 'Casa', 2, 'B', 5, 1, TRUE, TRUE, TRUE, TRUE, TRUE,
+       FALSE, TRUE, TRUE, TRUE
 FROM Indirizzo
 WHERE NumeroCivico = 25 AND Provincia = 'MI';
 
 -- Firenze - prova@gmail.com - MilanCase
 INSERT INTO Immobile (
-    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
+    Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Venduto, Scuole, Parchi, TransportoPubblico
 )
-SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 195000, 'Vendita',
-       'Appartamento', 85, 1, 'A', 3, 1, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE
+SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 195000, 'Vendita', 'Appartamento accogliente in zona tranquilla',
+       85, 'Appartamento', 1, 'A', 3, 1, FALSE, TRUE, FALSE, FALSE, TRUE,
+       FALSE, FALSE, TRUE, FALSE
 FROM Indirizzo
 WHERE Regione = 'Toscana' AND Citta = 'Firenze';
 
 -- Genova - martina.deluca@email.com - ViviCasa
 INSERT INTO Immobile (
-    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
+    Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Venduto, Scuole, Parchi, TransportoPubblico
 )
-SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 280000, 'Affitto',
-       'Casa', 120, 2, 'B', 4, 0, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE
+SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 280000, 'Affitto', 'Casa luminosa a pochi passi dal mare',
+       120, 'Casa', 2, 'B', 4, 0, FALSE, TRUE, TRUE, FALSE, TRUE,
+       FALSE, TRUE, FALSE, TRUE
 FROM Indirizzo ind
 WHERE ind.Via = 'Via Garibaldi' AND ind.NumeroCivico = 18;
 
 -- Palermo - andrea.conti@email.com - TorinoHome
 INSERT INTO Immobile (
-    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita,
-    TipoImmobile, Superficie, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione, Venduto
+    IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
+    Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Venduto, Scuole, Parchi, TransportoPubblico
 )
-SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto',
-       'Appartamento', 95, 2, 'A', 4, 1, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE
+SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto', 'Appartamento con vista sulla città',
+       95, 'Appartamento', 2, 'A', 4, 1, TRUE, TRUE, FALSE, TRUE, TRUE,
+       FALSE, FALSE, TRUE, TRUE
 FROM Indirizzo ind
 WHERE ind.Citta = 'Palermo' AND ind.Provincia = 'PA';
 
@@ -357,6 +371,8 @@ WHERE ind.Via = 'Via Garibaldi' AND ind.Citta = 'Genova';
 INSERT INTO Offerta (IdImmobile, EmailCliente, PrezzoOfferta, DataOfferta, EsitoOfferta)
 SELECT i.IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
 FROM Immobile i
+JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
+WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
 JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
 WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
 

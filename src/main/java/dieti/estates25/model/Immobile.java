@@ -30,6 +30,9 @@ public class Immobile {
     @Column(name = "tipovendita", nullable = false)
     private String tipoVendita;
 
+    @Column(name = "descrizione", nullable = false)
+    private String descrizione;
+
     @Column(name = "superficie", nullable = false)
     private int superficie;
 
@@ -66,6 +69,15 @@ public class Immobile {
     @Column(name = "venduto")
     private Boolean venduto;
 
+    @Column(name = "scuole")
+    private Boolean scuole;
+
+    @Column(name = "parchi")
+    private Boolean parchi;
+
+    @Column(name = "transportoPubblico")
+    private Boolean transportoPubblico;
+
     // Getters and Setters
 
     public String getIdImmobile() { return this.idImmobile; }
@@ -78,6 +90,8 @@ public class Immobile {
     public void setPrezzo(Double prezzo) { this.prezzo = prezzo; }
     public String getTipoVendita() { return this.tipoVendita; }
     public void setTipoVendita(String tipoVendita) { this.tipoVendita = tipoVendita; }
+    public String getDescrizione() {return this.descrizione; }
+    public void setDescrizione(String descrizione) {this.descrizione = descrizione; }
     public int getSuperficie() { return this.superficie; }
     public void setSuperficie(int superficie) { this.superficie = superficie; }
     public String getTipoImmobile() { return this.tipoImmobile; }
@@ -102,6 +116,16 @@ public class Immobile {
     public void setClimatizzazione(Boolean climatizzazione) { this.climatizzazione = climatizzazione; }
     public Boolean getVenduto() { return this.venduto; }
     public void setVenduto(Boolean venduto) { this.venduto = venduto; }
+    public Boolean getScuole() { return this.scuole; }
+    public void setScuole(Boolean scuole) { this.scuole = scuole; }
+    public Boolean getParchi() { return this.parchi; }
+
+    public void setParchi(Boolean parchi) { this.parchi = parchi; }
+
+    public void setTransportoPubblico(Boolean transportoPubblico) { this.transportoPubblico = transportoPubblico; }
+
+    public Boolean getTransportoPubblico() { return transportoPubblico;    }
+
 
     public Indirizzo getIndirizzo() {
         return indirizzo;

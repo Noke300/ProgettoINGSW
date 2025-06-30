@@ -21,11 +21,12 @@ public class Immobile {
     @JoinColumn(name = "nomeagente")
     private AgenteImmobiliare agente;
 
-    @Column(name = "nomeagenzia", nullable = false)
-    private String nomeAgenzia;
+    @ManyToOne
+    @JoinColumn(name = "nomeagenzia", nullable = false)
+    private AgenziaImmobiliare nomeAgenzia;
 
     @Column(name = "prezzo", nullable = false)
-    private Double prezzo;
+    private double prezzo;
 
     @Column(name = "tipovendita", nullable = false)
     private String tipoVendita;
@@ -52,31 +53,31 @@ public class Immobile {
     private int piano;
 
     @Column(name = "ascensore")
-    private Boolean ascensore;
+    private boolean ascensore;
 
     @Column(name = "balcone")
-    private Boolean balcone;
+    private boolean balcone;
 
     @Column(name = "cantina")
-    private Boolean cantina;
+    private boolean cantina;
 
     @Column(name = "portineria")
-    private Boolean portineria;
+    private boolean portineria;
 
     @Column(name = "climatizzatione")
-    private Boolean climatizzazione;
+    private boolean climatizzazione;
 
     @Column(name = "venduto")
-    private Boolean venduto;
+    private boolean venduto;
 
     @Column(name = "scuole")
-    private Boolean scuole;
+    private boolean scuole;
 
     @Column(name = "parchi")
-    private Boolean parchi;
+    private boolean parchi;
 
     @Column(name = "transportoPubblico")
-    private Boolean transportoPubblico;
+    private boolean trasportoPubblico;
 
     // Getters and Setters
 
@@ -84,10 +85,10 @@ public class Immobile {
     public void setIdImmobile(String idImmobile) { this.idImmobile = idImmobile; }
     public AgenteImmobiliare getAgente() { return this.agente; }
     public void setAgente(AgenteImmobiliare agente) { this.agente = agente; }
-    public String getNomeAgenzia() { return this.nomeAgenzia; }
-    public void setNomeAgenzia(String nomeAgenzia) { this.nomeAgenzia = nomeAgenzia; }
-    public Double getPrezzo() { return this.prezzo; }
-    public void setPrezzo(Double prezzo) { this.prezzo = prezzo; }
+    public AgenziaImmobiliare getNomeAgenzia() { return this.nomeAgenzia; }
+    public void setNomeAgenzia(AgenziaImmobiliare nomeAgenzia) { this.nomeAgenzia = nomeAgenzia; }
+    public double getPrezzo() { return this.prezzo; }
+    public void setPrezzo(double prezzo) { this.prezzo = prezzo; }
     public String getTipoVendita() { return this.tipoVendita; }
     public void setTipoVendita(String tipoVendita) { this.tipoVendita = tipoVendita; }
     public String getDescrizione() {return this.descrizione; }
@@ -104,27 +105,27 @@ public class Immobile {
     public void setNumStanze(int numStanze) { this.numStanze = numStanze; }
     public int getPiano() { return this.piano; }
     public void setPiano(int piano) { this.piano = piano; }
-    public Boolean getAscensore() { return this.ascensore; }
-    public void setAscensore(Boolean ascensore) { this.ascensore = ascensore; }
-    public Boolean getBalcone() { return this.balcone; }
-    public void setBalcone(Boolean balcone) { this.balcone = balcone; }
-    public Boolean getCantina() { return this.cantina; }
-    public void setCantina(Boolean cantina) { this.cantina = cantina; }
-    public Boolean getPortineria() { return this.portineria; }
-    public void setPortineria(Boolean portineria) { this.portineria = portineria; }
-    public Boolean getClimatizzazione() { return this.climatizzazione; }
-    public void setClimatizzazione(Boolean climatizzazione) { this.climatizzazione = climatizzazione; }
-    public Boolean getVenduto() { return this.venduto; }
-    public void setVenduto(Boolean venduto) { this.venduto = venduto; }
-    public Boolean getScuole() { return this.scuole; }
-    public void setScuole(Boolean scuole) { this.scuole = scuole; }
-    public Boolean getParchi() { return this.parchi; }
+    public boolean getAscensore() { return this.ascensore; }
+    public void setAscensore(boolean ascensore) { this.ascensore = ascensore; }
+    public boolean getBalcone() { return this.balcone; }
+    public void setBalcone(boolean balcone) { this.balcone = balcone; }
+    public boolean getCantina() { return this.cantina; }
+    public void setCantina(boolean cantina) { this.cantina = cantina; }
+    public boolean getPortineria() { return this.portineria; }
+    public void setPortineria(boolean portineria) { this.portineria = portineria; }
+    public boolean getClimatizzazione() { return this.climatizzazione; }
+    public void setClimatizzazione(boolean climatizzazione) { this.climatizzazione = climatizzazione; }
+    public boolean getVenduto() { return this.venduto; }
+    public void setVenduto(boolean venduto) { this.venduto = venduto; }
+    public boolean getScuole() { return this.scuole; }
+    public void setScuole(boolean scuole) { this.scuole = scuole; }
+    public boolean getParchi() { return this.parchi; }
 
-    public void setParchi(Boolean parchi) { this.parchi = parchi; }
+    public void setParchi(boolean parchi) { this.parchi = parchi; }
 
-    public void setTransportoPubblico(Boolean transportoPubblico) { this.transportoPubblico = transportoPubblico; }
+    public void setTrasportoPubblico(boolean trasportoPubblico) { this.trasportoPubblico = trasportoPubblico; }
 
-    public Boolean getTransportoPubblico() { return transportoPubblico;    }
+    public boolean getTrasportoPubblico() { return trasportoPubblico;    }
 
 
     public Indirizzo getIndirizzo() {

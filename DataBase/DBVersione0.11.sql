@@ -373,6 +373,4 @@ SELECT i.IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
 FROM Immobile i
 JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
 WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
-JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
-WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
 

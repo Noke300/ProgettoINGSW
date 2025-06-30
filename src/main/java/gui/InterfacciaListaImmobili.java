@@ -31,9 +31,6 @@ public class InterfacciaListaImmobili extends JPanel {
 
     private JPanel[] selectedPanel = new JPanel[1]; // inizialmente vuoto
 
-    //--Border per gli immobili selected
-
-
 //Rimuove i popup quando la pagina viene caricata
     @Override
     public void addNotify() {

@@ -51,7 +51,6 @@ public class PaginaImmobileDettagliata extends JPanel {
 
         //TODO da rendere come funzione ausilare che carica i dati nella chiamata (Thread)
 
-
         List<Offerta> offerteIM = control.getOffertePerImmobile(immobile);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -274,6 +273,11 @@ public class PaginaImmobileDettagliata extends JPanel {
                 frame.revalidate();
                 frame.repaint();
             }
+        });
+
+        buttonBack.addActionListener(e ->{
+
+
         });
 
         // Imposta dimensioni preferite ai pannelli chiave

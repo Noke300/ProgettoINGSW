@@ -73,7 +73,7 @@ public class ImmobilePanelSingolo {
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
                         selectPanel(panel, selectedPanelRef);
-                    } else if (e.getClickCount() == 2) {
+                    } else if (e.getClickCount() == 3) {
                         navigateToDetailsPage(frame, immobile, control, token);
                     }
                 }

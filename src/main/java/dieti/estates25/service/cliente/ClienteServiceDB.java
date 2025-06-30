@@ -1,9 +1,13 @@
 package dieti.estates25.service.cliente;
 
 import dieti.estates25.model.Offerta;
+import dieti.estates25.model.Visita;
+import dieti.estates25.model.VisitaId;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.model.cliente.ClientePrincipal;
+import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.OffertaRepository;
+import dieti.estates25.repositories.VisitaRepository;
 import dieti.estates25.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 import dieti.estates25.repositories.ClienteRepository;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +38,10 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private OffertaRepository offertaRepository;
+    private VisitaRepository visitaRepository;
+
+    @Autowired
+    private ImmobileRepository immobileRepository;
 
     @Autowired
     private JWTService jwtService;
@@ -113,6 +121,27 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
             return userDetails.getUsername();
         }
         return null;
+    }
+
+    public ResponseEntity<String> prenotaVisita(Visita visita) {
+        if (visita.getImmobile() == null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Nessun immobile selezionato");
+        }
+        if (visita.getDataVisita().before(Date.from(Instant.now()))){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Data non valida");
+        }
+        String email = getEmailAutenticato();
+        visita.setCliente(clienteRepository.findByEmailCliente(email));
+        visita.setConferma(false);
+        visita.setId(new VisitaId(email, visita.getImmobile().getIdImmobile()));
+        visitaRepository.save(visita);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Visita prenotata correttamente");
     }
 }
 

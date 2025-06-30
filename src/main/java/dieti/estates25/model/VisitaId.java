@@ -2,7 +2,10 @@ package dieti.estates25.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
 
 @Embeddable
 public class VisitaId implements Serializable {

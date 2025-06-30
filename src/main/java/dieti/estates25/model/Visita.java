@@ -18,7 +18,7 @@ public class Visita {
 
     @ManyToOne
     @MapsId("clienteId")
-    @JoinColumn(name = "EmailCliente")
+    @JoinColumn(name = "emailcliente")
     private Cliente cliente;
 
     @Column(name = "oravisita", nullable = false)
@@ -36,6 +36,8 @@ public class Visita {
     public VisitaId getId() {
         return id;
     }
+    public void setId(VisitaId id) {this.id = id;}
+    public void setConferma(Boolean conferma) {this.conferma = conferma;}
     public Immobile getImmobile() { return this.immobile; }
     public void setImmobile(Immobile immobile) { this.immobile = immobile; }
     public Cliente getCliente() { return this.cliente; }

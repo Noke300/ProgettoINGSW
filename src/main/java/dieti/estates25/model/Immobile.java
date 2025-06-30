@@ -76,7 +76,7 @@ public class Immobile {
     @Column(name = "parchi")
     private boolean parchi;
 
-    @Column(name = "trasportoPubblico")
+    @Column(name = "trasportopubblico")
     private boolean trasportoPubblico;
 
     // Getters and Setters

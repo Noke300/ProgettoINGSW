@@ -62,8 +62,7 @@ public class ClienteController {
 
     @PostMapping("/visita")
     public ResponseEntity<String> newVisita(@RequestBody Visita visita) {
-        //TODO organizzare con Marco su come gestire internamente le visite
-        return null;
+        return clienteService.prenotaVisita(visita);
     }
 
 }

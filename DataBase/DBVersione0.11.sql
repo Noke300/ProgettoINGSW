@@ -71,7 +71,7 @@ CREATE TABLE Immobile (
     Venduto BOOLEAN DEFAULT FALSE,
     Scuole BOOLEAN DEFAULT FALSE,
     Parchi BOOLEAN DEFAULT FALSE,
-    TransportoPubblico BOOLEAN DEFAULT FALSE,
+    TrasportoPubblico BOOLEAN DEFAULT FALSE,
 	
 	FOREIGN KEY (IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo),
     FOREIGN KEY (NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
@@ -238,7 +238,7 @@ INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
     Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
-    Venduto, Scuole, Parchi, TransportoPubblico
+    Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 260000, 'Affitto', 'Appartamento moderno vicino al centro',
        110, 'Appartamento', 2, 'A', 4, 2, TRUE, TRUE, TRUE, FALSE, TRUE,
@@ -251,7 +251,7 @@ INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
     Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
-    Venduto, Scuole, Parchi, TransportoPubblico
+    Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 370000, 'Vendita', 'Casa indipendente con ampio giardino',
        135, 'Casa', 2, 'B', 5, 1, TRUE, TRUE, TRUE, TRUE, TRUE,
@@ -264,7 +264,7 @@ INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
     Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
-    Venduto, Scuole, Parchi, TransportoPubblico
+    Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 195000, 'Vendita', 'Appartamento accogliente in zona tranquilla',
        85, 'Appartamento', 1, 'A', 3, 1, FALSE, TRUE, FALSE, FALSE, TRUE,
@@ -277,7 +277,7 @@ INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
     Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
-    Venduto, Scuole, Parchi, TransportoPubblico
+    Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 280000, 'Affitto', 'Casa luminosa a pochi passi dal mare',
        120, 'Casa', 2, 'B', 4, 0, FALSE, TRUE, TRUE, FALSE, TRUE,
@@ -290,7 +290,7 @@ INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
     Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
-    Venduto, Scuole, Parchi, TransportoPubblico
+    Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto', 'Appartamento con vista sulla città',
        95, 'Appartamento', 2, 'A', 4, 1, TRUE, TRUE, FALSE, TRUE, TRUE,

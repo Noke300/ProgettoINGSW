@@ -64,6 +64,12 @@ public class LogIn extends JPanel {
                  throw new RuntimeException(ex);
              }
          });
+         buttonRegistrati.addActionListener(e-> {
+             frame.setContentPane(new RegistrazioneCliente(frame,control,token));
+             frame.revalidate();
+             frame.repaint();
+         });
+
     }
 
     @Override

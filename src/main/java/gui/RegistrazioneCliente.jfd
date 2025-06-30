@@ -164,7 +164,7 @@ new FormModel {
 		add( new FormComponent( "com.toedter.calendar.JCalendar" ) {
 			name: "calendarSelector"
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 180, 530 )
+			"location": new java.awt.Point( 155, 530 )
 			"size": new java.awt.Dimension( 192, 144 )
 		} )
 	}

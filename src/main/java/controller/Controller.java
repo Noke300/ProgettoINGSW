@@ -24,6 +24,7 @@ public class Controller {
     protected static final String OFFERTA_URL = "http://localhost:8081/auth-cliente/offerta";
     protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
+    protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
 
     protected static final Gson gson = new Gson();  //oggetto che serve a fare i Json
 
@@ -134,6 +135,39 @@ public class Controller {
             return "";
         }
     }
+
+    public static boolean registrazioneCliente(Cliente cliente) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        String requestBody = gson.toJson(cliente);
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(REGISTRAZIONE_URL_CLIENTE))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Errore URI: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200 || response.statusCode() == 201) {
+                System.out.println("Registrazione effettuata con successo.");
+                return true;
+            } else {
+                System.out.println("Errore durante la registrazione: " + response.statusCode());
+                System.out.println("Messaggio: " + response.body());
+                return false;
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore nella richiesta: " + e.getMessage());
+        }
+    }
+
 
     ///TODO Questo sara usato per gli immobili servira una con la sepicifica di un agente immobiliare
     public List<Offerta> getOffertePerImmobile(Immobile idImmobile) {

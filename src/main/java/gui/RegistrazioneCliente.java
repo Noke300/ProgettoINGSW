@@ -1,19 +1,72 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.Array;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import com.toedter.calendar.*;
+import controller.Controller;
+import model.Cliente;
 import net.miginfocom.swing.*;
 
 public class RegistrazioneCliente extends JPanel {
-    public RegistrazioneCliente() {
+    public RegistrazioneCliente(JFrame frame,Controller control,String token) {
 
        initComponents();
-       buttonCalender.addActionListener(e ->{
+        ricercaButton.addActionListener(e-> {
 
-       });
+            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
+            frame.revalidate();
+            frame.repaint();
+
+        });
+        buttonCalender.addActionListener(e -> {
+            final JDialog calenederDialogInstance = new JDialog(frame, "Calendario", true);
+            calenederDialogInstance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            calenederDialogInstance.setSize(700, 550);
+            calenederDialogInstance.setContentPane(calendarSelector);
+
+            calendarSelector.getDayChooser().getDayPanel().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        String data = new SimpleDateFormat("dd/MM/yyyy").format(calendarSelector.getDate());
+                        textFildData.setText(data);
+                        calenederDialogInstance.dispose();
+                    }
+                }
+            });
+
+            calenederDialogInstance.setVisible(true);
+        });
+
+        buttonRegistrati.addActionListener(e -> {
+            char[] tempPass = passwordField1.getPassword();
+            Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
+                    tempPass.toString(), Date.valueOf(textFildData.getText()));
+            if(control.registrazioneCliente(newC)){
+                String tokenT = control.loginAgente(newC.getEmail(),newC.getPassword());
+                frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,tokenT));
+                Arrays.fill(tempPass,'0');
+                frame.revalidate();
+                frame.repaint();
+            }else{
+                Arrays.fill(tempPass,'0');
+                System.out.println("Errore");
+            };
+
+        });
+
+
+
     }
 
     private void initComponents() {
@@ -43,12 +96,11 @@ public class RegistrazioneCliente extends JPanel {
         calendarSelector = new JCalendar();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder ( new CompoundBorder ( new TitledBorder ( new EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , TitledBorder. CENTER
+        ,TitledBorder . BOTTOM, new Font ( "Dia\u006cog", Font
+        . BOLD ,12 ) ,Color .red ) , getBorder () ) );  addPropertyChangeListener(
+        new PropertyChangeListener ( ){ @Override public void propertyChange ( PropertyChangeEvent e) { if( "\u0062ord\u0065r"
+        .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns

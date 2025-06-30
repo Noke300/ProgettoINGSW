@@ -159,4 +159,14 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         //TODO Idealmente mandare delle notifiche ai clienti che hanno fatto un offerta/prenotato una visita all'immobile
         return ResponseEntity.ok("Immobile eliminato correttamente");
     }
+
+    public ResponseEntity<String> aggiungiImmobile(Immobile immobile) {
+        AgenteImmobiliare agent = getAgentByMail(getEmailAutenticato());
+        immobile.setAgente(agent);
+        immobile.setNomeAgenzia(agent.getNomeAgenzia());
+        immobile.setVenduto(false);
+        immobileRepository.save(immobile);
+        return ResponseEntity.ok("Immobile aggiunto correttamente");
+        //TODO Da testare
+    }
 }

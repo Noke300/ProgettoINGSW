@@ -74,4 +74,9 @@ public class AgenteImmobiliareController {
     public ResponseEntity<String> eliminaImmobile(@RequestBody String idImmobile) {
         return agentService.eliminaImmobile(idImmobile);
     }
+
+    @PostMapping("aggiungi-immobile")
+    public ResponseEntity<String> aggiungiImmobile(@RequestBody Immobile immobile) {
+        return agentService.aggiungiImmobile(immobile);
+    }
 }

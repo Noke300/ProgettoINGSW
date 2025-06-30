@@ -1,5 +1,6 @@
 package dieti.estates25.model.agenteimmobiliare;
 
+import dieti.estates25.model.AgenziaImmobiliare;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,9 +20,9 @@ public class AgenteImmobiliare {
     @Column(name = "passwordagente", nullable = false, unique = true)
     private String passwordAgente;
 
-    //@ManyToOne
-    @Column(name = "nomeagenzia")
-    private String nomeAgenzia;
+    @ManyToOne
+    @JoinColumn(name = "nomeagenzia")
+    private AgenziaImmobiliare nomeAgenzia;
 
     // Getters and Setters
 
@@ -33,6 +34,6 @@ public class AgenteImmobiliare {
     public void setCognomeAgente(String cognomeAgente) { this.cognomeAgente = cognomeAgente; }
     public String getPasswordAgente() { return this.passwordAgente; }
     public void setPasswordAgente(String passwordAgente) { this.passwordAgente = passwordAgente; }
-    public String getNomeAgenzia() { return this.nomeAgenzia; }
-    public void setNomeAgenzia(String nomeAgenzia) { this.nomeAgenzia = nomeAgenzia; }
+    public AgenziaImmobiliare getNomeAgenzia() { return this.nomeAgenzia; }
+    public void setNomeAgenzia(AgenziaImmobiliare nomeAgenzia) { this.nomeAgenzia = nomeAgenzia; }
 }

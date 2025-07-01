@@ -22,6 +22,7 @@ public class Controller {
     protected static final String IMMOBILI_URL = "http://localhost:8081/auth-agente/immobili";
     protected static final String RICERCA_URL = "http://localhost:8081/cerca-immobili";
     protected static final String VISITE_IMM = "http://localhost:8081/auth-agente/visita";
+    protected static final String PRENOTA_VISITE = "http://localhost:8081/auth-cliente/visita";
     protected static final String OFFERTA_URL = "http://localhost:8081/auth-cliente/offerta";
     protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
@@ -29,7 +30,7 @@ public class Controller {
 
     protected static final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd")
-            .create();;  //oggetto che serve a fare i Jso
+            .create();  //oggetto che serve a fare i Jso
 
     public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
         HttpClient client = HttpClient.newHttpClient();
@@ -245,6 +246,31 @@ public class Controller {
             return response.statusCode() == 200;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante invio offerta: " + e.getMessage());
+        }
+    }
+
+    //TODO da spostare in controller clienti
+
+    public boolean inviaVisita(Visita visita, String token) {
+        HttpClient client = HttpClient.newHttpClient();
+        String requestBody = gson.toJson(visita);
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(PRENOTA_VISITE)) // aggiorna con l'URL corretto
+                    .header("Authorization", "Bearer " + token)
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante invio visita: " + e.getMessage());
         }
     }
 

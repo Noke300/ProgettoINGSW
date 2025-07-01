@@ -13,8 +13,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -23,6 +24,7 @@ import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import model.Immobile;
 import model.Offerta;
+import model.Visita;
 import net.miginfocom.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -165,8 +167,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         });
 
         buttonVisita.addActionListener(e -> {
-            if(!"".equals(token)) {
-                // Impostazioni iniziali della finestra
+            if (!"".equals(token)) {
                 JDialog visitaDialog = new JDialog(frame, "Visita", true);
                 visitaDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 visitaDialog.setSize(700, 550);
@@ -178,13 +179,14 @@ public class PaginaImmobileDettagliata extends JPanel {
                 dayPanel.setLayout(new BoxLayout(dayPanel, BoxLayout.X_AXIS));
                 dayPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
                 ButtonGroup dayGroup = new ButtonGroup();
+                Map<JToggleButton, LocalDate> bottoniDataMap = new HashMap<>();
 
-// Chiamata API meteo
+                // Chiamata API meteo
                 String[] temperatureMax = new String[GIORNI_METEO];
                 String[] temperatureMin = new String[GIORNI_METEO];
                 try {
                     String endpoint = "https://api.open-meteo.com/v1/forecast?latitude=" + immobile.getLanIm() +
-                            "&longitude=" + immobile.getLongIm() + "&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days="+GIORNI_METEO;
+                            "&longitude=" + immobile.getLongIm() + "&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=" + GIORNI_METEO;
 
                     HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
                     conn.setRequestMethod("GET");
@@ -206,15 +208,15 @@ public class PaginaImmobileDettagliata extends JPanel {
                         temperatureMin[i] = tempsMin.getDouble(i) + "°C";
                     }
 
-                } catch (Exception E) {
-                    E.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                     for (int i = 0; i < GIORNI_METEO; i++) {
                         temperatureMax[i] = "?°C";
                         temperatureMin[i] = "?°C";
                     }
                 }
 
-// Creazione dei bottoni con meteo associato
+                // Bottoni con meteo associato
                 for (int i = 0; i < GIORNI_METEO; i++) {
                     LocalDate day = LocalDate.now().plusDays(i);
                     String giorno = String.valueOf(day.getDayOfMonth());
@@ -223,6 +225,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                     JToggleButton dayButton = new JToggleButton("<html><center><b>" + giorno + "</b><br>" + mese + "</center></html>");
                     dayButton.setFont(new Font("Arial", Font.PLAIN, 24));
                     dayGroup.add(dayButton);
+                    bottoniDataMap.put(dayButton, day);
 
                     JLabel meteoLabel = new JLabel(
                             "<html><center><span style='font-size:14px;'>Min: " + temperatureMin[i] + "<br>Max: " + temperatureMax[i] + "</span></center></html>"
@@ -245,12 +248,12 @@ public class PaginaImmobileDettagliata extends JPanel {
                 JScrollPane scrollPane = new JScrollPane(dayPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 scrollPane.setBorder(null);
 
-// Selezione orario
+                // Selezione orario
                 String[] orari = {"08:00", "10:00", "12:00", "14:00", "16:00", "18:00"};
                 JComboBox<String> oraComboBox = new JComboBox<>(orari);
                 oraComboBox.setFont(new Font("Arial", Font.PLAIN, 28));
 
-// Pulsanti inferiori
+                // Pannello inferiore
                 JPanel bottomPanel = new JPanel(new BorderLayout());
                 bottomPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 30, 30));
                 bottomPanel.add(oraComboBox, BorderLayout.WEST);
@@ -258,18 +261,43 @@ public class PaginaImmobileDettagliata extends JPanel {
                 JButton inviaButton = new JButton("Invia");
                 inviaButton.setFont(new Font("Arial", Font.BOLD, 28));
                 bottomPanel.add(inviaButton, BorderLayout.EAST);
+
                 inviaButton.addActionListener(h -> {
-                    JOptionPane.showMessageDialog(visitaDialog, "Richiesta inviata!");
-                    visitaDialog.dispose();
+                    ButtonModel selectedModel = dayGroup.getSelection();
+                    LocalDate dataSelezionata = null;
+
+                    for (Map.Entry<JToggleButton, LocalDate> entry : bottoniDataMap.entrySet()) {
+                        if (entry.getKey().getModel() == selectedModel) {
+                            dataSelezionata = entry.getValue();
+                            break;
+                        }
+                    }
+
+                    if (dataSelezionata != null) {
+                        LocalTime orario = LocalTime.parse(oraComboBox.getSelectedItem().toString());
+                        Date dataVisita = java.sql.Date.valueOf(dataSelezionata);
+
+                        Visita visita = new Visita(immobile, orario, dataVisita);
+
+                        if (control.inviaVisita(visita,token)) {
+                            JOptionPane.showMessageDialog(visitaDialog, "Richiesta inviata!");
+                            visitaDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(visitaDialog, "Errore durante l'invio della richiesta.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(visitaDialog, "Seleziona una data prima di inviare.");
+                    }
                 });
+
 
                 visitaDialog.add(scrollPane, BorderLayout.CENTER);
                 visitaDialog.add(bottomPanel, BorderLayout.SOUTH);
                 visitaDialog.setLocationRelativeTo(null);
                 visitaDialog.setVisible(true);
 
-            }else{
-                frame.setContentPane(new LogIn(frame,control,token));
+            } else {
+                frame.setContentPane(new LogIn(frame, control, token));
                 frame.revalidate();
                 frame.repaint();
             }

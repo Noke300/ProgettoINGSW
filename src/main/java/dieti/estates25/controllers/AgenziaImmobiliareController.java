@@ -1,7 +1,10 @@
 package dieti.estates25.controllers;
 
+import dieti.estates25.model.adminsupport.AdminSupport;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import dieti.estates25.service.AgenziaImmobiliareServiceDB;
+import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +25,9 @@ public class AgenziaImmobiliareController {
 
     @Autowired
     private AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB;
+
+    @Autowired
+    private AgenteImmobiliareServiceDB agentService;
 
     @GetMapping("/getAgenzie")
     public List<AgenziaImmobiliare> getAllAgenzie() {
@@ -57,4 +63,19 @@ public class AgenziaImmobiliareController {
     public ResponseEntity<String> login(@RequestBody AgenziaImmobiliare agenzia) {
         return agenziaImmobiliareServiceDB.verify(agenzia);
     }
+
+    @GetMapping("getAgentiImmobiliari")
+    public List<AgenteImmobiliare> getAgenti(){
+        return agenziaImmobiliareServiceDB.getAgenti();
+    }
+
+    @GetMapping("getAdminSupport")
+    public List<AdminSupport> getAdminSupport(){
+        return agenziaImmobiliareServiceDB.getAdminSupport();
+    }
+/*
+    @PostMapping("/registraAgenteImmobiliare")
+    public ResponseEntity<String> addAgente(@RequestBody AgenteImmobiliare agent) {
+        return agentService.addAgent(agent, agenziaImmobiliareServiceDB.getNomeAgenzia());
+    }*/
 }

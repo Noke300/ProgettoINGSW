@@ -35,11 +35,6 @@ public class AgenteImmobiliareController {
         return agentService.getAgentByMail(mail);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> addAgent(@RequestBody AgenteImmobiliare agent) {
-        return agentService.addAgent(agent);
-    }
-
     @PutMapping("/agenti/{mail}")
     public void updateAgent(@PathVariable String mail, @RequestBody AgenteImmobiliare agent) {
         agentService.updateAgent(mail, agent);

@@ -4,6 +4,7 @@ import dieti.estates25.model.Immobile;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
+import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
 import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.IndirizzoRepository;
@@ -62,13 +63,14 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     }
 
     @Override
-    public ResponseEntity<String> addAgent(AgenteImmobiliare agent) {
+    public ResponseEntity<String> addAgent(AgenteImmobiliare agent, AgenziaImmobiliare nomeAgenzia) {
         if (agentRepository.findByEmailAgente(agent.getEmailAgente()) != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("è già presente un account con questa mail");
         }
         agent.setPasswordAgente(encoder.encode(agent.getPasswordAgente()));
+        agent.setNomeAgenzia(nomeAgenzia);
         agentRepository.save(agent);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

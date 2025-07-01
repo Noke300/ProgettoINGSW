@@ -1,5 +1,6 @@
 package dieti.estates25.model.adminsupport;
 
+import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,9 +20,9 @@ public class AdminSupport {
     @Column(name = "passwordsupport", nullable = false, unique = true)
     private String passwordSupport;
 
-    //@ManyToOne
-    @Column(name = "nomeagenzia")
-    private String nomeAgenzia;
+    @ManyToOne
+    @JoinColumn(name = "nomeagenzia")
+    private AgenziaImmobiliare nomeAgenzia;
 
     // Getters and Setters
 
@@ -33,6 +34,6 @@ public class AdminSupport {
     public void setCognomeSupport(String cognomeSupport) { this.cognomeSupport = cognomeSupport; }
     public String getPasswordSupport() { return this.passwordSupport; }
     public void setPasswordSupport(String passwordSupport) { this.passwordSupport = passwordSupport; }
-    public String getNomeAgenzia() { return this.nomeAgenzia; }
-    public void setNomeAgenzia(String nomeAgenzia) { this.nomeAgenzia = nomeAgenzia; }
+    public AgenziaImmobiliare getNomeAgenzia() { return this.nomeAgenzia; }
+    public void setNomeAgenzia(AgenziaImmobiliare nomeAgenzia) { this.nomeAgenzia = nomeAgenzia; }
 }

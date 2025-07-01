@@ -3,10 +3,10 @@ package dieti.estates25.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Immagineimmobile")
+@Table(name = "immagineimmobile")
 public class ImmagineImmobile {
     @Id
-    @Column(name = "UrlImmagine")
+    @Column(name = "urlimmagine")
     private String urlImmagine;
 
     @ManyToOne

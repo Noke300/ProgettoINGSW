@@ -58,7 +58,12 @@ public class AuthController {
     public List<Offerta> visualizzaOfferte(@RequestBody Immobile immobile) {
         if (immobile.getIdImmobile() == null) return new ArrayList<>();
         //TODO maagri meglio lanciare un eccezione o dare un messaggio d'errore
-        return offertaRepository.findAllByImmobileIdImmobileEquals(immobile.getIdImmobile());
+        List<Offerta> offerte = offertaRepository.findAllByImmobileIdImmobileEquals(immobile.getIdImmobile());
+        for(Offerta o : offerte) {
+            o.getCliente().setPasswordCliente(null);
+            o.getImmobile().setAgente(null);
+        }
+        return offerte;
     }
 
     @PostMapping("/cerca-immobili")

@@ -23,6 +23,11 @@ new FormModel {
 				"value": "cell 1 0 3 1,aligny center,growy 0"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconNome"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelCognome"
 				"text": "Cognome :"
 				"font": #Font0
@@ -34,6 +39,11 @@ new FormModel {
 				"font": #Font1
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 1 1 3 1,aligny center,growy 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconCognome"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 1"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelData"
@@ -54,7 +64,7 @@ new FormModel {
 				"background": new java.awt.Color( 255, 255, 255, 0 )
 				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 2"
+				"value": "cell 3 2,alignx left,growx 0"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelEmail"
@@ -70,6 +80,11 @@ new FormModel {
 				"value": "cell 1 3 3 1,aligny center,growy 0"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconEmail"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 3"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelPassword"
 				"text": "Password :"
 				"font": new java.awt.Font( "Segoe UI", 0, 22 )
@@ -81,6 +96,11 @@ new FormModel {
 				"font": new java.awt.Font( "Segoe UI", 0, 20 )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 1 6 3 1,aligny center,growy 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconPass"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 6"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonRegistrati"

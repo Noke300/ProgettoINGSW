@@ -40,9 +40,7 @@ public class LogIn extends JPanel {
          
          buttonLogIn.addActionListener(e-> {
              String token1;
-             try {
                  token1 = control.logInClient(textFildEmail.getText(), passwordField1.getText());
-
                  if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,
@@ -56,13 +54,6 @@ public class LogIn extends JPanel {
                      frame.revalidate();
                      frame.repaint();
                  }
-             } catch (IOException ex) {
-                 throw new RuntimeException(ex);
-             } catch (InterruptedException ex) {
-                 throw new RuntimeException(ex);
-             } catch (URISyntaxException ex) {
-                 throw new RuntimeException(ex);
-             }
          });
          buttonRegistrati.addActionListener(e-> {
              frame.setContentPane(new RegistrazioneCliente(frame,control,token));

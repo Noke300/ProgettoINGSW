@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.*;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -26,7 +27,9 @@ public class Controller {
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
 
-    protected static final Gson gson = new Gson();  //oggetto che serve a fare i Json
+    protected static final Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd")
+            .create();;  //oggetto che serve a fare i Jso
 
     public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
         HttpClient client = HttpClient.newHttpClient();
@@ -73,30 +76,47 @@ public class Controller {
         }
     }
 
-    public static String logInClient(String emailCliente, String password) throws IOException, InterruptedException, URISyntaxException {
+    public static String logInClient(String emailCliente, String password) {
         HttpClient client = HttpClient.newHttpClient();
 
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("emailCliente", emailCliente);
         bodyMap.put("passwordCliente", password);
 
+        Gson gson = new Gson(); // Assicurati che sia configurato se serve formattazione data o custom type adapter
         String requestBody = gson.toJson(bodyMap);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(LOGIN_URL_CLIENTE))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(LOGIN_URL_CLIENTE))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() == 200) {
-            return response.body().replace("\"", ""); // Rimuove doppi apici
-        } else {
-            System.out.println("Login fallito. Codice risposta: " + response.statusCode());
-            return null;
+            if (response.statusCode() == 200) {
+                return response.body().replace("\"", ""); // rimuove doppi apici
+            } else {
+                System.err.println("Login fallito. Codice risposta: " + response.statusCode());
+                System.err.println("Messaggio: " + response.body());
+                return null;
+            }
+
+        } catch (URISyntaxException e) {
+            System.err.println("URI non valido: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Errore di comunicazione con il server: " + e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Buona pratica
+            System.err.println("La richiesta è stata interrotta: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Errore imprevisto: " + e.getMessage());
         }
+
+        return null;
     }
+
 
     public String loginAgente(String email, String password) {
         HttpClient client = HttpClient.newHttpClient();

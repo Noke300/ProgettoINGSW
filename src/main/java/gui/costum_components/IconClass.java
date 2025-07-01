@@ -32,7 +32,9 @@ public class IconClass {
    private final FontIcon portineriaIcon = FontIcon.of(FontAwesomeSolid.USER_LOCK,22);
    private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.green);
    private final FontIcon plusImmobile = FontIcon.of(FontAwesomeSolid.PLUS_CIRCLE,24);
-
+   private final FontIcon passwordIcon = FontIcon.of(FontAwesomeSolid.LOCK,24);
+   private final FontIcon emailIcon = FontIcon.of(FontAwesomeSolid.ENVELOPE,24);
+   private final FontIcon nomeCliente =FontIcon.of(FontAwesomeSolid.USER,24);
 
     public Color getMainColor() {return mainColor;}
 
@@ -97,5 +99,7 @@ public class IconClass {
     public FontIcon getCantinaIcon() {return cantinaIcon;}
     public FontIcon getMapImmobiliIcon() {return mapImmobiliIcon;}
     public FontIcon getPlusImmobile() {return plusImmobile;}
-
+    public FontIcon getPasswordIcon() {return passwordIcon;}
+    public FontIcon getEmailIcon() {return emailIcon;}
+    public FontIcon getNomeCliente() {return nomeCliente;}
 }

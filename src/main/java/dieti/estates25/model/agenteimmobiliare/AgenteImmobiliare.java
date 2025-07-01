@@ -1,6 +1,6 @@
 package dieti.estates25.model.agenteimmobiliare;
 
-import dieti.estates25.model.AgenziaImmobiliare;
+import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import jakarta.persistence.*;
 
 @Entity

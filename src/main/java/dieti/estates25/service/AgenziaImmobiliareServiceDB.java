@@ -1,0 +1,91 @@
+package dieti.estates25.service;
+
+import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
+import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliarePrincipal;
+import dieti.estates25.repositories.AgenziaImmobiliareRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class AgenziaImmobiliareServiceDB implements UserDetailsService {
+
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private AgenziaImmobiliareRepository agenziaImmobiliareRepository;
+
+    @Autowired
+    @Lazy
+    @Qualifier("agenziaImmobiliareAuthenticationManager")
+    private AuthenticationManager authManager;
+
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public List<AgenziaImmobiliare> getAllAgenzieImmobiliari() {
+        return agenziaImmobiliareRepository.findAll();
+    }
+
+    public AgenziaImmobiliare getAgenziaByName(String name) {
+        Optional<AgenziaImmobiliare> agenzia = this.agenziaImmobiliareRepository.findById(name);
+        return agenzia.orElse(null);
+    }
+
+    public ResponseEntity<String> addAgenzia(AgenziaImmobiliare agenzia) {
+        if (agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(agenzia.getNomeAgenzia()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("è già presente un agenzia con questo nome");
+        }
+        agenzia.setPasswordAdmin(encoder.encode(agenzia.getPasswordAdmin()));
+        agenziaImmobiliareRepository.save(agenzia);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Agenzia creata correttamente");
+    }
+
+    public void updateAgenziaImmobiliare(String name, AgenziaImmobiliare agenzia) {
+        agenziaImmobiliareRepository.save(agenzia);
+    }
+
+    //TODO testare le cascade
+    public void deleteAgenziaImmobiliare(String name) {
+        agenziaImmobiliareRepository.deleteById(name);
+    }
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AgenziaImmobiliare agenzia = agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(username);
+
+        if (agenzia == null) {
+            throw new UsernameNotFoundException("Agenzia Immobiliare non trovata");
+        }
+
+        return new AgenziaImmobiliarePrincipal(agenzia);
+    }
+
+    public ResponseEntity<String> verify(AgenziaImmobiliare agenzia) {
+        Authentication authentication =
+                authManager.authenticate(new UsernamePasswordAuthenticationToken(agenzia.getNomeAgenzia(), agenzia.getPasswordAdmin()));
+
+        if(authentication.isAuthenticated()){
+            return ResponseEntity.ok(jwtService.generateToken(agenzia.getNomeAgenzia(), "admin"));
+        }
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Unauthorized");
+    }
+}

@@ -1,4 +1,4 @@
-package dieti.estates25.model;
+package dieti.estates25.model.agenziaimmobiliare;
 
 import jakarta.persistence.*;
 

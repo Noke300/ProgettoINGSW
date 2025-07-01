@@ -1,5 +1,6 @@
 package dieti.estates25.config;
 
+import dieti.estates25.service.AgenziaImmobiliareServiceDB;
 import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import dieti.estates25.service.cliente.ClienteServiceDB;
@@ -36,6 +37,9 @@ public class SecurityConfig {
 
     @Autowired
     private  AdminSupportServiceDB adminSupportDetailService;
+
+    @Autowired
+    private  AgenziaImmobiliareServiceDB agenziaImmobiliareService;
 
     @Bean
     @Order(1)
@@ -92,6 +96,24 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(4)
+    public SecurityFilterChain agenziaImmobiliareSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .securityMatcher("/auth-admin/**")
+                .authenticationProvider(agenziaImmobiliareAuthenticationProvider(agenziaImmobiliareService))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/auth-admin/register", "/auth-admin/login").permitAll()
+                        .requestMatchers("/auth-admin/**").hasAuthority("admin")
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
     public AuthenticationProvider clienteAuthenticationProvider(ClienteServiceDB clientDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
@@ -115,6 +137,14 @@ public class SecurityConfig {
         return provider;
     }
 
+    @Bean
+    public AuthenticationProvider agenziaImmobiliareAuthenticationProvider(AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(agenziaImmobiliareServiceDB);
+        return provider;
+    }
+
     @Primary
     @Bean(name = "clientAuthenticationManager")
     public AuthenticationManager clientAuthenticationManager(ClienteServiceDB clientDetailsService) {
@@ -125,9 +155,15 @@ public class SecurityConfig {
     public AuthenticationManager agentAuthenticationManager(AgenteImmobiliareServiceDB agentDetailsService) {
         return new ProviderManager(agenteAuthenticationProvider(agentDetailsService));
     }
+
     @Bean(name = "adminSupportAuthenticationManager")
     public AuthenticationManager adminSupportAuthenticationManager(AdminSupportServiceDB adminSupportDetailService) {
         return new ProviderManager(adminSupportAuthenticationProvider(adminSupportDetailService));
+    }
+
+    @Bean(name = "agenziaImmobiliareAuthenticationManager")
+    public AuthenticationManager agenziaImmobiliareAuthenticationManager(AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB) {
+        return new ProviderManager(agenziaImmobiliareAuthenticationProvider(agenziaImmobiliareServiceDB));
     }
 
 }

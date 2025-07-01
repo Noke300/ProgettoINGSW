@@ -99,6 +99,12 @@ CREATE TABLE Visita (
     FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
     FOREIGN KEY (EmailCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
 );
+
+CREATE TABLE ImmagineImmobile(
+    UrlImmagine VARCHAR(36) PRIMARY KEY,
+    IdImmobile VARCHAR(36) NOT NULL,
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE
+);
  
  --Constreins
  	--Cliente
@@ -373,4 +379,3 @@ SELECT i.IdImmobile, 'marco.gialli@email.com', 215000, '2024-01-15', TRUE
 FROM Immobile i
 JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
 WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
-

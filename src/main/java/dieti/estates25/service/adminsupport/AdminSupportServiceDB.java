@@ -1,9 +1,14 @@
 package dieti.estates25.service.adminsupport;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.adminsupport.AdminSupportPrincipal;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.repositories.AdminSupportRepository;
+import dieti.estates25.repositories.AgenteImmobiliareRepository;
+import dieti.estates25.repositories.AgenziaImmobiliareRepository;
 import dieti.estates25.service.JWTService;
+import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -12,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +35,12 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
 
     @Autowired
     private AdminSupportRepository adminSupportRepository;
+
+    @Autowired
+    private AgenteImmobiliareRepository agenteImmobiliareRepository;
+
+    @Autowired
+    private AgenteImmobiliareServiceDB agentService;
 
     @Autowired
     @Lazy
@@ -99,5 +111,29 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("Unauthorized");
+    }
+
+    public String getEmailAutenticato() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
+    }
+
+    public ResponseEntity<String> addAgent(AgenteImmobiliare agent) {
+        agent.setNomeAgenzia(getAdminSupportByMail(getEmailAutenticato()).getNomeAgenzia());
+        return agentService.addAgent(agent);
+    }
+
+    public ResponseEntity<List<Immobile>> deleteAgenteImmobiliare(AgenteImmobiliare agent) {
+        AgenteImmobiliare temp = agenteImmobiliareRepository.findByEmailAgente(agent.getEmailAgente());
+        if (!temp.getNomeAgenzia().getNomeAgenzia().equals(getAdminSupportByMail(getEmailAutenticato()).getNomeAgenzia().getNomeAgenzia())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(null);
+        }
+        return agentService.deleteAgent(agent.getEmailAgente());
     }
 }

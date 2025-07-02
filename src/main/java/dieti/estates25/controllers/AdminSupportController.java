@@ -1,6 +1,8 @@
 package dieti.estates25.controllers;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.adminsupport.AdminSupport;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +53,15 @@ public class AdminSupportController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AdminSupport adminSupport) {
         return adminSupportService.verify(adminSupport);
+    }
+
+    @PostMapping("/registraAgenteImmobiliare")
+    public ResponseEntity<String> addAgente(@RequestBody AgenteImmobiliare agent) {
+        return adminSupportService.addAgent(agent);
+    }
+
+    @DeleteMapping("/licenziaAgenteImmobiliare")
+    public ResponseEntity<List<Immobile>> deleteAgente(@RequestBody AgenteImmobiliare agent) {
+        return adminSupportService.deleteAgenteImmobiliare(agent);
     }
 }

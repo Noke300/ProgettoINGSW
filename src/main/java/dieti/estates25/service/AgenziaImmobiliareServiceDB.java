@@ -176,6 +176,11 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
     }
 
     public List<Immobile> getImmobili() {
-        return immobileRepository.findAllByAgente_NomeAgenzia(agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia()));
+        List<Immobile> immobili =  immobileRepository.findAllByAgente_NomeAgenzia(agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia()));
+        for (Immobile i : immobili) {
+            i.getAgente().setPasswordAgente(null);
+            i.getAgente().setNomeAgenzia(null);
+        }
+        return immobili;
     }
 }

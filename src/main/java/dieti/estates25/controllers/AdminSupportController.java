@@ -64,4 +64,9 @@ public class AdminSupportController {
     public ResponseEntity<List<Immobile>> deleteAgente(@RequestBody AgenteImmobiliare agent) {
         return adminSupportService.deleteAgenteImmobiliare(agent);
     }
+
+    @GetMapping("/visualizzaImmobili")
+    public List<Immobile> visualizzaImmobili(){
+        return adminSupportService.getImmobili();
+    }
 }

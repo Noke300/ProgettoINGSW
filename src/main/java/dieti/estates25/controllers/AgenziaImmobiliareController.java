@@ -80,4 +80,9 @@ public class AgenziaImmobiliareController {
     public ResponseEntity<String> addAdminSupport(@RequestBody AdminSupport adminSupport) {
         return agenziaImmobiliareServiceDB.addAdminSupport(adminSupport);
     }
+
+    @DeleteMapping("/licenziaAdminSupport")
+    public ResponseEntity<String> deleteAdminSupport(@RequestBody AdminSupport adminSupport) {
+        return agenziaImmobiliareServiceDB.deleteAdminSupport(adminSupport);
+    }
 }

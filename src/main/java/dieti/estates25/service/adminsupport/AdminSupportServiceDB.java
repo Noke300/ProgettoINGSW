@@ -68,8 +68,14 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
     }
 
     @Override
-    public void deleteAdminSupport(String mail) {
-        adminSupportRepository.deleteById(mail);
+    public ResponseEntity<String> deleteAdminSupport(String mail) {
+        if(adminSupportRepository.existsById(mail)) {
+            adminSupportRepository.deleteById(mail);
+            return ResponseEntity.ok().body("Admin Support eliminato");
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Admin Support non trovato");
     }
 
     @Override

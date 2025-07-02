@@ -149,4 +149,14 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
         adminSupport.setNomeAgenzia(agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia()));
         return adminSupportService.addAdminSupport(adminSupport);
     }
+
+    public ResponseEntity<String> deleteAdminSupport(AdminSupport adminSupport) {
+        AdminSupport temp = adminSupportRepository.findByEmailSupport(adminSupport.getEmailSupport());
+        if (!temp.getNomeAgenzia().getNomeAgenzia().equals(getNomeAgenzia())){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Non sei autorizzato a licenziare un dipendente di un'altra agenzia.");
+        }
+        return adminSupportService.deleteAdminSupport(adminSupport.getEmailSupport());
+    }
 }

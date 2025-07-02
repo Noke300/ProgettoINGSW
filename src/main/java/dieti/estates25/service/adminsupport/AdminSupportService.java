@@ -15,5 +15,5 @@ public interface AdminSupportService {
 
     void updateAdminSupport(String mail, AdminSupport adminSupport);
 
-    void deleteAdminSupport(String mail);
+    ResponseEntity<String> deleteAdminSupport(String mail);
 }

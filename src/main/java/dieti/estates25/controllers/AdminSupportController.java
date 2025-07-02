@@ -33,11 +33,6 @@ public class AdminSupportController {
         return adminSupportService.getAdminSupportByMail(mail);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> addAdminSupport(@RequestBody AdminSupport adminSupport) {
-        return adminSupportService.addAdminSupport(adminSupport);
-    }
-
     @PutMapping("/adminSupport/{mail}")
     public void updateAdminSupport(@PathVariable String mail, @RequestBody AdminSupport agent) {
         adminSupportService.updateAdminSupport(mail, agent);

@@ -26,9 +26,6 @@ public class AgenziaImmobiliareController {
     @Autowired
     private AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB;
 
-    @Autowired
-    private AgenteImmobiliareServiceDB agentService;
-
     @GetMapping("/getAgenzie")
     public List<AgenziaImmobiliare> getAllAgenzie() {
         return agenziaImmobiliareServiceDB.getAllAgenzieImmobiliari();
@@ -73,9 +70,14 @@ public class AgenziaImmobiliareController {
     public List<AdminSupport> getAdminSupport(){
         return agenziaImmobiliareServiceDB.getAdminSupport();
     }
-/*
+
     @PostMapping("/registraAgenteImmobiliare")
     public ResponseEntity<String> addAgente(@RequestBody AgenteImmobiliare agent) {
-        return agentService.addAgent(agent, agenziaImmobiliareServiceDB.getNomeAgenzia());
-    }*/
+        return agenziaImmobiliareServiceDB.addAgent(agent);
+    }
+
+    @PostMapping("/registraAdminSupport")
+    public ResponseEntity<String> addAdminSupport(@RequestBody AdminSupport adminSupport) {
+        return agenziaImmobiliareServiceDB.addAdminSupport(adminSupport);
+    }
 }

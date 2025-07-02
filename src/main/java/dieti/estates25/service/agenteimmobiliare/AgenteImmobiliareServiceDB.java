@@ -63,14 +63,13 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     }
 
     @Override
-    public ResponseEntity<String> addAgent(AgenteImmobiliare agent, AgenziaImmobiliare nomeAgenzia) {
+    public ResponseEntity<String> addAgent(AgenteImmobiliare agent) {
         if (agentRepository.findByEmailAgente(agent.getEmailAgente()) != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("è già presente un account con questa mail");
         }
         agent.setPasswordAgente(encoder.encode(agent.getPasswordAgente()));
-        agent.setNomeAgenzia(nomeAgenzia);
         agentRepository.save(agent);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

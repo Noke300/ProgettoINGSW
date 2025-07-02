@@ -7,6 +7,8 @@ import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliarePrincipal;
 import dieti.estates25.repositories.AdminSupportRepository;
 import dieti.estates25.repositories.AgenteImmobiliareRepository;
 import dieti.estates25.repositories.AgenziaImmobiliareRepository;
+import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
+import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -39,6 +41,12 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
 
     @Autowired
     private AdminSupportRepository adminSupportRepository;
+
+    @Autowired
+    private AgenteImmobiliareServiceDB agentService;
+
+    @Autowired
+    private AdminSupportServiceDB adminSupportService;
 
     @Autowired
     @Lazy
@@ -123,5 +131,15 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
             a.setPasswordSupport(null);
         }
         return adminSupports;
+    }
+
+    public ResponseEntity<String> addAgent(AgenteImmobiliare agent) {
+        agent.setNomeAgenzia(agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia()));
+        return agentService.addAgent(agent);
+    }
+
+    public ResponseEntity<String> addAdminSupport(AdminSupport adminSupport) {
+        adminSupport.setNomeAgenzia(agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia()));
+        return adminSupportService.addAdminSupport(adminSupport);
     }
 }

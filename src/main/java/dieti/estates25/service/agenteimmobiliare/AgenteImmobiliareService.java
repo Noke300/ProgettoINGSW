@@ -12,7 +12,7 @@ public interface AgenteImmobiliareService {
 
     AgenteImmobiliare getAgentByMail(String mail);
 
-    ResponseEntity<String> addAgent(AgenteImmobiliare agent, AgenziaImmobiliare nomeAgenzia);
+    ResponseEntity<String> addAgent(AgenteImmobiliare agent);
 
     void updateAgent(String mail, AgenteImmobiliare agent);
 

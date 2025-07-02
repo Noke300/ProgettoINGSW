@@ -42,9 +42,9 @@ public class AgenziaImmobiliareController {
         return agenziaImmobiliareServiceDB.addAgenzia(agenzia);
     }
 
-    @PutMapping("/agenziaImmobiliare/{name}")
-    public void updateAgenziaImmobiliare(@PathVariable String name, @RequestBody AgenziaImmobiliare agenzia) {
-        agenziaImmobiliareServiceDB.updateAgenziaImmobiliare(name, agenzia);
+    @PutMapping("/agenziaImmobiliare")
+    public void updateAgenziaImmobiliare(@RequestBody AgenziaImmobiliare agenzia) {
+        agenziaImmobiliareServiceDB.updateAgenziaImmobiliare(agenzia);
     }
 
     @DeleteMapping("/agenziaiImmobiliare/{name}")
@@ -95,5 +95,10 @@ public class AgenziaImmobiliareController {
     @GetMapping("/visualizzaImmobili")
     public List<Immobile> visualizzaImmobili(){
         return agenziaImmobiliareServiceDB.getImmobili();
+    }
+
+    @PostMapping("/aggiornaCredenziali")
+    public void aggiornaCredenziali(@RequestBody AgenziaImmobiliare agenzia) {
+        agenziaImmobiliareServiceDB.modificaCredenziali(agenzia);
     }
 }

@@ -82,7 +82,7 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
                 .body("Agenzia creata correttamente");
     }
 
-    public void updateAgenziaImmobiliare(String name, AgenziaImmobiliare agenzia) {
+    public void updateAgenziaImmobiliare(AgenziaImmobiliare agenzia) {
         agenziaImmobiliareRepository.save(agenzia);
     }
 
@@ -182,5 +182,23 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
             i.getAgente().setNomeAgenzia(null);
         }
         return immobili;
+    }
+
+    public void modificaCredenziali(AgenziaImmobiliare agenzia) {
+        AgenziaImmobiliare oldAgenzia = agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia());
+        agenzia.setNomeAgenzia(oldAgenzia.getNomeAgenzia());
+        agenzia.setEmailAdmin(oldAgenzia.getEmailAdmin());
+        if (agenzia.getEmailAgenzia() == null){
+            agenzia.setEmailAgenzia(oldAgenzia.getEmailAgenzia());
+        }
+        if (agenzia.getPasswordAdmin() == null){
+            agenzia.setPasswordAdmin(oldAgenzia.getPasswordAdmin());
+        } else{
+            agenzia.setPasswordAdmin(encoder.encode(agenzia.getPasswordAdmin()));
+        }
+        if (agenzia.getRegione() == null){
+            agenzia.setRegione(oldAgenzia.getRegione());
+        }
+        updateAgenziaImmobiliare(agenzia);
     }
 }

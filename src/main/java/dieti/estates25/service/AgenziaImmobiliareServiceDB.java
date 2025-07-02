@@ -97,6 +97,13 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
     }
 
     public ResponseEntity<String> verify(AgenziaImmobiliare agenzia) {
+        AgenziaImmobiliare temp = agenziaImmobiliareRepository.findAgenziaImmobiliaresByEmailAdmin(agenzia.getEmailAdmin());
+        if (temp == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Non è stato trovato nessun account con questa mail");
+        }
+        agenzia.setNomeAgenzia(temp.getNomeAgenzia());
         Authentication authentication =
                 authManager.authenticate(new UsernamePasswordAuthenticationToken(agenzia.getNomeAgenzia(), agenzia.getPasswordAdmin()));
 

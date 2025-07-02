@@ -68,11 +68,30 @@ private String token;
             }
         });
 
-        for (JButton jButton : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome)) {
+        buttonAccountAmministrazione.addActionListener(e ->{
+            ControllerClienti controlClienti = new ControllerClienti();
+            if(token.isEmpty()) {
+                menuOpzioni.setVisible(false);
+                menuBarOpzioni.setVisible(false);
+                frame.setContentPane(new LogIn(frame, control,this.token ));
+                frame.revalidate();
+                frame.repaint();
+            }else{
+                menuOpzioni.setVisible(false);
+                menuBarOpzioni.setVisible(false);
+                frame.setContentPane(new ClientPersonalPage(frame, controlClienti,token));
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        });
+
+        for (JButton jButton : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome, buttonAccountClienti)) {
             jButton.addMouseListener(iconSet.cursorButton());
         }
 
         menuOpzioni.add(logInButton);
+        menuOpzioni.add(buttonAccountAmministrazione);
         menuOpzioni.add(buttonAccountAmministrazione);
         menuOpzioni.add(backButtonHome);
 

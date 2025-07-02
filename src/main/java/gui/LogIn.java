@@ -39,16 +39,15 @@ public class LogIn extends JPanel {
          });
          
          buttonLogIn.addActionListener(e-> {
-             String token1;
-                 token1 = control.logInClient(textFildEmail.getText(), passwordField1.getText());
-                 if (token1.isEmpty()) {
+             String token1="";
+             token1 = control.logInClient(textFildEmail.getText(), passwordField1.getText());
+             if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,
                              "Login fallito. Riprova!",
                              "Errore",
                              JOptionPane.ERROR_MESSAGE
                      );
-
                  }else {
                      frame.setContentPane(new Ricerca().createRicercaPanel(frame, control, token1));
                      frame.revalidate();

@@ -30,7 +30,7 @@ public class Controller {
 
     protected static final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd")
-            .create();  //oggetto che serve a fare i Jso
+            .create();  //oggetto che serve a fare
 
     public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
         HttpClient client = HttpClient.newHttpClient();
@@ -101,7 +101,7 @@ public class Controller {
             } else {
                 System.err.println("Login fallito. Codice risposta: " + response.statusCode());
                 System.err.println("Messaggio: " + response.body());
-                return null;
+                return "";
             }
 
         } catch (URISyntaxException e) {
@@ -115,7 +115,7 @@ public class Controller {
             System.err.println("Errore imprevisto: " + e.getMessage());
         }
 
-        return null;
+        return "";
     }
 
 

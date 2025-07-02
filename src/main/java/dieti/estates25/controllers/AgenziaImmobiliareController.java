@@ -91,4 +91,9 @@ public class AgenziaImmobiliareController {
     public ResponseEntity<List<Immobile>> deleteAgente(@RequestBody AgenteImmobiliare agent) {
         return agenziaImmobiliareServiceDB.deleteAgenteImmobiliare(agent);
     }
+
+    @GetMapping("/visualizzaImmobili")
+    public List<Immobile> visualizzaImmobili(){
+        return agenziaImmobiliareServiceDB.getImmobili();
+    }
 }

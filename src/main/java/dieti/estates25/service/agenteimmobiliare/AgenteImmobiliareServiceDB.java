@@ -82,8 +82,15 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     }
 
     @Override
-    public void deleteAgent(String mail) {
-        agentRepository.deleteById(mail);
+    public ResponseEntity<List<Immobile>> deleteAgent(String mail) {
+        if(agentRepository.existsById(mail)) {
+            List<Immobile> immobiliDaGestire = immobileRepository.findAllByAgente_EmailAgente(mail);
+            agentRepository.deleteById(mail);
+            return ResponseEntity.ok(immobiliDaGestire);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(null);
     }
 
     @Override

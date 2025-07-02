@@ -1,5 +1,6 @@
 package dieti.estates25.controllers;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
@@ -84,5 +85,10 @@ public class AgenziaImmobiliareController {
     @DeleteMapping("/licenziaAdminSupport")
     public ResponseEntity<String> deleteAdminSupport(@RequestBody AdminSupport adminSupport) {
         return agenziaImmobiliareServiceDB.deleteAdminSupport(adminSupport);
+    }
+
+    @DeleteMapping("/licenziaAgenteImmobiliare")
+    public ResponseEntity<List<Immobile>> deleteAgente(@RequestBody AgenteImmobiliare agent) {
+        return agenziaImmobiliareServiceDB.deleteAgenteImmobiliare(agent);
     }
 }

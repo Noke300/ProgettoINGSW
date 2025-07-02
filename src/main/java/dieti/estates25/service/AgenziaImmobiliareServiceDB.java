@@ -1,5 +1,6 @@
 package dieti.estates25.service;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
@@ -158,5 +159,15 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
                     .body("Non sei autorizzato a licenziare un dipendente di un'altra agenzia.");
         }
         return adminSupportService.deleteAdminSupport(adminSupport.getEmailSupport());
+    }
+
+    public ResponseEntity<List<Immobile>> deleteAgenteImmobiliare(AgenteImmobiliare agent) {
+        AgenteImmobiliare temp = agenteImmobiliareRepository.findByEmailAgente(agent.getEmailAgente());
+        if (!temp.getNomeAgenzia().getNomeAgenzia().equals(getNomeAgenzia())){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(null);
+        }
+        return agentService.deleteAgent(agent.getEmailAgente());
     }
 }

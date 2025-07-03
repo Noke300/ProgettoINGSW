@@ -86,6 +86,18 @@ public class Ricerca extends JPanel {
             hospitalsCheckBox.setSelected(false);
             parkCheckBox.setSelected(false);
             schoolsCheckBox.setSelected(false);
+
+            toggleButtonBalcone.setSelected(false);
+            toggleButtonBalcone.setBackground(Color.WHITE);
+            toggleButtonCantina.setSelected(false);
+            toggleButtonCantina.setBackground(Color.WHITE);
+            toggleButtonAscensore.setSelected(false);
+            toggleButtonAscensore.setBackground(Color.WHITE);
+            toggleButtonClimatizzazione.setSelected(false);
+            toggleButtonClimatizzazione.setBackground(Color.WHITE);
+            toggleButtonPortineria.setSelected(false);
+            toggleButtonPortineria.setBackground(Color.WHITE);
+
         });
         // Usage for each button
         configureToggleButton(toggleButtonCantina);

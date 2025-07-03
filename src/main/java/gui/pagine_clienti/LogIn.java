@@ -2,33 +2,29 @@
  * Created by JFormDesigner on Wed Apr 16 10:24:24 CEST 2025
  */
 
-package gui;
+package gui.pagine_clienti;
 
 import java.awt.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 
 import com.formdev.flatlaf.extras.*;
 
 import controller.Controller;
-import controller.ControllerAdministration;
-import controller.ControllerClienti;
-import gui.costum_components.BottoniOpzioni;
-import model.Immobile;
+import gui.Home;
+import gui.Ricerca;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
-public class LogInAmministrazione extends JPanel {
-    private String token;
-    public LogInAmministrazione(JFrame frame, Controller control, String token) {
-        initComponents(frame);
+public class LogIn extends JPanel {
+    public LogIn(JFrame frame, Controller control, String token) {
+        initComponents();
 
          backButtonHome.addActionListener(e-> {
+
              frame.setContentPane(new Home().createHomePanel(frame));
              frame.revalidate();
              frame.repaint();
@@ -43,31 +39,30 @@ public class LogInAmministrazione extends JPanel {
          });
          
          buttonLogIn.addActionListener(e-> {
-             String token1;
-             try {
-                 token1 = control.loginAgente(textFildEmail.getText(), passwordField1.getText());
-
-                 if (token1.isEmpty()) {
+             char[] tempPass = passwordField1.getPassword();
+             String token1="";
+             token1 = Controller.logInClient(textFildEmail.getText(), Arrays.toString(tempPass));
+             if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,
                              "Login fallito. Riprova!",
                              "Errore",
                              JOptionPane.ERROR_MESSAGE
                      );
-
+                     Arrays.fill(tempPass, ' ');
                  }else {
-                     this.token = token1;
-                     ControllerAdministration controlAdmin = new ControllerAdministration();
-                     List<Immobile> immobili = controlAdmin.fetchImmobili(token1);
-                     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobili));
+                     frame.setContentPane(new Ricerca().createRicercaPanel(frame, control, token1));
                      frame.revalidate();
                      frame.repaint();
+                    Arrays.fill(tempPass, ' ');
                  }
-             } catch (RuntimeException ex) {
-                 throw new RuntimeException(ex);
-             }
          });
+         buttonRegistrati.addActionListener(e-> {
+             frame.setContentPane(new RegistrazioneCliente(frame,control,token));
+             frame.revalidate();
+             frame.repaint();
+         });
+
     }
 
     @Override
@@ -77,7 +72,7 @@ public class LogInAmministrazione extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    private void initComponents(JFrame frame) {
+    private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco Scotto
         labelTitolo = new JLabel();
@@ -98,12 +93,12 @@ public class LogInAmministrazione extends JPanel {
         LogoOpzioni = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
-        EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing
-        .border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),
-        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
-        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName()))
-        throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
+        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
+        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ),
+        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
+        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () ))
+        throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -156,9 +151,9 @@ public class LogInAmministrazione extends JPanel {
         add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
 
         //---- buttonGoogle ----
-        buttonGoogle.setText("Crea un accaunt Aggenzia");
+        buttonGoogle.setText("Google");
         buttonGoogle.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonGoogle, "cell 1 4 2 1,align center top,grow 0 0");
+        add(buttonGoogle, "cell 2 3,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {

@@ -5,10 +5,18 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center,gap 10 5"
-			"$columnConstraints": "0[74,fill]0[111,grow,center]0[225,center]0[62,shrink 0,fill]0"
-			"$rowConstraints": "[73,top]0[73,center]0[73,center]0[73,center]0[84,top]0[90,center]0[29]0[77]0[21,top]0"
+			"$columnConstraints": "0[118,fill]0[74,fill]0[111,grow,center]0[225,center]0[62,shrink 0,fill]0"
+			"$rowConstraints": "[73,top]0[73,center]0[73,center]0[73,center]0[73,center]0[84,top]0[90,center]0[29]0[77]0[21,top]0"
 		} ) {
 			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelEmail"
+				"text": "Email"
+				"border": new javax.swing.border.TitledBorder( null, "Email", 4, 0, &Font0 new java.awt.Font( "Segoe UI", 0, 16 ), null )
+				"font": &Font1 new java.awt.Font( "Segoe UI", 0, 22 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 0 2 2,grow"
+			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelNomeC"
 				"text": "Nome"
@@ -18,15 +26,7 @@ new FormModel {
 				"verticalTextPosition": 3
 				"font": new java.awt.Font( "Segoe UI", 0, 28 )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 1 1 2,growy"
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "labelEmail"
-				"text": "Email"
-				"border": new javax.swing.border.TitledBorder( null, "Email", 4, 0, &Font0 new java.awt.Font( "Segoe UI", 0, 16 ), null )
-				"font": &Font1 new java.awt.Font( "Segoe UI", 0, 22 )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 1 2 1,grow"
+				"value": "cell 0 1 2 2,growy"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelDataN"
@@ -34,7 +34,7 @@ new FormModel {
 				"border": new javax.swing.border.TitledBorder( null, "Data di Nascita", 4, 0, #Font0, null )
 				"font": #Font1
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 2 2 1,grow"
+				"value": "cell 2 2 2 1,grow"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonLog"
@@ -42,21 +42,21 @@ new FormModel {
 				"font": &Font2 new java.awt.Font( "Segoe UI", 0, 20 )
 				"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.directoryIcon" )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 3,alignx center,grow 0 100"
+				"value": "cell 0 3 2 1,align center center,grow 0 0"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button2"
+				name: "buttonOfferte"
 				"text": "Offerte"
 				"font": #Font2
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 3,alignx center,growx 0"
+				"value": "cell 0 4,alignx center,growx 0"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button3"
+				name: "buttonVisite"
 				"text": "Visite"
 				"font": #Font2
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 2 3,alignx center,growx 0"
+				"value": "cell 1 4,alignx center,growx 0"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "panelMenuBarOpzioniColore"
@@ -107,7 +107,7 @@ new FormModel {
 				"icon": #SwingIcon0
 				"iconTextGap": 2
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 7,align center center,grow 0 0"
+				"value": "cell 0 8 2 1,align center center,grow 0 0"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 65 )

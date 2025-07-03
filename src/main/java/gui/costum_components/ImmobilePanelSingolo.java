@@ -1,8 +1,6 @@
 package gui.costum_components;
 
 import controller.Controller;
-import gui.InterfacciaAgenteImmobiliare;
-import gui.InterfacciaListaImmobili;
 import gui.PaginaImmobileDettagliata;
 import model.Immobile;
 import net.miginfocom.swing.MigLayout;

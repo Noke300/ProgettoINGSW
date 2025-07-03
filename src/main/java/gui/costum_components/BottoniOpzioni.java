@@ -4,12 +4,14 @@ import controller.Controller;
 import controller.ControllerAdministration;
 import controller.ControllerClienti;
 import gui.*;
+import gui.pagine_administrative.InterfacciaAgenteImmobiliare;
+import gui.pagine_administrative.LogInAmministrazione;
+import gui.pagine_clienti.ClientPersonalPage;
+import gui.pagine_clienti.LogIn;
 import model.Immobile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,7 +70,7 @@ private String token;
             }
         });
 
-        buttonAccountAmministrazione.addActionListener(e ->{
+        buttonAccountClienti.addActionListener(e ->{
             ControllerClienti controlClienti = new ControllerClienti();
             if(token.isEmpty()) {
                 menuOpzioni.setVisible(false);
@@ -91,26 +93,32 @@ private String token;
         }
 
         menuOpzioni.add(logInButton);
-        menuOpzioni.add(buttonAccountAmministrazione);
+        menuOpzioni.add(buttonAccountClienti);
         menuOpzioni.add(buttonAccountAmministrazione);
         menuOpzioni.add(backButtonHome);
 
     }
 
     private void setBottoniSetUpJForm(){
-        backButtonHome.setHorizontalTextPosition(SwingConstants.RIGHT);
+
         backButtonHome.setText("Home");
         backButtonHome.setVerticalAlignment(SwingConstants.TOP);
         backButtonHome.setVerticalTextPosition(SwingConstants.TOP);
         backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
 
+
         buttonAccountAmministrazione.setText("Account Amministrazione");
         buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+        buttonAccountClienti.setText("Account Clienti");
+        buttonAccountClienti.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        buttonAccountClienti.setIcon(iconSet.getNomeCliente());
 
         logInButton.setText("Log In");
         logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
         logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
 
 
         if(setUpLogInOutButton(this.token)){

@@ -2,11 +2,10 @@
  * Created by JFormDesigner on Tue Apr 22 11:59:05 CEST 2025
  */
 
-package gui;
+package gui.pagine_administrative;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -15,9 +14,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import com.toedter.calendar.*;
 
-import controller.Controller;
 import controller.ControllerAdministration;
-import controller.ControllerClienti;
 
 import gui.costum_components.*;
 import model.Immobile;

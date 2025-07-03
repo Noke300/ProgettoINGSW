@@ -2,64 +2,63 @@
  * Created by JFormDesigner on Wed Apr 16 10:24:24 CEST 2025
  */
 
-package gui;
+package gui.pagine_administrative;
 
 import java.awt.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
 import com.formdev.flatlaf.extras.*;
 
 import controller.Controller;
-import controller.ControllerClienti;
+import controller.ControllerAdministration;
+import gui.costum_components.BottoniOpzioni;
+import model.Immobile;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
-public class LogIn extends JPanel {
-    public LogIn(JFrame frame, Controller control, String token) {
-        initComponents(frame);
+public class LogInAmministrazione extends JPanel {
+    private String token;
+    BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    public LogInAmministrazione(JFrame frame, Controller control, String token) {
+        initComponents();
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
 
-         backButtonHome.addActionListener(e-> {
-
-             frame.setContentPane(new Home().createHomePanel(frame));
-             frame.revalidate();
-             frame.repaint();
-        });
-
-         ricercaButton.addActionListener(e-> {
-
-             frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
-             frame.revalidate();
-             frame.repaint();
-
-         });
-         
-         buttonLogIn.addActionListener(e-> {
-             String token1="";
-             token1 = control.logInClient(textFildEmail.getText(), passwordField1.getText());
-             if (token1.isEmpty()) {
+        buttonLogIn.addActionListener(e-> {
+             String token1;
+             char[] pass = passwordField1.getPassword();
+             try {
+                 token1 = control.loginAgente(textFildEmail.getText(), Arrays.toString(pass));
+                 if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,
                              "Login fallito. Riprova!",
                              "Errore",
                              JOptionPane.ERROR_MESSAGE
                      );
+                    Arrays.fill(pass, ' ');
                  }else {
-                     frame.setContentPane(new Ricerca().createRicercaPanel(frame, control, token1));
+                     this.token = token1;
+                     ControllerAdministration controlAdmin = new ControllerAdministration();
+                     List<Immobile> immobili = controlAdmin.fetchImmobili(token1);
+                     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobili));
+                     Arrays.fill(pass, ' ');
                      frame.revalidate();
                      frame.repaint();
                  }
-         });
-         buttonRegistrati.addActionListener(e-> {
-             frame.setContentPane(new RegistrazioneCliente(frame,control,token));
-             frame.revalidate();
-             frame.repaint();
+             } catch (RuntimeException ex) {
+                 throw new RuntimeException(ex);
+             }
          });
 
+        buttonCreaAggenzia.addActionListener(e -> {
+
+        });
     }
 
     @Override
@@ -69,7 +68,7 @@ public class LogIn extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    private void initComponents(JFrame frame) {
+    private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Marco Scotto
         labelTitolo = new JLabel();
@@ -79,7 +78,7 @@ public class LogIn extends JPanel {
         passwordField1 = new JPasswordField();
         buttonRegistrati = new JButton();
         buttonLogIn = new JButton();
-        buttonGoogle = new JButton();
+        buttonCreaAggenzia = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -90,12 +89,6 @@ public class LogIn extends JPanel {
         LogoOpzioni = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -147,10 +140,10 @@ public class LogIn extends JPanel {
         buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
 
-        //---- buttonGoogle ----
-        buttonGoogle.setText("Google");
-        buttonGoogle.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonGoogle, "cell 2 3,align center top,grow 0 0");
+        //---- buttonCreaAggenzia ----
+        buttonCreaAggenzia.setText("Crea un Aggenzia");
+        buttonCreaAggenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        add(buttonCreaAggenzia, "cell 1 4 2 1,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -223,7 +216,7 @@ public class LogIn extends JPanel {
     private JPasswordField passwordField1;
     private JButton buttonRegistrati;
     private JButton buttonLogIn;
-    private JButton buttonGoogle;
+    private JButton buttonCreaAggenzia;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;

@@ -23,6 +23,7 @@ import javax.swing.border.*;
 import controller.Controller;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
+import gui.pagine_clienti.LogIn;
 import model.Immobile;
 import model.Offerta;
 import model.Visita;

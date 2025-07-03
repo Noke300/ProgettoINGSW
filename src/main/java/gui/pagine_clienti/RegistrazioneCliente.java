@@ -1,12 +1,10 @@
-package gui;
+package gui.pagine_clienti;
 
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -15,6 +13,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import com.toedter.calendar.*;
 import controller.Controller;
+import gui.Ricerca;
 import gui.costum_components.IconClass;
 import model.Cliente;
 import net.miginfocom.swing.*;

@@ -135,6 +135,11 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
                     .body("Data non valida");
         }
         String email = getEmailAutenticato();
+        if (visitaRepository.existsVisitaByClienteAndImmobile(clienteRepository.findByEmailCliente(email), visita.getImmobile())){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Non puoi prenotare più di una visita alla volta per lo stesso immobile");
+        }
         visita.setCliente(clienteRepository.findByEmailCliente(email));
         visita.setConferma(false);
         visita.setId(new VisitaId(email, visita.getImmobile().getIdImmobile()));

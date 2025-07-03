@@ -13,6 +13,11 @@ public class ImmagineImmobile {
     @JoinColumn(name = "idimmobile")
     private Immobile immobile;
 
+    public ImmagineImmobile(String urlImmagine, Immobile immobile) {
+        this.urlImmagine = urlImmagine;
+        this.immobile = immobile;
+    }
+
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
     public String getUrlImmagine() { return urlImmagine; }

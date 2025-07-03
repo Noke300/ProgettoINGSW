@@ -1,15 +1,16 @@
 package dieti.estates25.service.agenteimmobiliare;
 
+import dieti.estates25.database.GoogleCloudStorageService;
+import dieti.estates25.database.StorageManagerInterface;
+import dieti.estates25.model.ImmagineImmobile;
 import dieti.estates25.model.Immobile;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
-import dieti.estates25.repositories.AgenteImmobiliareRepository;
-import dieti.estates25.repositories.ImmobileRepository;
-import dieti.estates25.repositories.IndirizzoRepository;
-import dieti.estates25.repositories.VisitaRepository;
+import dieti.estates25.repositories.*;
 import dieti.estates25.service.JWTService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -24,6 +25,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,9 +50,16 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     private JWTService jwtService;
 
     @Autowired
+    private ImmagineImmobileRepository immagineImmobileRepository;
+
+    @Autowired
     @Lazy
     @Qualifier("agentAuthenticationManager")
     private AuthenticationManager authManager;
+
+    private StorageManagerInterface storageManager;
+
+    private GoogleCloudStorageService storageService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     @Override
@@ -168,7 +179,30 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return ResponseEntity.ok("Immobile eliminato correttamente");
     }
 
-    public ResponseEntity<String> aggiungiImmobile(Immobile immobile) {
+    public ResponseEntity<String> aggiungiImmobile(JSONObject request) {
+        Immobile immobile = (Immobile) request.get("immobile");
+
+        String[] arr = (String[]) request.get("immagini");
+        List<String> immagini = Arrays.asList(arr);
+
+        arr = (String[]) request.get("fileNames");
+        List<String> fileNames = Arrays.asList(arr);
+
+        String idCartella = immobile.getIdImmobile();
+
+        storageService = new GoogleCloudStorageService(storageManager);
+
+        for(int i=0; i<immagini.size(); i++)
+        {
+            try {
+                String fileUrl = storageService.uploadHouseImage(fileNames.get(i), immagini.get(i), idCartella);
+                immagineImmobileRepository.save(new ImmagineImmobile(fileUrl, immobile));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
         AgenteImmobiliare agent = getAgentByMail(getEmailAutenticato());
         immobile.setAgente(agent);
         immobile.setNomeAgenzia(agent.getNomeAgenzia());

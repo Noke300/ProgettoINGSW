@@ -22,6 +22,7 @@ public class ClientHandler extends Thread {
         this.storageManager = new GoogleCloudStorageManager();
     }
    
+   /*
    public JSONObject handleUploadRequest(JSONObject request) {
 	    JSONObject response = new JSONObject();
 	    try {
@@ -29,16 +30,16 @@ public class ClientHandler extends Thread {
 	        String base64Data = request.getString("fileData");
 	        int idCartella = request.getInt("id");
 	        storageService = new GoogleCloudStorageService(storageManager);
-	        String fileUrl = storageService.uploadHouseImage(fileName, base64Data, idCartella);
+	        //String fileUrl = storageService.uploadHouseImage(fileName, base64Data, idCartella);
 
 	        response.put(STATUS, SUCCESS);
-	        response.put("fileUrl", fileUrl);
+	       // response.put("fileUrl", fileUrl);
 	    } catch (IOException e) {
 	        response.put(STATUS, ERROR);
 	        response.put(MESSAGE, "Errore durante l'upload: " + e.getMessage());
 	    }
 	    return response;
-	}
+	}*/
    
    public JSONObject handleDownloadRequest(JSONObject request) {
        JSONObject response = new JSONObject();

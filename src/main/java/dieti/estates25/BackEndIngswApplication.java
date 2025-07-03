@@ -1,6 +1,9 @@
 package dieti.estates25;
 
+import dieti.estates25.controllers.AgenteImmobiliareController;
 import dieti.estates25.database.ClientHandler;
+import dieti.estates25.model.Immobile;
+import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 @SpringBootApplication
 public class BackEndIngswApplication {
@@ -21,27 +26,31 @@ public class BackEndIngswApplication {
 
         SpringApplication.run(BackEndIngswApplication.class, args);
 
-        /*JSONObject request = new JSONObject();
-        request.put("fileName", "pippo.jpg");
+        JSONObject request = new JSONObject();
+
+        AgenteImmobiliareServiceDB pippo = new AgenteImmobiliareServiceDB();
+        Immobile immobile = pippo.get();
+
+        AgenteImmobiliareController pippo2 = new AgenteImmobiliareController();
+
         byte[] fileBytes = Files.readAllBytes(Paths.get("C:/Users/simon/Desktop/Foto/Stupide/Arthur.png"));
-        request.put("fileData", Base64.getEncoder().encodeToString(fileBytes));
-        request.put("id", 43);
+        byte[] fileBytes2 = Files.readAllBytes(Paths.get("C:/Users/simon/Desktop/Foto/Stupide/Alessio.png"));
 
-        ClientHandler clientHandler = new ClientHandler();
 
-        String url = clientHandler.handleUploadRequest(request).getString("fileUrl");
+        List<String> immagini = new ArrayList<>();
+        immagini.add(Base64.getEncoder().encodeToString(fileBytes));
+        immagini.add(Base64.getEncoder().encodeToString(fileBytes2));
 
-        JSONObject request2 = new JSONObject();
-        request2.put("fileName", url);
+        List<String> fileNames= new ArrayList<>();
+        fileNames.add("pippo1.jpeg");
+        fileNames.add("pipppo2.png");
 
-        System.out.println(clientHandler.handleDownloadRequest(request2).getString("fileData"));
+        request.put("fileName", fileNames);
+        request.put("immobile", immobile);
+        request.put("immagine", immagini);
 
-        JSONObject request3 = new JSONObject();
+        pippo2.aggiungiImmobile(request);
 
-        request3.put("folderName", "immobili/cartella42");
-
-        clientHandler.handleDeleteRequest(request3);
-        */
     }
     
 }

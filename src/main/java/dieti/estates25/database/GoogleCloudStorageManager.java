@@ -30,7 +30,7 @@ public class GoogleCloudStorageManager implements StorageManagerInterface {
 
 
     @Override
-    public String uploadFile(String fileName, String base64Data, int idCartella) throws IOException {
+    public String uploadFile(String fileName, String base64Data, String idCartella) throws IOException {
         byte[] fileBytes = Base64.getDecoder().decode(base64Data);
 
         String objectName = "immobili/cartella" + idCartella + "/" + fileName;

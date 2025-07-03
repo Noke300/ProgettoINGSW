@@ -1,7 +1,6 @@
 package controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import model.*;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -13,6 +12,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Controller {
@@ -23,14 +24,17 @@ public class Controller {
     protected static final String RICERCA_URL = "http://localhost:8081/cerca-immobili";
     protected static final String VISITE_IMM = "http://localhost:8081/auth-agente/visita";
     protected static final String PRENOTA_VISITE = "http://localhost:8081/auth-cliente/visita";
-    protected static final String OFFERTA_URL = "http://localhost:8081/auth-cliente/offerta";
+    protected static final String OFFERTA_URL = "http://localhost:8081/offerta";
     protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
 
     protected static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->
+                    new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("HH:mm")))
+            )
             .setDateFormat("yyyy-MM-dd")
-            .create();  //oggetto che serve a fare
+            .create();//oggetto che serve a fare
 
     public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
         HttpClient client = HttpClient.newHttpClient();
@@ -235,6 +239,7 @@ public class Controller {
             request = HttpRequest.newBuilder()
                     .uri(new URI(OFFERTA_URL)) // aggiorna se diverso
                     .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
         } catch (URISyntaxException e) {
@@ -243,7 +248,7 @@ public class Controller {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 200;
+            return response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante invio offerta: " + e.getMessage());
         }
@@ -260,6 +265,7 @@ public class Controller {
             request = HttpRequest.newBuilder()
                     .uri(new URI(PRENOTA_VISITE)) // aggiorna con l'URL corretto
                     .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
         } catch (URISyntaxException e) {
@@ -268,7 +274,7 @@ public class Controller {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 200;
+            return response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante invio visita: " + e.getMessage());
         }

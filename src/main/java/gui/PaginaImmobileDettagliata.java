@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -131,17 +132,22 @@ public class PaginaImmobileDettagliata extends JPanel {
                     String testo = campoOfferta.getText().trim();
                     if (!testo.isEmpty()) {
                         try {
-                            Double prezzo = Double.parseDouble(testo);
-                            Immobile immTemp = new Immobile(immobile.getId());
-                            Offerta offerta = new Offerta(immTemp,prezzo);
+                            double prezzo = Double.parseDouble(testo);
+                            //TODO fare un controllo in percentuale
+                            if (prezzo <= 0) {
+                                JOptionPane.showMessageDialog(offerteDialog, "Inserisci un valore numerico valido!", "Errore", JOptionPane.ERROR_MESSAGE);
+                            }else {
+                                Immobile immTemp = new Immobile(immobile.getId());
+                                Offerta offerta = new Offerta(immTemp,prezzo);
 
-                            boolean risOfferta=control.inviaOfferta(offerta,token);
-                            if(risOfferta){
-                                JOptionPane.showMessageDialog(offerteDialog, "Offerta inviata con successo: €" + prezzo, "Conferma", JOptionPane.INFORMATION_MESSAGE);
-                                offerteDialog.dispose();
-                            }else{
-                                JOptionPane.showMessageDialog(offerteDialog, "Invio offerta non riuscito", "Errore", JOptionPane.ERROR_MESSAGE);
+                                boolean risOfferta=control.inviaOfferta(offerta,token);
+                                if(risOfferta){
+                                    JOptionPane.showMessageDialog(offerteDialog, "Offerta inviata con successo: €" + prezzo, "Conferma", JOptionPane.INFORMATION_MESSAGE);
+                                    offerteDialog.dispose();
+                                }else{
+                                    JOptionPane.showMessageDialog(offerteDialog, "Invio offerta non riuscito", "Errore", JOptionPane.ERROR_MESSAGE);
 
+                                }
                             }
                             // chiudi il dialog se vuoi
                         } catch (NumberFormatException ex) {
@@ -274,7 +280,10 @@ public class PaginaImmobileDettagliata extends JPanel {
                     }
 
                     if (dataSelezionata != null) {
-                        LocalTime orario = LocalTime.parse(oraComboBox.getSelectedItem().toString());
+                        String selected = (String) oraComboBox.getSelectedItem();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        LocalTime orario = LocalTime.parse(selected, formatter);
+
                         Date dataVisita = java.sql.Date.valueOf(dataSelezionata);
 
                         Visita visita = new Visita(immobile, orario, dataVisita);

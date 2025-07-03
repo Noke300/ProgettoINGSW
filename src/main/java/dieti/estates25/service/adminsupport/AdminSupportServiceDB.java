@@ -148,4 +148,8 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
         }
         return immobili;
     }
+
+    public AdminSupport getSpecifiche() {
+        return adminSupportRepository.findByEmailSupport(getEmailAutenticato());
+    }
 }

@@ -201,4 +201,8 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
         }
         updateAgenziaImmobiliare(agenzia);
     }
+
+    public AgenziaImmobiliare getSpecifiche() {
+        return agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia());
+    }
 }

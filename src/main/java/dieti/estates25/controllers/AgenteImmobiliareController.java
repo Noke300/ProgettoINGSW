@@ -3,6 +3,7 @@ package dieti.estates25.controllers;
 import dieti.estates25.model.Immobile;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
+import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.json.JSONObject;
@@ -74,5 +75,10 @@ public class AgenteImmobiliareController {
     @PostMapping("aggiungi-immobile")
     public ResponseEntity<String> aggiungiImmobile(@RequestBody JSONObject request) {
         return agentService.aggiungiImmobile(request);
+    }
+
+    @GetMapping("/specificheAgenteImmobiliare")
+    public AgenteImmobiliare getSpecifiche(){
+        return agentService.getSpecifiche();
     }
 }

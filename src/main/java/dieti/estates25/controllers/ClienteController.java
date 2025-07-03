@@ -65,5 +65,10 @@ public class ClienteController {
         return clienteService.prenotaVisita(visita);
     }
 
+    @GetMapping("/specificheCliente")
+    public Cliente getSpecifiche(){
+        return clienteService.getSpecifiche();
+    }
+
 }
 

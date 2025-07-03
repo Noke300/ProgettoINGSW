@@ -148,5 +148,9 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
                 .status(HttpStatus.CREATED)
                 .body("Visita prenotata correttamente");
     }
+
+    public Cliente getSpecifiche() {
+        return clienteRepository.findByEmailCliente(getEmailAutenticato());
+    }
 }
 

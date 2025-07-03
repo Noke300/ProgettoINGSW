@@ -26,6 +26,8 @@ public class BackEndIngswApplication {
 
         SpringApplication.run(BackEndIngswApplication.class, args);
 
+        /*
+
         JSONObject request = new JSONObject();
 
         AgenteImmobiliareServiceDB pippo = new AgenteImmobiliareServiceDB();
@@ -50,6 +52,8 @@ public class BackEndIngswApplication {
         request.put("immagine", immagini);
 
         pippo2.aggiungiImmobile(request);
+
+         */
 
     }
     

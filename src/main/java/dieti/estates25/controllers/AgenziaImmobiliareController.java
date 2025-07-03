@@ -4,6 +4,7 @@ import dieti.estates25.model.Immobile;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
+import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.AgenziaImmobiliareServiceDB;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
@@ -100,5 +101,10 @@ public class AgenziaImmobiliareController {
     @PostMapping("/aggiornaCredenziali")
     public void aggiornaCredenziali(@RequestBody AgenziaImmobiliare agenzia) {
         agenziaImmobiliareServiceDB.modificaCredenziali(agenzia);
+    }
+
+    @GetMapping("/specificheAgenziaImmobiliare")
+    public AgenziaImmobiliare getSpecifiche(){
+        return agenziaImmobiliareServiceDB.getSpecifiche();
     }
 }

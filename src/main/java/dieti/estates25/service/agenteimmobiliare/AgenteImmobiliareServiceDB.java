@@ -211,4 +211,8 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return ResponseEntity.ok("Immobile aggiunto correttamente");
         //TODO Da testare
     }
+
+    public AgenteImmobiliare getSpecifiche() {
+        return agentRepository.findByEmailAgente(getEmailAutenticato());
+    }
 }

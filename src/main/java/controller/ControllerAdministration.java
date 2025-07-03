@@ -13,10 +13,48 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //TODO dobbiamo gestire meglio le Exception di questa classe
 public class ControllerAdministration extends Controller{
+
+
+
+    public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token)
+    {
+        HttpClient client = HttpClient.newHttpClient();
+
+        Map<String, Object> jsonMap = new HashMap<>();
+
+        jsonMap.put("immobile", immobile);
+        jsonMap.put("immagini", immagini);
+        jsonMap.put("fileNames", fileNames);
+
+        String requestBody = gson.toJson(jsonMap);
+        System.out.println("\n"+requestBody);
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(AGGIUNGI_IMMOBILE)) // aggiorna se diverso
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante inserimento immobile: " + e.getMessage());
+        }
+    }
+
 
 
     public List<Immobile> fetchImmobili(String token) {

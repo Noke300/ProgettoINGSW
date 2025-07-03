@@ -28,6 +28,7 @@ public class Controller {
     protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
+    protected static final String AGGIUNGI_IMMOBILE = "http://localhost:8081/auth-agente/aggiungi-immobile";
 
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->

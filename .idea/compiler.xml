@@ -9,5 +9,8 @@
         <module name="DietiEstates2025" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BackEnd_INGSW" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

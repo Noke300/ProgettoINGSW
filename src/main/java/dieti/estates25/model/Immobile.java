@@ -127,9 +127,11 @@ public class Immobile {
     public void setTrasportoPubblico(boolean trasportoPubblico) { this.trasportoPubblico = trasportoPubblico; }
 
     public boolean getTrasportoPubblico() { return trasportoPubblico;    }
-
-
     public Indirizzo getIndirizzo() {
         return indirizzo;
+    }
+
+    public void setIndirizzo(Indirizzo indirizzo) {
+        this.indirizzo = indirizzo;
     }
 }

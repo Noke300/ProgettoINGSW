@@ -1,6 +1,7 @@
 package dieti.estates25.controllers;
 
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.ImmobileDaAggiungere;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.cliente.Cliente;
@@ -73,7 +74,7 @@ public class AgenteImmobiliareController {
     }
 
     @PostMapping("aggiungi-immobile")
-    public ResponseEntity<String> aggiungiImmobile(@RequestBody JSONObject request) {
+    public ResponseEntity<String> aggiungiImmobile(@RequestBody ImmobileDaAggiungere request) {
         return agentService.aggiungiImmobile(request);
     }
 

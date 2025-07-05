@@ -26,34 +26,36 @@ public class BackEndIngswApplication {
 
         SpringApplication.run(BackEndIngswApplication.class, args);
 
-        /*
 
+        /*
         JSONObject request = new JSONObject();
 
-        AgenteImmobiliareServiceDB pippo = new AgenteImmobiliareServiceDB();
-        Immobile immobile = pippo.get();
+        Immobile immobile = new Immobile();
 
         AgenteImmobiliareController pippo2 = new AgenteImmobiliareController();
 
-        byte[] fileBytes = Files.readAllBytes(Paths.get("C:/Users/simon/Desktop/Foto/Stupide/Arthur.png"));
-        byte[] fileBytes2 = Files.readAllBytes(Paths.get("C:/Users/simon/Desktop/Foto/Stupide/Alessio.png"));
+        byte[] fileBytes = Files.readAllBytes(Paths.get("C:/Users/Utente/Desktop/PROGETTO/cultura generale200.jpg"));
+        byte[] fileBytes2 = Files.readAllBytes(Paths.get("C:/Users/Utente/Desktop/PROGETTO/unovaQuasiCompleta.jpg"));
 
 
         List<String> immagini = new ArrayList<>();
         immagini.add(Base64.getEncoder().encodeToString(fileBytes));
         immagini.add(Base64.getEncoder().encodeToString(fileBytes2));
 
+        System.out.println(Base64.getEncoder().encodeToString(fileBytes));
+        System.out.println(Base64.getEncoder().encodeToString(fileBytes2));
+
         List<String> fileNames= new ArrayList<>();
         fileNames.add("pippo1.jpeg");
         fileNames.add("pipppo2.png");
 
-        request.put("fileName", fileNames);
+        request.put("fileNames", fileNames);
         request.put("immobile", immobile);
-        request.put("immagine", immagini);
+        request.put("immagini", immagini);
 
-        pippo2.aggiungiImmobile(request);
+        //pippo2.aggiungiImmobile(request);
 
-         */
+*/
 
     }
     

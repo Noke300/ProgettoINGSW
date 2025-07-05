@@ -1,10 +1,9 @@
 package dieti.estates25.service.agenteimmobiliare;
 
+import dieti.estates25.database.GoogleCloudStorageManager;
 import dieti.estates25.database.GoogleCloudStorageService;
 import dieti.estates25.database.StorageManagerInterface;
-import dieti.estates25.model.ImmagineImmobile;
-import dieti.estates25.model.Immobile;
-import dieti.estates25.model.Visita;
+import dieti.estates25.model.*;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
@@ -57,7 +56,7 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     @Qualifier("agentAuthenticationManager")
     private AuthenticationManager authManager;
 
-    private StorageManagerInterface storageManager;
+    private GoogleCloudStorageManager storageManager;
 
     private GoogleCloudStorageService storageService;
 
@@ -179,16 +178,31 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         return ResponseEntity.ok("Immobile eliminato correttamente");
     }
 
-    public ResponseEntity<String> aggiungiImmobile(JSONObject request) {
-        Immobile immobile = (Immobile) request.get("immobile");
+    public ResponseEntity<String> aggiungiImmobile(ImmobileDaAggiungere request) {
 
-        String[] arr = (String[]) request.get("immagini");
-        List<String> immagini = Arrays.asList(arr);
+        Immobile immobile = request.getImmobile();
+        Indirizzo indirizzo = immobile.getIndirizzo();
 
-        arr = (String[]) request.get("fileNames");
-        List<String> fileNames = Arrays.asList(arr);
+        indirizzo = indirizzoRepository.save(indirizzo);
+        immobile.setIndirizzo(indirizzo);
+
+        AgenteImmobiliare agent = getAgentByMail(getEmailAutenticato());
+        immobile.setAgente(agent);
+        immobile.setNomeAgenzia(agent.getNomeAgenzia());
+        immobile.setVenduto(false);
+        immobile = immobileRepository.save(immobile);
+
+        List<String> immagini = request.getImmagini();
+
+        List<String> fileNames = request.getFileNames();
 
         String idCartella = immobile.getIdImmobile();
+
+        try {
+            storageManager = new GoogleCloudStorageManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         storageService = new GoogleCloudStorageService(storageManager);
 
@@ -202,12 +216,6 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
             }
         }
 
-
-        AgenteImmobiliare agent = getAgentByMail(getEmailAutenticato());
-        immobile.setAgente(agent);
-        immobile.setNomeAgenzia(agent.getNomeAgenzia());
-        immobile.setVenduto(false);
-        immobileRepository.save(immobile);
         return ResponseEntity.ok("Immobile aggiunto correttamente");
         //TODO Da testare
     }

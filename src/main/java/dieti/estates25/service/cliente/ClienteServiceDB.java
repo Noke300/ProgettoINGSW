@@ -41,7 +41,7 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
     private VisitaRepository visitaRepository;
 
     @Autowired
-    private ImmobileRepository immobileRepository;
+    private OffertaRepository offertaRepository;
 
     @Autowired
     private JWTService jwtService;
@@ -151,6 +151,24 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
 
     public Cliente getSpecifiche() {
         return clienteRepository.findByEmailCliente(getEmailAutenticato());
+    }
+
+    public List<Offerta> getOfferte() {
+        List<Offerta> offerte = offertaRepository.findAllByCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
+        for( Offerta o : offerte){
+            o.getImmobile().getAgente().setPasswordAgente(null);
+            o.getImmobile().getNomeAgenzia().setPasswordAdmin(null);
+        }
+        return offerte;
+    }
+
+    public List<Visita> getVisite() {
+        List<Visita> visite = visitaRepository.findAllByCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
+        for( Visita v : visite){
+            v.getImmobile().getAgente().setPasswordAgente(null);
+            v.getImmobile().getNomeAgenzia().setPasswordAdmin(null);
+        }
+        return visite;
     }
 }
 

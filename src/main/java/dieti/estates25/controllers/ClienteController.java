@@ -70,5 +70,15 @@ public class ClienteController {
         return clienteService.getSpecifiche();
     }
 
+    @GetMapping("/getOfferte")
+    public List<Offerta> getOfferte() {
+        return clienteService.getOfferte();
+    }
+
+    @GetMapping("/getVisite")
+    public List<Visita> getVisite() {
+        return clienteService.getVisite();
+    }
+
 }
 

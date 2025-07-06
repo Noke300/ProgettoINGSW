@@ -2,16 +2,29 @@ package model;
 
 import java.util.ArrayList;
 
-public class AgenteImmobiliare extends Utente{
+public class AgenteImmobiliare{
 
+    private String nomeAgente;
+    private String cognomeAgente;
+    private String emailAgente;
+    private String passwordAgente;
     private String regione;
     private ArrayList<Immobile> listaImmobili = new ArrayList<>();
     private final AgenziaImmobiliare agenziaImmobiliare;
 
-    public AgenteImmobiliare(String nome, String cognome, String email, String password, AgenziaImmobiliare agenziaImmobiliare, String regione) {
-        super(nome, cognome, email, password);
-        this.regione = regione;
+    public AgenteImmobiliare(AgenziaImmobiliare agenziaImmobiliare, ArrayList<Immobile> listaImmobili, String regione, String passwordAgente, String emailAgente, String cognomeAgente, String nomeAgente) {
         this.agenziaImmobiliare = agenziaImmobiliare;
+        this.listaImmobili = listaImmobili;
+        this.regione = regione;
+        this.passwordAgente = passwordAgente;
+        this.emailAgente = emailAgente;
+        this.cognomeAgente = cognomeAgente;
+        this.nomeAgente = nomeAgente;
+    }
+    public AgenteImmobiliare(String emailAgente, String passwordAgente) {
+        this.emailAgente = emailAgente;
+        this.passwordAgente = passwordAgente;
+        this.agenziaImmobiliare = null;
     }
 
     public String getRegione() {

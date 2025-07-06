@@ -2,6 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import model.AgenteImmobiliare;
 import model.Immobile;
 import model.Visita;
 
@@ -22,8 +23,7 @@ public class ControllerAdministration extends Controller{
 
 
 
-    public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token)
-    {
+    public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
         HttpClient client = HttpClient.newHttpClient();
 
         Map<String, Object> jsonMap = new HashMap<>();
@@ -145,6 +145,38 @@ public class ControllerAdministration extends Controller{
             throw new RuntimeException("Errore durante l’eliminazione: " + e.getMessage());
         }
     }
+
+    public AgenteImmobiliare fetchAgenteImmobiliare(String token) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(GET_AGGENTEIMM))
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido", e);
+        }
+
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore nella comunicazione HTTP", e);
+        }
+
+        System.out.println("Codice risposta: " + response.statusCode());
+
+        if (response.statusCode() == 200) {
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), AgenteImmobiliare.class);
+        } else {
+            throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
+        }
+    }
+
 
 }
 

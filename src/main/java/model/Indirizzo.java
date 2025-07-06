@@ -10,6 +10,18 @@ public class Indirizzo {
     private Double latitudine;
     private Double longitudine;
 
+    public Indirizzo(String via, String citta, String provincia, int numeroCivico, int cap,
+                     String regione, Double latitudine, Double longitudine) {
+        this.via = via;
+        this.citta = citta;
+        this.provincia = provincia;
+        this.numeroCivico = numeroCivico;
+        this.cap = cap;
+        this.regione = regione;
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
+    }
+
     public String getVia() {
         return via;
     }

@@ -174,6 +174,13 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
         buttonAggiungImmobile.setIcon(iconSet.getPlusImmobile());
 
+        buttonAggiungImmobile.addActionListener(h ->{
+            frame.setContentPane(new InserimentoImmobile(frame,control,token));
+            frame.revalidate();
+            frame.repaint();
+        });
+
+
     }
 
     public JPanel getSelectedPanel() {

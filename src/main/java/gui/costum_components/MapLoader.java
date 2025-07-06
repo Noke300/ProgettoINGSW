@@ -203,6 +203,7 @@ public class MapLoader {
     }
 
 
+    //TODO Spostare in classe separata es.Util le varie funzioni di comunicazione con geopiffy e nominatim
     public static String getAddressFromCoordinates(GeoPosition g) {
         OkHttpClient client = new OkHttpClient();
         // Costruisco URL per la richiesta di reverse geocoding a Nominatim
@@ -227,8 +228,6 @@ public class MapLoader {
         }
         return null;
     }
-
-
     public static GeoPosition getCoordinatesFromAddress(String address) {
         if (address == null || address.trim().isEmpty()) {
             System.out.println("Empty address provided");

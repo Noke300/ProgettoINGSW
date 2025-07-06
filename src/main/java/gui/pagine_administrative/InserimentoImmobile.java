@@ -6,12 +6,22 @@ package gui.pagine_administrative;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
+import controller.ControllerAdministration;
 import gui.costum_components.AutoCompleteAddress;
 import gui.costum_components.IconClass;
+import gui.costum_components.MapLoader;
+import model.AgenteImmobiliare;
+import model.Immobile;
+import model.Indirizzo;
 import net.miginfocom.swing.*;
+import org.jxmapviewer.viewer.GeoPosition;
 
 /**
  * @author marco
@@ -21,12 +31,14 @@ import net.miginfocom.swing.*;
 public class InserimentoImmobile extends JPanel {
 
     IconClass iconClass = new IconClass();
+    List<String> base64ListImmagini;
+    List<String> listNomeImmagini;
+    //TODO da rimovere e refactorare le funzioni al sup interno
 
-
-    public InserimentoImmobile(JFrame frame) {
+    public InserimentoImmobile(JFrame frame, ControllerAdministration controllerA,String token) {
         initComponents();
         Font inputFont = new Font("SansSerif", Font.PLAIN, 24);
-        Font labelFont = new Font("SansSerif", Font.PLAIN, 16); // Font uniforme per tutte le label
+        Font labelFont = new Font("SansSerif", Font.PLAIN, 18);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -209,8 +221,8 @@ public class InserimentoImmobile extends JPanel {
         superficieField.setFont(inputFont);
         superficieField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
-        JComboBox<String> classeCombo = new JComboBox<>(new String[]{"A+", "A", "B", "C", "D", "E", "F", "G"});
-        classeCombo.setFont(inputFont);
+        JComboBox<String> classeEnergeticaCombo = new JComboBox<>(new String[]{"A+", "A", "B", "C", "D", "E", "F", "G"});
+        classeEnergeticaCombo.setFont(inputFont);
 
         JLabel stanzeLabel = new JLabel("Stanze:");
         JLabel bagniLabel = new JLabel("Bagni:");
@@ -237,28 +249,55 @@ public class InserimentoImmobile extends JPanel {
         dettagliPanel.add(superficieField);
         dettagliPanel.add(Box.createHorizontalStrut(15));
         dettagliPanel.add(classeLabel);
-        dettagliPanel.add(classeCombo);
+        dettagliPanel.add(classeEnergeticaCombo);
         dettagliPanel.add(Box.createHorizontalStrut(10));
 
         mainPanel.add(dettagliPanel);
         mainPanel.add(Box.createVerticalStrut(10));
 
+        //Invio Immobile
+        JButton buttonConferma =  new JButton("Conferma");
+        buttonConferma.setFont(labelFont);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(buttonConferma);
+
+        buttonConferma.addActionListener(e -> {
+            /* Todo chiamate api per i campi parchi trasporti scuole---campi boolean da definire
+                possibile modifica di salvamento dati in login ---MapLoder da modificare */
+            AgenteImmobiliare agenteTemp;
+            agenteTemp = controllerA.fetchAgenteImmobiliare(token);
+            GeoPosition geoP = MapLoader.getCoordinatesFromAddress(fullField.getText());
+            Indirizzo indirizzoT = new Indirizzo(viaField.getText(),cittaField.getText(),"NA",Integer.valueOf(numeroField.getText()),Integer.valueOf(capField.getText()),"Campania",geoP.getLatitude(),geoP.getLongitude());
+            Immobile immobileTemp = new Immobile(agenteTemp.getAgenziaImmobiliare(),indirizzoT,agenteTemp,false,false,true,false,true,true,false,false,true,bagniSpinner.getX(), pianoSpinner.getX(),Integer.valueOf(superficieField.getText()),stanzeSpinner.getX(),Double.valueOf(priceField.getText()),classeEnergeticaCombo.getSelectedItem().toString(),tipoBox.getSelectedItem().toString(),descriptionArea.getText(),"Casa");
+
+          if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
+              System.out.println("Inserimento immagini sucesso");
+          }else {
+              System.out.println("Erro ao inserir immagini");
+          }
+
+        });
         // Logica caricamento immagini
         uploadButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
                 File imgFile = chooser.getSelectedFile();
                 ImageIcon icon = new ImageIcon(imgFile.getAbsolutePath());
-                //TODO vettore Byte64
-                Image thumb = icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-
+                Image thumb = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
                 JPanel cell = new JPanel(new BorderLayout());
                 cell.add(new JLabel(new ImageIcon(thumb)), BorderLayout.CENTER);
                 cell.add(new JLabel("<html>" + imgFile.getName() + "<br/>" + (imgFile.length() / 1024) + " KB</html>",
                         SwingConstants.CENTER), BorderLayout.SOUTH);
                 cell.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                 cell.setPreferredSize(new Dimension(200, 150));
-
+                try {
+                    String base64Image = imageToBase64(imgFile);
+                    base64ListImmagini.add(base64Image);
+                    listNomeImmagini.add(imgFile.getName());
+                } catch (IOException ex) {
+                    System.out.println("Error: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
                 imageBarPanel.add(cell);
                 imageBarPanel.revalidate();
                 imageBarPanel.repaint();
@@ -272,6 +311,15 @@ public class InserimentoImmobile extends JPanel {
         scrollPaneImmobile.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneImmobile.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
+
+    public String imageToBase64(File imageFile) throws IOException {
+        byte[] fileContent = Files.readAllBytes(imageFile.toPath());
+        return Base64.getEncoder().encodeToString(fileContent);
+    }
+
+
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

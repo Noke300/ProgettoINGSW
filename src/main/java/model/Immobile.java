@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Immobile {
     private String idImmobile;
     private String tipoImmobile;
@@ -26,7 +28,15 @@ public class Immobile {
     private AgenteImmobiliare agenteImmobiliare;
     private final Indirizzo indirizzo;
 
-    public Immobile(AgenziaImmobiliare agenziaImmobiliare, Indirizzo indirizzo, AgenteImmobiliare agenteImmobiliare, boolean transportoPubblico, boolean parchi, boolean scuole, boolean venduto, boolean climatizzazione, boolean ascensore, boolean cantina, boolean portineria, int numStanze, boolean balcone, String classeEnergetica, int numBagni, int piano, int superficie, String tipoVendita, double prezzo, String descrizione, String tipoImmobile, String idImmobile) {
+    private List<String> immagini;
+
+    public Immobile(AgenziaImmobiliare agenziaImmobiliare, Indirizzo indirizzo,AgenteImmobiliare agenteImmobiliare,
+                    boolean transportoPubblico,boolean parchi, boolean scuole, boolean venduto,
+                    boolean climatizzazione, boolean ascensore, boolean cantina,
+                    boolean portineria, boolean balcone,
+                    int numBagni, int piano, int superficie, int numStanze,double prezzo,
+                    String classeEnergetica,String tipoVendita, String descrizione,String tipoImmobile) {
+
         this.agenziaImmobiliare = agenziaImmobiliare;
         this.indirizzo = indirizzo;
         this.agenteImmobiliare = agenteImmobiliare;
@@ -48,7 +58,6 @@ public class Immobile {
         this.prezzo = prezzo;
         this.descrizione = descrizione;
         this.tipoImmobile = tipoImmobile;
-        this.idImmobile = idImmobile;
     }
 
     public Immobile(String id){

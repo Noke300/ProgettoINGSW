@@ -57,10 +57,6 @@ public class LogInAmministrazione extends JPanel {
          });
 
         buttonCreaAggenzia.addActionListener(e -> {
-            frame.setContentPane(new CreazioneAggenzia(frame));
-            frame.revalidate();
-            frame.repaint();
-
         });
     }
 

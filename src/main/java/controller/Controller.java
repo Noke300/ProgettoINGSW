@@ -18,6 +18,7 @@ import java.util.*;
 
 public class Controller {
 
+    //TODO separare i vari path nei rispettivi controller
     protected static final String LOGIN_URL_AGENTE = "http://localhost:8081/auth-agente/login";
     protected static final String LOGIN_URL_CLIENTE = "http://localhost:8081/auth-cliente/login";
     protected static final String IMMOBILI_URL = "http://localhost:8081/auth-agente/immobili";
@@ -29,6 +30,7 @@ public class Controller {
     protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
     protected static final String AGGIUNGI_IMMOBILE = "http://localhost:8081/auth-agente/aggiungi-immobile";
+    protected static final String GET_AGGENTEIMM = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
 
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->

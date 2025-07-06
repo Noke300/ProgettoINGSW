@@ -25,6 +25,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -210,45 +211,28 @@ public class InserimentoImmobile extends JPanel {
         priceField.setFont(inputFont);
         priceField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
-        JButton caratteristicheButton = new JButton("Caratteristiche");
-        caratteristicheButton.setFont(inputFont);
-        caratteristicheButton.setPreferredSize(new Dimension(180, 40));
-
-        caratteristicheButton.addActionListener(e -> {
-            // Crea pannello con le checkbox già presenti nell’istanza
-            JPanel panel = new JPanel(new GridLayout(0, 1));
-            panel.add(ascensore);
-            panel.add(cantina);
-            panel.add(balcone);
-            panel.add(climatizzazione);
-            panel.add(portineria);
-
-            int result = JOptionPane.showConfirmDialog(
-                    frame, panel, "Inserisci Caratteristiche",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-            if (result == JOptionPane.CANCEL_OPTION) {
-                // Reset manuale su false
-                ascensore.setSelected(false);
-                cantina.setSelected(false);
-                balcone.setSelected(false);
-                climatizzazione.setSelected(false);
-                portineria.setSelected(false);
-            }
-        });
+        JButton caratteristicheButton = getJButton(frame, inputFont);
 
 
-        JLabel typeLabel = new JLabel("Tipo:");
+        JLabel typeLabel = new JLabel("Tipo Vendita:");
         typeLabel.setFont(labelFont);
-        JComboBox<String> tipoBox = new JComboBox<>(new String[]{"Vendita", "Affitto"});
-        tipoBox.setFont(inputFont);
+        JComboBox<String> tipoVendita = new JComboBox<>(new String[]{"Vendita", "Affitto"});
+        tipoVendita.setFont(inputFont);
+
+        JLabel typeImmobileLabel = new JLabel("Tipo Vendita:");
+        typeImmobileLabel.setFont(labelFont);
+        JComboBox<String> tipoImmobile = new JComboBox<>(new String[]{"Casa", "Appartamento"});
+        tipoImmobile.setFont(inputFont);
 
         infoPanel.add(priceLabel);
         infoPanel.add(priceField);
         infoPanel.add(Box.createHorizontalStrut(20));
         infoPanel.add(typeLabel);
-        infoPanel.add(tipoBox);
+        infoPanel.add(tipoVendita);
         infoPanel.add(Box.createHorizontalStrut(20));
+        infoPanel.add(typeImmobileLabel);
+        infoPanel.add(tipoImmobile);
+        infoPanel.add(Box.createHorizontalStrut(10));
         infoPanel.add(caratteristicheButton);
         infoPanel.add(Box.createHorizontalStrut(10));
         mainPanel.add(infoPanel);
@@ -335,7 +319,7 @@ public class InserimentoImmobile extends JPanel {
             boolean parchiB = MapLoader.fetchPlaces(geoP,"leisure.park");
 
             Indirizzo indirizzoT = new Indirizzo(viaField.getText(),cittaField.getText(),String.valueOf(provinciaCombo.getSelectedItem()),Integer.parseInt(numeroField.getText()),Integer.parseInt(capField.getText()),String.valueOf(regioneCombo.getSelectedItem()),geoP.getLatitude(),geoP.getLongitude());
-            Immobile immobileTemp = new Immobile(agenteTemp.getAgenziaImmobiliare(),indirizzoT,agenteTemp,transportB,parchiB,scuoleB,false,climatizzazione.isSelected(),ascensore.isSelected(),cantina.isSelected(),portineria.isSelected(),balcone.isSelected(),(int) bagniSpinner.getValue(), (int) pianoSpinner.getValue(),Integer.parseInt(superficieField.getText()),(int)stanzeSpinner.getValue(),Double.parseDouble(priceField.getText()),classeEnergeticaCombo.getSelectedItem().toString(),tipoBox.getSelectedItem().toString(),descriptionArea.getText(),"Casa");
+            Immobile immobileTemp = new Immobile(agenteTemp.getAgenziaImmobiliare(),indirizzoT,agenteTemp,transportB,parchiB,scuoleB,false,climatizzazione.isSelected(),ascensore.isSelected(),cantina.isSelected(),portineria.isSelected(),balcone.isSelected(),(int) bagniSpinner.getValue(), (int) pianoSpinner.getValue(),Integer.parseInt(superficieField.getText()),(int)stanzeSpinner.getValue(),Double.parseDouble(priceField.getText()),classeEnergeticaCombo.getSelectedItem().toString(),tipoVendita.getSelectedItem().toString(),descriptionArea.getText(),String.valueOf(tipoImmobile.getSelectedItem()));
 
           if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
               System.out.println("Inserimento immagini sucesso");
@@ -379,6 +363,37 @@ public class InserimentoImmobile extends JPanel {
         scrollPaneImmobile.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
+    @NotNull
+    private JButton getJButton(JFrame frame, Font inputFont) {
+        JButton caratteristicheButton = new JButton("Caratteristiche");
+        caratteristicheButton.setFont(inputFont);
+        caratteristicheButton.setPreferredSize(new Dimension(180, 40));
+
+        caratteristicheButton.addActionListener(e -> {
+            // Crea pannello con le checkbox già presenti nell’istanza
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(ascensore);
+            panel.add(cantina);
+            panel.add(balcone);
+            panel.add(climatizzazione);
+            panel.add(portineria);
+
+            int result = JOptionPane.showConfirmDialog(
+                    frame, panel, "Inserisci Caratteristiche",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.CANCEL_OPTION) {
+                // Reset manuale su false
+                ascensore.setSelected(false);
+                cantina.setSelected(false);
+                balcone.setSelected(false);
+                climatizzazione.setSelected(false);
+                portineria.setSelected(false);
+            }
+        });
+        return caratteristicheButton;
+    }
+
     public String imageToBase64(File imageFile) throws IOException {
         byte[] fileContent = Files.readAllBytes(imageFile.toPath());
         return Base64.getEncoder().encodeToString(fileContent);
@@ -407,7 +422,7 @@ public class InserimentoImmobile extends JPanel {
         map.put("Toscana", Arrays.asList("AR - Arezzo", "FI - Firenze", "GR - Grosseto", "LI - Livorno", "LU - Lucca", "MS - Massa-Carrara", "PI - Pisa", "PT - Pistoia", "PO - Prato", "SI - Siena"));
         map.put("Trentino-Alto Adige", Arrays.asList("BZ - Bolzano", "TN - Trento"));
         map.put("Umbria", Arrays.asList("PG - Perugia", "TR - Terni"));
-        map.put("Valle d'Aosta", Arrays.asList("AO - Aosta"));
+        map.put("Valle d'Aosta", List.of("AO - Aosta"));
         map.put("Veneto", Arrays.asList("BL - Belluno", "PD - Padova", "RO - Rovigo", "TV - Treviso", "VE - Venezia", "VR - Verona", "VI - Vicenza"));
 
         return map;

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import javax.swing.*;
@@ -37,6 +38,8 @@ public class InserimentoImmobile extends JPanel {
 
     public InserimentoImmobile(JFrame frame, ControllerAdministration controllerA,String token) {
         initComponents();
+        base64ListImmagini = new ArrayList<>();
+        listNomeImmagini = new ArrayList<>();
         Font inputFont = new Font("SansSerif", Font.PLAIN, 24);
         Font labelFont = new Font("SansSerif", Font.PLAIN, 18);
 
@@ -273,7 +276,7 @@ public class InserimentoImmobile extends JPanel {
           if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
               System.out.println("Inserimento immagini sucesso");
           }else {
-              System.out.println("Erro ao inserir immagini");
+              System.out.println("Errore inserimento immagini");
           }
 
         });

@@ -32,7 +32,7 @@ public class LogInAmministrazione extends JPanel {
              String token1;
              char[] pass = passwordField1.getPassword();
              try {
-                 token1 = control.loginAgente(textFildEmail.getText(), Arrays.toString(pass));
+                 token1 = control.loginAgente(textFildEmail.getText(), new String(pass));
                  if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,

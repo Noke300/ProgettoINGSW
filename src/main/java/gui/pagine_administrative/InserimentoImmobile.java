@@ -348,7 +348,7 @@ public class InserimentoImmobile extends JPanel {
         });
 
         AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
-        autoCompleteAddress.setupSearchAutocomplete(fullField,viaField,capField,numeroField,cittaField);
+        autoCompleteAddress.setupSearchAutocomplete(fullField,viaField,capField,numeroField,cittaField,regioneCombo,provinciaCombo);
 
         scrollPaneImmobile.setViewportView(mainPanel);
         scrollPaneImmobile.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -393,7 +393,7 @@ public class InserimentoImmobile extends JPanel {
 
     //TODO Spostare in classe Util //chiedo scusa
 
-    private static Map<String, List<String>> regioniProvinceLabelMap() {
+    public static Map<String, List<String>> regioniProvinceLabelMap() {
         Map<String, List<String>> map = new TreeMap<>(); // Ordina le regioni alfabeticamente
 
         map.put("Abruzzo", Arrays.asList("AQ - L'Aquila", "CH - Chieti", "PE - Pescara", "TE - Teramo"));

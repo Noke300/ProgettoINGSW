@@ -9,13 +9,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static gui.pagine_administrative.InserimentoImmobile.regioniProvinceLabelMap;
 
 public class AutoCompleteAddress {
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";
@@ -78,7 +78,7 @@ public class AutoCompleteAddress {
         });
     }
 
-    public void setupSearchAutocomplete(JTextField searchField,JTextField viaField,JTextField capField,JTextField civicoField,JTextField cittaField) {
+    public void setupSearchAutocomplete(JTextField searchField,JTextField viaField,JTextField capField,JTextField civicoField,JTextField cittaField,JComboBox<String> regioneCombo, JComboBox<String> provinciaCombo) {
         JPopupMenu suggestionPopup = new JPopupMenu();
         suggestionPopup.setFocusable(false);
 
@@ -124,7 +124,7 @@ public class AutoCompleteAddress {
                         item.addActionListener(ev -> {
                             searchField.setText(suggestion);
                             suggestionPopup.setVisible(false);
-                            popolaCampiIndirizzo(searchField.getText(),viaField,capField,civicoField,cittaField);
+                            popolaCampiIndirizzo(searchField.getText(),viaField,capField,civicoField,cittaField,regioneCombo,provinciaCombo);
                         });
                         suggestionPopup.add(item);
                     }
@@ -176,10 +176,20 @@ public class AutoCompleteAddress {
         return results;
     }
 
-    private void popolaCampiIndirizzo(String fullAddress, JTextField viaField, JTextField capField, JTextField civicoField, JTextField cittaField) {
+    private void popolaCampiIndirizzo(
+            String fullAddress,
+            JTextField viaField,
+            JTextField capField,
+            JTextField civicoField,
+            JTextField cittaField,
+            JComboBox<String> regioneCombo,
+            JComboBox<String> provinciaCombo
+    ) {
         OkHttpClient client = new OkHttpClient();
-        String url = String.format("https://api.geoapify.com/v1/geocode/search?text=%s&limit=1&lang=it&filter=countrycode:it&apiKey=%s",
-                fullAddress, GEOAPIFY_API_KEY);
+        String url = String.format(
+                "https://api.geoapify.com/v1/geocode/search?text=%s&limit=1&lang=it&filter=countrycode:it&apiKey=%s",
+                fullAddress, GEOAPIFY_API_KEY
+        );
 
         Request request = new Request.Builder()
                 .url(url)
@@ -201,18 +211,58 @@ public class AutoCompleteAddress {
                     String housenumber = safeGet(properties, "housenumber");
                     String postcode = safeGet(properties, "postcode");
                     String city = safeGet(properties, "city");
+                    String region = safeGet(properties, "state");
+                    String provinceSigla = safeGet(properties, "county"); // es: MI, NA...
 
                     // Popola i JTextField
                     viaField.setText(street);
                     civicoField.setText(housenumber);
                     capField.setText(postcode);
                     cittaField.setText(city);
+
+                    // Imposta Regione se presente
+                    if (region != null && !region.isEmpty()) {
+                        for (int i = 0; i < regioneCombo.getItemCount(); i++) {
+                            String regioneItem = regioneCombo.getItemAt(i);
+                            if (regioneItem.equalsIgnoreCase(region)) {
+                                regioneCombo.setSelectedIndex(i);
+                                break;
+                            }
+                        }
+                    }
+
+                    // Aggiorna ProvinciaCombo in base alla regione selezionata
+                    Map<String, List<String>> regioneMap = regioniProvinceLabelMap();
+                    List<String> provinceList = regioneMap.getOrDefault((String) regioneCombo.getSelectedItem(), new ArrayList<>());
+                    provinciaCombo.removeAllItems();
+                    provinceList.stream()
+                            .sorted(Comparator.comparing(s -> s.substring(s.indexOf("-") + 2)))
+                            .forEach(provinciaCombo::addItem);
+
+                    // Imposta Provincia se sigla disponibile
+                    if (provinceSigla != null && !provinceSigla.isEmpty()) {
+                        String siglaLower = provinceSigla.toLowerCase();
+                        for (int i = 0; i < provinciaCombo.getItemCount(); i++) {
+                            String provinciaItem = provinciaCombo.getItemAt(i).toLowerCase();
+
+                            if (provinciaItem.startsWith(siglaLower + " ") || provinciaItem.endsWith(" " + siglaLower)) {
+                                provinciaCombo.setSelectedIndex(i);
+                                break;
+                            }
+                            if (provinciaItem.contains(siglaLower)) {
+                                provinciaCombo.setSelectedIndex(i);
+                                break;
+                            }
+                        }
+                    }
+
                 }
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
+
 
     // Metodo di supporto per evitare i null
     private String safeGet(JSONObject obj, String key) {

@@ -3,30 +3,17 @@ package gui;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.Controller;
-import controller.ControllerAdministration;
-import controller.ControllerClienti;
 import gui.costum_components.*;
 import model.Immobile;
 import net.miginfocom.swing.*;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
-import java.util.function.Function;
 
 public class Ricerca extends JPanel {
 
@@ -60,11 +47,8 @@ public class Ricerca extends JPanel {
         checkBoxesList.add(hospitalsCheckBox);
         checkBoxesList.add(parkCheckBox);
 
-
-
         // --- 4. Auto-completamento ---
         autoCompleteAddress.setupSearchAutocomplete(searchField);
-
 
         // --- 5. Azione del pulsante "Cerca" ---//--- 6. Menu Opzioni ---
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);

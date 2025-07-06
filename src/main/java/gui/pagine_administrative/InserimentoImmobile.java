@@ -21,15 +21,7 @@ import model.AgenteImmobiliare;
 import model.Immobile;
 import model.Indirizzo;
 import net.miginfocom.swing.*;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.jxmapviewer.viewer.GeoPosition;
 
 /**
@@ -55,8 +47,8 @@ public class InserimentoImmobile extends JPanel {
         initComponents();
         base64ListImmagini = new ArrayList<>();
         listNomeImmagini = new ArrayList<>();
-        Font inputFont = new Font("SansSerif", Font.PLAIN, 24);
-        Font labelFont = new Font("SansSerif", Font.PLAIN, 18);
+        Font inputFont = new Font("SansSerif", Font.PLAIN, 18);
+        Font labelFont = new Font("SansSerif", Font.PLAIN, 22);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -219,7 +211,7 @@ public class InserimentoImmobile extends JPanel {
         JComboBox<String> tipoVendita = new JComboBox<>(new String[]{"Vendita", "Affitto"});
         tipoVendita.setFont(inputFont);
 
-        JLabel typeImmobileLabel = new JLabel("Tipo Vendita:");
+        JLabel typeImmobileLabel = new JLabel("Tipo Immobile:");
         typeImmobileLabel.setFont(labelFont);
         JComboBox<String> tipoImmobile = new JComboBox<>(new String[]{"Casa", "Appartamento"});
         tipoImmobile.setFont(inputFont);

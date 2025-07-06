@@ -18,6 +18,8 @@ public class ImmagineImmobile {
         this.immobile = immobile;
     }
 
+    public ImmagineImmobile() {}
+
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
     public String getUrlImmagine() { return urlImmagine; }

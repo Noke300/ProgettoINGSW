@@ -8,8 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Base64;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -22,6 +21,14 @@ import model.AgenteImmobiliare;
 import model.Immobile;
 import model.Indirizzo;
 import net.miginfocom.swing.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.jxmapviewer.viewer.GeoPosition;
 
 /**
@@ -34,6 +41,13 @@ public class InserimentoImmobile extends JPanel {
     IconClass iconClass = new IconClass();
     List<String> base64ListImmagini;
     List<String> listNomeImmagini;
+
+    JCheckBox ascensore = new JCheckBox("Assencore");
+    JCheckBox cantina = new JCheckBox("Cantina");
+    JCheckBox balcone = new JCheckBox("Balcone");
+    JCheckBox climatizzazione = new JCheckBox("Climatizzazione");
+    JCheckBox portineria = new JCheckBox("Portineria");
+
     //TODO da rimovere e refactorare le funzioni al sup interno
 
     public InserimentoImmobile(JFrame frame, ControllerAdministration controllerA,String token) {
@@ -47,16 +61,17 @@ public class InserimentoImmobile extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        //Indirizzo
+// Pannello Indirizzo
         JPanel addressPanel = new JPanel(new GridBagLayout());
         addressPanel.setBorder(BorderFactory.createTitledBorder("Indirizzo"));
-        addressPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 170));
+        addressPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
         addressPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 4, 4, 4);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Indirizzo completo
+// Indirizzo Completo
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 4;
         JLabel fullLabel = new JLabel("Indirizzo completo:");
         fullLabel.setFont(labelFont);
@@ -65,21 +80,19 @@ public class InserimentoImmobile extends JPanel {
         gbc.gridy = 1;
         JTextField fullField = new JTextField();
         fullField.setFont(inputFont);
-        fullField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
         fullField.setPreferredSize(new Dimension(800, 35));
         addressPanel.add(fullField, gbc);
         gbc.gridwidth = 1;
 
-        // Seconda riga: Via e Numero civico con pesi bilanciati
-        gbc.gridy = 2; gbc.gridx = 0; gbc.weightx = 0.0;
+//  Via e Numero Civico
+        gbc.gridy = 2; gbc.gridx = 0;
         JLabel viaLabel = new JLabel("Via:");
         viaLabel.setFont(labelFont);
         addressPanel.add(viaLabel, gbc);
 
-        gbc.gridx = 1; gbc.weightx = 0.6; // Via prende più spazio
+        gbc.gridx = 1; gbc.weightx = 0.6;
         JTextField viaField = new JTextField();
         viaField.setFont(inputFont);
-        viaField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         addressPanel.add(viaField, gbc);
 
         gbc.gridx = 2; gbc.weightx = 0.0;
@@ -87,46 +100,73 @@ public class InserimentoImmobile extends JPanel {
         numeroLabel.setFont(labelFont);
         addressPanel.add(numeroLabel, gbc);
 
-        gbc.gridx = 3; gbc.weightx = 0.4; // Numero civico prende meno spazio
+        gbc.gridx = 3; gbc.weightx = 0.4;
         JTextField numeroField = new JTextField();
         numeroField.setFont(inputFont);
-        numeroField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         addressPanel.add(numeroField, gbc);
 
-        // Terza riga: CAP e Città con pesi bilanciati
-        gbc.gridy = 3; gbc.gridx = 0; gbc.weightx = 0.0;
+//  CAP e Città
+        gbc.gridy = 3; gbc.gridx = 0;
         JLabel capLabel = new JLabel("CAP:");
         capLabel.setFont(labelFont);
         addressPanel.add(capLabel, gbc);
 
-        gbc.gridx = 1; gbc.weightx = 0.3; // CAP prende meno spazio
+        gbc.gridx = 1; gbc.weightx = 0.3;
         JTextField capField = new JTextField();
         capField.setFont(inputFont);
-        capField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         addressPanel.add(capField, gbc);
 
-        gbc.gridx = 2; gbc.weightx = 0.0;
+        gbc.gridx = 2;
         JLabel cittaLabel = new JLabel("Città:");
         cittaLabel.setFont(labelFont);
         addressPanel.add(cittaLabel, gbc);
 
-        gbc.gridx = 3; gbc.weightx = 0.7; // Città prende più spazio
+        gbc.gridx = 3; gbc.weightx = 0.7;
         JTextField cittaField = new JTextField();
         cittaField.setFont(inputFont);
-        cittaField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         addressPanel.add(cittaField, gbc);
 
-        // Quarta riga: Regione centrata
-        gbc.gridy = 4; gbc.gridx = 0; gbc.weightx = 0.0;
+//  Regione
+        Map<String, List<String>> regioneMap = regioniProvinceLabelMap();
+        String[] regioni = regioneMap.keySet().toArray(new String[0]);
+        gbc.gridy = 4; gbc.gridx = 0;
         JLabel regioneLabel = new JLabel("Regione:");
         regioneLabel.setFont(labelFont);
         addressPanel.add(regioneLabel, gbc);
 
-        gbc.gridx = 1; gbc.gridwidth = 3; gbc.weightx = 1.0;
-        JTextField regioneField = new JTextField();
-        regioneField.setFont(inputFont);
-        regioneField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
-        addressPanel.add(regioneField, gbc);
+        gbc.gridx = 1; gbc.gridwidth = 3;
+        JComboBox<String> regioneCombo = new JComboBox<>(regioni);
+        regioneCombo.setFont(inputFont);
+        regioneCombo.setSelectedIndex(0); // ✅ Prima regione selezionata automaticamente
+        addressPanel.add(regioneCombo, gbc);
+
+// Provincia
+        gbc.gridy = 5; gbc.gridx = 0; gbc.gridwidth = 1;
+        JLabel provinciaLabel = new JLabel("Provincia:");
+        provinciaLabel.setFont(labelFont);
+        addressPanel.add(provinciaLabel, gbc);
+
+        gbc.gridx = 1; gbc.gridwidth = 3;
+        JComboBox<String> provinciaCombo = new JComboBox<>();
+        provinciaCombo.setFont(inputFont);
+        addressPanel.add(provinciaCombo, gbc);
+
+// Popolamento iniziale della provincia
+        String regioneIniziale = (String) regioneCombo.getSelectedItem();
+        regioneMap.getOrDefault(regioneIniziale, new ArrayList<>())
+                .stream()
+                .sorted(Comparator.comparing(label -> label.substring(label.indexOf("-") + 2))) // Ordina per nome
+                .forEach(provinciaCombo::addItem);
+
+        regioneCombo.addActionListener(e -> {
+            String regioneSelezionata = (String) regioneCombo.getSelectedItem();
+            List<String> provinceLabels = regioneMap.getOrDefault(regioneSelezionata, new ArrayList<>());
+
+            provinciaCombo.removeAllItems();
+            provinceLabels.stream()
+                    .sorted(Comparator.comparing(label -> label.substring(label.indexOf("-") + 2)))
+                    .forEach(provinciaCombo::addItem);
+        });
 
         mainPanel.add(addressPanel);
         mainPanel.add(Box.createVerticalStrut(10));
@@ -175,9 +215,28 @@ public class InserimentoImmobile extends JPanel {
         caratteristicheButton.setPreferredSize(new Dimension(180, 40));
 
         caratteristicheButton.addActionListener(e -> {
+            // Crea pannello con le checkbox già presenti nell’istanza
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(ascensore);
+            panel.add(cantina);
+            panel.add(balcone);
+            panel.add(climatizzazione);
+            panel.add(portineria);
 
-            //TODO JDialog panel per liserimento dei campi booleani
+            int result = JOptionPane.showConfirmDialog(
+                    frame, panel, "Inserisci Caratteristiche",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.CANCEL_OPTION) {
+                // Reset manuale su false
+                ascensore.setSelected(false);
+                cantina.setSelected(false);
+                balcone.setSelected(false);
+                climatizzazione.setSelected(false);
+                portineria.setSelected(false);
+            }
         });
+
 
         JLabel typeLabel = new JLabel("Tipo:");
         typeLabel.setFont(labelFont);
@@ -265,13 +324,18 @@ public class InserimentoImmobile extends JPanel {
         mainPanel.add(buttonConferma);
 
         buttonConferma.addActionListener(e -> {
-            /* Todo chiamate api per i campi parchi trasporti scuole---campi boolean da definire
-                possibile modifica di salvamento dati in login ---MapLoder da modificare */
+            /* TODO possibile modifica di salvamento dati in login ---MapLoder da modificare */
             AgenteImmobiliare agenteTemp;
             agenteTemp = controllerA.fetchAgenteImmobiliare(token);
             GeoPosition geoP = MapLoader.getCoordinatesFromAddress(fullField.getText());
-            Indirizzo indirizzoT = new Indirizzo(viaField.getText(),cittaField.getText(),"NA",Integer.valueOf(numeroField.getText()),Integer.valueOf(capField.getText()),"Campania",geoP.getLatitude(),geoP.getLongitude());
-            Immobile immobileTemp = new Immobile(agenteTemp.getAgenziaImmobiliare(),indirizzoT,agenteTemp,false,false,true,false,true,true,false,false,true,bagniSpinner.getX(), pianoSpinner.getX(),Integer.valueOf(superficieField.getText()),stanzeSpinner.getX(),Double.valueOf(priceField.getText()),classeEnergeticaCombo.getSelectedItem().toString(),tipoBox.getSelectedItem().toString(),descriptionArea.getText(),"Casa");
+
+            assert geoP != null;
+            boolean scuoleB = MapLoader.fetchPlaces(geoP,"education.school");
+            boolean transportB = MapLoader.fetchPlaces(geoP,"public_transport");
+            boolean parchiB = MapLoader.fetchPlaces(geoP,"leisure.park");
+
+            Indirizzo indirizzoT = new Indirizzo(viaField.getText(),cittaField.getText(),String.valueOf(provinciaCombo.getSelectedItem()),Integer.parseInt(numeroField.getText()),Integer.parseInt(capField.getText()),String.valueOf(regioneCombo.getSelectedItem()),geoP.getLatitude(),geoP.getLongitude());
+            Immobile immobileTemp = new Immobile(agenteTemp.getAgenziaImmobiliare(),indirizzoT,agenteTemp,transportB,parchiB,scuoleB,false,climatizzazione.isSelected(),ascensore.isSelected(),cantina.isSelected(),portineria.isSelected(),balcone.isSelected(),(int) bagniSpinner.getValue(), (int) pianoSpinner.getValue(),Integer.parseInt(superficieField.getText()),(int)stanzeSpinner.getValue(),Double.parseDouble(priceField.getText()),classeEnergeticaCombo.getSelectedItem().toString(),tipoBox.getSelectedItem().toString(),descriptionArea.getText(),"Casa");
 
           if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
               System.out.println("Inserimento immagini sucesso");
@@ -320,8 +384,34 @@ public class InserimentoImmobile extends JPanel {
         return Base64.getEncoder().encodeToString(fileContent);
     }
 
+    //TODO Spostare in classe Util //chiedo scusa
 
+    private static Map<String, List<String>> regioniProvinceLabelMap() {
+        Map<String, List<String>> map = new TreeMap<>(); // Ordina le regioni alfabeticamente
 
+        map.put("Abruzzo", Arrays.asList("AQ - L'Aquila", "CH - Chieti", "PE - Pescara", "TE - Teramo"));
+        map.put("Basilicata", Arrays.asList("MT - Matera", "PZ - Potenza"));
+        map.put("Calabria", Arrays.asList("CS - Cosenza", "CZ - Catanzaro", "KR - Crotone", "RC - Reggio Calabria", "VV - Vibo Valentia"));
+        map.put("Campania", Arrays.asList("AV - Avellino", "BN - Benevento", "CE - Caserta", "NA - Napoli", "SA - Salerno"));
+        map.put("Emilia-Romagna", Arrays.asList("BO - Bologna", "FE - Ferrara", "FC - Forlì-Cesena", "MO - Modena", "PC - Piacenza", "PR - Parma", "RA - Ravenna", "RE - Reggio Emilia", "RN - Rimini"));
+        map.put("Friuli Venezia Giulia", Arrays.asList("GO - Gorizia", "PN - Pordenone", "TS - Trieste", "UD - Udine"));
+        map.put("Lazio", Arrays.asList("FR - Frosinone", "LT - Latina", "RI - Rieti", "RM - Roma", "VT - Viterbo"));
+        map.put("Liguria", Arrays.asList("GE - Genova", "IM - Imperia", "SP - La Spezia", "SV - Savona"));
+        map.put("Lombardia", Arrays.asList("BG - Bergamo", "BS - Brescia", "CO - Como", "CR - Cremona", "LC - Lecco", "LO - Lodi", "MN - Mantova", "MI - Milano", "MB - Monza e Brianza", "PV - Pavia", "SO - Sondrio", "VA - Varese"));
+        map.put("Marche", Arrays.asList("AN - Ancona", "AP - Ascoli Piceno", "FM - Fermo", "MC - Macerata", "PU - Pesaro e Urbino"));
+        map.put("Molise", Arrays.asList("CB - Campobasso", "IS - Isernia"));
+        map.put("Piemonte", Arrays.asList("AL - Alessandria", "AT - Asti", "BI - Biella", "CN - Cuneo", "NO - Novara", "TO - Torino", "VB - Verbano-Cusio-Ossola", "VC - Vercelli"));
+        map.put("Puglia", Arrays.asList("BA - Bari", "BT - Barletta-Andria-Trani", "BR - Brindisi", "FG - Foggia", "LE - Lecce", "TA - Taranto"));
+        map.put("Sardegna", Arrays.asList("CA - Cagliari", "NU - Nuoro", "OR - Oristano", "SS - Sassari", "SU - Sud Sardegna"));
+        map.put("Sicilia", Arrays.asList("AG - Agrigento", "CL - Caltanissetta", "CT - Catania", "EN - Enna", "ME - Messina", "PA - Palermo", "RG - Ragusa", "SR - Siracusa", "TP - Trapani"));
+        map.put("Toscana", Arrays.asList("AR - Arezzo", "FI - Firenze", "GR - Grosseto", "LI - Livorno", "LU - Lucca", "MS - Massa-Carrara", "PI - Pisa", "PT - Pistoia", "PO - Prato", "SI - Siena"));
+        map.put("Trentino-Alto Adige", Arrays.asList("BZ - Bolzano", "TN - Trento"));
+        map.put("Umbria", Arrays.asList("PG - Perugia", "TR - Terni"));
+        map.put("Valle d'Aosta", Arrays.asList("AO - Aosta"));
+        map.put("Veneto", Arrays.asList("BL - Belluno", "PD - Padova", "RO - Rovigo", "TV - Treviso", "VE - Venezia", "VR - Verona", "VI - Vicenza"));
+
+        return map;
+    }
 
 
     private void initComponents() {

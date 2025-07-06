@@ -95,33 +95,6 @@ public class MapLoader {
         }
 
         //inserimento Filtro da modificae per la presenza o no questo probabilmente sara' spostato in inserimento immobile
-        for(JCheckBox box : checkBoxesList) {
-
-            if(box.getText().equals("Scuole") && box.isSelected()) {
-                // Fetch places using Geoapify Places API for schools
-                List<GeoPosition> places = fetchPlaces(geoPosition, "education.school");
-                for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, "Scuola",ICON_CLASS.getMapCenterMarker()));
-                }
-                waypointPainter.setWaypoints(waypoints);
-                mapViewer.repaint();
-            }else if(box.getText().equals("Trasporti") && box.isSelected()) {
-                List<GeoPosition> places = fetchPlaces(geoPosition, "public_transport");
-                for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place,"Transport",ICON_CLASS.getMapCenterMarker()));
-                }
-                waypointPainter.setWaypoints(waypoints);
-                mapViewer.repaint();
-            }else if(box.getText().equals("Parchi") && box.isSelected()) {
-                List<GeoPosition> places = fetchPlaces(geoPosition, "leisure.park");
-                for (GeoPosition place : places) {
-                    waypoints.add(new CustomWaypoint(place, "Parco",ICON_CLASS.getMapCenterMarker()));
-                }
-                waypointPainter.setWaypoints(waypoints);
-                mapViewer.repaint();
-
-            }
-        }
 
         final int HITBOX_RADIUS = 25;
 
@@ -312,10 +285,10 @@ public class MapLoader {
     }
 
     //scan dei posti
-    private static List<GeoPosition> fetchPlaces(GeoPosition g, String category) {
-        List<GeoPosition> places = new ArrayList<>();
+    public static boolean fetchPlaces(GeoPosition g, String category) {
+
         OkHttpClient client = new OkHttpClient().newBuilder().build();
-        String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,5000&bias=proximity:%f,%f&limit=15&apiKey=%s",
+        String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,500&bias=proximity:%f,%f&limit=15&apiKey=%s",
                 category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
 
         Request request = new Request.Builder()
@@ -334,14 +307,16 @@ public class MapLoader {
                     JSONObject feature = (JSONObject) o;
                     JSONObject geometry = (JSONObject) feature.get("geometry");
                     JSONArray coordinates = (JSONArray) geometry.get("coordinates");
-                    double lon = (double) coordinates.get(0);
-                    double lat = (double) coordinates.get(1);
-                    places.add(new GeoPosition(lat, lon));
+
+                    return true;
+
                 }
+            }else{
+                return false;
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return places;
+        return false;
     }
 }

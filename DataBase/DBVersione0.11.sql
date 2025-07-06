@@ -101,7 +101,7 @@ CREATE TABLE Visita (
 );
 
 CREATE TABLE ImmagineImmobile(
-    UrlImmagine VARCHAR(36) PRIMARY KEY,
+    UrlImmagine VARCHAR(255) PRIMARY KEY,
     IdImmobile VARCHAR(36) NOT NULL,
     FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE
 );

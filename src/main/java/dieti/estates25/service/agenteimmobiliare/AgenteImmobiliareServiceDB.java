@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -183,7 +185,7 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         Immobile immobile = request.getImmobile();
         Indirizzo indirizzo = immobile.getIndirizzo();
 
-        indirizzo = indirizzoRepository.save(indirizzo);
+        indirizzo = getOrCreateIndirizzo(indirizzo);
         immobile.setIndirizzo(indirizzo);
 
         AgenteImmobiliare agent = getAgentByMail(getEmailAutenticato());
@@ -218,6 +220,18 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
 
         return ResponseEntity.ok("Immobile aggiunto correttamente");
         //TODO Da testare
+    }
+
+    private Indirizzo getOrCreateIndirizzo(Indirizzo nuovoIndirizzo) {
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnorePaths("latitudine", "longitudine")
+                .withIgnoreCase()
+                .withIgnoreNullValues(); // ignora i campi nulli nell'oggetto di esempio
+
+        Example<Indirizzo> example = Example.of(nuovoIndirizzo, matcher);
+
+        return indirizzoRepository.findOne(example)
+                .orElseGet(() -> indirizzoRepository.save(nuovoIndirizzo));
     }
 
     public AgenteImmobiliare getSpecifiche() {

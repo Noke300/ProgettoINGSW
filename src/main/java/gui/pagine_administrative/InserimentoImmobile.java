@@ -12,6 +12,9 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerAdministration;
 import gui.costum_components.AutoCompleteAddress;
@@ -299,25 +302,136 @@ public class InserimentoImmobile extends JPanel {
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(buttonConferma);
 
+        fullField.getDocument().addDocumentListener(new DocumentListener() {
+            private void aggiornaCampi() {
+                boolean isEmpty = fullField.getText().isEmpty();
+
+                viaField.setEnabled(isEmpty);
+                cittaField.setEnabled(isEmpty);
+                provinciaCombo.setEnabled(isEmpty);
+                numeroField.setEnabled(isEmpty);
+                capField.setEnabled(isEmpty);
+                regioneCombo.setEnabled(isEmpty);
+
+                if (isEmpty) {
+                    // Svuoto i campi
+                    viaField.setText("");
+                    cittaField.setText("");
+                    numeroField.setText("");
+                    capField.setText("");
+                    provinciaCombo.setSelectedIndex(0);
+                    regioneCombo.setSelectedIndex(0);
+                }
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                aggiornaCampi();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                aggiornaCampi();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                aggiornaCampi(); // Di solito non serve per JTextField, ma lo includiamo per completezza
+            }
+        });
+
+        DocumentListener altriCampiListener = new DocumentListener() {
+
+            private void aggiornaFullField() {
+
+                boolean tuttiVuoti =
+                        viaField.getText().isEmpty() &&
+                        cittaField.getText().isEmpty() &&
+                        numeroField.getText().isEmpty() &&
+                        capField.getText().isEmpty();
+
+                if (fullField.getText().isEmpty()) fullField.setEnabled(tuttiVuoti);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                aggiornaFullField();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                aggiornaFullField();
+            }
+            public void changedUpdate(DocumentEvent e) {
+                aggiornaFullField();
+            }
+        };
+
+        viaField.getDocument().addDocumentListener(altriCampiListener);
+        cittaField.getDocument().addDocumentListener(altriCampiListener);
+        numeroField.getDocument().addDocumentListener(altriCampiListener);
+        capField.getDocument().addDocumentListener(altriCampiListener);
+
+
         buttonConferma.addActionListener(e -> {
             /* TODO possibile modifica di salvamento dati in login ---MapLoder da modificare */
-            AgenteImmobiliare agenteTemp;
-            agenteTemp = controllerA.fetchAgenteImmobiliare(token);
-            GeoPosition geoP = MapLoader.getCoordinatesFromAddress(fullField.getText());
+            boolean tuttiCampiCompilati = true;
 
-            assert geoP != null;
-            boolean scuoleB = MapLoader.fetchPlaces(geoP,"education.school");
-            boolean transportB = MapLoader.fetchPlaces(geoP,"public_transport");
-            boolean parchiB = MapLoader.fetchPlaces(geoP,"leisure.park");
+            //if(fullField.getText() == null || "".equals(fullField.getText())) tuttiCampiCompilati = false;
 
-            Indirizzo indirizzoT = new Indirizzo(viaField.getText(),cittaField.getText(),String.valueOf(provinciaCombo.getSelectedItem()),Integer.parseInt(numeroField.getText()),Integer.parseInt(capField.getText()),String.valueOf(regioneCombo.getSelectedItem()),geoP.getLatitude(),geoP.getLongitude());
-            Immobile immobileTemp = new Immobile(agenteTemp.getAgenziaImmobiliare(),indirizzoT,agenteTemp,transportB,parchiB,scuoleB,false,climatizzazione.isSelected(),ascensore.isSelected(),cantina.isSelected(),portineria.isSelected(),balcone.isSelected(),(int) bagniSpinner.getValue(), (int) pianoSpinner.getValue(),Integer.parseInt(superficieField.getText()),(int)stanzeSpinner.getValue(),Double.parseDouble(priceField.getText()),classeEnergeticaCombo.getSelectedItem().toString(),tipoVendita.getSelectedItem().toString(),descriptionArea.getText(),String.valueOf(tipoImmobile.getSelectedItem()));
+            if(superficieField.getText() == null || "".equals(superficieField.getText())) tuttiCampiCompilati = false;
+            if(priceField.getText() == null || "".equals(priceField.getText())) tuttiCampiCompilati = false;
+            if(descriptionArea.getText() == null || "".equals(descriptionArea.getText())) tuttiCampiCompilati = false;
+            if(base64ListImmagini.isEmpty()) tuttiCampiCompilati = false;
 
-          if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
-              System.out.println("Inserimento immagini sucesso");
-          }else {
-              System.out.println("Errore inserimento immagini");
-          }
+            if(tuttiCampiCompilati){
+
+                AgenteImmobiliare agenteTemp;
+                agenteTemp = controllerA.fetchAgenteImmobiliare(token);
+                GeoPosition geoP = MapLoader.getCoordinatesFromAddress(fullField.getText());
+
+                assert geoP != null;
+                boolean scuoleB = MapLoader.fetchPlaces(geoP,"education.school");
+                boolean transportB = MapLoader.fetchPlaces(geoP,"public_transport");
+                boolean parchiB = MapLoader.fetchPlaces(geoP,"leisure.park");
+
+                Indirizzo indirizzoT = new Indirizzo(
+                        viaField.getText(),
+                        cittaField.getText(),
+                        String.valueOf(provinciaCombo.getSelectedItem()),
+                        Integer.parseInt(numeroField.getText()),
+                        Integer.parseInt(capField.getText()),
+                        String.valueOf(regioneCombo.getSelectedItem()),
+                        geoP.getLatitude(),geoP.getLongitude());
+                Immobile immobileTemp = new Immobile(
+                        agenteTemp.getAgenziaImmobiliare(),
+                        indirizzoT,
+                        agenteTemp,
+                        transportB,
+                        parchiB,
+                        scuoleB,
+                        false,
+                        climatizzazione.isSelected(),
+                        ascensore.isSelected(),
+                        cantina.isSelected(),
+                        portineria.isSelected(),
+                        balcone.isSelected(),
+                        (int) bagniSpinner.getValue(),
+                        (int) pianoSpinner.getValue(),
+                        Integer.parseInt(superficieField.getText()),
+                        (int)stanzeSpinner.getValue(),
+                        Double.parseDouble(priceField.getText()),
+                        classeEnergeticaCombo.getSelectedItem().toString(),
+                        tipoVendita.getSelectedItem().toString(),
+                        descriptionArea.getText(),
+                        String.valueOf(tipoImmobile.getSelectedItem()));
+
+              if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
+                  System.out.println("Inserimento immagini sucesso");
+              }else {
+                  System.out.println("Errore inserimento immagini");
+              }
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Compilare tutti i campi obbligatori");
+            }
 
         });
         // Logica caricamento immagini
@@ -348,6 +462,7 @@ public class InserimentoImmobile extends JPanel {
         });
 
         AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
+
         autoCompleteAddress.setupSearchAutocomplete(fullField,viaField,capField,numeroField,cittaField,regioneCombo,provinciaCombo);
 
         scrollPaneImmobile.setViewportView(mainPanel);

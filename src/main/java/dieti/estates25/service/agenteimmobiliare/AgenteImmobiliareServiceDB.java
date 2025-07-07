@@ -226,7 +226,7 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withIgnorePaths("latitudine", "longitudine")
                 .withIgnoreCase()
-                .withIgnoreNullValues(); // ignora i campi nulli nell'oggetto di esempio
+                .withIgnoreNullValues();
 
         Example<Indirizzo> example = Example.of(nuovoIndirizzo, matcher);
 

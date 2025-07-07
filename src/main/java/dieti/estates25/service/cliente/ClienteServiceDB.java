@@ -3,12 +3,12 @@ package dieti.estates25.service.cliente;
 import dieti.estates25.model.Offerta;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.VisitaId;
+import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.model.cliente.ClientePrincipal;
-import dieti.estates25.repositories.ImmobileRepository;
-import dieti.estates25.repositories.OffertaRepository;
-import dieti.estates25.repositories.VisitaRepository;
+import dieti.estates25.repositories.*;
 import dieti.estates25.service.JWTService;
+import dieti.estates25.service.NotificaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -23,7 +23,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import dieti.estates25.repositories.ClienteRepository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -44,7 +43,13 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
     private OffertaRepository offertaRepository;
 
     @Autowired
+    private ImmobileRepository immobileRepository;
+
+    @Autowired
     private JWTService jwtService;
+
+    @Autowired
+    private NotificaService notificaService;
 
     @Autowired
     @Lazy
@@ -141,9 +146,11 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
                     .body("Non puoi prenotare più di una visita alla volta per lo stesso immobile");
         }
         visita.setCliente(clienteRepository.findByEmailCliente(email));
+        visita.setImmobile(immobileRepository.findImmobileByIdImmobile(visita.getImmobile().getIdImmobile()));
         visita.setConferma(false);
         visita.setId(new VisitaId(email, visita.getImmobile().getIdImmobile()));
         visitaRepository.save(visita);
+        notificaService.inviaNotifica(visita.getImmobile().getAgente().getEmailAgente(), "Hanno richiesto una nuova visita");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Visita prenotata correttamente");

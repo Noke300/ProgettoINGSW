@@ -41,7 +41,7 @@ public class LogIn extends JPanel {
          buttonLogIn.addActionListener(e-> {
              char[] tempPass = passwordField1.getPassword();
              String token1="";
-             token1 = Controller.logInClient(textFildEmail.getText(), Arrays.toString(tempPass));
+             token1 = Controller.logInClient(textFildEmail.getText(), new String(tempPass));
              if (token1.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,

@@ -54,6 +54,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
          */
 
 
+        LogInAmministrazione.notifiche.addListener(messaggio -> {
+            System.out.println("Ricevuto: " + messaggio);
+
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Notifica: " + messaggio));
+        });
+
+
+
         mapLoader = new MapLoader(geoPos, checkBoxesList, panelMap, immobili);
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row

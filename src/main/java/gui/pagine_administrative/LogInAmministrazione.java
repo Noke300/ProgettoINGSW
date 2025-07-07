@@ -14,6 +14,7 @@ import com.formdev.flatlaf.extras.*;
 
 import controller.Controller;
 import controller.ControllerAdministration;
+import controller.NotificationClient;
 import gui.costum_components.BottoniOpzioni;
 import model.Immobile;
 import net.miginfocom.swing.*;
@@ -23,6 +24,7 @@ import net.miginfocom.swing.*;
  */
 public class LogInAmministrazione extends JPanel {
     private String token;
+    public static NotificationClient notifiche;
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     public LogInAmministrazione(JFrame frame, Controller control, String token) {
         initComponents();
@@ -43,6 +45,10 @@ public class LogInAmministrazione extends JPanel {
                     Arrays.fill(pass, ' ');
                  }else {
                      this.token = token1;
+
+                     notifiche = new NotificationClient(textFildEmail.getText());
+                     notifiche.start();
+
                      ControllerAdministration controlAdmin = new ControllerAdministration();
                      List<Immobile> immobili = controlAdmin.fetchImmobili(token1);
                      BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();

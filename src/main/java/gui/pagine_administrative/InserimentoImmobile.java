@@ -374,11 +374,14 @@ public class InserimentoImmobile extends JPanel {
             /* TODO possibile modifica di salvamento dati in login ---MapLoder da modificare */
             boolean tuttiCampiCompilati = true;
 
-            //if(fullField.getText() == null || "".equals(fullField.getText())) tuttiCampiCompilati = false;
+            if(viaField.getText().isEmpty()) tuttiCampiCompilati = false;
+            if(cittaField.getText().isEmpty()) tuttiCampiCompilati = false;
+            if(numeroField.getText().isEmpty()) tuttiCampiCompilati = false;
+            if(capField.getText().isEmpty()) tuttiCampiCompilati = false;
 
-            if(superficieField.getText() == null || "".equals(superficieField.getText())) tuttiCampiCompilati = false;
-            if(priceField.getText() == null || "".equals(priceField.getText())) tuttiCampiCompilati = false;
-            if(descriptionArea.getText() == null || "".equals(descriptionArea.getText())) tuttiCampiCompilati = false;
+            if(superficieField.getText().isEmpty()) tuttiCampiCompilati = false;
+            if(priceField.getText().isEmpty()) tuttiCampiCompilati = false;
+            if(descriptionArea.getText().isEmpty()) tuttiCampiCompilati = false;
             if(base64ListImmagini.isEmpty()) tuttiCampiCompilati = false;
 
             if(tuttiCampiCompilati){

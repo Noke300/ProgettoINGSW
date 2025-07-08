@@ -2,10 +2,17 @@ package dieti.estates25.model;
 
 import java.util.List;
 
-public class ImmobileDaAggiungere {
+public class ImmobileEImmagini {
     private Immobile immobile;
     private List<String> immagini;
     private List<String> fileNames;
+
+    public ImmobileEImmagini(Immobile i, List<String> immagini){
+        this.immobile = i;
+        this.immagini = immagini;
+    }
+
+    public ImmobileEImmagini(){}
 
     public Immobile getImmobile() {
         return immobile;

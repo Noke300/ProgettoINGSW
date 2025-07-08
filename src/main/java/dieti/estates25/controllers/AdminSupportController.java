@@ -3,7 +3,6 @@ package dieti.estates25.controllers;
 import dieti.estates25.model.Immobile;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
-import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

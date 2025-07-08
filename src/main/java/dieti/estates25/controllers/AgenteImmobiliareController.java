@@ -1,13 +1,11 @@
 package dieti.estates25.controllers;
 
 import dieti.estates25.model.Immobile;
-import dieti.estates25.model.ImmobileDaAggiungere;
+import dieti.estates25.model.ImmobileEImmagini;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
-import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +57,7 @@ public class AgenteImmobiliareController {
     }
 
     @GetMapping("/immobili")
-    public List<Immobile> getAllImmobili() {
+    public List<ImmobileEImmagini> getAllImmobili() {
         return agentService.getAllImmobili();
     }
 
@@ -74,7 +72,7 @@ public class AgenteImmobiliareController {
     }
 
     @PostMapping("aggiungi-immobile")
-    public ResponseEntity<String> aggiungiImmobile(@RequestBody ImmobileDaAggiungere request) {
+    public ResponseEntity<String> aggiungiImmobile(@RequestBody ImmobileEImmagini request) {
         return agentService.aggiungiImmobile(request);
     }
 

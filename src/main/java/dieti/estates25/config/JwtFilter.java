@@ -1,6 +1,5 @@
 package dieti.estates25.config;
 
-import dieti.estates25.repositories.AgenziaImmobiliareRepository;
 import dieti.estates25.service.AgenziaImmobiliareServiceDB;
 import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;

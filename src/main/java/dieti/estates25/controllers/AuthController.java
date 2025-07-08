@@ -1,11 +1,11 @@
 package dieti.estates25.controllers;
 
 import dieti.estates25.config.TokenBlacklist;
-import dieti.estates25.model.CoordinateFiltri;
-import dieti.estates25.model.Filtri;
-import dieti.estates25.model.Immobile;
-import dieti.estates25.model.Offerta;
+import dieti.estates25.database.GoogleCloudStorageManager;
+import dieti.estates25.database.GoogleCloudStorageService;
+import dieti.estates25.model.*;
 import dieti.estates25.repositories.ClienteRepository;
+import dieti.estates25.repositories.ImmagineImmobileRepository;
 import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.OffertaRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 @RestController
 public class AuthController {
@@ -38,6 +40,13 @@ public class AuthController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ImmagineImmobileRepository immagineImmobileRepository;
+
+    private GoogleCloudStorageManager storageManager;
+
+    private GoogleCloudStorageService storageService;
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -57,7 +66,6 @@ public class AuthController {
     @PostMapping("/visualizza-offerte")
     public List<Offerta> visualizzaOfferte(@RequestBody Immobile immobile) {
         if (immobile.getIdImmobile() == null) return new ArrayList<>();
-        //TODO maagri meglio lanciare un eccezione o dare un messaggio d'errore
         List<Offerta> offerte = offertaRepository.findAllByImmobileIdImmobileEquals(immobile.getIdImmobile());
         for(Offerta o : offerte) {
             o.getCliente().setPasswordCliente(null);
@@ -67,7 +75,7 @@ public class AuthController {
     }
 
     @PostMapping("/cerca-immobili")
-    public List<Immobile> findImmobiliVicini(@RequestBody CoordinateFiltri couple) {
+    public List<ImmobileEImmagini> findImmobiliVicini(@RequestBody CoordinateFiltri couple) {
         double centroLat = couple.getIndirizzo().getLatitudine();
         double centroLon = couple.getIndirizzo().getLongitudine();
         double raggioKm = 3;
@@ -85,10 +93,9 @@ public class AuthController {
                         centroLat, centroLon) <= raggioKm)
                 .toList();
 
-        System.out.println(candidati);
+        if(couple.getFiltri() != null) candidati = filtraImmobili(candidati, couple.getFiltri());
 
-        if(couple.getFiltri() != null) return filtraImmobili(candidati, couple.getFiltri());
-        return candidati;
+        return(getImmagini(candidati));
     }
 
     @PostMapping("/offerta")
@@ -129,43 +136,96 @@ public class AuthController {
         return km / kmPerDegree;
     }
 
-    private List<Immobile> filtraImmobili(List<Immobile> candidati, Filtri filtri){
-        if (candidati.isEmpty()) return candidati;
-        if (filtri.getAscensore()) candidati = candidati.stream().filter(Immobile::getAscensore)
-                .toList();
-        if (filtri.getBalcone()) candidati = candidati.stream().filter(Immobile::getBalcone)
-                .toList();
-        if (filtri.getCantina()) candidati = candidati.stream().filter(Immobile::getCantina)
-                .toList();
-        if (filtri.getPortineria()) candidati = candidati.stream().filter(Immobile::getPortineria)
-                .toList();
-        if (filtri.getClimatizzazione()) candidati = candidati.stream().filter(Immobile::getClimatizzazione)
-                .toList();
-        if (filtri.getClasseEnergetica() != null) candidati = candidati.stream().filter(i -> i.getClasseEnergetica().equals(filtri.getClasseEnergetica()))
-                .toList();
-        if (filtri.getNumBagni() != 0) candidati = candidati.stream().filter(i -> i.getNumBagni() >= filtri.getNumBagni())
-                .toList();
-        if (filtri.getNumStanze() != 0) candidati = candidati.stream().filter(i -> i.getNumStanze() >= filtri.getNumStanze())
-                .toList();
-        if (filtri.getPiano() != 0) candidati = candidati.stream().filter(i -> i.getPiano() >= filtri.getPiano())
-                .toList();
-        if (filtri.getPrezzoMin() != 0 && filtri.getPrezzoMax() != 0) {
-            candidati = candidati.stream().filter(i -> i.getPrezzo() >= filtri.getPrezzoMin() && i.getPrezzo() <= filtri.getPrezzoMax())
-                    .toList();
-        } else if (filtri.getPrezzoMin() != 0 && filtri.getPrezzoMax() == 0) {
-            candidati = candidati.stream().filter(i -> i.getPrezzo() >= filtri.getPrezzoMin())
-                    .toList();
-        } else if (filtri.getPrezzoMin() == 0 && filtri.getPrezzoMax() != 0){
-            candidati = candidati.stream().filter(i -> i.getPrezzo() <= filtri.getPrezzoMax())
-                    .toList();
+    private List<Immobile> filtraImmobili(List<Immobile> candidati, Filtri filtri) {
+        if (candidati.isEmpty()) {
+            return candidati;
         }
-        if (filtri.getSuperficie() != 0) candidati = candidati.stream().filter(i -> i.getSuperficie() >= filtri.getSuperficie())
+
+        // Inizia con un predicato che accetta tutto
+        Predicate<Immobile> filtroComplessivo = immobile -> true;
+
+        // Aggiungi i filtri booleani solo se sono impostati a true
+        if (filtri.getAscensore()) {
+            filtroComplessivo = filtroComplessivo.and(Immobile::getAscensore);
+        }
+        if (filtri.getBalcone()) {
+            filtroComplessivo = filtroComplessivo.and(Immobile::getBalcone);
+        }
+        if (filtri.getCantina()) {
+            filtroComplessivo = filtroComplessivo.and(Immobile::getCantina);
+        }
+        if (filtri.getPortineria()) {
+            filtroComplessivo = filtroComplessivo.and(Immobile::getPortineria);
+        }
+        if (filtri.getClimatizzazione()) {
+            filtroComplessivo = filtroComplessivo.and(Immobile::getClimatizzazione);
+        }
+
+        // Aggiungi i filtri basati su valori specifici
+        if (filtri.getClasseEnergetica() != null) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getClasseEnergetica().equals(filtri.getClasseEnergetica()));
+        }
+        if (filtri.getNumBagni() != 0) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getNumBagni() >= filtri.getNumBagni());
+        }
+        if (filtri.getNumStanze() != 0) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getNumStanze() >= filtri.getNumStanze());
+        }
+        if (filtri.getPiano() != 0) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getPiano() >= filtri.getPiano());
+        }
+
+        // Gestione del filtro prezzo
+        if (filtri.getPrezzoMin() != 0 && filtri.getPrezzoMax() != 0) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin() && i.getPrezzo() <= filtri.getPrezzoMax());
+        } else if (filtri.getPrezzoMin() != 0) { // Max è 0
+            filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin());
+        } else if (filtri.getPrezzoMax() != 0) { // Min è 0
+            filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() <= filtri.getPrezzoMax());
+        }
+
+        if (filtri.getSuperficie() != 0) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getSuperficie() >= filtri.getSuperficie());
+        }
+        if (filtri.getTipoImmobile() != null) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getTipoImmobile().equals(filtri.getTipoImmobile()));
+        }
+        if (filtri.getTipoVendita() != null) {
+            filtroComplessivo = filtroComplessivo.and(i -> i.getTipoVendita().equals(filtri.getTipoVendita()));
+        }
+
+        return candidati.stream()
+                .filter(filtroComplessivo)
                 .toList();
-        if (filtri.getTipoImmobile() != null) candidati = candidati.stream().filter(i -> i.getTipoImmobile().equals(filtri.getTipoImmobile()))
-                .toList();
-        if (filtri.getTipoVendita() != null) candidati = candidati.stream().filter(i -> i.getTipoVendita().equals(filtri.getTipoVendita()))
-                .toList();
-        return candidati;
+    }
+
+    private List<ImmobileEImmagini> getImmagini(List<Immobile> candidati) {
+
+        List<ImmobileEImmagini> immobileEImmagini = new ArrayList<>();
+
+        try {
+            storageManager = new GoogleCloudStorageManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        storageService = new GoogleCloudStorageService(storageManager);
+
+        for(Immobile i : candidati){
+            List<ImmagineImmobile> imm = immagineImmobileRepository.findAllByImmobile(i);
+            List<String> immagini = new ArrayList<>();
+
+            for(ImmagineImmobile j : imm){
+                try {
+                    immagini.add(storageService.downloadHouseImage(j.getUrlImmagine()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            immobileEImmagini.add(new ImmobileEImmagini(i, immagini));
+        }
+
+        return immobileEImmagini;
     }
 
     public String getAuthorities() {

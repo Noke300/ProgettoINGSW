@@ -40,7 +40,8 @@ public class ClientHandler extends Thread {
 	    }
 	    return response;
 	}*/
-   
+
+    //TODO
    public JSONObject handleDownloadRequest(JSONObject request) {
        JSONObject response = new JSONObject();
        try {

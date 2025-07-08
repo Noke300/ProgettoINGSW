@@ -92,6 +92,7 @@ public class AgenziaImmobiliareController {
     }
 
     @GetMapping("/visualizzaImmobili")
+    //TODO ImmobiliEImmagini
     public List<Immobile> visualizzaImmobili(){
         return agenziaImmobiliareServiceDB.getImmobili();
     }

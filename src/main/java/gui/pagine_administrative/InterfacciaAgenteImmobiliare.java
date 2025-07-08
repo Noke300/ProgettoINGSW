@@ -139,19 +139,23 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 visitePerGiorno.putIfAbsent(giornoChiave, new ArrayList<>());
                 visitePerGiorno.get(giornoChiave).add(visita);
 
-                if (!coloredDates.contains(new ColoredDate(nuovaData))) {
-                    coloredDates.add(new ColoredDate(nuovaData));
+                if (!coloredDates.contains(new ColoredDate(nuovaData,visita.getConferma()))) {
+                    coloredDates.add(new ColoredDate(nuovaData,visita.getConferma()));
                 }
+
+
+                dateColorManager.setColoredDates(coloredDates);
+                dateColorManager.updateDayColors(visita.getConferma());
+
+                calendar.addPropertyChangeListener(evt -> {
+                    if ("calendar".equals(evt.getPropertyName())) {
+                        dateColorManager.updateDayColors(visita.getConferma());
+                    }
+                });
             }
 
-            dateColorManager.setColoredDates(coloredDates);
-            dateColorManager.updateDayColors();
 
-            calendar.addPropertyChangeListener(evt -> {
-                if ("calendar".equals(evt.getPropertyName())) {
-                    dateColorManager.updateDayColors();
-                }
-            });
+
             JPanel controlPanel = new JPanel(new BorderLayout());
 
             JButton addDateButton = new JButton("Info Giorno");

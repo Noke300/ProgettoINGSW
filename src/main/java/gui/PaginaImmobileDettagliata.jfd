@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -88,6 +88,7 @@ new FormModel {
 				"text": ">"
 				"font": new java.awt.Font( "Segoe UI", 1, 24 )
 				"background": new java.awt.Color( 255, 255, 255, 0 )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "destraImg", true ) )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "East"
 			} )

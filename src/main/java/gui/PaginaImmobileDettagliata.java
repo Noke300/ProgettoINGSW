@@ -6,9 +6,11 @@ package gui;
 
 
 import java.awt.*;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -25,6 +28,7 @@ import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.pagine_clienti.LogIn;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import model.Offerta;
 import model.Visita;
 import net.miginfocom.swing.*;
@@ -46,9 +50,14 @@ public class PaginaImmobileDettagliata extends JPanel {
     private static final int GIORNI_METEO = 14;
     IconClass iconSet = new IconClass();
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    int index = 0;
+    JLabel imageLabel = new JLabel();
 
-    public PaginaImmobileDettagliata(JFrame frame, Immobile immobile, Controller control, String token) {
+    public PaginaImmobileDettagliata(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
         initComponents();
+
+        Immobile immobile = immobileEImmagini.getImmobile();
+        List<String> immagini = immobileEImmagini.getImmagini();
 
         labelPrezzo.setText(String.valueOf(immobile.getPrezzo())+" €");
         labelPrezzo.setFont(new Font("Segoe UI", Font.BOLD,28));
@@ -85,10 +94,21 @@ public class PaginaImmobileDettagliata extends JPanel {
 
 
         try {
-            URL imageUrl = getClass().getResource("/CasaProva3.jpeg");
-            if (imageUrl != null) {
-                ImageIcon icon = new ImageIcon(imageUrl);
-                JLabel imageLabel = new JLabel(icon);
+            if (!immagini.isEmpty()) {
+                // Decodifica la stringa Base64 in un array di byte
+                byte[] imageBytes = Base64.getDecoder().decode(immagini.getFirst());
+
+                // Converte l'array di byte in un'immagine
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                Image image = ImageIO.read(bis);
+                bis.close();
+
+                Image scaledImage = image.getScaledInstance(600, 450, Image.SCALE_SMOOTH);
+                imageLabel.setIcon(new ImageIcon(scaledImage));
+
+                imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                imageLabel.setVerticalAlignment(SwingConstants.CENTER);
+
                 imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 panelImmagineImmobile.add(imageLabel, BorderLayout.CENTER);
             } else {
@@ -314,8 +334,75 @@ public class PaginaImmobileDettagliata extends JPanel {
         });
 
         buttonBack.addActionListener(e ->{
+            //TODO
+        });
 
+        JPanel pannelloContenuto = new JPanel();
 
+        buttonDestraImg.addActionListener( e ->{
+            try {
+                if (!immagini.isEmpty()) {
+                    if (index+1 >= immagini.size()) index = -1;
+                    // Decodifica la stringa Base64 in un array di byte
+                    byte[] imageBytes = Base64.getDecoder().decode(immagini.get(++index));
+
+                    // Converte l'array di byte in un'immagine
+                    ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                    Image image = ImageIO.read(bis);
+                    bis.close();
+
+                    Image scaledImage = image.getScaledInstance(600, 450, Image.SCALE_SMOOTH);
+                    imageLabel.setIcon(new ImageIcon(scaledImage));
+
+                    imageLabel.revalidate();
+                    imageLabel.repaint();
+
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                } else {
+                    JLabel errorLabel = new JLabel("Image not found");
+                    errorLabel.setOpaque(true);
+                    errorLabel.setBackground(Color.RED);
+                    panelImmagineImmobile.add(errorLabel, BorderLayout.CENTER);
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        buttonSinistraImg.addActionListener( e ->{
+            try {
+                if (!immagini.isEmpty()) {
+                    if (index-1 < 0) index = immagini.size();
+                    // Decodifica la stringa Base64 in un array di byte
+                    byte[] imageBytes = Base64.getDecoder().decode(immagini.get(--index));
+
+                    // Converte l'array di byte in un'immagine
+                    ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                    Image image = ImageIO.read(bis);
+                    bis.close();
+
+                    Image scaledImage = image.getScaledInstance(600, 450, Image.SCALE_SMOOTH);
+                    imageLabel.setIcon(new ImageIcon(scaledImage));
+
+                    imageLabel.revalidate();
+                    imageLabel.repaint();
+
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                } else {
+                    JLabel errorLabel = new JLabel("Image not found");
+                    errorLabel.setOpaque(true);
+                    errorLabel.setBackground(Color.RED);
+                    panelImmagineImmobile.add(errorLabel, BorderLayout.CENTER);
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
         // Imposta dimensioni preferite ai pannelli chiave
@@ -326,7 +413,6 @@ public class PaginaImmobileDettagliata extends JPanel {
         panelChart.setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
 
 // Crea il contenuto verticale scrollabile
-        JPanel pannelloContenuto = new JPanel();
         pannelloContenuto.setLayout(new BoxLayout(pannelloContenuto, BoxLayout.Y_AXIS));
         pannelloContenuto.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
@@ -377,10 +463,14 @@ public class PaginaImmobileDettagliata extends JPanel {
 
     }
 
+    private void destraImg(ActionEvent e) {
+        // TODO add your code here
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -395,6 +485,12 @@ public class PaginaImmobileDettagliata extends JPanel {
         buttonSinistraImg = new JButton();
 
         //======== this ========
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder
+        ( 0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border
+        .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt
+        . Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void
+        propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
+        ;} } );
         setLayout(new MigLayout(
             "fill,hidemode 3",
             // columns
@@ -469,21 +565,25 @@ public class PaginaImmobileDettagliata extends JPanel {
 
         //======== panelChart ========
         {
-            panelChart.setBorder(new CompoundBorder(new TitledBorder(new EmptyBorder(
-            0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",TitledBorder.CENTER,TitledBorder
-            .BOTTOM,new Font("Dia\u006cog",Font.BOLD,12),Color.
-            red),panelChart. getBorder()));panelChart. addPropertyChangeListener(new PropertyChangeListener(){@Override public void propertyChange(PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.getPropertyName()))throw new RuntimeException();}});
+            panelChart.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing
+            .border.EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder
+            .CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.
+            awt.Font.BOLD,12),java.awt.Color.red),panelChart. getBorder()))
+            ;panelChart. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
+            ){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException();}})
+            ;
             panelChart.setLayout(new BorderLayout());
         }
 
         //======== panelImmagineImmobile ========
         {
             panelImmagineImmobile.setBorder(new EtchedBorder(EtchedBorder.RAISED, UIManager.getColor("Actions.Green"), null));
-            panelImmagineImmobile.setBorder (new CompoundBorder( new TitledBorder (new EmptyBorder( 0
-            , 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", TitledBorder. CENTER, TitledBorder. BOTTOM
-            , new Font ("Dia\u006cog" ,Font .BOLD ,12 ), Color. red) ,
-            panelImmagineImmobile. getBorder( )) ); panelImmagineImmobile. addPropertyChangeListener (new PropertyChangeListener( ){ @Override public void propertyChange (PropertyChangeEvent e
-            ) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+            panelImmagineImmobile.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
+            EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax.swing
+            .border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),
+            java.awt.Color.red),panelImmagineImmobile. getBorder()));panelImmagineImmobile. addPropertyChangeListener(new java.beans.PropertyChangeListener()
+            {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.getPropertyName()))
+            throw new RuntimeException();}});
             panelImmagineImmobile.setLayout(new BorderLayout(1, 1));
 
             //---- buttonDestraImg ----
@@ -502,7 +602,7 @@ public class PaginaImmobileDettagliata extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JPanel panelTopBar;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;

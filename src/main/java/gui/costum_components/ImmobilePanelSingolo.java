@@ -86,7 +86,7 @@ public class ImmobilePanelSingolo {
                     if (e.getClickCount() == 1) {
                         selectPanel(panel, selectedPanelRef);
                     } else if (e.getClickCount() == 2) {
-                        navigateToDetailsPage(frame, immobile, control, token);
+                        navigateToDetailsPage(frame, immobileEImmagini, control, token);
                     }
                 }
             });
@@ -94,9 +94,9 @@ public class ImmobilePanelSingolo {
             return panel;
         }
 
-        private void navigateToDetailsPage(JFrame frame, Immobile immobile, Controller control, String token) {
+        private void navigateToDetailsPage(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
             if (frame != null) {
-                PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame, immobile, control, token);
+                PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame, immobileEImmagini, control, token);
                 frame.setContentPane(detailsPage);
                 frame.revalidate();
                 frame.repaint();

@@ -268,4 +268,24 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
 
         return immobileEImmagini;
     }
+
+    public ResponseEntity<String> confermaVisista(Visita visita) {
+        if (!visitaRepository.existsById(visita.getId())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Non puoi confernare una visita che non esiste");
+        }
+        if (!visita.getImmobile().getAgente().equals(getAgentByMail(getEmailAutenticato()))) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Non puoi confernare una visita per un immobile non tuo");
+        }
+        if (visita.getConferma()) {
+            visitaRepository.save(visita);
+            return ResponseEntity.ok("Visita confermata");
+        }else{
+            visitaRepository.delete(visita);
+            return ResponseEntity.ok("Visita rifiutata");
+        }
+    }
 }

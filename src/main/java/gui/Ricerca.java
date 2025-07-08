@@ -43,18 +43,13 @@ public class Ricerca extends JPanel {
         internalFrameFiltri.setVisible(false);
 
         setUpComponents();
-        List<JCheckBox> checkBoxesList = new ArrayList<>();
-        checkBoxesList.add(schoolsCheckBox);
-        checkBoxesList.add(hospitalsCheckBox);
-        checkBoxesList.add(parkCheckBox);
-
         // --- 4. Auto-completamento ---
         autoCompleteAddress.setupSearchAutocomplete(searchField);
 
         // --- 5. Azione del pulsante "Cerca" ---//--- 6. Menu Opzioni ---
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
 
-        setUpOpzioniMenu(frame,control,checkBoxesList);
+        setUpOpzioniMenu(frame,control);
 
         //--- 7. Filtri  ---
         buttonFiltri.addActionListener(e -> internalFrameFiltri.setVisible(!internalFrameFiltri.isVisible()));
@@ -68,9 +63,6 @@ public class Ricerca extends JPanel {
             }
             comboBoxClasseE.setSelectedIndex(0);
             spinnerPiani.setValue(FilterString);
-            hospitalsCheckBox.setSelected(false);
-            parkCheckBox.setSelected(false);
-            schoolsCheckBox.setSelected(false);
 
             toggleButtonBalcone.setSelected(false);
             toggleButtonBalcone.setBackground(Color.WHITE);
@@ -244,7 +236,7 @@ public class Ricerca extends JPanel {
 
     //Funzione Cambio Cursore
 
-    private void setUpOpzioniMenu(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+    private void setUpOpzioniMenu(JFrame frame, Controller control) {
 
         searchButton.addActionListener(e -> performSearchAction(frame,control));
         //Cerca con Invio
@@ -345,7 +337,7 @@ public class Ricerca extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         labelTitolo = new JLabel();
         mapButton = new JButton();
         searchButton = new JButton();
@@ -373,9 +365,6 @@ public class Ricerca extends JPanel {
         comboBoxClasseE = new JComboBox<>();
         labelPiani = new JLabel();
         spinnerPiani = new JSpinner();
-        schoolsCheckBox = new JCheckBox();
-        parkCheckBox = new JCheckBox();
-        hospitalsCheckBox = new JCheckBox();
         label1 = new JLabel();
         toggleButtonAscensore = new JToggleButton();
         toggleButtonBalcone = new JToggleButton();
@@ -388,11 +377,6 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
-        0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
-        . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
-        red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
-        beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -567,14 +551,12 @@ public class Ricerca extends JPanel {
                 "[]" +
                 "[]" +
                 "[]" +
-                "[]" +
-                "[]0" +
                 "[]para" +
-                "[]para" +
+                "[]rel" +
                 "[]para" +
                 "[]para" +
                 "[]0" +
-                "[27,center]"));
+                "[27,center]ind"));
 
             //---- labelTipoVendita ----
             labelTipoVendita.setText("Tipo Di Vendita");
@@ -584,7 +566,9 @@ public class Ricerca extends JPanel {
 
             //---- comboBoxTipVendita ----
             comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Qualsiasi"
+                "Qualsiasi",
+                "Affitto",
+                "Vendita"
             }));
             comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(comboBoxTipVendita, "cell 2 0");
@@ -618,10 +602,17 @@ public class Ricerca extends JPanel {
             internalFrameFiltri.add(labelClasseE, "cell 0 3 2 1");
 
             //---- comboBoxClasseE ----
-            comboBoxClasseE.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Qualsiasi"
-            }));
             comboBoxClasseE.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            comboBoxClasseE.setModel(new DefaultComboBoxModel<>(new String[] {
+                "A+ ",
+                "A ",
+                "B ",
+                "C ",
+                "D ",
+                "E ",
+                "F ",
+                "G"
+            }));
             internalFrameFiltri.add(comboBoxClasseE, "cell 2 3");
 
             //---- labelPiani ----
@@ -635,73 +626,55 @@ public class Ricerca extends JPanel {
             spinnerPiani.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(spinnerPiani, "cell 2 4");
 
-            //---- schoolsCheckBox ----
-            schoolsCheckBox.setHorizontalAlignment(SwingConstants.TRAILING);
-            schoolsCheckBox.setText("Scuole");
-            schoolsCheckBox.setVerticalAlignment(SwingConstants.BOTTOM);
-            internalFrameFiltri.add(schoolsCheckBox, "cell 0 5,align left bottom,grow 0 0");
-
-            //---- parkCheckBox ----
-            parkCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            parkCheckBox.setText("Parchi");
-            internalFrameFiltri.add(parkCheckBox, "cell 1 5,align left bottom,grow 0 0");
-
-            //---- hospitalsCheckBox ----
-            hospitalsCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            hospitalsCheckBox.setText("Trasporti");
-            hospitalsCheckBox.setToolTipText("");
-            hospitalsCheckBox.setVerticalAlignment(SwingConstants.CENTER);
-            internalFrameFiltri.add(hospitalsCheckBox, "cell 0 6,align left bottom,grow 0 0");
-
             //---- label1 ----
             label1.setText("Altre Caratteristiche");
             label1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
             label1.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(label1, "cell 0 7 3 1,alignx center,growx 0");
+            internalFrameFiltri.add(label1, "cell 0 5 3 1,alignx center,growx 0");
 
             //---- toggleButtonAscensore ----
             toggleButtonAscensore.setText("Ascensore");
             toggleButtonAscensore.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             toggleButtonAscensore.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonAscensore, "cell 0 8");
+            internalFrameFiltri.add(toggleButtonAscensore, "cell 0 6");
 
             //---- toggleButtonBalcone ----
             toggleButtonBalcone.setText("Balcone ");
             toggleButtonBalcone.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             toggleButtonBalcone.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonBalcone, "cell 1 8");
+            internalFrameFiltri.add(toggleButtonBalcone, "cell 1 6");
 
             //---- toggleButtonCantina ----
             toggleButtonCantina.setText("Cantina");
             toggleButtonCantina.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             toggleButtonCantina.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonCantina, "cell 2 8");
+            internalFrameFiltri.add(toggleButtonCantina, "cell 2 6");
 
             //---- toggleButtonClimatizzazione ----
             toggleButtonClimatizzazione.setText("Climatizzazione");
             toggleButtonClimatizzazione.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             toggleButtonClimatizzazione.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonClimatizzazione, "cell 0 9");
+            internalFrameFiltri.add(toggleButtonClimatizzazione, "cell 0 7");
 
             //---- toggleButtonPortineria ----
             toggleButtonPortineria.setText("Portineria");
             toggleButtonPortineria.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             toggleButtonPortineria.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
-            internalFrameFiltri.add(toggleButtonPortineria, "cell 1 9");
+            internalFrameFiltri.add(toggleButtonPortineria, "cell 1 7");
 
             //---- separator1 ----
             separator1.setBackground(Color.black);
-            internalFrameFiltri.add(separator1, "cell 0 10 3 1,aligny bottom,grow 100 0");
+            internalFrameFiltri.add(separator1, "cell 0 8 3 1,aligny bottom,grow 100 0");
 
             //---- buttonCancellaFiltri ----
             buttonCancellaFiltri.setText("Cancella");
             buttonCancellaFiltri.setBackground(new Color(0x603c3e));
-            internalFrameFiltri.add(buttonCancellaFiltri, "cell 1 11,alignx center,grow 0 100");
+            internalFrameFiltri.add(buttonCancellaFiltri, "cell 1 9,alignx center,grow 0 100");
 
             //---- buttonConfermaFiltri ----
             buttonConfermaFiltri.setText("Conferma");
             buttonConfermaFiltri.setBackground(UIManager.getColor("Actions.Green"));
-            internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
+            internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 9,alignx center,grow 0 100");
         }
         add(internalFrameFiltri, "east");
 
@@ -714,7 +687,7 @@ public class Ricerca extends JPanel {
 
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JLabel labelTitolo;
     private JButton mapButton;
     private JButton searchButton;
@@ -739,12 +712,9 @@ public class Ricerca extends JPanel {
     private JLabel labelStanze;
     private JSpinner spinnerStanze;
     private JLabel labelClasseE;
-    private JComboBox<String> comboBoxClasseE;
+    protected JComboBox<String> comboBoxClasseE;
     private JLabel labelPiani;
     private JSpinner spinnerPiani;
-    private JCheckBox schoolsCheckBox;
-    private JCheckBox parkCheckBox;
-    private JCheckBox hospitalsCheckBox;
     private JLabel label1;
     private JToggleButton toggleButtonAscensore;
     private JToggleButton toggleButtonBalcone;

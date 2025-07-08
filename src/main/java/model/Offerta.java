@@ -22,18 +22,21 @@ public class Offerta {
     @Nullable
     private Boolean esitoOfferta;
 
+    private Boolean contrOfferta;
+
     public Offerta(Immobile immobile,Double prezzoOfferta) {
         this.immobile = immobile;
         this.prezzoOfferta = prezzoOfferta;
     }
 
-    public Offerta(@Nullable Cliente cliente, Date dataOfferta, Double prezzoOfferta, String nominativo, Immobile immobile) {
+    public Offerta(@Nullable Cliente cliente, Date dataOfferta, Double prezzoOfferta, String nominativo, Immobile immobile, Boolean contrOfferta) {
         this.esitoOfferta = null;
         this.cliente = cliente;
         this.dataOfferta = dataOfferta;
         this.prezzoOfferta = prezzoOfferta;
         this.nominativo = cliente.getCognome();
         this.immobile = immobile;
+        this.contrOfferta = contrOfferta;
     }
 
     public Immobile getImmobile() {
@@ -82,5 +85,13 @@ public class Offerta {
 
     public void setNominativo(String nominativo) {
         this.nominativo = nominativo;
+    }
+
+    public Boolean getContrOfferta() {
+        return contrOfferta;
+    }
+
+    public void setContrOfferta(Boolean contrOfferta) {
+        this.contrOfferta = contrOfferta;
     }
 }

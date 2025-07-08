@@ -7,9 +7,12 @@ import java.util.Date;
 public class ColoredDate {
     private final IconClass iconSet = new IconClass();
     private final Date date;
+    private final boolean confermato;
     private final Color color = iconSet.getMainColor();
+    private final Color colorNonConfermati = Color.CYAN;
 
-    public ColoredDate(Date date) {
+
+    public ColoredDate(Date date, boolean confermato) {
         // Normalize the date to avoid time-related issues
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -18,14 +21,16 @@ public class ColoredDate {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         this.date = cal.getTime();
+
+        this.confermato = confermato;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public Date getDate() {
-        return (Date) date.clone();
+    public Color getColorNonConfermati() {
+        return colorNonConfermati;
     }
 
     public boolean isSameDay(Date otherDate) {

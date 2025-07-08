@@ -28,11 +28,12 @@ public class DateColorManager {
     }
 
     public void setColoredDates(List<ColoredDate> dates) {
+        boolean flag = true;
         this.coloredDates = new ArrayList<>(dates);
-        updateDayColors();
+        updateDayColors(flag);
     }
 
-    public void updateDayColors() {
+    public void updateDayColors(boolean confermato) {
         if (dayButtons == null) return;
 
         // Reset all buttons to default
@@ -72,7 +73,11 @@ public class DateColorManager {
                         // Check if this button's date matches any colored date
                         for (ColoredDate coloredDate : coloredDates) {
                             if (coloredDate.isSameDay(buttonDate)) {
-                                button.setBackground(coloredDate.getColor());
+                                if(confermato) {
+                                    button.setBackground(coloredDate.getColor());
+                                }else{
+                                    button.setBackground(coloredDate.getColorNonConfermati());
+                                }
                                 break;
                             }
                         }

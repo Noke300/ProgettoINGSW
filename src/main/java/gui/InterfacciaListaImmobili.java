@@ -5,12 +5,9 @@
 package gui;
 
 import controller.Controller;
-import controller.ControllerAdministration;
-import controller.ControllerClienti;
 import gui.costum_components.*;
-import gui.pagine_administrative.InserimentoImmobile;
 import model.Immobile;
-import model.Indirizzo;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -18,7 +15,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +38,7 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, Controller control, String token, JPanel internalFrameFiltri, List<Immobile> immobili) {
+    public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, Controller control, String token, JPanel internalFrameFiltri, List<ImmobileEImmagini> immobiliEImmagini) {
         this.token=token;
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,this.token,menuBarOpzioni,menuOpzioni);
@@ -49,10 +46,15 @@ public class InterfacciaListaImmobili extends JPanel {
         setUpOpzioniMenu(frame,control);
         setUpComponents();
 
+        List<Immobile> immobili = new ArrayList<>();
+        for (ImmobileEImmagini i : immobiliEImmagini){
+            immobili.add(i.getImmobile());
+        }
+
         searchButton.addActionListener(e -> {
             if(!searchField.getText().isEmpty()) {
                 panelMap.removeAll();
-                new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap,immobili);
+                new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap, immobili);
                 panelMap.revalidate();
                 panelMap.repaint();
             }else{
@@ -94,8 +96,8 @@ public class InterfacciaListaImmobili extends JPanel {
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
         Dimension dim  = new Dimension(820,289);
-        for (Immobile immobile : immobili) {
-            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
+        for (ImmobileEImmagini immobileEImmagini : immobiliEImmagini) {
+            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,control,token,selectedPanel);
             panel.setMaximumSize(dim);
             panel.setPreferredSize(dim);
             panelListaImmobile.add(panel);

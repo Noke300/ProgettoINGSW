@@ -3,8 +3,10 @@ package gui.costum_components;
 import controller.Controller;
 import gui.PaginaImmobileDettagliata;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.MigLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -12,7 +14,9 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.Base64;
 
 public class ImmobilePanelSingolo {
     private final Color borderColor = new Color(24, 122, 26);
@@ -36,16 +40,26 @@ public class ImmobilePanelSingolo {
             }
         }
 
-        public JPanel createImmobileSingoloPanel(JFrame frame, Immobile immobile, Controller control, String token, JPanel[] selectedPanelRef) {
+        public JPanel createImmobileSingoloPanel(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token, JPanel[] selectedPanelRef) {
             JPanel panel = new JPanel();
+            Immobile immobile = immobileEImmagini.getImmobile();
             panel.setBorder(BorderStyler.createStyledBorder(immobile.getTipoVendita(), borderColor, 1, borderFont));
             panel.setPreferredSize(new Dimension(780, 170));
             panel.setLayout(new MigLayout("hidemode 3", "[325][250][325]", "[95][95][95][95]"));
 
             try {
-                URL imageUrl = getClass().getResource("/CasaProva2.jpeg");
-                if (imageUrl != null) {
-                    JLabel imageLabel = new JLabel(new ImageIcon(imageUrl));
+                if (immobileEImmagini.getImmagini() != null && !immobileEImmagini.getImmagini().isEmpty()) {
+
+                    // Decodifica la stringa Base64 in un array di byte
+                    byte[] imageBytes = Base64.getDecoder().decode(immobileEImmagini.getImmagini().get(0));
+
+                    // Converte l'array di byte in un'immagine
+                    ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                    Image image = ImageIO.read(bis);
+                    bis.close();
+
+                    Image scaledImage = image.getScaledInstance(330, 180, Image.SCALE_SMOOTH);
+                    JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
                     imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                     panel.add(imageLabel, "cell 0 0 2 2");
                 } else {

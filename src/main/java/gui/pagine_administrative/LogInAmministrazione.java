@@ -17,6 +17,7 @@ import controller.ControllerAdministration;
 import controller.NotificationClient;
 import gui.costum_components.BottoniOpzioni;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 
 /**
@@ -50,9 +51,9 @@ public class LogInAmministrazione extends JPanel {
                      notifiche.start();
 
                      ControllerAdministration controlAdmin = new ControllerAdministration();
-                     List<Immobile> immobili = controlAdmin.fetchImmobili(token1);
+                     List<ImmobileEImmagini> immobiliEImmagini = controlAdmin.fetchImmobili(token1);
                      BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobili));
+                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobiliEImmagini));
                      Arrays.fill(pass, ' ');
                      frame.revalidate();
                      frame.repaint();

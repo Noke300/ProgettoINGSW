@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.AgenteImmobiliare;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import model.Visita;
 
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class ControllerAdministration extends Controller{
 
 
 
-    public List<Immobile> fetchImmobili(String token) {
+    public List<ImmobileEImmagini> fetchImmobili(String token) {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request;
@@ -85,7 +86,7 @@ public class ControllerAdministration extends Controller{
 
         if (response.statusCode() == 200) {
             Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Immobile>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<ImmobileEImmagini>>() {}.getType();
             return gson.fromJson(response.body(), listType);
         } else {
             throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());

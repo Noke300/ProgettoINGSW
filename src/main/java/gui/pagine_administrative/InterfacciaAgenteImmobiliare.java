@@ -18,6 +18,7 @@ import controller.ControllerAdministration;
 
 import gui.costum_components.*;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -43,9 +44,15 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<Immobile> immobili) {
+    public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<ImmobileEImmagini> immobiliEImmagini) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+
+        List<Immobile> immobili = new ArrayList<>();
+        for (ImmobileEImmagini i : immobiliEImmagini){
+            immobili.add(i.getImmobile());
+        }
+
         /*
         ControllerAdministration controller = new ControllerAdministration();
         ArrayList date = new ArrayList();
@@ -67,9 +74,9 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
         Dimension dim  = new Dimension(820,289);
-        for (Immobile immobile : immobili) {
-            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobile,control,token,selectedPanel);
-            panel.setName(immobile.getId());
+        for (ImmobileEImmagini immobileEImmagini : immobiliEImmagini) {
+            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,control,token,selectedPanel);
+            panel.setName(immobileEImmagini.getImmobile().getId());
             panel.setMaximumSize(dim);
             panel.setPreferredSize(dim);
             panelListaImmobile.add(panel);

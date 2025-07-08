@@ -9,6 +9,7 @@ import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_clienti.ClientPersonalPage;
 import gui.pagine_clienti.LogIn;
 import model.Immobile;
+import model.ImmobileEImmagini;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,8 +64,8 @@ private String token;
                 menuOpzioni.setVisible(false);
                 menuBarOpzioni.setVisible(false);
                 ControllerAdministration controlAdmin = new ControllerAdministration();
-                List<Immobile> immobiles = controlAdmin.fetchImmobili(token);
-                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,this,controlAdmin, this.token,immobiles ));
+                List<ImmobileEImmagini> immobileEImmagini = controlAdmin.fetchImmobili(token);
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,this,controlAdmin, this.token,immobileEImmagini ));
                 frame.revalidate();
                 frame.repaint();
             }

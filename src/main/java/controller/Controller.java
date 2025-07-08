@@ -39,7 +39,7 @@ public class Controller {
             .setDateFormat("yyyy-MM-dd")
             .create();//oggetto che serve a fare
 
-    public List<Immobile> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
+    public List<ImmobileEImmagini> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = null;
         HttpResponse<String> response;
@@ -77,7 +77,7 @@ public class Controller {
       //  client.close();
 
         if (response.statusCode() == 200) {
-            Type listType = new TypeToken<ArrayList<Immobile>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<ImmobileEImmagini>>() {}.getType();
             return gson.fromJson(response.body(), listType);
         } else {
             throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());

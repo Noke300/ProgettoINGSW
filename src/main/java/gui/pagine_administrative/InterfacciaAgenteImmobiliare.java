@@ -18,7 +18,11 @@ import controller.ControllerAdministration;
 
 import gui.costum_components.*;
 import model.Immobile;
+<<<<<<< Updated upstream
 import model.ImmobileEImmagini;
+=======
+import model.Visita;
+>>>>>>> Stashed changes
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -47,6 +51,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<ImmobileEImmagini> immobiliEImmagini) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+<<<<<<< Updated upstream
 
         List<Immobile> immobili = new ArrayList<>();
         for (ImmobileEImmagini i : immobiliEImmagini){
@@ -60,16 +65,17 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         date = controller.recuperoData(token);
          */
 
+=======
+>>>>>>> Stashed changes
 
+        //TODO notifiche non interaggibile temporanio
         LogInAmministrazione.notifiche.addListener(messaggio -> {
             System.out.println("Ricevuto: " + messaggio);
 
             SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Notifica: " + messaggio));
         });
 
-
-
-        mapLoader = new MapLoader(geoPos, checkBoxesList, panelMap, immobili);
+        mapLoader = new MapLoader(geoPos, panelMap, immobili);
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
@@ -106,26 +112,31 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
         //--Calendario
         // Then in your initialization or constructor method
+        IconClass iconSet = new IconClass();
         buttonCalendario.setIcon(iconSet.getCalendarioIcon());
         buttonCalendario.setText(LocalDate.now().toString());
 
+        // Calendario
         JCalendar calendar = new JCalendar();
         calendar.setLocale(Locale.ITALY);
         JDayChooser dayChooser = calendar.getDayChooser();
 
-// Create a new implementation of DateColorManager
+        // Manager per colorare le date
         DateColorManager dateColorManager = new DateColorManager(dayChooser);
 
-// Create dates properly using Calendar
-        Calendar cal = Calendar.getInstance();
-        cal.set(2025, Calendar.MAY, 14);
-        coloredDates.add(new ColoredDate(cal.getTime()));
-        cal.set(2025, Calendar.MAY, 20);
-        coloredDates.add(new ColoredDate(cal.getTime()));
-
-// Initialize the date manager with the colored dates right away
+        // Simula lista visite (sostituisci con: control.getVisite(token))
+        List<Visita> date = new ArrayList<>();
+        List<ColoredDate> coloredDates = new ArrayList<>();
+        for (Visita visita : date) {
+            Date dataVisita = visita.getDataVisita();
+            ColoredDate coloredDate = new ColoredDate(dataVisita);
+            coloredDates.add(coloredDate);
+        }
+        // Applica e aggiorna colori
         dateColorManager.setColoredDates(coloredDates);
+        dateColorManager.updateDayColors(); // aggiornamento iniziale
 
+        // Aggiorna colori quando cambia il mese
         calendar.addPropertyChangeListener(evt -> {
             if ("calendar".equals(evt.getPropertyName())) {
                 dateColorManager.updateDayColors();
@@ -146,8 +157,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             calendarPopup.setLocationRelativeTo(frame);
             calendarPopup.setVisible(true);
 
-            // We don't need to add this listener every time the calendar button is clicked
-            // This should be set up once outside the action listener
         });
 
 // Set up the addDateButton action listener outside the calendar button action listener

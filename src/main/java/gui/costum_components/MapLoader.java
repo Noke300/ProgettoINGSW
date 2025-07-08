@@ -37,7 +37,7 @@ public class MapLoader {
     }
 
 
-    public MapLoader(GeoPosition geoPosition, @Nullable List<JCheckBox> checkBoxesList, JPanel mapFrame, List<Immobile> immobiles) {
+    public MapLoader(GeoPosition geoPosition, JPanel mapFrame, List<Immobile> immobiles) {
         // Barra di ricerca combinata
 
         // Interactive Map with Markers

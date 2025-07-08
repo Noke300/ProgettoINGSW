@@ -38,7 +38,11 @@ public class InterfacciaListaImmobili extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
+<<<<<<< Updated upstream
     public InterfacciaListaImmobili(JFrame frame, List<JCheckBox> checkBoxesList, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, Controller control, String token, JPanel internalFrameFiltri, List<ImmobileEImmagini> immobiliEImmagini) {
+=======
+    public InterfacciaListaImmobili(JFrame frame, BottoniOpzioni bottoniOpzioni, GeoPosition geoPosition, Controller control, String token, JPanel internalFrameFiltri, List<Immobile> immobili) {
+>>>>>>> Stashed changes
         this.token=token;
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,this.token,menuBarOpzioni,menuOpzioni);
@@ -54,7 +58,11 @@ public class InterfacciaListaImmobili extends JPanel {
         searchButton.addActionListener(e -> {
             if(!searchField.getText().isEmpty()) {
                 panelMap.removeAll();
+<<<<<<< Updated upstream
                 new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), checkBoxesList, panelMap, immobili);
+=======
+                new MapLoader(Objects.requireNonNull(MapLoader.getCoordinatesFromAddress(searchField.getText())), panelMap,immobili);
+>>>>>>> Stashed changes
                 panelMap.revalidate();
                 panelMap.repaint();
             }else{
@@ -66,7 +74,7 @@ public class InterfacciaListaImmobili extends JPanel {
         });
         //--- 7. Filtri  ---
         JButton buttonConfermaFiltri = new JButton("Conferma");
-        internalFrameFiltri.remove(21);
+        internalFrameFiltri.remove(18);
         internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
 
 
@@ -89,7 +97,7 @@ public class InterfacciaListaImmobili extends JPanel {
             filterDialog.setVisible(true);
         });
 
-        new MapLoader(geoPosition,checkBoxesList,panelMap,immobili);
+        new MapLoader(geoPosition,panelMap,immobili);
         // Create and add the first panel
 
         // In the initComponents method, replace the GridLayout with MigLayout

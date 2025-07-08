@@ -23,7 +23,7 @@ public class Controller {
     protected static final String LOGIN_URL_CLIENTE = "http://localhost:8081/auth-cliente/login";
     protected static final String IMMOBILI_URL = "http://localhost:8081/auth-agente/immobili";
     protected static final String RICERCA_URL = "http://localhost:8081/cerca-immobili";
-    protected static final String VISITE_IMM = "http://localhost:8081/auth-agente/visita";
+    protected static final String VISITE_IMM = "http://localhost:8081/auth-agente/visite";
     protected static final String PRENOTA_VISITE = "http://localhost:8081/auth-cliente/visita";
     protected static final String OFFERTA_URL = "http://localhost:8081/offerta";
     protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";

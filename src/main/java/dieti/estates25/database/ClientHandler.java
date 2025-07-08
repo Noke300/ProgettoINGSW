@@ -39,9 +39,8 @@ public class ClientHandler extends Thread {
 	        response.put(MESSAGE, "Errore durante l'upload: " + e.getMessage());
 	    }
 	    return response;
-	}*/
+	}
 
-    //TODO
    public JSONObject handleDownloadRequest(JSONObject request) {
        JSONObject response = new JSONObject();
        try {
@@ -58,6 +57,9 @@ public class ClientHandler extends Thread {
        }
        return response;
    }
+    */
+
+    //TODO
    public void handleDeleteRequest (JSONObject request) {
        String folderName = request.getString("folderName");
         storageManager.deleteFolder(folderName);

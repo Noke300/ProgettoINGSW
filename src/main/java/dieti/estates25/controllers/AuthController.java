@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,8 +104,11 @@ public class AuthController {
         if(getAuthorities() == null) return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
         if(getAuthorities().equals("[CLIENT]")){
             offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
+            offerta.setContrOfferta(false);
+        }else if(getAuthorities().equals("[AGENTE_IMMOBILIARE]")){
+            offerta.setContrOfferta(true);
         }
-        offerta.setDataOfferta(new Timestamp(new Date().getTime()));
+        offerta.setDataOfferta(LocalDateTime.now());
         offerta.setEsitoOfferta(false);
         offertaRepository.save(offerta);
         return ResponseEntity

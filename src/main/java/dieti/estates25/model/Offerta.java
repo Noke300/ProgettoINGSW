@@ -2,6 +2,8 @@ package dieti.estates25.model;
 
 import dieti.estates25.model.cliente.Cliente;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -25,10 +27,13 @@ public class Offerta {
     private Double prezzoOfferta;
 
     @Column(name = "dataofferta", nullable = false)
-    private Date dataOfferta;
+    private LocalDateTime dataOfferta;
 
     @Column(name = "esitoofferta")
     private Boolean esitoOfferta;
+
+    @Column(name = "controfferta")
+    private Boolean contrOfferta;
 
     // Getters and Setters
 
@@ -40,10 +45,16 @@ public class Offerta {
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
     public Double getPrezzoOfferta() { return this.prezzoOfferta; }
     public void setPrezzoOfferta(Double prezzoOfferta) { this.prezzoOfferta = prezzoOfferta; }
-    public Date getDataOfferta() { return this.dataOfferta; }
-    public void setDataOfferta(Date dataOfferta) { this.dataOfferta = dataOfferta; }
+    public LocalDateTime getDataOfferta() { return this.dataOfferta; }
+    public void setDataOfferta(LocalDateTime dataOfferta) { this.dataOfferta = dataOfferta; }
     public Boolean getEsitoOfferta() { return this.esitoOfferta; }
     public void setEsitoOfferta(Boolean esitoOfferta) { this.esitoOfferta = esitoOfferta; }
+    public Boolean getContrOfferta() {
+        return contrOfferta;
+    }
+    public void setContrOfferta(Boolean contrOfferta) {
+        this.contrOfferta = contrOfferta;
+    }
 
     @Override
     public String toString() {

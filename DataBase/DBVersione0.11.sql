@@ -56,7 +56,7 @@ CREATE TABLE Immobile (
     NomeAgenzia VARCHAR(255) NOT NULL,
     Prezzo DECIMAL(10,2) NOT NULL,
     TipoVendita VARCHAR(255) NOT NULL,
-    Descrizione VARCHAR(255) NOT NULL,
+    Descrizione VARCHAR(2047) NOT NULL,
     Superficie INT NOT NULL,
     TipoImmobile VARCHAR(255) NOT NULL,
     NumBagni INT NOT NULL,

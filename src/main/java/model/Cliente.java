@@ -19,6 +19,14 @@ public class Cliente {
         this.dataN = dataN;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public Date getDataN() {
         return dataN;
     }

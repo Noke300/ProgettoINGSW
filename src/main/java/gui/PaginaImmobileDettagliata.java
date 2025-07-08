@@ -252,7 +252,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                     dayPanel.add(Box.createHorizontalStrut(10));
                 }
 
-                JScrollPane scrollPane = new JScrollPane(dayPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                JScrollPane scrollPane = new JScrollPane(dayPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 scrollPane.setBorder(null);
 
                 // Selezione orario
@@ -283,10 +283,10 @@ public class PaginaImmobileDettagliata extends JPanel {
                     if (dataSelezionata != null) {
                         String selected = (String) oraComboBox.getSelectedItem();
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        assert selected != null;
                         LocalTime orario = LocalTime.parse(selected, formatter);
 
                         Date dataVisita = java.sql.Date.valueOf(dataSelezionata);
-
                         Visita visita = new Visita(immobile, orario, dataVisita);
 
                         if (control.inviaVisita(visita,token)) {

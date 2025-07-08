@@ -56,8 +56,6 @@ public class DateColorManager {
             int currentMonth = currentCalendar.get(Calendar.MONTH);
             int currentYear = currentCalendar.get(Calendar.YEAR);
 
-            System.out.println("Calendar view: " + currentMonth + "/" + currentYear);
-
             // Direct matching by button text
             for (int i = 0; i < dayButtons.length; i++) {
                 JButton button = dayButtons[i];
@@ -75,8 +73,6 @@ public class DateColorManager {
                         for (ColoredDate coloredDate : coloredDates) {
                             if (coloredDate.isSameDay(buttonDate)) {
                                 button.setBackground(coloredDate.getColor());
-                                System.out.println("Colored button " + i + " with text '" + day +
-                                        "' for date " + buttonDate);
                                 break;
                             }
                         }

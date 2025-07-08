@@ -35,5 +35,7 @@ public class Visita {
     public void setOraVisita(java.time.LocalTime oraVisita) { this.oraVisita = oraVisita; }
     public Date getDataVisita() { return this.dataVisita; }
     public void setDataVisita(Date dataVisita) { this.dataVisita = dataVisita; }
+
+    public void setConferma(Boolean conferma) {this.conferma = conferma;}
     public boolean getConferma() { return this.conferma; }
 }

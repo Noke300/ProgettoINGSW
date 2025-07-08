@@ -1,11 +1,8 @@
 package controller;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import model.AgenteImmobiliare;
-import model.Immobile;
-import model.ImmobileEImmagini;
-import model.Visita;
+import model.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -14,10 +11,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalTime;
+import java.util.*;
 
 //TODO dobbiamo gestire meglio le Exception di questa classe
 public class ControllerAdministration extends Controller{
@@ -110,8 +105,27 @@ public class ControllerAdministration extends Controller{
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                Type listType = new TypeToken<List<Visita>>() {}.getType();
-                return gson.fromJson(response.body(), listType);
+                List<Visita> visite = new ArrayList<>();
+                JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+
+                for (JsonElement elem : jsonArray) {
+                    JsonObject obj = elem.getAsJsonObject();
+
+                    // Recupera i singoli campi dal JSON
+                    Date dataVisita = gson.fromJson(obj.get("dataVisita"), Date.class);
+                    LocalTime oraVisita = LocalTime.parse(obj.get("oraVisita").getAsString());
+                    Boolean conferma = obj.get("conferma").getAsBoolean();
+
+                    // Gestione Immobile e Cliente (se sono oggetti complessi)
+                    Immobile immobile = gson.fromJson(obj.get("immobile"), Immobile.class);
+                    Cliente cliente = gson.fromJson(obj.get("cliente"), Cliente.class);
+
+                    // Costruisci visita
+                    Visita visita = new Visita(immobile, cliente, oraVisita, dataVisita, conferma);
+                    visite.add(visita);
+                }
+
+                return visite;
             } else {
                 throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
             }

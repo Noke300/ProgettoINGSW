@@ -5,6 +5,7 @@ import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import gui.costum_components.*;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -223,11 +224,11 @@ public class Ricerca extends JPanel {
         return this;
     }
 
-    private void performSearchAction(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
+    private void performSearchAction(JFrame frame, Controller control) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
-            List<Immobile> immobiles = control.ricerca(geoPos, fetchFiltri());
-            frame.setContentPane(new InterfacciaListaImmobili(frame, checkBoxesList,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
+            List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, fetchFiltri());
+            frame.setContentPane(new InterfacciaListaImmobili(frame,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
             frame.revalidate();
             frame.repaint();
         } else {
@@ -245,7 +246,7 @@ public class Ricerca extends JPanel {
 
     private void setUpOpzioniMenu(JFrame frame, Controller control, List<JCheckBox> checkBoxesList) {
 
-        searchButton.addActionListener(e -> performSearchAction(frame,control,checkBoxesList));
+        searchButton.addActionListener(e -> performSearchAction(frame,control));
         //Cerca con Invio
         searchField.addActionListener(e -> searchButton.doClick());
 

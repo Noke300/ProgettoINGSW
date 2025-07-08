@@ -18,11 +18,8 @@ import controller.ControllerAdministration;
 
 import gui.costum_components.*;
 import model.Immobile;
-<<<<<<< Updated upstream
 import model.ImmobileEImmagini;
-=======
 import model.Visita;
->>>>>>> Stashed changes
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -51,23 +48,11 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<ImmobileEImmagini> immobiliEImmagini) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
-<<<<<<< Updated upstream
 
         List<Immobile> immobili = new ArrayList<>();
         for (ImmobileEImmagini i : immobiliEImmagini){
             immobili.add(i.getImmobile());
         }
-
-        /*
-        ControllerAdministration controller = new ControllerAdministration();
-        ArrayList date = new ArrayList();
-
-        date = controller.recuperoData(token);
-         */
-
-=======
->>>>>>> Stashed changes
-
         //TODO notifiche non interaggibile temporanio
         LogInAmministrazione.notifiche.addListener(messaggio -> {
             System.out.println("Ricevuto: " + messaggio);
@@ -126,6 +111,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         // Simula lista visite (sostituisci con: control.getVisite(token))
         List<Visita> date = new ArrayList<>();
+        date = control.getVisite(token);
         List<ColoredDate> coloredDates = new ArrayList<>();
         for (Visita visita : date) {
             Date dataVisita = visita.getDataVisita();

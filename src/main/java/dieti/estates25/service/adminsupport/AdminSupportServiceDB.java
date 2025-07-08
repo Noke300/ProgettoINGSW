@@ -1,13 +1,14 @@
 package dieti.estates25.service.adminsupport;
 
+import dieti.estates25.database.GoogleCloudStorageManager;
+import dieti.estates25.database.GoogleCloudStorageService;
+import dieti.estates25.model.ImmagineImmobile;
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.ImmobileEImmagini;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.adminsupport.AdminSupportPrincipal;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
-import dieti.estates25.repositories.AdminSupportRepository;
-import dieti.estates25.repositories.AgenteImmobiliareRepository;
-import dieti.estates25.repositories.AgenziaImmobiliareRepository;
-import dieti.estates25.repositories.ImmobileRepository;
+import dieti.estates25.repositories.*;
 import dieti.estates25.service.JWTService;
 import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +42,12 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
 
     @Autowired
     private AgenteImmobiliareRepository agenteImmobiliareRepository;
+
     @Autowired
     private ImmobileRepository immobileRepository;
+
+    @Autowired
+    private ImmagineImmobileRepository immagineImmobileRepository;
 
     @Autowired
     private AgenteImmobiliareServiceDB agentService;
@@ -140,13 +147,46 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
         return agentService.deleteAgent(agent.getEmailAgente());
     }
 
-    public List<Immobile> getImmobili() {
+    public List<ImmobileEImmagini> getImmobili() {
         List<Immobile> immobili = immobileRepository.findAllByAgente_NomeAgenzia(getAdminSupportByMail(getEmailAutenticato()).getNomeAgenzia());
-        for (Immobile i : immobili) {
-            i.getAgente().setPasswordAgente(null);
-            i.getAgente().setNomeAgenzia(null);
+        List<ImmobileEImmagini> candidati = getImmagini(immobili);
+
+        for (ImmobileEImmagini i : candidati) {
+            i.getImmobile().getAgente().setPasswordAgente(null);
+            i.getImmobile().getAgente().setNomeAgenzia(null);
         }
-        return immobili;
+        return candidati;
+    }
+
+    private List<ImmobileEImmagini> getImmagini(List<Immobile> candidati) {
+        GoogleCloudStorageService storageService;
+        GoogleCloudStorageManager storageManager;
+
+        List<ImmobileEImmagini> immobileEImmagini = new ArrayList<>();
+
+        try {
+            storageManager = new GoogleCloudStorageManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        storageService = new GoogleCloudStorageService(storageManager);
+
+        for(Immobile i : candidati){
+            List<ImmagineImmobile> imm = immagineImmobileRepository.findAllByImmobile(i);
+            List<String> immagini = new ArrayList<>();
+
+            for(ImmagineImmobile j : imm){
+                try {
+                    immagini.add(storageService.downloadHouseImage(j.getUrlImmagine()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            immobileEImmagini.add(new ImmobileEImmagini(i, immagini));
+        }
+
+        return immobileEImmagini;
     }
 
     public AdminSupport getSpecifiche() {

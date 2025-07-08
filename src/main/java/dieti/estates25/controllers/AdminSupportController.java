@@ -1,6 +1,7 @@
 package dieti.estates25.controllers;
 
 import dieti.estates25.model.Immobile;
+import dieti.estates25.model.ImmobileEImmagini;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
@@ -66,8 +67,7 @@ public class AdminSupportController {
     }
 
     @GetMapping("/visualizzaImmobili")
-    //TODO ImmobiliEImmagini
-    public List<Immobile> visualizzaImmobili(){
+    public List<ImmobileEImmagini> visualizzaImmobili(){
         return adminSupportService.getImmobili();
     }
 

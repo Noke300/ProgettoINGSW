@@ -8,6 +8,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,6 +17,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -46,11 +48,15 @@ public class PaginaImmobileDettagliata extends JPanel {
     private static final int GIORNI_METEO = 14;
     IconClass iconSet = new IconClass();
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    JLabel imageLabel = new JLabel();
+    int index = 0;
 
     public PaginaImmobileDettagliata(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
         initComponents();
 
         Immobile immobile = immobileEImmagini.getImmobile();
+        List<String> immagini = immobileEImmagini.getImmagini();
+
         labelPrezzo.setText(String.valueOf(immobile.getPrezzo())+" €");
         labelPrezzo.setFont(new Font("Segoe UI", Font.BOLD,28));
 
@@ -84,12 +90,22 @@ public class PaginaImmobileDettagliata extends JPanel {
         renderer.setDefaultShapesVisible(true);
         renderer.setDefaultShapesFilled(true);
 
-
         try {
-            URL imageUrl = getClass().getResource("/CasaProva3.jpeg");
-            if (imageUrl != null) {
-                ImageIcon icon = new ImageIcon(imageUrl);
-                JLabel imageLabel = new JLabel(icon);
+            if (!immagini.isEmpty()) {
+                // Decodifica la stringa Base64 in un array di byte
+                byte[] imageBytes = Base64.getDecoder().decode(immagini.getFirst());
+
+                // Converte l'array di byte in un'immagine
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                Image image = ImageIO.read(bis);
+                bis.close();
+
+                Image scaledImage = image.getScaledInstance(600, 450, Image.SCALE_SMOOTH);
+                imageLabel.setIcon(new ImageIcon(scaledImage));
+
+                imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                imageLabel.setVerticalAlignment(SwingConstants.CENTER);
+
                 imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 panelImmagineImmobile.add(imageLabel, BorderLayout.CENTER);
             } else {
@@ -168,7 +184,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                 offerteDialog.setVisible(true);
 
             }else{
-               frame.setContentPane(new LogIn(frame,control,token));
+                frame.setContentPane(new LogIn(frame,control,token));
                 frame.revalidate();
                 frame.repaint();
             }
@@ -315,8 +331,75 @@ public class PaginaImmobileDettagliata extends JPanel {
         });
 
         buttonBack.addActionListener(e ->{
+            //TODO
+        });
 
+        JPanel pannelloContenuto = new JPanel();
 
+        buttonDestraImg.addActionListener( e ->{
+            try {
+                if (!immagini.isEmpty()) {
+                    if (index+1 >= immagini.size()) index = -1;
+                    // Decodifica la stringa Base64 in un array di byte
+                    byte[] imageBytes = Base64.getDecoder().decode(immagini.get(++index));
+
+                    // Converte l'array di byte in un'immagine
+                    ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                    Image image = ImageIO.read(bis);
+                    bis.close();
+
+                    Image scaledImage = image.getScaledInstance(600, 450, Image.SCALE_SMOOTH);
+                    imageLabel.setIcon(new ImageIcon(scaledImage));
+
+                    imageLabel.revalidate();
+                    imageLabel.repaint();
+
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                } else {
+                    JLabel errorLabel = new JLabel("Image not found");
+                    errorLabel.setOpaque(true);
+                    errorLabel.setBackground(Color.RED);
+                    panelImmagineImmobile.add(errorLabel, BorderLayout.CENTER);
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        buttonSinistraImg.addActionListener( e ->{
+            try {
+                if (!immagini.isEmpty()) {
+                    if (index-1 < 0) index = immagini.size();
+                    // Decodifica la stringa Base64 in un array di byte
+                    byte[] imageBytes = Base64.getDecoder().decode(immagini.get(--index));
+
+                    // Converte l'array di byte in un'immagine
+                    ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                    Image image = ImageIO.read(bis);
+                    bis.close();
+
+                    Image scaledImage = image.getScaledInstance(600, 450, Image.SCALE_SMOOTH);
+                    imageLabel.setIcon(new ImageIcon(scaledImage));
+
+                    imageLabel.revalidate();
+                    imageLabel.repaint();
+
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                } else {
+                    JLabel errorLabel = new JLabel("Image not found");
+                    errorLabel.setOpaque(true);
+                    errorLabel.setBackground(Color.RED);
+                    panelImmagineImmobile.add(errorLabel, BorderLayout.CENTER);
+                    panelImmagineImmobile.revalidate();
+                    panelImmagineImmobile.repaint();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
         // Imposta dimensioni preferite ai pannelli chiave
@@ -327,7 +410,6 @@ public class PaginaImmobileDettagliata extends JPanel {
         panelChart.setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
 
 // Crea il contenuto verticale scrollabile
-        JPanel pannelloContenuto = new JPanel();
         pannelloContenuto.setLayout(new BoxLayout(pannelloContenuto, BoxLayout.Y_AXIS));
         pannelloContenuto.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 

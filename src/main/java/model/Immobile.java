@@ -24,8 +24,8 @@ public class Immobile {
     private boolean parchi;
     private boolean trasportoPubblico;
 
-    private final AgenziaImmobiliare agenziaImmobiliare;
-    private AgenteImmobiliare agenteImmobiliare;
+    private final AgenziaImmobiliare nomeAgenzia;
+    private AgenteImmobiliare agente;
     private final Indirizzo indirizzo;
 
     private List<String> immagini;
@@ -37,9 +37,9 @@ public class Immobile {
                     int numBagni, int piano, int superficie, int numStanze,double prezzo,
                     String classeEnergetica,String tipoVendita, String descrizione,String tipoImmobile) {
 
-        this.agenziaImmobiliare = agenziaImmobiliare;
+        this.nomeAgenzia = agenziaImmobiliare;
         this.indirizzo = indirizzo;
-        this.agenteImmobiliare = agenteImmobiliare;
+        this.agente = agenteImmobiliare;
         this.trasportoPubblico = transportoPubblico;
         this.parchi = parchi;
         this.scuole = scuole;
@@ -63,21 +63,21 @@ public class Immobile {
     public Immobile(String id){
         this.idImmobile = id;
 
-        this.agenziaImmobiliare = null;
-        this.agenteImmobiliare = null;
+        this.nomeAgenzia = null;
+        this.agente = null;
         this.indirizzo = null;
     }
 
     public AgenziaImmobiliare getAgenziaImmobiliare() {
-        return agenziaImmobiliare;
+        return nomeAgenzia;
     }
 
     public AgenteImmobiliare getAgenteImmobiliare() {
-        return agenteImmobiliare;
+        return agente;
     }
 
     public void setAgenteImmobiliare(AgenteImmobiliare agenteImmobiliare) {
-        this.agenteImmobiliare = agenteImmobiliare;
+        this.agente = agenteImmobiliare;
     }
 
     public Indirizzo getIndirizzo() {

@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -222,8 +223,29 @@ public class Controller {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                Type listType = new TypeToken<List<Offerta>>() {}.getType();
-                return gson.fromJson(response.body(), listType);
+
+                List<Offerta> offerte = new ArrayList<>();
+                JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
+
+                for (JsonElement elem : jsonArray) {
+                    JsonObject obj = elem.getAsJsonObject();
+
+                    // Recupera i singoli campi dal JSON
+                    Double prezzoOfferta = gson.fromJson(obj.get("prezzoOfferta"), Double.class);
+                    LocalDateTime dataOfferta = LocalDateTime.parse(obj.get("dataOfferta").getAsString());
+                    Boolean esitoOfferta = obj.get("esitoOfferta").getAsBoolean();
+                    Boolean contrOfferta = obj.get("contrOfferta").getAsBoolean();
+
+                    // Gestione Immobile e Cliente (se sono oggetti complessi)
+                    Immobile immobile = gson.fromJson(obj.get("immobile"), Immobile.class);
+                    Cliente cliente = gson.fromJson(obj.get("cliente"), Cliente.class);
+
+                    // Costruisci offerta
+                    Offerta offerta = new Offerta(cliente, dataOfferta, prezzoOfferta, immobile, contrOfferta, esitoOfferta);
+                    offerte.add(offerta);
+                }
+                return offerte;
+
             } else {
                 throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
             }
@@ -234,7 +256,12 @@ public class Controller {
 
     public boolean inviaOfferta(Offerta offerta,String token) {
         HttpClient client = HttpClient.newHttpClient();
-        String requestBody = gson.toJson(offerta);
+
+        Map<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("immobile", offerta.getImmobile());
+        bodyMap.put("prezzoOfferta", offerta.getPrezzoOfferta());
+
+        String requestBody = gson.toJson(bodyMap);
         System.out.println("\n"+requestBody);
 
         HttpRequest request;

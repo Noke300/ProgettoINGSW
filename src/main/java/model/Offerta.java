@@ -2,6 +2,7 @@ package model;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Offerta {
@@ -17,7 +18,7 @@ public class Offerta {
 
     private Double prezzoOfferta;
 
-    private Date dataOfferta;
+    private LocalDateTime dataOfferta;
 
     @Nullable
     private Boolean esitoOfferta;
@@ -29,14 +30,14 @@ public class Offerta {
         this.prezzoOfferta = prezzoOfferta;
     }
 
-    public Offerta(@Nullable Cliente cliente, Date dataOfferta, Double prezzoOfferta, String nominativo, Immobile immobile, Boolean contrOfferta) {
+    public Offerta(@Nullable Cliente cliente, LocalDateTime dataOfferta, Double prezzoOfferta, Immobile immobile, Boolean contrOfferta, Boolean esitoOfferta) {
         this.esitoOfferta = null;
         this.cliente = cliente;
         this.dataOfferta = dataOfferta;
         this.prezzoOfferta = prezzoOfferta;
-        this.nominativo = cliente.getCognome();
         this.immobile = immobile;
         this.contrOfferta = contrOfferta;
+        this.esitoOfferta = esitoOfferta;
     }
 
     public Immobile getImmobile() {
@@ -63,11 +64,11 @@ public class Offerta {
         this.prezzoOfferta = prezzoOfferta;
     }
 
-    public Date getDataOfferta() {
+    public LocalDateTime getDataOfferta() {
         return dataOfferta;
     }
 
-    public void setDataOfferta(Date dataOfferta) {
+    public void setDataOfferta(LocalDateTime dataOfferta) {
         this.dataOfferta = dataOfferta;
     }
 

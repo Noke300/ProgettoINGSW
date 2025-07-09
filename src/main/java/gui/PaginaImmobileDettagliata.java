@@ -71,7 +71,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
-                "Storico Offerte Immobile",
+                "Offerte",
                 "Data",
                 "Prezzo Offerta (€)",
                 dataset
@@ -413,33 +413,44 @@ public class PaginaImmobileDettagliata extends JPanel {
         pannelloContenuto.setLayout(new BoxLayout(pannelloContenuto, BoxLayout.Y_AXIS));
         pannelloContenuto.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
-// Agenzia immobiliare
-        /*
-        JLabel agenziaLabel = new JLabel(immobile.getAgenziaImmobiliare().getNomeAgenzia());
+// Agenzia immobiliare e Tipo
+        JPanel agenziaPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
+        JLabel agenziaLabel = new JLabel(immobile.getTipoImmobile() + " in " + immobile.getTipoVendita() + " da: " + immobile.getAgenziaImmobiliare().getNomeAgenzia());
         agenziaLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         agenziaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pannelloContenuto.add(agenziaLabel);
+
+        agenziaPanel.add(agenziaLabel);
+        pannelloContenuto.add(agenziaPanel);
 
         pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 10)));
-*/
 // Immagine immobile
         pannelloContenuto.add(panelImmagineImmobile);
-        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 15)));
+        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 30)));
 
 // Indirizzo
+        JPanel indirizzoPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
         JLabel indirizzoLabel1 = new JLabel(immobile.getIndirizzo().toString());
         indirizzoLabel1.setFont(new Font("SansSerif", Font.BOLD, 24));
         indirizzoLabel1.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pannelloContenuto.add(indirizzoLabel1);
 
-        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 10)));
+        indirizzoPanel.add(indirizzoLabel1);
+        pannelloContenuto.add(indirizzoPanel);
+
+        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 25)));
 
 // Descrizione
+        JPanel descrizionePanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
         JLabel descrizioneLabel = new JLabel("Descrizione:");
         descrizioneLabel.setFont(new Font("SansSerif", Font.BOLD, 20)); // Grassetto e più grande
         descrizioneLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // Allineamento a sinistra (in BoxLayout)
+        descrizionePanel.add(descrizioneLabel);
+        pannelloContenuto.add(descrizionePanel);
 
-        pannelloContenuto.add(descrizioneLabel);
+        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 15)));
+
         JTextArea areaDescrizione = new JTextArea(10, 30);
         areaDescrizione.setText(immobile.getDescrizione());
         areaDescrizione.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -449,21 +460,51 @@ public class PaginaImmobileDettagliata extends JPanel {
 
         areaDescrizione.setLineWrap(true);
         areaDescrizione.setWrapStyleWord(true);
+        areaDescrizione.setFocusable(false);
         JScrollPane descrizioneScroll = new JScrollPane(areaDescrizione);
 
         descrizioneScroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 800));
         pannelloContenuto.add(descrizioneScroll);
-        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 30)));
 
 // Parametri
-        JPanel paramPanel = new JPanel(new GridLayout(0, 4, 10, 10));
-        for (int i = 1; i <= 6; i++) {
-            paramPanel.add(new JLabel("Parametro " + i));
-            paramPanel.add(new JTextField(10));
-        }
+        JPanel caratteristichePanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
+        JLabel caratteristiche = new JLabel("Caratteristiche:");
+        caratteristiche.setFont(new Font("SansSerif", Font.BOLD, 20));
+        caratteristiche.setAlignmentX(Component.LEFT_ALIGNMENT);
+        caratteristichePanel.add(caratteristiche);
+        pannelloContenuto.add(caratteristichePanel);
+
+        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        JPanel paramPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+
+        JLabel numStanze = new JLabel(immobile.getNumStanze() + " locali");
+        numStanze.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        paramPanel.add(numStanze);
+
+        JLabel numBagni = new JLabel(immobile.getNumBagni() + " bagni");
+        numBagni.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        paramPanel.add(numBagni);
+
+        JLabel piano = new JLabel("Piano " + (immobile.getPiano()<=0 ? "Terra" : immobile.getPiano()));
+        piano.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        paramPanel.add(piano);
+
+        JLabel supeficie = new JLabel(immobile.getSuperficie() + " m²");
+        supeficie.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        paramPanel.add(supeficie);
+
+        JLabel classeEnergetica = new JLabel("Classe energetica: " + immobile.getClasseEnergetica());
+        classeEnergetica.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        paramPanel.add(classeEnergetica);
+
         paramPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
         pannelloContenuto.add(paramPanel);
-        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 30)));
 
 // Grafico
         pannelloContenuto.add(panelChart);

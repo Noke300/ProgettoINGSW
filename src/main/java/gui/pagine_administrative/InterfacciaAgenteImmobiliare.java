@@ -9,24 +9,16 @@ import java.awt.event.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import com.google.gson.JsonArray;
-import com.toedter.calendar.*;
-
 import controller.ControllerAdministration;
 
 import gui.costum_components.*;
-import model.Cliente;
 import model.Immobile;
 import model.ImmobileEImmagini;
-import model.Visita;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -103,94 +95,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             }
         });
         //--Calendario
-        // Then in your initialization or constructor method
-        IconClass iconSet = new IconClass();
-        buttonCalendario.setIcon(iconSet.getCalendarioIcon());
-        buttonCalendario.setText(LocalDate.now().toString());
-
-        // Calendario
-        JCalendar calendar = new JCalendar();
-        Map<String, List<Visita>> visitePerGiorno = new HashMap<>();
-
-        buttonCalendario.addActionListener(e -> {
-
-
-            calendar.setLocale(Locale.ITALY);
-            JDayChooser dayChooser = calendar.getDayChooser();
-
-            // Manager colori
-            DateColorManager dateColorManager = new DateColorManager(dayChooser);
-
-            // Pulizia dati prima di caricare
-            visitePerGiorno.clear();
-            ArrayList<ColoredDate> coloredDates = new ArrayList<>();
-
-            List<Visita> date = control.getVisite(token);
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-            for (Visita visita : date) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(visita.getDataVisita());
-                cal.add(Calendar.DAY_OF_MONTH, 1);
-                Date nuovaData = cal.getTime();
-                visita.setDataVisita(nuovaData);
-
-                String giornoChiave = format.format(nuovaData);
-                visitePerGiorno.putIfAbsent(giornoChiave, new ArrayList<>());
-                visitePerGiorno.get(giornoChiave).add(visita);
-
-                if (!coloredDates.contains(new ColoredDate(nuovaData,visita.getConferma()))) {
-                    coloredDates.add(new ColoredDate(nuovaData,visita.getConferma()));
-                }
-
-
-                dateColorManager.setColoredDates(coloredDates);
-                dateColorManager.updateDayColors(visita.getConferma());
-
-                calendar.addPropertyChangeListener(evt -> {
-                    if ("calendar".equals(evt.getPropertyName())) {
-                        dateColorManager.updateDayColors(visita.getConferma());
-                    }
-                });
-            }
-
-
-
-            JPanel controlPanel = new JPanel(new BorderLayout());
-
-            JButton addDateButton = new JButton("Info Giorno");
-            addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(),format,frame,visitePerGiorno));
-            dayChooser.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        mostraDettagliVisite(calendar.getDate(),format,frame,visitePerGiorno);
-                    }
-                }
-            });
-
-
-            controlPanel.add(addDateButton, BorderLayout.SOUTH);
-
-            final JDialog calendarPopup = new JDialog(frame, "Calendario", true);
-            calendarPopup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            calendarPopup.setSize(700, 450);
-            calendarPopup.setResizable(false);
-            calendarPopup.add(calendar, BorderLayout.CENTER);
-            calendarPopup.add(controlPanel, BorderLayout.SOUTH);
-            calendarPopup.setLocationRelativeTo(frame);
-
-            // Pulizia finale alla chiusura
-            calendarPopup.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    visitePerGiorno.clear();
-                    coloredDates.clear();
-                }
-            });
-
-            calendarPopup.setVisible(true);
-        });
+        CalenderAgenteImmobiliare.caricaCalendario(buttonCalendario,control,token,frame);
 
         buttonAggiungImmobile.setIcon(iconSet.getPlusImmobile());
 
@@ -205,85 +110,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
     public JPanel getSelectedPanel() {
         return selectedPanel[0];
-    }
-
-
-
-    private void mostraDettagliVisite(Date selectedDate,DateFormat format,JFrame frame, Map<String, List<Visita>> visitePerGiorno) {
-        String giornoChiave = format.format(selectedDate);
-        List<Visita> visiteDelGiorno = visitePerGiorno.get(giornoChiave);
-
-        if (visiteDelGiorno != null && !visiteDelGiorno.isEmpty()) {
-            JPanel containerPanel = new JPanel();
-            containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
-
-            for (Visita visita : visiteDelGiorno) {
-                Immobile imm = visita.getImmobile();
-                Cliente cl = visita.getCliente();
-
-                JPanel visitaPanel = new JPanel();
-                visitaPanel.setLayout(new BoxLayout(visitaPanel, BoxLayout.Y_AXIS));
-                visitaPanel.setBorder(BorderFactory.createTitledBorder("🕒 Visita alle " + visita.getOraVisita()));
-
-                JTextArea info = new JTextArea(
-                        "🏠 Tipo immobile: " + imm.getTipoImmobile() + "\n" +
-                                "💸 Prezzo: €" + imm.getPrezzo() + "\n" +
-                                "📍 Indirizzo: " + imm.getIndirizzo().toString() + "\n" +
-                                "👤 Cliente: " + cl.getNome() + " " + cl.getCognome() + "\n" +
-                                "✅ Confermata: " + (visita.getConferma() ? "Sì" : "No")
-                );
-                info.setFont(new Font("SansSerif", Font.PLAIN, 16));
-                info.setEditable(false);
-                visitaPanel.add(info);
-
-                JPanel buttonPanel = new JPanel();
-                if (!visita.getConferma()) {
-                    JButton accetta = new JButton("✅ Accetta");
-                    JButton rifiuta = new JButton("❌ Rifiuta");
-
-                    accetta.addActionListener(ev -> {
-                        visita.setConferma(true);
-                        JOptionPane.showMessageDialog(frame, "Visita confermata.");
-                    });
-                    rifiuta.addActionListener(ev -> {
-                        JOptionPane.showMessageDialog(frame, "Visita rifiutata.");
-                    });
-
-                    buttonPanel.add(accetta);
-                    buttonPanel.add(rifiuta);
-                } else {
-                    JButton annulla = new JButton("🔄 Annulla");
-
-                    annulla.addActionListener(ev -> {
-                        visita.setConferma(false);
-                        JOptionPane.showMessageDialog(frame, "Visita annullata.");
-                    });
-
-                    buttonPanel.add(annulla);
-                }
-
-                visitaPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-                visitaPanel.add(buttonPanel);
-                containerPanel.add(visitaPanel);
-            }
-
-            JScrollPane scrollPane = new JScrollPane(containerPanel);
-            scrollPane.setPreferredSize(new Dimension(600, 400));
-
-            JOptionPane.showMessageDialog(
-                    frame,
-                    scrollPane,
-                    "Visite del " + giornoChiave,
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        } else {
-            JOptionPane.showMessageDialog(
-                    frame,
-                    "Nessuna visita per questo giorno.",
-                    "Informazioni",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        }
     }
 
 

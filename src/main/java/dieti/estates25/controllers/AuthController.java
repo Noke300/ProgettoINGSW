@@ -69,7 +69,8 @@ public class AuthController {
         if (immobile.getIdImmobile() == null) return new ArrayList<>();
         List<Offerta> offerte = offertaRepository.findAllByImmobileIdImmobileEquals(immobile.getIdImmobile());
         for(Offerta o : offerte) {
-            o.getCliente().setPasswordCliente(null);
+            if (o.getCliente() != null)
+                o.getCliente().setPasswordCliente(null);
             o.getImmobile().setAgente(null);
         }
         return offerte;

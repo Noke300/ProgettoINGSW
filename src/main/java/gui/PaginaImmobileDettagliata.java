@@ -180,7 +180,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                 campoOfferta.setMaximumSize(new Dimension(20, 5));
                 campoOfferta.setFont(new Font("SansSerif", Font.PLAIN, 16));
  // Placeholder
-                String placeholder = "es: " + immobile.getPrezzo() * 1.15;
+                String placeholder = "es: " + (int) (immobile.getPrezzo() * 1.15);
                 campoOfferta.setText(placeholder);
                 campoOfferta.setForeground(Color.GRAY);
 

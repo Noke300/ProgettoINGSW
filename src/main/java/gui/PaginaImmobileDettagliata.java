@@ -20,6 +20,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import controller.Controller;
 import gui.costum_components.BottoniOpzioni;
@@ -51,25 +53,38 @@ public class PaginaImmobileDettagliata extends JPanel {
     JLabel imageLabel = new JLabel();
     int index = 0;
 
+    //TODO distanzia i bottoni di aggiungi offerta e richiedi visita nella GUI pls
+
     public PaginaImmobileDettagliata(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
         initComponents();
 
         Immobile immobile = immobileEImmagini.getImmobile();
         List<String> immagini = immobileEImmagini.getImmagini();
 
-        labelPrezzo.setText(String.valueOf(immobile.getPrezzo())+" €");
+        labelPrezzo.setText(immobile.getPrezzo() +" €");
         labelPrezzo.setFont(new Font("Segoe UI", Font.BOLD,28));
 
         //TODO da rendere come funzione ausilare che carica i dati nella chiamata (Thread)
 
         List<Offerta> offerteIM = control.getOffertePerImmobile(immobile);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        Double maxOfferta = 0.0;
 
         for (Offerta offerta : offerteIM) {
+            if(offerta.getPrezzoOfferta() > maxOfferta) maxOfferta = offerta.getPrezzoOfferta();
             String dataStr = offerta.getDataOfferta().toString();
             dataset.addValue(offerta.getPrezzoOfferta(), "Prezzo", dataStr);
         }
 
+        if (maxOfferta <= 0) labelPrezzoAlto.setText("Non ci sono offerte");
+            else labelPrezzoAlto.setText(maxOfferta +" €");
+        labelPrezzoAlto.setFont(new Font("Segoe UI", Font.BOLD,28));
+
+        if (maxOfferta <= 0) labelPrezzoUltimo.setText("Non ci sono offerte");
+        else labelPrezzoUltimo.setText(offerteIM.getLast().getPrezzoOfferta() +" €");
+        labelPrezzoUltimo.setFont(new Font("Segoe UI", Font.BOLD,28));
+
+        //TODO non far modificare le proprietà del grafico
         JFreeChart chart = ChartFactory.createLineChart(
                 "Offerte",
                 "Data",
@@ -121,37 +136,134 @@ public class PaginaImmobileDettagliata extends JPanel {
         //Bottoni
         buttonOfferta.addActionListener(e -> {
             if(!"".equals(token)) {
-                JDialog offerteDialog = new JDialog(frame, "Offerta", true);
+                JDialog offerteDialog = new JDialog(frame, "Proponi prezzo", true);
                 offerteDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                offerteDialog.setSize(700, 550);
+                offerteDialog.setSize(500, 450);
                 offerteDialog.setResizable(false);
 
 // Pannello contenitore
                 JPanel contenuto = new JPanel();
                 contenuto.setLayout(new BoxLayout(contenuto, BoxLayout.Y_AXIS));
-                contenuto.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+                contenuto.setBorder(BorderFactory.createEmptyBorder(10, 50, 30, 50));
 
 // Etichetta
-                contenuto.add(new JLabel("Inserisci il prezzo della tua offerta:"));
+
+                JPanel etichettaPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
+                JLabel etichettaLabel = new JLabel("<html>Proponi un prezzo per la tua offerta che sia entro il limite consentito</html>");
+                etichettaLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+                etichettaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                etichettaPanel.add(etichettaLabel);
+
+                JPanel partenzaPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+
+                JLabel partenzaLabel = new JLabel("Prezzo di partenza");
+                partenzaLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+                partenzaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JLabel prezzoLabel = new JLabel(immobile.getPrezzo() + " €");
+                prezzoLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+                prezzoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+                partenzaPanel.add(partenzaLabel);
+                partenzaPanel.add(prezzoLabel);
+
+                contenuto.add(etichettaPanel);
                 contenuto.add(Box.createRigidArea(new Dimension(0, 10)));
 
 // Campo input
+                JLabel prezzoLabel2 = new JLabel("La tua proposta");
+                prezzoLabel2.setFont(new Font("SansSerif", Font.BOLD, 16));
+                prezzoLabel2.setAlignmentX(Component.LEFT_ALIGNMENT);
+
                 JTextField campoOfferta = new JTextField();
-                campoOfferta.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-                contenuto.add(campoOfferta);
+                campoOfferta.setMaximumSize(new Dimension(20, 5));
+                campoOfferta.setFont(new Font("SansSerif", Font.PLAIN, 16));
+ // Placeholder
+                String placeholder = "es: " + immobile.getPrezzo() * 1.15;
+                campoOfferta.setText(placeholder);
+                campoOfferta.setForeground(Color.GRAY);
+
+                // Quando entri nel campo, se c'è il placeholder, lo svuoti
+                campoOfferta.addFocusListener(new FocusAdapter() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        if (campoOfferta.getText().equals(placeholder)) {
+                            campoOfferta.setText("");
+                            campoOfferta.setForeground(Color.BLACK);
+                        }
+                    }
+
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        if (campoOfferta.getText().isEmpty()) {
+                            campoOfferta.setText(placeholder);
+                            campoOfferta.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+
+                partenzaPanel.add(prezzoLabel2);
+                partenzaPanel.add(campoOfferta);
+
+                contenuto.add(partenzaPanel);
                 contenuto.add(Box.createRigidArea(new Dimension(0, 20)));
+
+                JSeparator separatore = new JSeparator(SwingConstants.HORIZONTAL);
+                separatore.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1)); // Larghezza piena, altezza 1px
+                separatore.setForeground(Color.LIGHT_GRAY); // Colore del tratto
+
+                contenuto.add(separatore);
+                contenuto.add(Box.createRigidArea(new Dimension(0, 10))); // Spazio dopo il divisore
+
+
+
+                JPanel spiegazionePanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
+                JLabel speigazioneLabel = new JLabel("<html>é consentito fare un'offerta con una variazione massima del 15% rispetto al prezzo di partenza, al fine di mantenere una coerenza e limitare variazione troppo brusche di prezzo</html>");
+                speigazioneLabel.setFont(new Font("SansSerif", Font.ITALIC, 16));
+                speigazioneLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                spiegazionePanel.add(speigazioneLabel);
+
+                contenuto.add(spiegazionePanel);
+                contenuto.add(Box.createRigidArea(new Dimension(0, 10)));
 
 // Bottone invia
                 JButton inviaButton = new JButton("Invia Offerta");
                 inviaButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                inviaButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+                // Colore verde per lo sfondo e bianco per il testo
+                inviaButton.setBackground(new Color(46, 204, 113)); // Verde brillante
+                inviaButton.setForeground(Color.WHITE);
+
+                inviaButton.setOpaque(true);
+                inviaButton.setBorderPainted(false);
+                inviaButton.setEnabled(false);
+
+                // Listener per controllare i valori
+                campoOfferta.getDocument().addDocumentListener(new DocumentListener() {
+                    private void checkInput() {
+                        try {
+                            double valore = Double.parseDouble(campoOfferta.getText().replace(",", "."));
+                            inviaButton.setEnabled(valore >= immobile.getPrezzo() * 0.85 && valore <= immobile.getPrezzo() * 1.15);
+                        } catch (NumberFormatException ex) {
+                            inviaButton.setEnabled(false); // non numero = disabilita
+                        }
+                    }
+
+                    public void insertUpdate(DocumentEvent e) { checkInput(); }
+                    public void removeUpdate(DocumentEvent e) { checkInput(); }
+                    public void changedUpdate(DocumentEvent e) { checkInput(); }
+                });
 
 // Azione al click
                 inviaButton.addActionListener(h -> {
+                    //TODO credo che questi ormai siano controlli ridonanti, decidi tu se lasciarli
                     String testo = campoOfferta.getText().trim();
                     if (!testo.isEmpty()) {
                         try {
                             double prezzo = Double.parseDouble(testo);
-                            //TODO fare un controllo in percentuale
                             if (prezzo <= 0) {
                                 JOptionPane.showMessageDialog(offerteDialog, "Inserisci un valore numerico valido!", "Errore", JOptionPane.ERROR_MESSAGE);
                             }else {
@@ -177,6 +289,15 @@ public class PaginaImmobileDettagliata extends JPanel {
                 });
 
                 contenuto.add(inviaButton);
+
+                contenuto.setFocusable(true);
+                contenuto.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        contenuto.requestFocusInWindow();
+                    }
+                });
+
 
 // Imposta il pannello come contenuto del dialog
                 offerteDialog.setContentPane(contenuto);
@@ -206,6 +327,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                 Map<JToggleButton, LocalDate> bottoniDataMap = new HashMap<>();
 
                 // Chiamata API meteo
+                //TODO metti il sole, la pioggia e le nuvolette pls
                 String[] temperatureMax = new String[GIORNI_METEO];
                 String[] temperatureMin = new String[GIORNI_METEO];
                 try {
@@ -463,6 +585,19 @@ public class PaginaImmobileDettagliata extends JPanel {
         areaDescrizione.setFocusable(false);
         JScrollPane descrizioneScroll = new JScrollPane(areaDescrizione);
 
+        //permette di scrollare la pagina anche sopra la descrizione
+        descrizioneScroll.addMouseWheelListener(e -> {
+            JScrollBar bar = descrizioneScroll.getVerticalScrollBar();
+
+            boolean scrollAtTop = bar.getValue() == bar.getMinimum();
+            boolean scrollAtBottom = bar.getValue() + bar.getVisibleAmount() == bar.getMaximum();
+
+            if ((e.getWheelRotation() < 0 && scrollAtTop) || (e.getWheelRotation() > 0 && scrollAtBottom)) {
+                pannelloContenuto.dispatchEvent(e);
+            }
+        });
+
+
         descrizioneScroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 800));
         pannelloContenuto.add(descrizioneScroll);
 
@@ -482,24 +617,56 @@ public class PaginaImmobileDettagliata extends JPanel {
         JPanel paramPanel = new JPanel(new GridLayout(0, 3, 10, 10));
 
         JLabel numStanze = new JLabel(immobile.getNumStanze() + " locali");
-        numStanze.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        numStanze.setFont(new Font("SansSerif", Font.PLAIN, 18));
         paramPanel.add(numStanze);
 
         JLabel numBagni = new JLabel(immobile.getNumBagni() + " bagni");
-        numBagni.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        numBagni.setFont(new Font("SansSerif", Font.PLAIN, 18));
         paramPanel.add(numBagni);
 
         JLabel piano = new JLabel("Piano " + (immobile.getPiano()<=0 ? "Terra" : immobile.getPiano()));
-        piano.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        piano.setFont(new Font("SansSerif", Font.PLAIN, 18));
         paramPanel.add(piano);
 
         JLabel supeficie = new JLabel(immobile.getSuperficie() + " m²");
-        supeficie.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        supeficie.setFont(new Font("SansSerif", Font.PLAIN, 18));
         paramPanel.add(supeficie);
 
         JLabel classeEnergetica = new JLabel("Classe energetica: " + immobile.getClasseEnergetica());
-        classeEnergetica.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        classeEnergetica.setFont(new Font("SansSerif", Font.PLAIN, 18));
         paramPanel.add(classeEnergetica);
+
+        //TODO Mettere le icone vcino a questi dettagli
+        if(immobile.getClimatizzazione()){
+            JLabel climatizzazione = new JLabel("(Icona per froza) " + "Climatizzatore");
+            climatizzazione.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            paramPanel.add(climatizzazione);
+        }
+
+        if(immobile.isBalcone()){
+            JLabel balcone = new JLabel("(Icona per froza) " + "Balcone");
+            balcone.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            paramPanel.add(balcone);
+        }
+
+        if(immobile.getAscensore()){
+            JLabel ascensore = new JLabel("(Icona per froza) " + "Ascensore");
+            ascensore.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            paramPanel.add(ascensore);
+        }
+
+        if(immobile.isPortineria()){
+            JLabel portineria = new JLabel("(Icona per froza) " + "Portineria");
+            portineria.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            paramPanel.add(portineria);
+        }
+
+        if(immobile.getCantina()){
+            JLabel cantina = new JLabel("(Icona per froza) " + "Cantina");
+            cantina.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            paramPanel.add(cantina);
+        }
+
 
         paramPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
         pannelloContenuto.add(paramPanel);
@@ -510,6 +677,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         pannelloContenuto.add(panelChart);
         pannelloContenuto.add(Box.createRigidArea(new Dimension(0, 15)));
 
+        //TODO Mettere la mappa (magari non qua ma in basso a sinistra nello spazio vuoto
 // Mappa
         JPanel mappaPanel = new JPanel(new BorderLayout());
         mappaPanel.setPreferredSize(new Dimension(600, 150));
@@ -523,10 +691,9 @@ public class PaginaImmobileDettagliata extends JPanel {
 
     }
 
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -535,12 +702,19 @@ public class PaginaImmobileDettagliata extends JPanel {
         labelPrezzo = new JLabel();
         buttonOfferta = new JButton();
         buttonVisita = new JButton();
+        labelPrezzoAlto = new JLabel();
+        labelPrezzoUltimo = new JLabel();
         panelChart = new JPanel();
         panelImmagineImmobile = new JPanel();
         buttonDestraImg = new JButton();
         buttonSinistraImg = new JButton();
 
         //======== this ========
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
+        0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
+        . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
+        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
+        beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,hidemode 3",
             // columns
@@ -600,27 +774,57 @@ public class PaginaImmobileDettagliata extends JPanel {
         //---- labelPrezzo ----
         labelPrezzo.setText("Prezzob");
         labelPrezzo.setBorder(new TitledBorder(null, "Prezzo", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-            new Font("Segoe UI", Font.ITALIC, 16)));
+            new Font("Segoe UI", Font.ITALIC, 18)));
         labelPrezzo.setHorizontalTextPosition(SwingConstants.CENTER);
         labelPrezzo.setHorizontalAlignment(SwingConstants.CENTER);
         add(labelPrezzo, "cell 4 0,grow");
 
         //---- buttonOfferta ----
-        buttonOfferta.setText("Aggiungi Offerta");
+        buttonOfferta.setText("Proponi prezzo");
+        buttonOfferta.setFont(buttonOfferta.getFont().deriveFont(buttonOfferta.getFont().getStyle() & ~Font.BOLD, buttonOfferta.getFont().getSize() + 5f));
         add(buttonOfferta, "cell 4 1");
 
         //---- buttonVisita ----
         buttonVisita.setText("Richiedi Visita");
-        add(buttonVisita, "cell 4 2");
+        buttonVisita.setFont(buttonVisita.getFont().deriveFont(buttonVisita.getFont().getSize() + 5f));
+        add(buttonVisita, "cell 4 1");
+
+        //---- labelPrezzoAlto ----
+        labelPrezzoAlto.setText("prezzoAlto");
+        labelPrezzoAlto.setBorder(new TitledBorder(null, "Offerta pi\u00f9 alta", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+            new Font("Segoe UI", Font.ITALIC, 18)));
+        labelPrezzoAlto.setHorizontalTextPosition(SwingConstants.CENTER);
+        labelPrezzoAlto.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelPrezzoAlto, "cell 4 2,grow");
+
+        //---- labelPrezzoUltimo ----
+        labelPrezzoUltimo.setText("prezzoUltimo");
+        labelPrezzoUltimo.setBorder(new TitledBorder(null, "Ultima Offerta fatta", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+            new Font("Segoe UI", Font.ITALIC, 18)));
+        labelPrezzoUltimo.setHorizontalTextPosition(SwingConstants.CENTER);
+        labelPrezzoUltimo.setHorizontalAlignment(SwingConstants.CENTER);
+        add(labelPrezzoUltimo, "cell 4 3,grow");
 
         //======== panelChart ========
         {
+            panelChart.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
+            EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing
+            . border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ),
+            java. awt. Color. red) ,panelChart. getBorder( )) ); panelChart. addPropertyChangeListener (new java. beans. PropertyChangeListener( )
+            { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () ))
+            throw new RuntimeException( ); }} );
             panelChart.setLayout(new BorderLayout());
         }
 
         //======== panelImmagineImmobile ========
         {
             panelImmagineImmobile.setBorder(new EtchedBorder(EtchedBorder.RAISED, UIManager.getColor("Actions.Green"), null));
+            panelImmagineImmobile.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
+            .EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing.border.TitledBorder.CENTER,javax
+            .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dialo\u0067",java.awt.Font.BOLD,
+            12),java.awt.Color.red),panelImmagineImmobile. getBorder()));panelImmagineImmobile. addPropertyChangeListener(new java.beans
+            .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("borde\u0072".equals(e.
+            getPropertyName()))throw new RuntimeException();}});
             panelImmagineImmobile.setLayout(new BorderLayout(1, 1));
 
             //---- buttonDestraImg ----
@@ -639,7 +843,7 @@ public class PaginaImmobileDettagliata extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JPanel panelTopBar;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
@@ -648,6 +852,8 @@ public class PaginaImmobileDettagliata extends JPanel {
     private JLabel labelPrezzo;
     private JButton buttonOfferta;
     private JButton buttonVisita;
+    private JLabel labelPrezzoAlto;
+    private JLabel labelPrezzoUltimo;
     private JPanel panelChart;
     private JPanel panelImmagineImmobile;
     private JButton buttonDestraImg;

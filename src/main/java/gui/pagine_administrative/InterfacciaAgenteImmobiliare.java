@@ -17,6 +17,7 @@ import javax.swing.border.*;
 import controller.ControllerAdministration;
 
 import gui.costum_components.*;
+import model.AgenteImmobiliare;
 import model.Immobile;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
@@ -47,6 +48,9 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<ImmobileEImmagini> immobiliEImmagini) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+
+        AgenteImmobiliare agente = control.getSpecifiche(token);
+        labelNomeAzzienda.setText(agente.getNomeAgente() + " " + agente.getCognomeAgente() + ", agente immobiliare presso: " + agente.getAgenziaImmobiliare().getNomeAgenzia());
 
         List<Immobile> immobili = new ArrayList<>();
         for (ImmobileEImmagini i : immobiliEImmagini){
@@ -115,7 +119,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
         labelNotifiche = new JLabel();
@@ -132,9 +136,13 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder(new CompoundBorder(new TitledBorder(new EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",TitledBorder.CENTER,TitledBorder.BOTTOM,new Font("Dia\u006cog",Font.BOLD,
-        12),Color.red), getBorder())); addPropertyChangeListener(new PropertyChangeListener(){@Override public void propertyChange(PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -274,7 +282,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
     private JLabel labelNotifiche;

@@ -37,6 +37,10 @@ public class LogIn extends JPanel {
              frame.repaint();
 
          });
+
+        textFildEmail.addActionListener(e -> passwordField1.requestFocusInWindow());
+
+        passwordField1.addActionListener(e -> buttonLogIn.doClick());
          
          buttonLogIn.addActionListener(e-> {
              char[] tempPass = passwordField1.getPassword();

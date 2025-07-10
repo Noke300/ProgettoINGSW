@@ -10,10 +10,10 @@ public class AgenteImmobiliare{
     private String passwordAgente;
     private String regione;
     private ArrayList<Immobile> listaImmobili = new ArrayList<>();
-    private final AgenziaImmobiliare agenziaImmobiliare;
+    private final AgenziaImmobiliare nomeAgenzia;
 
     public AgenteImmobiliare(AgenziaImmobiliare agenziaImmobiliare, ArrayList<Immobile> listaImmobili, String regione, String passwordAgente, String emailAgente, String cognomeAgente, String nomeAgente) {
-        this.agenziaImmobiliare = agenziaImmobiliare;
+        this.nomeAgenzia = agenziaImmobiliare;
         this.listaImmobili = listaImmobili;
         this.regione = regione;
         this.passwordAgente = passwordAgente;
@@ -24,7 +24,7 @@ public class AgenteImmobiliare{
     public AgenteImmobiliare(String emailAgente, String passwordAgente) {
         this.emailAgente = emailAgente;
         this.passwordAgente = passwordAgente;
-        this.agenziaImmobiliare = null;
+        this.nomeAgenzia = null;
     }
 
     public String getRegione() {
@@ -44,7 +44,38 @@ public class AgenteImmobiliare{
     }
 
     public AgenziaImmobiliare getAgenziaImmobiliare() {
-        return agenziaImmobiliare;
+        return nomeAgenzia;
     }
 
+    public String getNomeAgente() {
+        return nomeAgente;
+    }
+
+    public void setNomeAgente(String nomeAgente) {
+        this.nomeAgente = nomeAgente;
+    }
+
+    public String getCognomeAgente() {
+        return cognomeAgente;
+    }
+
+    public void setCognomeAgente(String cognomeAgente) {
+        this.cognomeAgente = cognomeAgente;
+    }
+
+    public String getEmailAgente() {
+        return emailAgente;
+    }
+
+    public void setEmailAgente(String emailAgente) {
+        this.emailAgente = emailAgente;
+    }
+
+    public String getPasswordAgente() {
+        return passwordAgente;
+    }
+
+    public void setPasswordAgente(String passwordAgente) {
+        this.passwordAgente = passwordAgente;
+    }
 }

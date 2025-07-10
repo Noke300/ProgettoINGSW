@@ -17,7 +17,7 @@ import java.util.*;
 //TODO dobbiamo gestire meglio le Exception di questa classe
 public class ControllerAdministration extends Controller{
 
-
+    protected static final String GET_SPECIFICHE = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
 
     public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
         HttpClient client = HttpClient.newHttpClient();
@@ -189,6 +189,41 @@ public class ControllerAdministration extends Controller{
             return gson.fromJson(response.body(), AgenteImmobiliare.class);
         } else {
             throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
+        }
+    }
+
+    public AgenteImmobiliare getSpecifiche(String token) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(GET_SPECIFICHE))
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        //client.close();
+
+        System.out.println("Codice risposta: " + response.statusCode());
+
+        if (response.statusCode() == 200) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<AgenteImmobiliare>() {}.getType();
+            return gson.fromJson(response.body(), listType);
+        } else {
+            throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
         }
     }
 

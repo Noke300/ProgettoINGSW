@@ -31,6 +31,10 @@ public class LogInAmministrazione extends JPanel {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
 
+        textFildEmail.addActionListener(e -> passwordField1.requestFocusInWindow());
+
+        passwordField1.addActionListener(e -> buttonLogIn.doClick());
+
         buttonLogIn.addActionListener(e-> {
              String token1;
              char[] pass = passwordField1.getPassword();

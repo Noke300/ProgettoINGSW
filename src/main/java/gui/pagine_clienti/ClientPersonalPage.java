@@ -43,12 +43,6 @@ public class ClientPersonalPage extends JPanel {
         separatorV.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1)); // Larghezza piena, altezza 1px
         separatorV.setForeground(Color.LIGHT_GRAY); // Colore del tratto
 
-        datiLabel.setText("<html> Situato nel cuore di una tranquilla zona residenziale, questo splendido appartamento rappresenta la perfetta fusione tra eleganza classica e comfort moderno. L’immobile, recentemente ristrutturato con materiali di pregio, si sviluppa su una superficie di circa 120 metri quadrati distribuiti in modo armonioso e funzionale. All’ingresso si viene accolti da un ampio soggiorno luminoso, impreziosito da pavimenti in parquet naturale, soffitti alti e grandi finestre che garantiscono una meravigliosa esposizione solare per gran parte della giornata.\n" +
-                "\n" +
-                "La cucina abitabile, separata ma comunicante con la zona living tramite una raffinata porta scorrevole in vetro satinato, è dotata di elettrodomestici di ultima generazione, piano a induzione e finiture in acciaio inox. La zona notte comprende tre camere da letto, di cui una matrimoniale con bagno privato dotato di box doccia in cristallo e dettagli in marmo travertino. Un secondo bagno, anch’esso finemente arredato, serve le altre due camere. Entrambi i bagni sono provvisti di riscaldamento a pavimento e specchi retroilluminati.\n" +
-                "\n" +
-                "Completano la proprietà una cabina armadio, una lavanderia interna e un balcone che si affaccia su un curato cortile condominiale con area verde. L’appartamento è inoltre dotato di impianto di climatizzazione canalizzato, tapparelle elettriche, sistema di allarme e connessione in fibra ottica. Possibilità di acquisto di un box auto doppio nelle immediate vicinanze. Ideale per famiglie, coppie o professionisti che cercano un’abitazione di prestigio in una delle zone più ambite della città, a pochi minuti da scuole, parchi, mezzi pubblici e negozi.</html>");
-
     }
 
     @Override

@@ -137,9 +137,7 @@ public class ControllerAdministration extends Controller{
 
     public boolean eliminaImmobile(String immobile, String token) {
 
-        Immobile immTemp = new Immobile(immobile);
         HttpClient client = HttpClient.newHttpClient();
-        String requestBody = gson.toJson(immTemp);
 
         HttpRequest request;
         try {
@@ -147,7 +145,7 @@ public class ControllerAdministration extends Controller{
                     .uri(new URI(ELIMINA_IMM))
                     .header("Authorization", "Bearer " + token)
                     .header("Content-Type", "application/json")
-                    .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
+                    .method("DELETE", HttpRequest.BodyPublishers.ofString(immobile))
                     .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException("Errore nella URI: " + e.getMessage());

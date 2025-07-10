@@ -61,6 +61,7 @@ public class ClientPersonalPage extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        LogoOpzioni2 = new JLabel();
         labelEmail = new JLabel();
         labelNomeC = new JLabel();
         separatorO = new JSeparator();
@@ -76,19 +77,19 @@ public class ClientPersonalPage extends JPanel {
         menuOpzioni = new JMenu();
         LogoOpzioni = new JLabel();
         labelTitolo = new JLabel();
-        LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
-        (0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
-        .TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt
-        .Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
-        propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName()))throw new RuntimeException()
-        ;}});
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax
+        . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing
+        .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .
+        Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red
+        ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override
+        public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName (
+        ) ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
-            "0[118,fill]0" +
+            "0[107,fill]0" +
             "[74,fill]0" +
             "[fill]0" +
             "[111,grow,center]0" +
@@ -107,6 +108,11 @@ public class ClientPersonalPage extends JPanel {
             "[77]0" +
             "[21,top]0"));
 
+        //---- LogoOpzioni2 ----
+        LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
+        LogoOpzioni2.setIconTextGap(2);
+        add(LogoOpzioni2, "cell 0 0 2 2,align center center,grow 0 0");
+
         //---- labelEmail ----
         labelEmail.setText("Email");
         labelEmail.setBorder(new TitledBorder(null, "Email", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
@@ -116,12 +122,12 @@ public class ClientPersonalPage extends JPanel {
 
         //---- labelNomeC ----
         labelNomeC.setText("Nome");
-        labelNomeC.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
+        labelNomeC.setIcon(null);
         labelNomeC.setHorizontalAlignment(SwingConstants.CENTER);
         labelNomeC.setHorizontalTextPosition(SwingConstants.CENTER);
         labelNomeC.setVerticalTextPosition(SwingConstants.BOTTOM);
         labelNomeC.setFont(new Font("Segoe UI", Font.PLAIN, 28));
-        add(labelNomeC, "cell 0 1 2 2,growy");
+        add(labelNomeC, "cell 0 2 2 1,growy");
         add(separatorO, "cell 2 0 1 10");
 
         //---- labelDataN ----
@@ -196,16 +202,12 @@ public class ClientPersonalPage extends JPanel {
             panelMenuBarOpzioniColore.add(labelTitolo, BorderLayout.CENTER);
         }
         add(panelMenuBarOpzioniColore, "north,growx");
-
-        //---- LogoOpzioni2 ----
-        LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
-        LogoOpzioni2.setIconTextGap(2);
-        add(LogoOpzioni2, "cell 0 9 2 1,align center center,grow 0 0");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    private JLabel LogoOpzioni2;
     private JLabel labelEmail;
     private JLabel labelNomeC;
     private JSeparator separatorO;
@@ -221,6 +223,5 @@ public class ClientPersonalPage extends JPanel {
     private JMenu menuOpzioni;
     private JLabel LogoOpzioni;
     private JLabel labelTitolo;
-    private JLabel LogoOpzioni2;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

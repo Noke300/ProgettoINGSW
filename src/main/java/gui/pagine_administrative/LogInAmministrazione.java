@@ -80,22 +80,17 @@ public class LogInAmministrazione extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         labelTitolo = new JLabel();
         labelEmail = new JLabel();
         textFildEmail = new JTextField();
         labelPassword = new JLabel();
         passwordField1 = new JPasswordField();
-        buttonRegistrati = new JButton();
         buttonLogIn = new JButton();
         buttonCreaAggenzia = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        ricercaButton = new JButton();
-        buttonAccountAmministrazione = new JButton();
-        backButtonHome = new JButton();
         LogoOpzioni = new JLabel();
 
         //======== this ========
@@ -140,20 +135,15 @@ public class LogInAmministrazione extends JPanel {
         passwordField1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         add(passwordField1, "cell 1 2 2 1,aligny center,growy 0");
 
-        //---- buttonRegistrati ----
-        buttonRegistrati.setText("Registrati");
-        buttonRegistrati.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonRegistrati, "cell 1 3,align center top,grow 0 0");
-
         //---- buttonLogIn ----
         buttonLogIn.setText("Log In");
         buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
+        add(buttonLogIn, "cell 1 3,align center top,grow 0 0");
 
         //---- buttonCreaAggenzia ----
         buttonCreaAggenzia.setText("Crea un Aggenzia");
         buttonCreaAggenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonCreaAggenzia, "cell 1 4 2 1,align center top,grow 0 0");
+        add(buttonCreaAggenzia, "cell 2 3,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -176,33 +166,6 @@ public class LogInAmministrazione extends JPanel {
                     menuOpzioni.setForeground(new Color(0x66ff66));
                     menuOpzioni.setBackground(Color.green);
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-
-                    //---- logInButton ----
-                    logInButton.setText("Log In");
-                    logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(logInButton);
-
-                    //---- ricercaButton ----
-                    ricercaButton.setText("Ricerca");
-                    ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
-                    ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(ricercaButton);
-
-                    //---- buttonAccountAmministrazione ----
-                    buttonAccountAmministrazione.setText("Account Amministrazione");
-                    buttonAccountAmministrazione.setIcon(UIManager.getIcon("FileChooser.newFolderIcon"));
-                    buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(buttonAccountAmministrazione);
-
-                    //---- backButtonHome ----
-                    backButtonHome.setHorizontalTextPosition(SwingConstants.RIGHT);
-                    backButtonHome.setText("Home");
-                    backButtonHome.setVerticalAlignment(SwingConstants.TOP);
-                    backButtonHome.setVerticalTextPosition(SwingConstants.TOP);
-                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
@@ -218,22 +181,17 @@ public class LogInAmministrazione extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JLabel labelTitolo;
     private JLabel labelEmail;
     private JTextField textFildEmail;
     private JLabel labelPassword;
     private JPasswordField passwordField1;
-    private JButton buttonRegistrati;
     private JButton buttonLogIn;
     private JButton buttonCreaAggenzia;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton ricercaButton;
-    private JButton buttonAccountAmministrazione;
-    private JButton backButtonHome;
     private JLabel LogoOpzioni;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

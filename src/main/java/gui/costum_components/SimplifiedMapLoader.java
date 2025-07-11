@@ -68,7 +68,7 @@ public class SimplifiedMapLoader extends MapLoader {
                     CustomWaypoint waypoint = new CustomWaypoint(
                             clickedGeoPosition,
                             "Indirizzo", // Placeholder info
-                            ICON_CLASS.getCursoreMapSelect() // Get the icon from your IconClass
+                            IconClass.getCursoreMapSelect() // Get the icon from your IconClass
                     );
 
                     // Add the waypoint to the set

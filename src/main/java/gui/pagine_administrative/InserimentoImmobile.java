@@ -34,9 +34,8 @@ import org.jxmapviewer.viewer.GeoPosition;
 //TODO modificare  il collegamento della pagina per ora in crea azzienda non chiedere
 public class InserimentoImmobile extends JPanel {
 
-    IconClass iconClass = new IconClass();
-    List<String> base64ListImmagini;
-    List<String> listNomeImmagini;
+    private final List<String> base64ListImmagini;
+    private final List<String> listNomeImmagini;
 
     JCheckBox ascensore = new JCheckBox("Assencore");
     JCheckBox cantina = new JCheckBox("Cantina");
@@ -50,7 +49,7 @@ public class InserimentoImmobile extends JPanel {
         initComponents();
         base64ListImmagini = new ArrayList<>();
         listNomeImmagini = new ArrayList<>();
-        Font inputFont = new Font("SansSerif", Font.PLAIN, 18);
+
         Font labelFont = new Font("SansSerif", Font.PLAIN, 22);
 
         JPanel mainPanel = new JPanel();
@@ -75,7 +74,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridy = 1;
         JTextField fullField = new JTextField();
-        fullField.setFont(inputFont);
+        fullField.setFont(IconClass.getFontImmobiliC());
         fullField.setPreferredSize(new Dimension(800, 35));
         addressPanel.add(fullField, gbc);
         gbc.gridwidth = 1;
@@ -88,7 +87,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridx = 1; gbc.weightx = 0.6;
         JTextField viaField = new JTextField();
-        viaField.setFont(inputFont);
+        viaField.setFont(IconClass.getFontImmobiliC());
         addressPanel.add(viaField, gbc);
 
         gbc.gridx = 2; gbc.weightx = 0.0;
@@ -98,7 +97,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridx = 3; gbc.weightx = 0.4;
         JTextField numeroField = new JTextField();
-        numeroField.setFont(inputFont);
+        numeroField.setFont(IconClass.getFontImmobiliC());
         addressPanel.add(numeroField, gbc);
 
 //  CAP e Città
@@ -109,7 +108,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridx = 1; gbc.weightx = 0.3;
         JTextField capField = new JTextField();
-        capField.setFont(inputFont);
+        capField.setFont(IconClass.getFontImmobiliC());
         addressPanel.add(capField, gbc);
 
         gbc.gridx = 2;
@@ -119,7 +118,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridx = 3; gbc.weightx = 0.7;
         JTextField cittaField = new JTextField();
-        cittaField.setFont(inputFont);
+        cittaField.setFont(IconClass.getFontImmobiliC());
         addressPanel.add(cittaField, gbc);
 
 //  Regione
@@ -132,7 +131,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridx = 1; gbc.gridwidth = 3;
         JComboBox<String> regioneCombo = new JComboBox<>(regioni);
-        regioneCombo.setFont(inputFont);
+        regioneCombo.setFont(IconClass.getFontImmobiliC());
         regioneCombo.setSelectedIndex(0); // ✅ Prima regione selezionata automaticamente
         addressPanel.add(regioneCombo, gbc);
 
@@ -144,7 +143,7 @@ public class InserimentoImmobile extends JPanel {
 
         gbc.gridx = 1; gbc.gridwidth = 3;
         JComboBox<String> provinciaCombo = new JComboBox<>();
-        provinciaCombo.setFont(inputFont);
+        provinciaCombo.setFont(IconClass.getFontImmobiliC());
         addressPanel.add(provinciaCombo, gbc);
 
 // Popolamento iniziale della provincia
@@ -181,7 +180,7 @@ public class InserimentoImmobile extends JPanel {
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
         btnPanel.setPreferredSize(new Dimension(140, 160));
         JButton uploadButton = new JButton("Carica immagine");
-        uploadButton.setFont(inputFont);
+        uploadButton.setFont(IconClass.getFontImmobiliC());
         btnPanel.add(Box.createVerticalGlue());
         btnPanel.add(uploadButton);
         btnPanel.add(Box.createVerticalGlue());
@@ -203,21 +202,21 @@ public class InserimentoImmobile extends JPanel {
         JLabel priceLabel = new JLabel("Prezzo immobile:");
         priceLabel.setFont(labelFont);
         JTextField priceField = new JTextField(10);
-        priceField.setFont(inputFont);
+        priceField.setFont(IconClass.getFontImmobiliC());
         priceField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
-        JButton caratteristicheButton = getJButton(frame, inputFont);
+        JButton caratteristicheButton = getJButton(frame, IconClass.getFontImmobiliC());
 
 
         JLabel typeLabel = new JLabel("Tipo Vendita:");
         typeLabel.setFont(labelFont);
         JComboBox<String> tipoVendita = new JComboBox<>(new String[]{"Vendita", "Affitto"});
-        tipoVendita.setFont(inputFont);
+        tipoVendita.setFont(IconClass.getFontImmobiliC());
 
         JLabel typeImmobileLabel = new JLabel("Tipo Immobile:");
         typeImmobileLabel.setFont(labelFont);
         JComboBox<String> tipoImmobile = new JComboBox<>(new String[]{"Casa", "Appartamento"});
-        tipoImmobile.setFont(inputFont);
+        tipoImmobile.setFont(IconClass.getFontImmobiliC());
 
         infoPanel.add(priceLabel);
         infoPanel.add(priceField);
@@ -234,7 +233,7 @@ public class InserimentoImmobile extends JPanel {
 
         //Descrizione
         JTextArea descriptionArea = new JTextArea(4, 50);
-        descriptionArea.setFont(inputFont);
+        descriptionArea.setFont(IconClass.getFontImmobiliC());
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
         JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
@@ -254,16 +253,16 @@ public class InserimentoImmobile extends JPanel {
         JSpinner stanzeSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 1));
         JSpinner bagniSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 1));
         JSpinner pianoSpinner = new JSpinner(new SpinnerNumberModel(0, -1, 10, 1));
-        stanzeSpinner.setFont(inputFont);
-        bagniSpinner.setFont(inputFont);
-        pianoSpinner.setFont(inputFont);
+        stanzeSpinner.setFont(IconClass.getFontImmobiliC());
+        bagniSpinner.setFont(IconClass.getFontImmobiliC());
+        pianoSpinner.setFont(IconClass.getFontImmobiliC());
 
         JTextField superficieField = new JTextField(6);
-        superficieField.setFont(inputFont);
+        superficieField.setFont(IconClass.getFontImmobiliC());
         superficieField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
         JComboBox<String> classeEnergeticaCombo = new JComboBox<>(new String[]{"A+", "A", "B", "C", "D", "E", "F", "G"});
-        classeEnergeticaCombo.setFont(inputFont);
+        classeEnergeticaCombo.setFont(IconClass.getFontImmobiliC());
 
         JLabel stanzeLabel = new JLabel("Stanze:");
         JLabel bagniLabel = new JLabel("Bagni:");
@@ -541,7 +540,7 @@ public class InserimentoImmobile extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         scrollPaneImmobile = new JScrollPane();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
@@ -565,7 +564,7 @@ public class InserimentoImmobile extends JPanel {
             "[186,grow,top]0" +
             "[21,grow,fill]0" +
             "[]"));
-        add(scrollPaneImmobile, "cell 0 0 4 5");
+        add(scrollPaneImmobile, "cell 0 0 4 5,grow");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -610,7 +609,7 @@ public class InserimentoImmobile extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JScrollPane scrollPaneImmobile;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;

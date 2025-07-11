@@ -19,11 +19,10 @@ import java.util.List;
 
 public class BottoniOpzioni extends JPanel {
 
-private final IconClass iconSet = new IconClass();
-private final JButton logInButton = new JButton();
-private final JButton buttonAccountClienti = new JButton();
-private final JButton backButtonHome = new JButton();
-private final JButton buttonAccountAmministrazione = new JButton();
+private static final JButton logInButton = new JButton();
+private static final JButton buttonAccountClienti = new JButton();
+private static final JButton backButtonHome = new JButton();
+private static final JButton buttonAccountAmministrazione = new JButton();
 private String token;
 
     public void setUpOpzioniMenu(JFrame frame, Controller control, String token, JMenuBar menuBarOpzioni, JMenu menuOpzioni) {
@@ -48,7 +47,7 @@ private String token;
 
             }else {
                 this.token = "";
-                setUpLogInOutButton(this.token);
+                frame.setContentPane(new Ricerca().createRicercaPanel(frame,new Controller(),this.token));
             }
             frame.revalidate();
             frame.repaint();
@@ -90,7 +89,7 @@ private String token;
         });
 
         for (JButton jButton : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome, buttonAccountClienti)) {
-            jButton.addMouseListener(iconSet.cursorButton());
+            jButton.addMouseListener(IconClass.cursorButton());
         }
 
         menuOpzioni.add(logInButton);
@@ -100,7 +99,7 @@ private String token;
 
     }
 
-    private void setBottoniSetUpJForm(){
+    private  void setBottoniSetUpJForm(){
 
         backButtonHome.setText("Home");
         backButtonHome.setVerticalAlignment(SwingConstants.TOP);
@@ -114,7 +113,7 @@ private String token;
 
         buttonAccountClienti.setText("Account Clienti");
         buttonAccountClienti.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        buttonAccountClienti.setIcon(iconSet.getNomeCliente());
+        buttonAccountClienti.setIcon(IconClass.getNomeCliente());
 
         logInButton.setText("Log In");
         logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
@@ -126,17 +125,17 @@ private String token;
 
         }
 
-        backButtonHome.setIcon(iconSet.getHomeButtonIcon());
-        buttonAccountAmministrazione.setIcon(iconSet.getAccountAministazioneIcon());
+        backButtonHome.setIcon(IconClass.getHomeButtonIcon());
+        buttonAccountAmministrazione.setIcon(IconClass.getAccountAministazioneIcon());
     }
     private boolean setUpLogInOutButton(String token){
         if (token.isEmpty()){
             logInButton.setText("Login");
-            logInButton.setIcon(iconSet.getLogInIcon());
+            logInButton.setIcon(IconClass.getLogInIcon());
             return false;
         }else{
             logInButton.setText("Logout");
-            logInButton.setIcon(iconSet.getLogOutIcon());
+            logInButton.setIcon(IconClass.getLogOutIcon());
             return true;
         }
     }

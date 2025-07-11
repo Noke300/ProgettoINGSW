@@ -23,6 +23,7 @@ public class Offerta {
     @Nullable
     private Boolean esitoOfferta;
 
+    @Nullable
     private Boolean contrOfferta;
 
     public Offerta(Immobile immobile,Double prezzoOfferta) {

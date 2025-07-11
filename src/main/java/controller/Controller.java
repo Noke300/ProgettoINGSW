@@ -74,9 +74,6 @@ public class Controller {
         } catch (InterruptedException e) {
             throw new RuntimeException("Errore nella richiesta: " + e.getMessage());
         }
-
-      //  client.close();
-
         if (response.statusCode() == 200) {
             Type listType = new TypeToken<ArrayList<ImmobileEImmagini>>() {}.getType();
             return gson.fromJson(response.body(), listType);
@@ -155,8 +152,6 @@ public class Controller {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        // client.close();
-
         if (response.statusCode() == 200) {
             return response.body().replace("\"", ""); // rimuove doppi apici
         } else {

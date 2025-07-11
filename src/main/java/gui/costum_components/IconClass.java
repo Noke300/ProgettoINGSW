@@ -9,97 +9,90 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class IconClass {
-   private final Color mainColor = Color.decode("#59A869");
-   private final FontIcon searcherIcon = FontIcon.of(FontAwesome.SEARCH_PLUS, 24);
-   private final FontIcon mapIcon = FontIcon.of(FontAwesome.GLOBE, 24);
-   private final FontIcon homeIcon = FontIcon.of(FontAwesome.HOME,100,this.mainColor);
-   private final FontIcon homeButtonIcon = FontIcon.of(FontAwesome.HOME, 24);
-   private final FontIcon tipoVenditaIcon = FontIcon.of(FontAwesome.BUILDING_O, 24);
-   private final FontIcon numeroBagniIcon = FontIcon.of(FontAwesome.SHOWER, 24);
-   private final FontIcon numeroStanzeIcon = FontIcon.of(FontAwesomeSolid.COUCH, 24);
-   private final FontIcon classeEnergeticaIcon = FontIcon.of(FontAwesome.BOLT, 24);
-   private final FontIcon pianiIcon = FontIcon.of(FontAwesomeSolid.ARROW_UP, 24);
-   private final FontIcon accountAministazioneIcon = FontIcon.of(FontAwesome.USERS, 24);
-   private final FontIcon logInIcon = FontIcon.of(FontAwesomeSolid.DOOR_CLOSED,24);
-   private final FontIcon logOutIcon = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
-   private final FontIcon ascensoreIcon = FontIcon.of(FontAwesome.SORT, 22);
-   private final FontIcon balconeIcon = FontIcon.of(FontAwesome.COLUMNS, 22);
-   private final FontIcon mapCenterMarker = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,20,this.mainColor);
-   private final FontIcon cursoreMapSelect = FontIcon.of(FontAwesomeSolid.MAP_MARKER,28,this.mainColor);
-   private final FontIcon calendarioIcon = FontIcon.of(FontAwesome.CALENDAR_O,30);
-   private final FontIcon cantinaIcon = FontIcon.of(FontAwesomeSolid.DUNGEON,22);
-   private final FontIcon climatizzazioneIcon = FontIcon.of(FontAwesomeSolid.FIRE_ALT,22);
-   private final FontIcon portineriaIcon = FontIcon.of(FontAwesomeSolid.USER_LOCK,22);
-   private final FontIcon mapImmobiliIcon = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT,24,Color.green);
-   private final FontIcon plusImmobile = FontIcon.of(FontAwesomeSolid.PLUS_CIRCLE,24);
-   private final FontIcon passwordIcon = FontIcon.of(FontAwesomeSolid.LOCK,24);
-   private final FontIcon emailIcon = FontIcon.of(FontAwesomeSolid.ENVELOPE,24);
-   private final FontIcon nomeCliente =FontIcon.of(FontAwesomeSolid.USER,24);
 
-    public Color getMainColor() {return mainColor;}
+    // 🔹 Colori principali
+    private static final Color MAIN_COLOR = Color.decode("#59A869");
 
-    public MouseAdapter cursorButton(){
+    // 🔹 Icone principali
+    private static final FontIcon SEARCHER_ICON = FontIcon.of(FontAwesome.SEARCH_PLUS, 24);
+    private static final FontIcon MAP_ICON = FontIcon.of(FontAwesome.GLOBE, 24);
+    private static final FontIcon HOME_ICON = FontIcon.of(FontAwesome.HOME, 100, MAIN_COLOR);
+    private static final FontIcon HOME_BUTTON_ICON = FontIcon.of(FontAwesome.HOME, 24);
+
+    // 🔹 Icone proprietà immobiliari
+    private static final FontIcon TIPO_VENDITA_ICON = FontIcon.of(FontAwesome.BUILDING_O, 24);
+    private static final FontIcon NUMERO_BAGNI_ICON = FontIcon.of(FontAwesome.SHOWER, 24);
+    private static final FontIcon NUMERO_STANZE_ICON = FontIcon.of(FontAwesomeSolid.COUCH, 24);
+    private static final FontIcon CLASSE_ENERGETICA_ICON = FontIcon.of(FontAwesome.BOLT, 24);
+    private static final FontIcon PIANI_ICON = FontIcon.of(FontAwesomeSolid.ARROW_UP, 24);
+
+    // 🔹 Icone utenti e sessione
+    private static final FontIcon ACCOUNT_AMINISTAZIONE_ICON = FontIcon.of(FontAwesome.USERS, 24);
+    private static final FontIcon LOGIN_ICON = FontIcon.of(FontAwesomeSolid.DOOR_CLOSED, 24);
+    private static final FontIcon LOGOUT_ICON = FontIcon.of(FontAwesomeSolid.DOOR_OPEN, 24);
+
+    // 🔹 Icone funzionali
+    private static final FontIcon ASCENSORE_ICON = FontIcon.of(FontAwesome.SORT, 22);
+    private static final FontIcon BALCONE_ICON = FontIcon.of(FontAwesome.COLUMNS, 22);
+    private static final FontIcon MAP_CENTER_MARKER = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT, 20, MAIN_COLOR);
+    private static final FontIcon CURSORE_MAP_SELECT = FontIcon.of(FontAwesomeSolid.MAP_MARKER, 28, MAIN_COLOR);
+    private static final FontIcon CALENDARIO_ICON = FontIcon.of(FontAwesome.CALENDAR_O, 30);
+    private static final FontIcon CANTINA_ICON = FontIcon.of(FontAwesomeSolid.DUNGEON, 22);
+    private static final FontIcon CLIMATIZZAZIONE_ICON = FontIcon.of(FontAwesomeSolid.FIRE_ALT, 22);
+    private static final FontIcon PORTINERIA_ICON = FontIcon.of(FontAwesomeSolid.USER_LOCK, 22);
+    private static final FontIcon MAP_IMMOBILI_ICON = FontIcon.of(FontAwesomeSolid.MAP_MARKER_ALT, 24, Color.green);
+    private static final FontIcon PLUS_IMMOBILE = FontIcon.of(FontAwesomeSolid.PLUS_CIRCLE, 24);
+    private static final FontIcon PASSWORD_ICON = FontIcon.of(FontAwesomeSolid.LOCK, 24);
+    private static final FontIcon EMAIL_ICON = FontIcon.of(FontAwesomeSolid.ENVELOPE, 24);
+    private static final FontIcon NOME_CLIENTE = FontIcon.of(FontAwesomeSolid.USER, 24);
+    private static final FontIcon BACK_BUTTON = FontIcon.of(FontAwesomeSolid.ARROW_ALT_CIRCLE_LEFT, 30);
+
+    //Font
+    private static final Font FONT_IMMOBILE_CARATTERISTICHE = new Font("SansSerif", Font.PLAIN, 18);
+
+
+    // 🔹 Metodo per il cursore a mano sui bottoni
+    public static MouseAdapter cursorButton() {
         return new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
-                // Ripristina il cursore quando il mouse esce dal bottone
                 e.getComponent().setCursor(Cursor.getDefaultCursor());
             }
         };
     }
 
-
-    public FontIcon getSearcherIcon() {
-        return searcherIcon;
-    }
-    public FontIcon getMapIcon() {
-        return mapIcon;
-    }
-    public FontIcon getHomeIcon() {
-        return homeIcon;
-    }
-    public FontIcon getTipoVenditaIcon() {
-        return tipoVenditaIcon;
-    }
-    public FontIcon getNumeroBagniIcon() {
-        return numeroBagniIcon;
-    }
-    public FontIcon getNumeroStanzeIcon() {
-        return numeroStanzeIcon;
-    }
-    public FontIcon getClasseEnergeticaIcon() {
-        return classeEnergeticaIcon;
-    }
-    public FontIcon getPianiIcon() {
-        return pianiIcon;
-    }
-    public FontIcon getAccountAministazioneIcon() {
-        return accountAministazioneIcon;
-    }
-    public FontIcon getLogInIcon() {
-        return logInIcon;
-    }
-    public FontIcon getLogOutIcon() {
-        return logOutIcon;
-    }
-    public FontIcon getHomeButtonIcon() {
-        return homeButtonIcon;
-    }
-    public FontIcon getMapCenterMarker(){return mapCenterMarker;}
-    public FontIcon getAscensoreIcon() {return ascensoreIcon;}
-    public FontIcon getBalconeIcon() {return balconeIcon;}
-    public FontIcon getCursoreMapSelect() {return cursoreMapSelect;}
-    public FontIcon getCalendarioIcon() {return calendarioIcon;}
-    public FontIcon getPortineriaIcon() {return portineriaIcon;}
-    public FontIcon getClimatizzazioneIcon() {return climatizzazioneIcon;}
-    public FontIcon getCantinaIcon() {return cantinaIcon;}
-    public FontIcon getMapImmobiliIcon() {return mapImmobiliIcon;}
-    public FontIcon getPlusImmobile() {return plusImmobile;}
-    public FontIcon getPasswordIcon() {return passwordIcon;}
-    public FontIcon getEmailIcon() {return emailIcon;}
-    public FontIcon getNomeCliente() {return nomeCliente;}
+    // 🔹 Getter
+    public static Color getMainColor() { return MAIN_COLOR; }
+    public static FontIcon getSearcherIcon() { return SEARCHER_ICON; }
+    public static FontIcon getMapIcon() { return MAP_ICON; }
+    public static FontIcon getHomeIcon() { return HOME_ICON; }
+    public static FontIcon getHomeButtonIcon() { return HOME_BUTTON_ICON; }
+    public static FontIcon getTipoVenditaIcon() { return TIPO_VENDITA_ICON; }
+    public static FontIcon getNumeroBagniIcon() { return NUMERO_BAGNI_ICON; }
+    public static FontIcon getNumeroStanzeIcon() { return NUMERO_STANZE_ICON; }
+    public static FontIcon getClasseEnergeticaIcon() { return CLASSE_ENERGETICA_ICON; }
+    public static FontIcon getPianiIcon() { return PIANI_ICON; }
+    public static FontIcon getAccountAministazioneIcon() { return ACCOUNT_AMINISTAZIONE_ICON; }
+    public static FontIcon getLogInIcon() { return LOGIN_ICON; }
+    public static FontIcon getLogOutIcon() { return LOGOUT_ICON; }
+    public static FontIcon getAscensoreIcon() { return ASCENSORE_ICON; }
+    public static FontIcon getBalconeIcon() { return BALCONE_ICON; }
+    public static FontIcon getMapCenterMarker() { return MAP_CENTER_MARKER; }
+    public static FontIcon getCursoreMapSelect() { return CURSORE_MAP_SELECT; }
+    public static FontIcon getCalendarioIcon() { return CALENDARIO_ICON; }
+    public static FontIcon getCantinaIcon() { return CANTINA_ICON; }
+    public static FontIcon getClimatizzazioneIcon() { return CLIMATIZZAZIONE_ICON; }
+    public static FontIcon getPortineriaIcon() { return PORTINERIA_ICON; }
+    public static FontIcon getMapImmobiliIcon() { return MAP_IMMOBILI_ICON; }
+    public static FontIcon getPlusImmobile() { return PLUS_IMMOBILE; }
+    public static FontIcon getPasswordIcon() { return PASSWORD_ICON; }
+    public static FontIcon getEmailIcon() { return EMAIL_ICON; }
+    public static FontIcon getNomeCliente() { return NOME_CLIENTE; }
+    public static Font getFontImmobiliC() { return FONT_IMMOBILE_CARATTERISTICHE; }
+    public static FontIcon getBackButton(){return  BACK_BUTTON;}
 }

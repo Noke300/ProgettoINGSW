@@ -7,8 +7,6 @@ package gui.pagine_administrative;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -29,14 +27,10 @@ import org.jxmapviewer.viewer.GeoPosition;
  */
 public class InterfacciaAgenteImmobiliare extends JPanel {
     MapLoader mapLoader;
-    private static final IconClass iconSet = new IconClass();
-    private GeoPosition geoPos = new GeoPosition(45.464170, 11.885890);
-    List<JCheckBox> checkBoxesList = new ArrayList<>();
-    private JPanel[] selectedPanel = new JPanel[1]; // inizialmente vuoto
+    private JPanel[] selectedPanel = new JPanel[1];// inizialmente vuoto
+    GeoPosition geoPos;
     private ImmobilePanelSingolo immobilePanelSingolo = new ImmobilePanelSingolo();
     //--Border per gli immobili selected
-    private List<ColoredDate> coloredDates = new ArrayList<>();
-
 
     @Override
     public void addNotify() {
@@ -53,8 +47,15 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         labelNomeAzzienda.setText(agente.getNomeAgente() + " " + agente.getCognomeAgente() + ", agente immobiliare presso: " + agente.getAgenziaImmobiliare().getNomeAgenzia());
 
         List<Immobile> immobili = new ArrayList<>();
+
         for (ImmobileEImmagini i : immobiliEImmagini){
             immobili.add(i.getImmobile());
+        }
+
+        if(immobili.isEmpty()) {
+            geoPos = new GeoPosition(immobili.getLast().getLanIm(),immobili.getLast().getLanIm());
+        }else{
+            geoPos = new GeoPosition(40.000,39.000);
         }
         //TODO notifiche non interaggibile temporanio
         LogInAmministrazione.notifiche.addListener(messaggio -> {
@@ -81,12 +82,21 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 public void mouseClicked(MouseEvent e) {
                     if (selectedPanel[0] == null) {
                        buttonElimina.setEnabled(false);
+                       buttonAggiungiOfferta.setEnabled(false);
                     }else{
+                        buttonAggiungiOfferta.setEnabled(true);
                         buttonElimina.setEnabled(true);
                     }
                 }
             });
         }
+
+        //Button
+        buttonAggiungiOfferta.addActionListener(e -> {
+            Immobile impTem = control.fetchImmobile(token,selectedPanel[0].getName());
+            OffertaPannel.setUpPannel(token,frame,impTem,control);
+        });
+
 
         buttonElimina.addActionListener(e -> {
             if (selectedPanel != null) {
@@ -101,7 +111,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         //--Calendario
         CalenderAgenteImmobiliare.caricaCalendario(buttonCalendario,control,token,frame);
 
-        buttonAggiungImmobile.setIcon(iconSet.getPlusImmobile());
+        buttonAggiungImmobile.setIcon(IconClass.getPlusImmobile());
 
         buttonAggiungImmobile.addActionListener(h ->{
             frame.setContentPane(new InserimentoImmobile(frame,control,token));
@@ -119,7 +129,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
-        // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
         labelNotifiche = new JLabel();
@@ -136,13 +146,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
-        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing
-        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
-        Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
-        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
-        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName (
-        ) )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -241,7 +244,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             panelMap.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 3, true));
             panelMap.setLayout(new BorderLayout());
         }
-        add(panelMap, "cell 3 0 10 5,grow");
+        add(panelMap, "cell 3 0 10 8,grow");
 
         //======== panelBottomBar ========
         {
@@ -250,9 +253,9 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             panelBottomBar.setLayout(new MigLayout(
                 "insets 0,hidemode 3,gap 5 5",
                 // columns
-                "[88,grow 1,fill]" +
-                "[grow 1,fill]" +
-                "[grow 1,fill]" +
+                "[88,grow 1,fill]unrel" +
+                "[123,grow 1,fill]0" +
+                "[grow 1,fill]rel" +
                 "[grow 1,fill]",
                 // rows
                 "[33,fill]" +
@@ -262,13 +265,15 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             buttonAggiungImmobile.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
             buttonAggiungImmobile.setBackground(UIManager.getColor("Actions.Green"));
             buttonAggiungImmobile.setText("Aggiungi Immobile");
-            panelBottomBar.add(buttonAggiungImmobile, "cell 0 0 1 2,align left center,grow 0 0");
+            buttonAggiungImmobile.setBorderPainted(false);
+            panelBottomBar.add(buttonAggiungImmobile, "cell 0 0 1 2");
 
             //---- buttonAggiungiOfferta ----
             buttonAggiungiOfferta.setText("Aggiungi Offerta");
             buttonAggiungiOfferta.setBorderPainted(false);
             buttonAggiungiOfferta.setBackground(UIManager.getColor("Actions.Green"));
-            panelBottomBar.add(buttonAggiungiOfferta, "cell 2 0 1 2,aligny center,growy 0");
+            buttonAggiungiOfferta.setEnabled(false);
+            panelBottomBar.add(buttonAggiungiOfferta, "cell 2 0 1 2,growy");
 
             //---- buttonElimina ----
             buttonElimina.setText("Elimina");
@@ -277,12 +282,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             buttonElimina.setEnabled(false);
             panelBottomBar.add(buttonElimina, "cell 3 0 1 2,grow");
         }
-        add(panelBottomBar, "south");
+        add(panelBottomBar, "south,growy");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
     private JLabel labelNotifiche;

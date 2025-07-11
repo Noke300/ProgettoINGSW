@@ -14,30 +14,18 @@ import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import gui.Home;
 import gui.Ricerca;
+import gui.costum_components.BottoniOpzioni;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
 public class LogIn extends JPanel {
+    BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+
     public LogIn(JFrame frame, Controller control, String token) {
         initComponents();
-
-         backButtonHome.addActionListener(e-> {
-
-             frame.setContentPane(new Home().createHomePanel(frame));
-             frame.revalidate();
-             frame.repaint();
-        });
-
-         ricercaButton.addActionListener(e-> {
-
-             frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
-             frame.revalidate();
-             frame.repaint();
-
-         });
-
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
         textFildEmail.addActionListener(e -> passwordField1.requestFocusInWindow());
 
         passwordField1.addActionListener(e -> buttonLogIn.doClick());
@@ -78,7 +66,7 @@ public class LogIn extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         labelTitolo = new JLabel();
         labelEmail = new JLabel();
         textFildEmail = new JTextField();
@@ -86,23 +74,12 @@ public class LogIn extends JPanel {
         passwordField1 = new JPasswordField();
         buttonRegistrati = new JButton();
         buttonLogIn = new JButton();
-        buttonGoogle = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        logInButton = new JButton();
-        ricercaButton = new JButton();
-        buttonAccountAmministrazione = new JButton();
-        backButtonHome = new JButton();
         LogoOpzioni = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -154,11 +131,6 @@ public class LogIn extends JPanel {
         buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
 
-        //---- buttonGoogle ----
-        buttonGoogle.setText("Google");
-        buttonGoogle.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonGoogle, "cell 2 3,align center top,grow 0 0");
-
         //======== panelMenuBarOpzioniColore ========
         {
             panelMenuBarOpzioniColore.setForeground(Color.green);
@@ -180,33 +152,6 @@ public class LogIn extends JPanel {
                     menuOpzioni.setForeground(new Color(0x66ff66));
                     menuOpzioni.setBackground(Color.green);
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-
-                    //---- logInButton ----
-                    logInButton.setText("Log In");
-                    logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(logInButton);
-
-                    //---- ricercaButton ----
-                    ricercaButton.setText("Ricerca");
-                    ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
-                    ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(ricercaButton);
-
-                    //---- buttonAccountAmministrazione ----
-                    buttonAccountAmministrazione.setText("Account Amministrazione");
-                    buttonAccountAmministrazione.setIcon(UIManager.getIcon("FileChooser.newFolderIcon"));
-                    buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(buttonAccountAmministrazione);
-
-                    //---- backButtonHome ----
-                    backButtonHome.setHorizontalTextPosition(SwingConstants.RIGHT);
-                    backButtonHome.setText("Home");
-                    backButtonHome.setVerticalAlignment(SwingConstants.TOP);
-                    backButtonHome.setVerticalTextPosition(SwingConstants.TOP);
-                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
@@ -222,7 +167,7 @@ public class LogIn extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JLabel labelTitolo;
     private JLabel labelEmail;
     private JTextField textFildEmail;
@@ -230,14 +175,9 @@ public class LogIn extends JPanel {
     private JPasswordField passwordField1;
     private JButton buttonRegistrati;
     private JButton buttonLogIn;
-    private JButton buttonGoogle;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JButton logInButton;
-    private JButton ricercaButton;
-    private JButton buttonAccountAmministrazione;
-    private JButton backButtonHome;
     private JLabel LogoOpzioni;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

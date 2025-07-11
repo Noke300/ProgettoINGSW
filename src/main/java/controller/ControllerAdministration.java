@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -18,6 +20,7 @@ import java.util.*;
 public class ControllerAdministration extends Controller{
 
     protected static final String GET_SPECIFICHE = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
+    protected static final String GET_IMMOBILE = "http://localhost:8081/auth-agente/getImmobile";
 
     public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
         HttpClient client = HttpClient.newHttpClient();
@@ -29,8 +32,6 @@ public class ControllerAdministration extends Controller{
         jsonMap.put("fileNames", fileNames);
 
         String requestBody = gson.toJson(jsonMap);
-        System.out.println("\n"+requestBody);
-
         HttpRequest request;
         try {
             request = HttpRequest.newBuilder()
@@ -75,9 +76,6 @@ public class ControllerAdministration extends Controller{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        //client.close();
-
-        System.out.println("Codice risposta: " + response.statusCode());
 
         if (response.statusCode() == 200) {
             Gson gson = new Gson();
@@ -212,7 +210,6 @@ public class ControllerAdministration extends Controller{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        //client.close();
 
         System.out.println("Codice risposta: " + response.statusCode());
 
@@ -225,6 +222,40 @@ public class ControllerAdministration extends Controller{
         }
     }
 
+
+    public Immobile fetchImmobile(String token, String idImmobile) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Aggiungi il parametro idImmobile alla URL
+        String endpoint = GET_IMMOBILE + "?idImmobile=" + URLEncoder.encode(idImmobile, StandardCharsets.UTF_8);
+
+        HttpRequest request;
+        try {
+            URI uri = new URI(endpoint);
+            request = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (response.statusCode() == 200) {
+            Gson gson = new Gson();
+            Type singleType = new TypeToken<Immobile>() {}.getType();
+            return gson.fromJson(response.body(), singleType);
+        } else {
+            throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
+        }
+    }
 
 }
 

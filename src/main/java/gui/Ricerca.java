@@ -4,7 +4,6 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import gui.costum_components.*;
-import model.Immobile;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -20,7 +19,6 @@ public class Ricerca extends JPanel {
 
     private JPopupMenu popupMenu;
     private final String FilterString = "Indifferente" ;
-    private static final IconClass iconSet = new IconClass();
     private String token;
     private final BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     private final AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
@@ -220,18 +218,20 @@ public class Ricerca extends JPanel {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
             List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, fetchFiltri());
-            frame.setContentPane(new InterfacciaListaImmobili(frame,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
-            frame.revalidate();
-            frame.repaint();
+            if (!immobiles.isEmpty()) {
+                frame.setContentPane(new InterfacciaListaImmobili(frame,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
+                frame.revalidate();
+                frame.repaint();
+            }else{
+                JOptionPane.showMessageDialog(this, "Nessun Immobile trovato.");
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Indirizzo non valido.");
         }
     }
 
     private void configureToggleButton(JToggleButton button) {
-        button.addActionListener(e -> {
-            button.setBackground(button.isSelected() ? iconSet.getMainColor() : Color.WHITE);
-        });
+        button.addActionListener(e -> button.setBackground(button.isSelected() ? IconClass.getMainColor() : Color.WHITE));
     }
 
     //Funzione Cambio Cursore
@@ -247,32 +247,32 @@ public class Ricerca extends JPanel {
     private void setUpComponents() {
         //--Cursor
         for (JButton jButton : Arrays.asList(mapButton, searchButton, buttonFiltri, buttonConfermaFiltri, buttonCancellaFiltri)) {
-            jButton.addMouseListener(iconSet.cursorButton());
+            jButton.addMouseListener(IconClass.cursorButton());
         }
         for(JToggleButton toggleButton : Arrays.asList(toggleButtonAscensore, toggleButtonBalcone, toggleButtonCantina, toggleButtonClimatizzazione, toggleButtonPortineria)){
-            toggleButton.addMouseListener(iconSet.cursorButton());
+            toggleButton.addMouseListener(IconClass.cursorButton());
         }
-        listaTipi.addMouseListener(iconSet.cursorButton());
-        comboBoxTipVendita.addMouseListener(iconSet.cursorButton());
-        menuOpzioni.addMouseListener(iconSet.cursorButton());
-        comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
+        listaTipi.addMouseListener(IconClass.cursorButton());
+        comboBoxTipVendita.addMouseListener(IconClass.cursorButton());
+        menuOpzioni.addMouseListener(IconClass.cursorButton());
+        comboBoxSuperfice.addMouseListener(IconClass.cursorButton());
 
         //--Icon
-        labelTitolo.setIcon(iconSet.getHomeIcon());
-        searchButton.setIcon(iconSet.getSearcherIcon());
-        mapButton.setIcon(iconSet.getMapIcon());
+        labelTitolo.setIcon(IconClass.getHomeIcon());
+        searchButton.setIcon(IconClass.getSearcherIcon());
+        mapButton.setIcon(IconClass.getMapIcon());
 
-        labelPiani.setIcon(iconSet.getPianiIcon());
-        labelTipoVendita.setIcon(iconSet.getTipoVenditaIcon());
-        labelNumeroBagni.setIcon(iconSet.getNumeroBagniIcon());
-        labelClasseE.setIcon(iconSet.getClasseEnergeticaIcon());
-        labelStanze.setIcon(iconSet.getNumeroStanzeIcon());
+        labelPiani.setIcon(IconClass.getPianiIcon());
+        labelTipoVendita.setIcon(IconClass.getTipoVenditaIcon());
+        labelNumeroBagni.setIcon(IconClass.getNumeroBagniIcon());
+        labelClasseE.setIcon(IconClass.getClasseEnergeticaIcon());
+        labelStanze.setIcon(IconClass.getNumeroStanzeIcon());
 
-        toggleButtonAscensore.setIcon(iconSet.getAscensoreIcon());
-        toggleButtonBalcone.setIcon(iconSet.getBalconeIcon());
-        toggleButtonCantina.setIcon(iconSet.getCantinaIcon());
-        toggleButtonClimatizzazione.setIcon(iconSet.getClimatizzazioneIcon());
-        toggleButtonPortineria.setIcon(iconSet.getPortineriaIcon());
+        toggleButtonAscensore.setIcon(IconClass.getAscensoreIcon());
+        toggleButtonBalcone.setIcon(IconClass.getBalconeIcon());
+        toggleButtonCantina.setIcon(IconClass.getCantinaIcon());
+        toggleButtonClimatizzazione.setIcon(IconClass.getClimatizzazioneIcon());
+        toggleButtonPortineria.setIcon(IconClass.getPortineriaIcon());
     }
 
     private void initializePopupMenu() {

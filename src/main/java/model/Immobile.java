@@ -28,8 +28,6 @@ public class Immobile {
     private AgenteImmobiliare agente;
     private final Indirizzo indirizzo;
 
-    private List<String> immagini;
-
     public Immobile(AgenziaImmobiliare agenziaImmobiliare, Indirizzo indirizzo,AgenteImmobiliare agenteImmobiliare,
                     boolean transportoPubblico,boolean parchi, boolean scuole, boolean venduto,
                     boolean climatizzazione, boolean ascensore, boolean cantina,

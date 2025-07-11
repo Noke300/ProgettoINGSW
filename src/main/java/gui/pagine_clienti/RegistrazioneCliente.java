@@ -63,10 +63,10 @@ public class RegistrazioneCliente extends JPanel {
             Date date = Date.valueOf(textFildData.getText());
 
             Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
-                    Arrays.toString(tempPass), date);
-            if(control.registrazioneCliente(newC)){
+                    new String(tempPass), date);
+            if(Controller.registrazioneCliente(newC)){
                 String tokenT = null;
-                tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
+                tokenT = Controller.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
                 frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,tokenT));
                 Arrays.fill(tempPass,'0');
                 frame.revalidate();
@@ -74,7 +74,7 @@ public class RegistrazioneCliente extends JPanel {
             }else{
                 Arrays.fill(tempPass,'0');
                 System.out.println("Errore");
-            };
+            }
 
         });
 
@@ -82,11 +82,11 @@ public class RegistrazioneCliente extends JPanel {
 
     }
     private void iconSetUp(){
-        buttonCalender.setIcon(iconSet.getCalendarioIcon());
-        iconEmail.setIcon(iconSet.getEmailIcon());
-        iconCognome.setIcon(iconSet.getNomeCliente());
-        iconNome.setIcon(iconSet.getNomeCliente());
-        iconPass.setIcon(iconSet.getPasswordIcon());
+        buttonCalender.setIcon(IconClass.getCalendarioIcon());
+        iconEmail.setIcon(IconClass.getEmailIcon());
+        iconCognome.setIcon(IconClass.getNomeCliente());
+        iconNome.setIcon(IconClass.getNomeCliente());
+        iconPass.setIcon(IconClass.getPasswordIcon());
     }
     
     private void hellperBoxs(){

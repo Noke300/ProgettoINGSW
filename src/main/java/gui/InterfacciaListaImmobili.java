@@ -24,7 +24,6 @@ import java.util.Objects;
  * @author marco
  */
 public class InterfacciaListaImmobili extends JPanel {
-    private static final IconClass iconSet = new IconClass();
     private final ImmobilePanelSingolo  immobilePanelSingolo = new ImmobilePanelSingolo();
     String token;
 
@@ -168,7 +167,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
-            ricercaButton.addActionListener(e-> {
+            backButton.addActionListener(e-> {
             frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
             frame.revalidate();
             frame.repaint();
@@ -178,17 +177,17 @@ public class InterfacciaListaImmobili extends JPanel {
     private void setUpComponents() {
         //--Cursor
 
-        for (JButton jButton : Arrays.asList(mapButton, buttonFiltri)) {
-            jButton.addMouseListener(iconSet.cursorButton());
+        for (JButton jButton : Arrays.asList(mapButton, buttonFiltri,backButton)) {
+            jButton.addMouseListener(IconClass.cursorButton());
         }
-        listaTipi.addMouseListener(iconSet.cursorButton());
-        menuOpzioni.addMouseListener(iconSet.cursorButton());
-        comboBoxSuperfice.addMouseListener(iconSet.cursorButton());
+        listaTipi.addMouseListener(IconClass.cursorButton());
+        menuOpzioni.addMouseListener(IconClass.cursorButton());
+        comboBoxSuperfice.addMouseListener(IconClass.cursorButton());
 
         //--Icon
-        ricercaButton.setIcon(iconSet.getSearcherIcon());
-        mapButton.setIcon(iconSet.getMapIcon());
-        searchButton.setIcon(iconSet.getSearcherIcon());
+        backButton.setIcon(IconClass.getBackButton());
+        mapButton.setIcon(IconClass.getMapIcon());
+        searchButton.setIcon(IconClass.getSearcherIcon());
 
     }
 
@@ -200,9 +199,9 @@ public class InterfacciaListaImmobili extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
-        // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         panelTopBar = new JPanel();
-        ricercaButton = new JButton();
+        backButton = new JButton();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         mapButton = new JButton();
@@ -219,16 +218,9 @@ public class InterfacciaListaImmobili extends JPanel {
         panelListaImmobileScroll = new JScrollPane();
         panelListaImmobile = new JPanel();
         panelBottomBar = new JPanel();
-        buttonAggiungImmobile = new JButton();
-        buttonAggiungiOfferta = new JButton();
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
-        0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
-        . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-        beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -275,10 +267,12 @@ public class InterfacciaListaImmobili extends JPanel {
                 "[75,grow,top]0" +
                 "[]para"));
 
-            //---- ricercaButton ----
-            ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
-            ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            panelTopBar.add(ricercaButton, "cell 0 0,grow");
+            //---- backButton ----
+            backButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
+            backButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            backButton.setBackground(new Color(0x00ffffff, true));
+            backButton.setBorderPainted(false);
+            panelTopBar.add(backButton, "cell 0 0,grow");
 
             //======== menuBarOpzioni ========
             {
@@ -415,29 +409,16 @@ public class InterfacciaListaImmobili extends JPanel {
                 "[grow 1,fill]" +
                 "[grow 1,fill]",
                 // rows
-                "[shrink 0]" +
                 "[48,fill]"));
-
-            //---- buttonAggiungImmobile ----
-            buttonAggiungImmobile.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
-            buttonAggiungImmobile.setBackground(UIManager.getColor("Actions.Green"));
-            buttonAggiungImmobile.setText("Aggiungi Immobile");
-            panelBottomBar.add(buttonAggiungImmobile, "cell 0 1,alignx left,grow 0 100");
-
-            //---- buttonAggiungiOfferta ----
-            buttonAggiungiOfferta.setText("Aggiungi Offerta");
-            buttonAggiungiOfferta.setBorderPainted(false);
-            buttonAggiungiOfferta.setBackground(UIManager.getColor("Actions.Green"));
-            panelBottomBar.add(buttonAggiungiOfferta, "cell 3 0 1 2,aligny center,growy 0");
         }
         add(panelBottomBar, "south");
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JPanel panelTopBar;
-    private JButton ricercaButton;
+    private JButton backButton;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JButton mapButton;
@@ -454,7 +435,5 @@ public class InterfacciaListaImmobili extends JPanel {
     private JScrollPane panelListaImmobileScroll;
     private JPanel panelListaImmobile;
     private JPanel panelBottomBar;
-    private JButton buttonAggiungImmobile;
-    private JButton buttonAggiungiOfferta;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

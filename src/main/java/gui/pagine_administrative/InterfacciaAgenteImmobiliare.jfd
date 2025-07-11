@@ -78,11 +78,11 @@ new FormModel {
 				name: "panelMap"
 				"border": new javax.swing.border.LineBorder( #SwingColor0, 3, true )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 0 10 5,grow"
+				"value": "cell 3 0 10 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "insets 0,hidemode 3,gap 5 5"
-				"$columnConstraints": "[88,grow 1,fill][grow 1,fill][grow 1,fill][grow 1,fill]"
+				"$columnConstraints": "[88,grow 1,fill]unrel[123,grow 1,fill]0[grow 1,fill]rel[grow 1,fill]"
 				"$rowConstraints": "[33,fill][]"
 			} ) {
 				name: "panelBottomBar"
@@ -93,16 +93,18 @@ new FormModel {
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
 					"background": #SwingColor0
 					"text": "Aggiungi Immobile"
+					"borderPainted": false
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 0 0 1 2,align left center,grow 0 0"
+					"value": "cell 0 0 1 2"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonAggiungiOfferta"
 					"text": "Aggiungi Offerta"
 					"borderPainted": false
 					"background": #SwingColor0
+					"enabled": false
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 2 0 1 2,aligny center,growy 0"
+					"value": "cell 2 0 1 2,growy"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonElimina"
@@ -114,7 +116,7 @@ new FormModel {
 					"value": "cell 3 0 1 2,grow"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "south"
+				"value": "south,growy"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 30, 20 )

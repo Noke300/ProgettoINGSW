@@ -30,14 +30,12 @@ import java.util.List;
 public class MapLoader {
     protected static final String GEOAPIFY_API_KEY = "8f5bca3082a24dadb72c4f3546cacd4c";
     protected static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
-    protected static final IconClass ICON_CLASS = new IconClass();
-
     public MapLoader() {
         //Costruttore Vuoto per l'eredita dei metodi in SimplifiedML
     }
 
 
-    public MapLoader(GeoPosition geoPosition, JPanel mapFrame, List<Immobile> immobiles) {
+    public MapLoader(GeoPosition geoPosition, JPanel mapFrame, List<Immobile> immobile) {
         // Barra di ricerca combinata
 
         // Interactive Map with Markers
@@ -87,9 +85,9 @@ public class MapLoader {
         mapViewer.setZoom(6);
         GeoPosition geoPo;
 
-        for(Immobile immobile : immobiles) {
-            geoPo = new GeoPosition(immobile.getIndirizzo().getLatitudine(),immobile.getIndirizzo().getLongitudine());
-            waypoints.add(new CustomWaypoint(geoPo, immobile.getTipoVendita(),ICON_CLASS.getMapImmobiliIcon()));
+        for(Immobile immob : immobile) {
+            geoPo = new GeoPosition(immob.getIndirizzo().getLatitudine(),immob.getIndirizzo().getLongitudine());
+            waypoints.add(new CustomWaypoint(geoPo, immob.getTipoVendita(), IconClass.getMapImmobiliIcon()));
             waypointPainter.setWaypoints(waypoints);
             mapViewer.repaint();
         }

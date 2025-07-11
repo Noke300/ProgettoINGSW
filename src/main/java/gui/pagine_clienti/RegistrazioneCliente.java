@@ -19,13 +19,12 @@ import model.Cliente;
 import net.miginfocom.swing.*;
 
 public class RegistrazioneCliente extends JPanel {
-    protected final IconClass iconSet = new IconClass();
     public RegistrazioneCliente(JFrame frame,Controller control,String token) {
        initComponents();
        iconSetUp();
        hellperBoxs();
         ricercaButton.addActionListener(e-> {
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
+            frame.setContentPane(new Ricerca(frame,control,token));
             frame.revalidate();
             frame.repaint();
         });
@@ -67,7 +66,7 @@ public class RegistrazioneCliente extends JPanel {
             if(Controller.registrazioneCliente(newC)){
                 String tokenT = null;
                 tokenT = Controller.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
-                frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,tokenT));
+                frame.setContentPane(new Ricerca(frame,control,tokenT));
                 Arrays.fill(tempPass,'0');
                 frame.revalidate();
                 frame.repaint();

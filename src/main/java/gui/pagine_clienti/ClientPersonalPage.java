@@ -7,10 +7,13 @@ package gui.pagine_clienti;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
+import java.util.List;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerClienti;
 import model.Cliente;
+import model.Offerta;
+import model.Visita;
 import net.miginfocom.swing.*;
 
 /**
@@ -18,17 +21,82 @@ import net.miginfocom.swing.*;
  */
 public class ClientPersonalPage extends JPanel {
 
+    private List<Offerta> listaOfferte;
+    private List<Visita> listaVisita;
+
     public ClientPersonalPage(JFrame frame, ControllerClienti controllerClienti,String token) {
         initComponents();
         Cliente cliente = controllerClienti.getSpecifiche(token);
 
-        buttonOfferte.addActionListener(e ->{
+        buttonOfferte.addActionListener(e -> {
             final JDialog offertePanel = new JDialog(frame, "Offerte", true);
             offertePanel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            offertePanel.setSize(700, 550); // Imposta una dimensione per il dialogo della mappa
-            offertePanel.setContentPane(offertePanel);
+            offertePanel.setSize(700, 550);
 
+            JPanel contentPanel = new JPanel();
+            contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+            listaOfferte = controllerClienti.getOfferte(token);
+            for (Offerta offerta : listaOfferte) {
+                JPanel offertaItem = new JPanel(new GridLayout(0, 1));
+                offertaItem.setBorder(BorderFactory.createTitledBorder("Offerta"));
+
+                offertaItem.add(new JLabel("Prezzo: " + offerta.getPrezzoOfferta()));
+                offertaItem.add(new JLabel("Data: " + offerta.getDataOfferta()));
+                offertaItem.add(new JLabel("Immobile: " + offerta.getImmobile()));
+
+                if (Boolean.TRUE.equals(offerta.getContrOfferta())) {
+                    JButton accettaBtn = new JButton("Accetta");
+                    JButton rifiutaBtn = new JButton("Rifiuta");
+
+                    accettaBtn.addActionListener(ev -> {/* logica accetta */});
+                    rifiutaBtn.addActionListener(ev -> {/* logica rifiuta */});
+
+                    JPanel bottoniPanel = new JPanel();
+                    bottoniPanel.add(accettaBtn);
+                    bottoniPanel.add(rifiutaBtn);
+                    offertaItem.add(bottoniPanel);
+                }
+
+                contentPanel.add(offertaItem);
+            }
+
+            JScrollPane scrollPane = new JScrollPane(contentPanel);
+            offertePanel.setContentPane(scrollPane);
+            offertePanel.setVisible(true);
         });
+
+        listaVisita = controllerClienti.getVisite(token);
+        buttonVisite.addActionListener(e -> {
+            final JDialog visitePanel = new JDialog(frame, "Visite", true);
+            visitePanel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            visitePanel.setSize(700, 550);
+
+            JPanel contentPanel = new JPanel();
+            contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+
+
+            for (Visita visita : listaVisita) {
+                JPanel visitaItem = new JPanel(new GridLayout(0, 1));
+                visitaItem.setBorder(BorderFactory.createTitledBorder("Visita"));
+
+                visitaItem.add(new JLabel("Data: " + visita.getDataVisita()));
+                visitaItem.add(new JLabel("Ora: " + visita.getOraVisita()));
+                visitaItem.add(new JLabel("Immobile: " + visita.getImmobile()));
+                if(visita.getConferma()){
+                    visitaItem.add(new JLabel("Stato: Confermata"));
+
+                }else{
+                    visitaItem.add(new JLabel("Stato: In Attesa di Risposta"));
+
+                }
+                contentPanel.add(visitaItem);
+            }
+
+            JScrollPane scrollPane = new JScrollPane(contentPanel);
+            visitePanel.setContentPane(scrollPane);
+            visitePanel.setVisible(true);
+        });
+
 
         labelEmail.setText(cliente.getEmailcliente());
 
@@ -54,7 +122,7 @@ public class ClientPersonalPage extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         LogoOpzioni2 = new JLabel();
         labelEmail = new JLabel();
         labelNomeC = new JLabel();
@@ -73,13 +141,6 @@ public class ClientPersonalPage extends JPanel {
         labelTitolo = new JLabel();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax
-        . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing
-        .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .
-        Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red
-        ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override
-        public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName (
-        ) ) )throw new RuntimeException( ) ;} } );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -199,8 +260,10 @@ public class ClientPersonalPage extends JPanel {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
+
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JLabel LogoOpzioni2;
     private JLabel labelEmail;
     private JLabel labelNomeC;

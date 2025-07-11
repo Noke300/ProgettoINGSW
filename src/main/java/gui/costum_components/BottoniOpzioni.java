@@ -44,10 +44,9 @@ private String token;
                 menuOpzioni.setVisible(false);
                 menuBarOpzioni.setVisible(false);
                 frame.setContentPane(new LogIn(frame, control,this.token ));
-
             }else {
                 this.token = "";
-                frame.setContentPane(new Ricerca().createRicercaPanel(frame,new Controller(),this.token));
+                frame.setContentPane(new Ricerca(frame,new Controller(),this.token));
             }
             frame.revalidate();
             frame.repaint();
@@ -99,7 +98,7 @@ private String token;
 
     }
 
-    private  void setBottoniSetUpJForm(){
+    private void setBottoniSetUpJForm(){
 
         backButtonHome.setText("Home");
         backButtonHome.setVerticalAlignment(SwingConstants.TOP);
@@ -115,15 +114,8 @@ private String token;
         buttonAccountClienti.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         buttonAccountClienti.setIcon(IconClass.getNomeCliente());
 
-        logInButton.setText("Log In");
-        logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
+        setUpLogInOutButton(token);
         logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-
-
-
-        if(setUpLogInOutButton(this.token)){
-
-        }
 
         backButtonHome.setIcon(IconClass.getHomeButtonIcon());
         buttonAccountAmministrazione.setIcon(IconClass.getAccountAministazioneIcon());

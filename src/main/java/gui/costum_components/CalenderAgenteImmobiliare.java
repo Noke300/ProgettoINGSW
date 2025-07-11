@@ -35,8 +35,7 @@ public class CalenderAgenteImmobiliare {
     }
 
     private static void calenderStarter(JButton buttonCalendario, ControllerAdministration control, String token, JFrame frame) {
-        IconClass iconSet = new IconClass();
-        buttonCalendario.setIcon(iconSet.getCalendarioIcon());
+        buttonCalendario.setIcon(IconClass.getCalendarioIcon());
         buttonCalendario.setText(LocalDate.now().toString());
 
         buttonCalendario.addActionListener(e -> {

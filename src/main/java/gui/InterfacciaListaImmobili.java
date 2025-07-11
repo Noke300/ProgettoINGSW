@@ -168,7 +168,7 @@ public class InterfacciaListaImmobili extends JPanel {
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
             backButton.addActionListener(e-> {
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,control,token));
+            frame.setContentPane(new Ricerca(frame,control,token));
             frame.revalidate();
             frame.repaint();
         });

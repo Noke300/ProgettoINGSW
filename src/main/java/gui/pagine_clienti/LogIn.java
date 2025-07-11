@@ -22,8 +22,9 @@ import net.miginfocom.swing.*;
  */
 public class LogIn extends JPanel {
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-
+    String token;
     public LogIn(JFrame frame, Controller control, String token) {
+        this.token = token;
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
         textFildEmail.addActionListener(e -> passwordField1.requestFocusInWindow());
@@ -32,9 +33,10 @@ public class LogIn extends JPanel {
          
          buttonLogIn.addActionListener(e-> {
              char[] tempPass = passwordField1.getPassword();
-             String token1="";
-             token1 = Controller.logInClient(textFildEmail.getText(), new String(tempPass));
-             if (token1.isEmpty()) {
+
+             this.token = Controller.logInClient(textFildEmail.getText(), new String(tempPass));
+             System.out.println("T : "+this.token+"\n");
+             if (this.token.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,
                              "Login fallito. Riprova!",
@@ -43,14 +45,14 @@ public class LogIn extends JPanel {
                      );
                      Arrays.fill(tempPass, ' ');
                  }else {
-                     frame.setContentPane(new Ricerca().createRicercaPanel(frame, control, token1));
+                 frame.setContentPane(new Ricerca(frame,control,this.token));
                      frame.revalidate();
                      frame.repaint();
                     Arrays.fill(tempPass, ' ');
                  }
          });
          buttonRegistrati.addActionListener(e-> {
-             frame.setContentPane(new RegistrazioneCliente(frame,control,token));
+             frame.setContentPane(new RegistrazioneCliente(frame,control,this.token));
              frame.revalidate();
              frame.repaint();
          });

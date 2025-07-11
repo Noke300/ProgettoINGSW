@@ -22,10 +22,13 @@ public class Ricerca extends JPanel {
     private String token;
     private final BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     private final AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
-    public Ricerca() {
+    public Ricerca(JFrame frame, Controller control, String token) {
+        this.token = token;
         initComponents();
         initializePopupMenu(); // Inizializza il menu
         addPopupToSearchField();// Collega il menu al searchField
+        createRicercaPanel(frame,control);
+        System.out.println("T : "+this.token+"\n");
     }
 
     @Override
@@ -35,9 +38,8 @@ public class Ricerca extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public JPanel createRicercaPanel(JFrame frame, Controller control, String token) {
+    public void createRicercaPanel(JFrame frame, Controller control) {
 
-        this.token = token;
         internalFrameFiltri.setVisible(false);
 
         setUpComponents();
@@ -45,7 +47,7 @@ public class Ricerca extends JPanel {
         autoCompleteAddress.setupSearchAutocomplete(searchField);
 
         // --- 5. Azione del pulsante "Cerca" ---//--- 6. Menu Opzioni ---
-        bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+        bottoniOpzioni.setUpOpzioniMenu(frame,control,this.token,menuBarOpzioni,menuOpzioni);
 
         setUpOpzioniMenu(frame,control);
 
@@ -211,7 +213,7 @@ public class Ricerca extends JPanel {
             mapDialogInstance.setLocationRelativeTo(frame);
             mapDialogInstance.setVisible(true); // Mostra il dialogo
         });
-        return this;
+
     }
 
     private void performSearchAction(JFrame frame, Controller control) {

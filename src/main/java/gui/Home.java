@@ -20,7 +20,7 @@ public class Home extends JPanel {
         accessoButton.setText("Entra");
         accessoButton.addActionListener(e -> {
 
-            frame.setContentPane(new Ricerca().createRicercaPanel(frame,new ControllerClienti(),token));
+            frame.setContentPane(new Ricerca(frame,new ControllerClienti(),token));
             frame.revalidate();
             frame.repaint();
 

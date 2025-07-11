@@ -288,4 +288,8 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
             return ResponseEntity.ok("Visita rifiutata");
         }
     }
+
+    public Immobile getImmobile(String idImmobile) {
+        return immobileRepository.findImmobileByIdImmobile(idImmobile);
+    }
 }

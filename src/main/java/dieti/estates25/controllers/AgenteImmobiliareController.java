@@ -86,4 +86,9 @@ public class AgenteImmobiliareController {
     public AgenteImmobiliare getSpecifiche(){
         return agentService.getSpecifiche();
     }
+
+    @GetMapping("/getImmobile")
+    public Immobile getImmobile(@RequestBody String idImmobile){
+        return agentService.getImmobile(idImmobile);
+    }
 }

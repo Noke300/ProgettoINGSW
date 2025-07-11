@@ -92,7 +92,7 @@ public class ControllerAdministration extends Controller{
 
         try {
             request = HttpRequest.newBuilder()
-                    .uri(new URI(VISITE_IMM))
+                    .uri(new URI(VISITE_IMM_AGENTE))
                     .header("Authorization", "Bearer " + token)
                     .GET()
                     .build();

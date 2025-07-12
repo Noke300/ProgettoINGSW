@@ -221,7 +221,6 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         }
 
         return ResponseEntity.ok("Immobile aggiunto correttamente");
-        //TODO Da testare
     }
 
     private Indirizzo getOrCreateIndirizzo(Indirizzo nuovoIndirizzo) {

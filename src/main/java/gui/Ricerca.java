@@ -24,6 +24,7 @@ public class Ricerca extends JPanel {
     private JPopupMenu popupMenu;
     private final String FilterString = "Indifferente" ;
     private String token;
+    public static NotificationClient notifiche;
     private final BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     private final AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
     public Ricerca(JFrame frame, Controller control, String token) {
@@ -219,10 +220,12 @@ public class Ricerca extends JPanel {
         });
 
 
-        //TODO notifiche non interaggibile temporanio
-        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindow(messaggio);
-        }));
+        //TODO controllare che si e' un agente immobiliare
+        if(!token.isEmpty()) {
+                notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+                NotificationClient.notificheWindow(messaggio);
+            }));
+        }
 
     }
 

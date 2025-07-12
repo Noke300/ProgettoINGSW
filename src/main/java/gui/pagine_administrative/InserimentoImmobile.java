@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerAdministration;
 import controller.NotificationClient;
+import gui.Ricerca;
 import gui.costum_components.AutoCompleteAddress;
 import gui.costum_components.IconClass;
 import gui.costum_components.maps.MapLoader;
@@ -502,7 +503,7 @@ public class InserimentoImmobile extends JPanel {
             }
         });
 
-        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+        Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
             NotificationClient.notificheWindow(messaggio);
         }));
 

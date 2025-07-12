@@ -15,6 +15,7 @@ import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import controller.ControllerAdministration;
 import controller.NotificationClient;
+import gui.Ricerca;
 import gui.costum_components.BottoniOpzioni;
 import model.Immobile;
 import model.ImmobileEImmagini;
@@ -25,7 +26,6 @@ import net.miginfocom.swing.*;
  */
 public class LogInAmministrazione extends JPanel {
     private String token;
-    public static NotificationClient notifiche;
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
 
     public LogInAmministrazione(JFrame frame, Controller control, String token) {
@@ -52,8 +52,8 @@ public class LogInAmministrazione extends JPanel {
                  }else {
                      this.token = token1;
 
-                     notifiche = new NotificationClient(textFildEmail.getText());
-                     notifiche.start();
+                     Ricerca.notifiche = new NotificationClient(textFildEmail.getText());
+                     Ricerca.notifiche.start();
 
                      ControllerAdministration controlAdmin = new ControllerAdministration();
                      List<ImmobileEImmagini> immobiliEImmagini = controlAdmin.fetchImmobili(token1);
@@ -144,7 +144,7 @@ public class LogInAmministrazione extends JPanel {
         //---- buttonLogIn ----
         buttonLogIn.setText("Log In");
         buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
+        add(buttonLogIn, "cell 1 4,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {

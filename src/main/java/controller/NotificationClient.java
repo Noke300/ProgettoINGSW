@@ -44,9 +44,7 @@ public class NotificationClient {
                     }
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            }catch (Exception e) {}
         }).start();
     }
 

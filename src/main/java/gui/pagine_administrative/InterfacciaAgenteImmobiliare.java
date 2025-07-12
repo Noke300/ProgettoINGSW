@@ -15,6 +15,7 @@ import javax.swing.border.*;
 import controller.ControllerAdministration;
 
 import controller.NotificationClient;
+import gui.Ricerca;
 import gui.costum_components.*;
 import gui.costum_components.calender.CalenderAgenteImmobiliare;
 import gui.costum_components.maps.MapLoader;
@@ -61,7 +62,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             geoPos = new GeoPosition(40.000,39.000);
         }
 
-        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+        Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
             NotificationClient.notificheWindow(messaggio);
         }));
 

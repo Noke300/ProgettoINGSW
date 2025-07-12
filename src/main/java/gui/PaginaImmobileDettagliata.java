@@ -526,7 +526,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
 
 
-        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+        Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
             NotificationClient.notificheWindow(messaggio);
         }));
 

@@ -194,7 +194,7 @@ public class InterfacciaListaImmobili extends JPanel {
         mapButton.setIcon(IconClass.getMapIcon());
         searchButton.setIcon(IconClass.getSearcherIcon());
 
-        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+        Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
             NotificationClient.notificheWindow(messaggio);
         }));
 

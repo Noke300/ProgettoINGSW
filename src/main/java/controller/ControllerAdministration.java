@@ -51,9 +51,6 @@ public class ControllerAdministration extends Controller{
             throw new RuntimeException("Errore durante inserimento immobile: " + e.getMessage());
         }
     }
-
-
-
     public List<ImmobileEImmagini> fetchImmobili(String token) {
         HttpClient client = HttpClient.newHttpClient();
 

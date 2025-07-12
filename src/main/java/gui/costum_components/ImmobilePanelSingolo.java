@@ -72,7 +72,6 @@ public class ImmobilePanelSingolo {
                 e.printStackTrace();
             }
 
-            Font font = new Font("Segoe UI", Font.PLAIN, 20);
             panel.add(new JLabel(("<html>" + immobile.getIndirizzo().toString() + "</html>")), "cell 2 0 2 1");
             panel.add(new JLabel("Numero Stanze : " + immobile.getNumStanze()), "cell 2 1");
             panel.add(new JLabel("Numero Bagni : " + immobile.getNumBagni()), "cell 3 1");

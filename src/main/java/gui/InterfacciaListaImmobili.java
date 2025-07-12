@@ -97,6 +97,7 @@ public class InterfacciaListaImmobili extends JPanel {
         Dimension dim  = new Dimension(820,289);
         for (ImmobileEImmagini immobileEImmagini : immobili) {
             JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,control,token,selectedPanel);
+            panel.setName(immobileEImmagini.getImmobile().getId());
             panel.setMaximumSize(dim);
             panel.setPreferredSize(dim);
             panelListaImmobile.add(panel);

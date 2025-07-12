@@ -100,14 +100,24 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         buttonElimina.addActionListener(e -> {
             if (selectedPanel != null) {
-                control.eliminaImmobile(selectedPanel[0].getName(),token);
-                panelListaImmobile.remove(selectedPanel[0]);
-                selectedPanel = null;
-                buttonElimina.setEnabled(false);
-                panelListaImmobile.revalidate();
-                panelListaImmobile.repaint();
+                int conferma = JOptionPane.showConfirmDialog(
+                        null,
+                        "Sei sicuro di voler eliminare l'immobile?",
+                        "Conferma eliminazione",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (conferma == JOptionPane.YES_OPTION) {
+                    control.eliminaImmobile(selectedPanel[0].getName(), token);
+                    panelListaImmobile.remove(selectedPanel[0]);
+                    selectedPanel = null;
+                    buttonElimina.setEnabled(false);
+                    panelListaImmobile.revalidate();
+                    panelListaImmobile.repaint();
+                }
             }
         });
+
         //--Calendario
         CalenderAgenteImmobiliare.caricaCalendario(buttonCalendario,control,token,frame);
 
@@ -132,7 +142,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
-        labelNotifiche = new JLabel();
         buttonCalendario = new JButton();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -192,12 +201,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             labelNomeAzzienda.setFont(new Font("Segoe UI", Font.PLAIN, 20));
             panelOpzioni.add(labelNomeAzzienda, "cell 0 0,align left center,grow 0 0");
 
-            //---- labelNotifiche ----
-            labelNotifiche.setText("Notifiche");
-            labelNotifiche.setIcon(UIManager.getIcon("FileView.directoryIcon"));
-            labelNotifiche.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelOpzioni.add(labelNotifiche, "cell 1 0,align center center,grow 0 0");
-
             //---- buttonCalendario ----
             buttonCalendario.setIcon(UIManager.getIcon("FileView.fileIcon"));
             buttonCalendario.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -205,7 +208,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             buttonCalendario.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             buttonCalendario.setBackground(new Color(0x00ffffff, true));
             buttonCalendario.setBorder(null);
-            panelOpzioni.add(buttonCalendario, "cell 2 0,grow");
+            panelOpzioni.add(buttonCalendario, "cell 1 0,grow");
 
             //======== menuBarOpzioni ========
             {
@@ -290,7 +293,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
-    private JLabel labelNotifiche;
     private JButton buttonCalendario;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;

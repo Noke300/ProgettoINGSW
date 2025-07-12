@@ -25,14 +25,6 @@ new FormModel {
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 0 0,align left center,grow 0 0"
 				} )
-				add( new FormComponent( "javax.swing.JLabel" ) {
-					name: "labelNotifiche"
-					"text": "Notifiche"
-					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.directoryIcon" )
-					"font": new java.awt.Font( "Segoe UI", 0, 18 )
-				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 1 0,align center center,grow 0 0"
-				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonCalendario"
 					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
@@ -42,7 +34,7 @@ new FormModel {
 					"background": new java.awt.Color( 255, 255, 255, 0 )
 					"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 2 0,grow"
+					"value": "cell 1 0,grow"
 				} )
 				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 					name: "menuBarOpzioni"

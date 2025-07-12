@@ -73,7 +73,7 @@ CREATE TABLE Immobile (
     Parchi BOOLEAN DEFAULT FALSE,
     TrasportoPubblico BOOLEAN DEFAULT FALSE,
 	
-	FOREIGN KEY (IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo),
+    FOREIGN KEY (IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo) ON DELETE CASCADE,
     FOREIGN KEY (NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
     FOREIGN KEY (NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 );

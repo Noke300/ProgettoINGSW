@@ -7,6 +7,7 @@
 \usepackage{float}
 \usepackage[italian]{babel}
 \usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
 
 
 
@@ -42,7 +43,55 @@ TODO
 TODO
 
 \subsection{Casi d'uso}
-TODO
+
+\begin{table}[H]
+\begin{tabular}{|c|l|}
+\hline
+\rowcolor[HTML]{FD6864} 
+\textbf{Attori} & \multicolumn{1}{c|}{\cellcolor[HTML]{FD6864}\textbf{Casi d'uso}}                                                             \\ \hline
+Ospite          & \begin{tabular}[c]{@{}l@{}}-Cercare Immobili,\\ -Modifica Credenziali,\\ -Aggiungi Azienda.\end{tabular}                     \\ \hline
+Cliente            & \begin{tabular}[c]{@{}l@{}}-Accesso Utente,\\ -Registrazione,\\ -Richiedi Visite,\\ -Acquista Immobile,\\ -Visualizza Attività.\end{tabular}       \\ \hline
+Dieti           & -Aggiungi Azienda.                                                                                                           \\ \hline
+Amministrazione & -Accesso Business.                                                                                                           \\ \hline
+Admin Support   & \begin{tabular}[c]{@{}l@{}}-Elimina Account di Agenti Immobiliari,\\ -Crea Account Di Agenti Immobiliari.\end{tabular}       \\ \hline
+Admin           & \begin{tabular}[c]{@{}l@{}}-Crea Account di Supporto,\\ -Elimina Account di Supporto,\\ -Modifica Dati Azienda.\end{tabular} \\ \hline
+Agente Immobiliare & \begin{tabular}[c]{@{}l@{}}-Gestisce Richiesta Visita,\\ -Gestisce Acquisto Immobile,\\ -Visualizza Calendario,\\ -Aggiunge Immobile.\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Descrizione dei casi d'uso}
+
+\begin{itemize}
+    \item \textbf{Cercare Immobile:} Appena entrati nell'applicativo non bisogna fare l'accesso al proprio account per poter ricercare un immobile. Usando la barra di ricerca si potrà cercare l'immobile in funzione della via e della città; è anche disponibile una ricerca per filtri, oppure utilizzando una cartina interattiva.
+    
+    \item \textbf{Modifica Credenziali:} ??? % Inserisci qui la descrizione quando disponibile.
+    
+    \item \textbf{Aggiungi Azienda:} Si può fare la richiesta per aprire un nuovo account Azienda, se la richiesta va a buon fine si ricevono le credenziali per l'account amministrazione.
+    
+    \item \textbf{Accesso Utente:} Si può accedere al proprio account Utente.
+    
+    \item \textbf{Registrazione:} Si può creare un account Utente inserendo mail e password.
+    
+    \item \textbf{Richiedi Visita:} L'utente registrato, dopo aver visionato l'annuncio di un immobile, potrà richiedere una visita. Potrà selezionare le date disponibili tramite un'interfaccia che mostra anche le previsioni meteo. L'agente immobiliare potrà visualizzare queste richieste e accettarle o rifiutarle.
+    
+    \item \textbf{Acquista Immobile:} L'utente registrato potrà inviare delle offerte per l'immobile. L'agente immobiliare potrà visualizzare queste offerte e accettarle o rifiutarle.
+    
+    \item \textbf{Visualizza Attività:} L'utente registrato potrà visionare le attività che ha effettuato come: le offerte inviate, le visite prenotate e gli ultimi immobili visualizzati.
+    
+    \item \textbf{Accesso Business:} L'utente, dopo aver ricevuto le credenziali amministrazione, potrà fare l'accesso nel lato business dell'applicativo.
+    
+    \item \textbf{Crea e Elimina account agenti immobiliari:} L'admin e gli admin support potranno creare ed eliminare account agente immobiliare per la propria azienda.
+    
+    \item \textbf{Crea e Elimina account supporto:} L'admin potrà creare ed eliminare account admin support della propria azienda.
+    
+    \item \textbf{Modifica dati azienda:} L'admin può modificare i dati del proprio account aziendale.
+    
+    \item \textbf{Visualizza Calendario:} L'agente immobiliare può visualizzare il calendario con le visite che ha precedentemente accettato.
+    
+    \item \textbf{Aggiungi Immobile:} L'agente immobiliare può aggiungere nuovi immobili nell'applicativo, inserendo tutti i campi come via, immagini, descrizioni, ecc.
+\end{itemize}
+
+
 
 \subsection{Ricerca e Analisi degli utenti tipo}
 
@@ -242,6 +291,7 @@ TODO
     \end{tikzpicture}
 
 \end{figure}
+Dopo aver aperto l'applicativo si visualizza la pagina con la barra di ricerca, il pulsante \textbf{"mappamondo"} che permette di visualizzare una mappa interattiva e vari filtri che si trovano o al di sotto della barra di ricerca o nell'apposita schermata apribile premendo il tasto \textbf{"filtri"}; premendo il tasto \textbf{Invio} nella barra di ricerca si passa al mock-up \textbf{M02}.
 
 \begin{figure}[H]
     \noindent
@@ -262,6 +312,7 @@ TODO
     \end{tikzpicture}
 
 \end{figure}
+Si presenta quindi una pagina con una lista di immobili trovati in funzione della ricerca fatta. Questa lista mostra diverse opzioni, ciascuna accompagnata da varie specifiche sul fianco e da immagini di presentazione. Alla destra della lista è visibile una mappa interattiva che permette di visualizzare la posizione dell'immobile selezionato.
 
 
 \subsubsection{Inserisci Immobile}

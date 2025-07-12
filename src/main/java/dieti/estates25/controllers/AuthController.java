@@ -8,6 +8,7 @@ import dieti.estates25.repositories.ClienteRepository;
 import dieti.estates25.repositories.ImmagineImmobileRepository;
 import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.OffertaRepository;
+import dieti.estates25.service.NotificaService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,9 @@ public class AuthController {
 
     @Autowired
     private ImmagineImmobileRepository immagineImmobileRepository;
+
+    @Autowired
+    private NotificaService notificaService;
 
     private GoogleCloudStorageManager storageManager;
 
@@ -106,12 +110,17 @@ public class AuthController {
         if(getAuthorities().equals("[CLIENT]")){
             offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
             offerta.setContrOfferta(false);
+            offerta.setDataOfferta(LocalDateTime.now());
+            offerta.setEsitoOfferta(false);
+            offerta = offertaRepository.save(offerta);
+
+            notificaService.inviaNotifica(offerta.getImmobile().getAgente().getEmailAgente(), "Hanno fatto una nuova offerta");
         }else if(getAuthorities().equals("[AGENTE_IMMOBILIARE]")){
             offerta.setContrOfferta(true);
+            offerta.setDataOfferta(LocalDateTime.now());
+            offerta.setEsitoOfferta(false);
+            offertaRepository.save(offerta);
         }
-        offerta.setDataOfferta(LocalDateTime.now());
-        offerta.setEsitoOfferta(false);
-        offertaRepository.save(offerta);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Offerta inserita correttamente");

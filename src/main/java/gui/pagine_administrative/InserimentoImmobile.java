@@ -20,7 +20,7 @@ import controller.ControllerAdministration;
 import controller.NotificationClient;
 import gui.costum_components.AutoCompleteAddress;
 import gui.costum_components.IconClass;
-import gui.costum_components.MapLoader;
+import gui.costum_components.maps.MapLoader;
 import model.AgenteImmobiliare;
 import model.Immobile;
 import model.Indirizzo;
@@ -503,7 +503,7 @@ public class InserimentoImmobile extends JPanel {
         });
 
         LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindowe(messaggio);
+            NotificationClient.notificheWindow(messaggio);
         }));
 
 

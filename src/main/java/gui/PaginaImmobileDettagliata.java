@@ -26,7 +26,7 @@ import controller.Controller;
 import controller.NotificationClient;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
-import gui.costum_components.MapLoader;
+import gui.costum_components.maps.MapLoader;
 import gui.costum_components.OffertaPannel;
 import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_clienti.LogIn;
@@ -527,7 +527,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
 
         LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindowe(messaggio);
+            NotificationClient.notificheWindow(messaggio);
         }));
 
     }

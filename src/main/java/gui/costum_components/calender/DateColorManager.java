@@ -1,4 +1,4 @@
-package gui.costum_components;
+package gui.costum_components.calender;
 
 import com.toedter.calendar.JDayChooser;
 

@@ -5,6 +5,8 @@ import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import controller.NotificationClient;
 import gui.costum_components.*;
+import gui.costum_components.maps.MapLoader;
+import gui.costum_components.maps.SimplifiedMapLoader;
 import gui.pagine_administrative.LogInAmministrazione;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
@@ -219,9 +221,9 @@ public class Ricerca extends JPanel {
 
         //TODO notifiche non interaggibile temporanio
         LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindowe(messaggio);
+            NotificationClient.notificheWindow(messaggio);
         }));
-        
+
     }
 
     private void performSearchAction(JFrame frame, Controller control) {

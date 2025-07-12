@@ -1,11 +1,10 @@
-package gui.costum_components;
+package gui.costum_components.maps;
 
-import com.sun.source.tree.NewArrayTree;
+import gui.costum_components.IconClass;
 import model.Immobile;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

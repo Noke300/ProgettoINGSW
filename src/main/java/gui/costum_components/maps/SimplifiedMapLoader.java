@@ -1,6 +1,7 @@
-package gui.costum_components;
+package gui.costum_components.maps;
 
 
+import gui.costum_components.IconClass;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jxmapviewer.JXMapViewer;

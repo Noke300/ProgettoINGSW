@@ -1,4 +1,4 @@
-package gui.costum_components;
+package gui.costum_components.maps;
 
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;

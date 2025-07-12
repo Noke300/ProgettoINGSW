@@ -10,13 +10,14 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.Timer;
 import javax.swing.border.*;
 
 import controller.ControllerAdministration;
 
 import controller.NotificationClient;
 import gui.costum_components.*;
+import gui.costum_components.calender.CalenderAgenteImmobiliare;
+import gui.costum_components.maps.MapLoader;
 import model.AgenteImmobiliare;
 import model.Immobile;
 import model.ImmobileEImmagini;
@@ -61,7 +62,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         }
 
         LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindowe(messaggio);
+            NotificationClient.notificheWindow(messaggio);
         }));
 
 

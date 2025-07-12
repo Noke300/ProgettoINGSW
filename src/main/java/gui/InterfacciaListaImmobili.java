@@ -7,6 +7,8 @@ package gui;
 import controller.Controller;
 import controller.NotificationClient;
 import gui.costum_components.*;
+import gui.costum_components.maps.MapLoader;
+import gui.costum_components.maps.SimplifiedMapLoader;
 import gui.pagine_administrative.LogInAmministrazione;
 import model.Immobile;
 import model.ImmobileEImmagini;
@@ -193,7 +195,7 @@ public class InterfacciaListaImmobili extends JPanel {
         searchButton.setIcon(IconClass.getSearcherIcon());
 
         LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindowe(messaggio);
+            NotificationClient.notificheWindow(messaggio);
         }));
 
 

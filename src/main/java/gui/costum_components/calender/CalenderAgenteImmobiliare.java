@@ -1,8 +1,9 @@
-package gui.costum_components;
+package gui.costum_components.calender;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
 import controller.ControllerAdministration;
+import gui.costum_components.IconClass;
 import model.Cliente;
 import model.Immobile;
 import model.Visita;

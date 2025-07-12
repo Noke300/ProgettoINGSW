@@ -54,7 +54,7 @@ public class NotificationClient {
         listeners.add(listener);
     }
 
-    public static void  notificheWindowe(String messaggio){
+    public static void  notificheWindow(String messaggio){
         JWindow notificationWindow = new JWindow();
 
         JLabel label = new JLabel("Notifica: " + messaggio);
@@ -74,10 +74,8 @@ public class NotificationClient {
         int y = 20; // margine dall'alto
         notificationWindow.setLocation(x, y);
 
-        // Rende la finestra non interagibile
         notificationWindow.setFocusableWindowState(false);
 
-        // Mostra la finestra
         notificationWindow.setVisible(true);
 
         // Chiude la finestra dopo 7 secondi

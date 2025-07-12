@@ -27,6 +27,7 @@ public class LogInAmministrazione extends JPanel {
     private String token;
     public static NotificationClient notifiche;
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+
     public LogInAmministrazione(JFrame frame, Controller control, String token) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
@@ -86,8 +87,8 @@ public class LogInAmministrazione extends JPanel {
         textFildEmail = new JTextField();
         labelPassword = new JLabel();
         passwordField1 = new JPasswordField();
-        buttonLogIn = new JButton();
         buttonCreaAggenzia = new JButton();
+        buttonLogIn = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -135,15 +136,15 @@ public class LogInAmministrazione extends JPanel {
         passwordField1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         add(passwordField1, "cell 1 2 2 1,aligny center,growy 0");
 
-        //---- buttonLogIn ----
-        buttonLogIn.setText("Log In");
-        buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonLogIn, "cell 1 3,align center top,grow 0 0");
-
         //---- buttonCreaAggenzia ----
         buttonCreaAggenzia.setText("Crea un Aggenzia");
         buttonCreaAggenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonCreaAggenzia, "cell 2 3,align center top,grow 0 0");
+        add(buttonCreaAggenzia, "cell 1 3,align center top,grow 0 0");
+
+        //---- buttonLogIn ----
+        buttonLogIn.setText("Log In");
+        buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -187,8 +188,8 @@ public class LogInAmministrazione extends JPanel {
     private JTextField textFildEmail;
     private JLabel labelPassword;
     private JPasswordField passwordField1;
-    private JButton buttonLogIn;
     private JButton buttonCreaAggenzia;
+    private JButton buttonLogIn;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;

@@ -5,7 +5,9 @@
 package gui;
 
 import controller.Controller;
+import controller.NotificationClient;
 import gui.costum_components.*;
+import gui.pagine_administrative.LogInAmministrazione;
 import model.Immobile;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.MigLayout;
@@ -189,6 +191,11 @@ public class InterfacciaListaImmobili extends JPanel {
         backButton.setIcon(IconClass.getBackButton());
         mapButton.setIcon(IconClass.getMapIcon());
         searchButton.setIcon(IconClass.getSearcherIcon());
+
+        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+            NotificationClient.notificheWindowe(messaggio);
+        }));
+
 
     }
 

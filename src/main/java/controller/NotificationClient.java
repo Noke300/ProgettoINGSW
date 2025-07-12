@@ -1,5 +1,7 @@
 package controller;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -52,6 +54,36 @@ public class NotificationClient {
         listeners.add(listener);
     }
 
+    public static void  notificheWindowe(String messaggio){
+        JWindow notificationWindow = new JWindow();
+
+        JLabel label = new JLabel("Notifica: " + messaggio);
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        label.setOpaque(true);
+        label.setBackground(new Color(255, 255, 204)); // giallo tenue
+        label.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+        ));
+        notificationWindow.getContentPane().add(label);
+        notificationWindow.pack();
+
+        // Posizionamento in alto a destra dello schermo
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = screenSize.width - notificationWindow.getWidth() - 20;
+        int y = 20; // margine dall'alto
+        notificationWindow.setLocation(x, y);
+
+        // Rende la finestra non interagibile
+        notificationWindow.setFocusableWindowState(false);
+
+        // Mostra la finestra
+        notificationWindow.setVisible(true);
+
+        // Chiude la finestra dopo 7 secondi
+        new Timer(7000, e -> notificationWindow.dispose()).start();
+
+    }
     private void notifyListeners(String message) {
         for (Consumer<String> listener : listeners) {
             listener.accept(message);

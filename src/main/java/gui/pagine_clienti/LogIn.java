@@ -27,6 +27,7 @@ public class LogIn extends JPanel {
         this.token = token;
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
+
         textFildEmail.addActionListener(e -> passwordField1.requestFocusInWindow());
 
         passwordField1.addActionListener(e -> buttonLogIn.doClick());
@@ -35,7 +36,6 @@ public class LogIn extends JPanel {
              char[] tempPass = passwordField1.getPassword();
 
              this.token = Controller.logInClient(textFildEmail.getText(), new String(tempPass));
-             System.out.println("T : "+this.token+"\n");
              if (this.token.isEmpty()) {
                      JOptionPane.showMessageDialog(
                              frame,

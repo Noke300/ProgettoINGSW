@@ -3,7 +3,9 @@ package gui;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.Controller;
+import controller.NotificationClient;
 import gui.costum_components.*;
+import gui.pagine_administrative.LogInAmministrazione;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -214,6 +216,12 @@ public class Ricerca extends JPanel {
             mapDialogInstance.setVisible(true); // Mostra il dialogo
         });
 
+
+        //TODO notifiche non interaggibile temporanio
+        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+            NotificationClient.notificheWindowe(messaggio);
+        }));
+        
     }
 
     private void performSearchAction(JFrame frame, Controller control) {

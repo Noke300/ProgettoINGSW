@@ -23,10 +23,12 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import controller.Controller;
+import controller.NotificationClient;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.costum_components.MapLoader;
 import gui.costum_components.OffertaPannel;
+import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_clienti.LogIn;
 import model.Immobile;
 import model.ImmobileEImmagini;
@@ -521,6 +523,12 @@ public class PaginaImmobileDettagliata extends JPanel {
         JScrollPane scrollP = new JScrollPane(pannelloContenuto);
         scrollP.getVerticalScrollBar().setUnitIncrement(16); // scorrimento più fluido
         scrollPaneDettagli.add(scrollP, BorderLayout.CENTER);
+
+
+
+        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+            NotificationClient.notificheWindowe(messaggio);
+        }));
 
     }
 

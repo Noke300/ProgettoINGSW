@@ -10,10 +10,12 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.*;
 
 import controller.ControllerAdministration;
 
+import controller.NotificationClient;
 import gui.costum_components.*;
 import model.AgenteImmobiliare;
 import model.Immobile;
@@ -57,12 +59,11 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         }else{
             geoPos = new GeoPosition(40.000,39.000);
         }
-        //TODO notifiche non interaggibile temporanio
-        LogInAmministrazione.notifiche.addListener(messaggio -> {
-            System.out.println("Ricevuto: " + messaggio);
 
-            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Notifica: " + messaggio));
-        });
+        LogInAmministrazione.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+            NotificationClient.notificheWindowe(messaggio);
+        }));
+
 
         mapLoader = new MapLoader(geoPos, panelMap, immobili);
         // In the initComponents method, replace the GridLayout with MigLayout

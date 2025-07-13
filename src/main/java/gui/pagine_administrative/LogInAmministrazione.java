@@ -54,7 +54,6 @@ public class LogInAmministrazione extends JPanel {
 
                      Ricerca.notifiche = new NotificationClient(textFildEmail.getText());
                      Ricerca.notifiche.start();
-
                      ControllerAdministration controlAdmin = new ControllerAdministration();
                      List<ImmobileEImmagini> immobiliEImmagini = controlAdmin.fetchImmobili(token1);
                      BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();

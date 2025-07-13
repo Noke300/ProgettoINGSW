@@ -170,6 +170,10 @@ public class InterfacciaListaImmobili extends JPanel {
             mapDialogInstance.setVisible(true); // Mostra il dialogo
         });
 
+        if(!token.isEmpty() && control.getRawSpecifiche(token).equals("[AGENTE_IMMOBILIARE]")){
+            Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> NotificationClient.notificheWindow(messaggio)));
+        }
+
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
             backButton.addActionListener(e-> {
@@ -193,10 +197,6 @@ public class InterfacciaListaImmobili extends JPanel {
         backButton.setIcon(IconClass.getBackButton());
         mapButton.setIcon(IconClass.getMapIcon());
         searchButton.setIcon(IconClass.getSearcherIcon());
-
-        Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindow(messaggio);
-        }));
 
 
     }

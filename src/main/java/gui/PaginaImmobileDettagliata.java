@@ -526,9 +526,12 @@ public class PaginaImmobileDettagliata extends JPanel {
 
 
 
-        Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-            NotificationClient.notificheWindow(messaggio);
-        }));
+        if(!token.isEmpty() && control.getRawSpecifiche(token).equals("[AGENTE_IMMOBILIARE]")){
+            Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
+                NotificationClient.notificheWindow(messaggio);
+            }));
+        }
+
 
     }
 

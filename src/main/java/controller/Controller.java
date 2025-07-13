@@ -34,6 +34,8 @@ public class Controller {
     protected static final String AGGIUNGI_IMMOBILE = "http://localhost:8081/auth-agente/aggiungi-immobile";
     protected static final String GET_AGGENTEIMM = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
     protected static final String OFFERTE_CLIENTE = "http://localhost:8081/auth-cliente/getOfferte";
+    protected static final String WHO_URL = "http://localhost:8081/whoAmI";
+
 
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->
@@ -306,5 +308,36 @@ public class Controller {
             throw new RuntimeException("Errore durante invio visita: " + e.getMessage());
         }
     }
+
+    public String getRawSpecifiche(String token) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(WHO_URL))
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Codice risposta: " + response.statusCode());
+
+        if (response.statusCode() == 200) {
+            return response.body();
+        } else {
+            throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
+        }
+    }
+
 
 }

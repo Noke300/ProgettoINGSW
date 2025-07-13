@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -71,6 +72,12 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
 
     @Override
     public ResponseEntity<String> addCliente(Cliente cliente) {
+        if (!checkDatiCliente(cliente.getEmailCliente(), cliente.getPasswordCliente(), cliente.getDataN())){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("I dati che stai inserendo non sono validi");
+        }
+
         if (clienteRepository.findByEmailCliente(cliente.getEmailCliente()) != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -82,6 +89,17 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Utente creato correttamente");
+    }
+
+    public boolean checkDatiCliente(String emailCliente, String passwordCliente, Date dataN) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        String regex2 = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
+        if (emailCliente == null || !emailCliente.matches(regex)) return false;
+        if (passwordCliente == null || !passwordCliente.matches(regex2)) return false;
+        if (dataN == null) return false;
+        Calendar oggi = Calendar.getInstance();
+        oggi.add(Calendar.YEAR, -18); // oggi meno 18 anni
+        return dataN.before(oggi.getTime());
     }
 
     @Override

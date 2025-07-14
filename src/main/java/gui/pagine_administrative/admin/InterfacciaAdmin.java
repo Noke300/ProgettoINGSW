@@ -10,6 +10,7 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ControllerAdministration;
+import gui.costum_components.IconClass;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
@@ -36,11 +37,17 @@ public class InterfacciaAdmin extends JPanel {
 
         }
 
+
+
         JTable tabella = new JTable(model);
+        tabella.setFont(IconClass.getFontImmobiliC());
         tabella.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JPanel panelListaDipendenti = new JPanel(new BorderLayout());
-        panelListaDipendenti.add(new JScrollPane(tabella), BorderLayout.CENTER);
+
+        panelListaDipendenti.setViewportView(tabella);
+        panelListaDipendenti.revalidate();
+        panelListaDipendenti.repaint();
+
 
     }
 
@@ -80,10 +87,10 @@ public class InterfacciaAdmin extends JPanel {
             "[48,grow,fill]" +
             "[48,grow,center]" +
             "[grow,center]" +
-            "[grow,fill]" +
-            "[grow,fill]" +
-            "[grow,fill]" +
-            "[grow,fill]"));
+            "[grow,fill]0" +
+            "[grow,fill]0" +
+            "[grow,fill]0" +
+            "[grow,fill]0"));
 
         //======== panelOpzioni ========
         {
@@ -128,7 +135,7 @@ public class InterfacciaAdmin extends JPanel {
             panelListaDipendenti.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             panelListaDipendenti.setViewportBorder(null);
         }
-        add(panelListaDipendenti, "cell 0 0 9 8,grow");
+        add(panelListaDipendenti, "cell 0 0 13 8,grow");
 
         //======== panelBottomBar ========
         {

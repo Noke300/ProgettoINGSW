@@ -6,7 +6,7 @@ new FormModel {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center"
 			"$columnConstraints": "0[139,grow,fill]0[117,fill]0[96,fill]0[96,fill]0[93,fill]0[fill]0[112,fill]0[0,fill]0[71,fill]0[0,center]0[24,grow,fill]0[9,fill]0[14,grow,fill]"
-			"$rowConstraints": "[48,grow,fill][48,grow,fill][48,grow,center][grow,center][grow,fill][grow,fill][grow,fill][grow,fill]"
+			"$rowConstraints": "[48,grow,fill][48,grow,fill][48,grow,center][grow,center][grow,fill]0[grow,fill]0[grow,fill]0[grow,fill]0"
 		} ) {
 			name: "this"
 			"border": new javax.swing.border.BevelBorder( 1, null, null, null, null )
@@ -47,7 +47,7 @@ new FormModel {
 				"verticalScrollBarPolicy": 22
 				"viewportBorder": sfield com.jformdesigner.model.FormObject NULL_VALUE
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 9 8,grow"
+				"value": "cell 0 0 13 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "insets 0,hidemode 3,gap 5 5"

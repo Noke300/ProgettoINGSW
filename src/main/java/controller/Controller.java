@@ -143,7 +143,7 @@ public class Controller {
                 .thenApply(voidd -> {
                     for (CompletableFuture<String> future : futures) {
                         try {
-                            String token = future.get(); // blocca singolarmente solo per risultato
+                            String token = future.get();
                             if (token != null && !token.isBlank()) {
                                 return token.trim(); // primo token valido
                             }

@@ -170,14 +170,14 @@ public class Controller {
 
             if (response.statusCode() == 200 && response.body() != null && !response.body().isBlank()) {
                 String token = response.body().replace("\"", "").trim();
-                System.out.println("✅ Login riuscito su " + url + ", token: " + token);
+                System.out.println(" Login riuscito su " + url + ", token: " + token);
                 return token;
             } else {
-                System.out.println("❌ Login fallito su " + url + ". Stato: " + response.statusCode());
+                System.out.println(" Login fallito su " + url + ". Stato: " + response.statusCode());
             }
 
         } catch (Exception e) {
-            System.err.println("⚠️ Errore nel login su " + url + ": " + e.getMessage());
+            System.err.println("Errore nel login su " + url + ": " + e.getMessage());
         }
 
         return "";

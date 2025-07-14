@@ -232,43 +232,7 @@ TODO
 \subsection{Approfondimento Casi D'uso significativi}
 
 \subsubsection{Ricerca Immobile}
-\subsubsection*{Cockburn}
 
-\begin{center}
-\label{tab:usecase1}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|cccc|}
-\hline
-\textbf{Use Case \#1} & \multicolumn{4}{c|}{\textbf{Ricerca Immobile}} \\ \hline
-\textbf{Goal in Context} & \multicolumn{4}{l|}{Utente vorrebbe trovare una lista di immobili con le caratteristiche selezionate} \\ \hline
-\textbf{Preconditions} & \multicolumn{4}{l|}{Nessuna} \\ \hline
-\textbf{Success End Condition} & \multicolumn{4}{l|}{Untete trova una lista con le specifiche da lui inserite} \\ \hline
-\textbf{Failed End Condition} & \multicolumn{4}{l|}{Non visualizza la liste delle case con le specifiche inserite} \\ \hline
-\textbf{Primary Actor} & \multicolumn{4}{l|}{Utente} \\ \hline
-\textbf{Trigger} & \multicolumn{4}{l|}{Utente apre applicazione} \\ \hline
-\multirow{6}{*}{\textbf{Main Scenario}} & \textbf{Steps n.} & \textbf{Utente} & \textbf{API generica} & \textbf{System} \\ \cline{2-5}
-& 1 & & & Mostra M00 \\ \cline{2-5}
-& 2 & Riempie i Campi & & \\ \cline{2-5}
-& 3 & \begin{tabular}[c]{@{}c@{}}Clicca il \\ pulsante "Ricerca"\end{tabular} & & \\ \cline{2-5}
-& 4 & & & Mostra M03 \\ \cline{2-5}
-& 5 & & \begin{tabular}[c]{@{}c@{}}Restituisce sulla mappa \\ la posizione degli \\ immobili della lista\end{tabular} & \\ \hline
-\multirow{5}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1 \\ (Non seleziona una \\ delle scelte poste \\ dall'API in fase di \\ inserimento "Città \\ o Comune")\end{tabular}}}
-& 4a & & & \begin{tabular}[c]{@{}c@{}}Mostra M02 \\ con messaggio: \\ "Selezionare un luogo"\end{tabular} \\ \cline{2-5}
-& 5a & Clicca "Ok" & & \\ \cline{2-5}
-& \multirow{3}{*}{6a} & \multirow{3}{*}{} & \multirow{3}{*}{} & \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular}} \\
-& & & & \\
-& & & & \\ \hline
-\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Seleziona una \\ ricerca che \\ non dà risultati)\end{tabular}}}
-& 4b & & & \begin{tabular}[c]{@{}c@{}}Mostra M03 \\ con messaggio:\\ "Non ci sono immobili \\ con le specifiche richieste"\end{tabular} \\ \cline{2-5}
-& 5b & Clicca "Ok" & & \\ \cline{2-5}
-& 6b & & & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 Main scenario\end{tabular} \\ \hline
-\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Seleziona una \\ città che non \\ ha immobili)\end{tabular}}}
-& 4c & & & \begin{tabular}[c]{@{}c@{}}Mostra M03 \\ con messaggio:\\ "Non ci sono immobili in \\ questa Citta' o Comune"\end{tabular} \\ \cline{2-5}
-& 5c & Clicca "Ok" & & \\ \cline{2-5}
-& 6c & & & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular} \\ \hline
-\end{tabular}
-}
-\end{center}
 
 \subsubsection*{Mock-Up}
 
@@ -314,11 +278,102 @@ Dopo aver aperto l'applicativo si visualizza la pagina con la barra di ricerca, 
 \end{figure}
 Si presenta quindi una pagina con una lista di immobili trovati in funzione della ricerca fatta. Questa lista mostra diverse opzioni, ciascuna accompagnata da varie specifiche sul fianco e da immagini di presentazione. Alla destra della lista è visibile una mappa interattiva che permette di visualizzare la posizione dell'immobile selezionato.
 
+\subsubsection*{Cockburn}
+
+\begin{center}
+\label{tab:usecase1}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|cccc|}
+\hline
+\textbf{Use Case \#1} & \multicolumn{4}{c|}{\textbf{Ricerca Immobile}} \\ \hline
+\textbf{Goal in Context} & \multicolumn{4}{l|}{Utente vorrebbe trovare una lista di immobili con le caratteristiche selezionate} \\ \hline
+\textbf{Preconditions} & \multicolumn{4}{l|}{Nessuna} \\ \hline
+\textbf{Success End Condition} & \multicolumn{4}{l|}{Untete trova una lista con le specifiche da lui inserite} \\ \hline
+\textbf{Failed End Condition} & \multicolumn{4}{l|}{Non visualizza la liste delle case con le specifiche inserite} \\ \hline
+\textbf{Primary Actor} & \multicolumn{4}{l|}{Utente} \\ \hline
+\textbf{Trigger} & \multicolumn{4}{l|}{Utente apre applicazione} \\ \hline
+\multirow{6}{*}{\textbf{Main Scenario}} & \textbf{Steps n.} & \textbf{Utente} & \textbf{API generica} & \textbf{System} \\ \cline{2-5}
+& 1 & & & Mostra M00 \\ \cline{2-5}
+& 2 & Riempie i Campi & & \\ \cline{2-5}
+& 3 & \begin{tabular}[c]{@{}c@{}}Clicca il \\ pulsante "Ricerca"\end{tabular} & & \\ \cline{2-5}
+& 4 & & & Mostra M03 \\ \cline{2-5}
+& 5 & & \begin{tabular}[c]{@{}c@{}}Restituisce sulla mappa \\ la posizione degli \\ immobili della lista\end{tabular} & \\ \hline
+\multirow{5}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1 \\ (Non seleziona una \\ delle scelte poste \\ dall'API in fase di \\ inserimento "Città \\ o Comune")\end{tabular}}}
+& 4a & & & \begin{tabular}[c]{@{}c@{}}Mostra M02 \\ con messaggio: \\ "Selezionare un luogo"\end{tabular} \\ \cline{2-5}
+& 5a & Clicca "Ok" & & \\ \cline{2-5}
+& \multirow{3}{*}{6a} & \multirow{3}{*}{} & \multirow{3}{*}{} & \multirow{3}{*}{\begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular}} \\
+& & & & \\
+& & & & \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Seleziona una \\ ricerca che \\ non dà risultati)\end{tabular}}}
+& 4b & & & \begin{tabular}[c]{@{}c@{}}Mostra M03 \\ con messaggio:\\ "Non ci sono immobili \\ con le specifiche richieste"\end{tabular} \\ \cline{2-5}
+& 5b & Clicca "Ok" & & \\ \cline{2-5}
+& 6b & & & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 Main scenario\end{tabular} \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Seleziona una \\ città che non \\ ha immobili)\end{tabular}}}
+& 4c & & & \begin{tabular}[c]{@{}c@{}}Mostra M03 \\ con messaggio:\\ "Non ci sono immobili in \\ questa Citta' o Comune"\end{tabular} \\ \cline{2-5}
+& 5c & Clicca "Ok" & & \\ \cline{2-5}
+& 6c & & & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular} \\ \hline
+\end{tabular}
+}
+\end{center}
+
 
 \subsubsection{Inserisci Immobile}
 
+\subsubsection*{Mock-Up}
 
-    
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Agente_Immobiliare 1.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+Dopo aver effettuato l'accesso con l'account da agente immobiliare, viene visualizzata una schermata contenente la lista degli immobili precedentemente aggiunti dall'agente e una mappa con le loro posizioni.
+
+In basso è possibile premere, dopo aver selezionato un immobile, il tasto \textbf{Elimina}, che rimuove l'immobile selezionato dall'applicativo; e il tasto \textbf{Aggiungi offerta}, che consente di aggiungere manualmente un'offerta all'immobile selezionato.
+
+Infine, in basso a sinistra è presente il tasto \textbf{Aggiungi immobile}, che apre il mockup \textbf{M01}.
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Agente_Immobiliare 2.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+Nel mock-up \textbf{M01} sono presenti vari campi da compilare per poter registrare un nuovo immobile, tra cui \textit{indirizzo}, \textit{CAP}, \textit{Città}, ecc.
+
+Dopo aver completato tutti i campi, l'agente immobiliare può cliccare sul tasto \textbf{Inserisci} e tornare al mock-up \textbf{M00}, dove il nuovo immobile apparirà nella lista.
+
+
+
+\subsubsection*{Cockburn}    
 
 \begin{center}
 \resizebox{\textwidth}{!}{%

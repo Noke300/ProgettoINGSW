@@ -1,39 +1,34 @@
 package model;
 
-public class AdminSupport extends Utente implements Amministrazione{
-    private final AgenziaImmobiliare agenziaImmobiliare;
+public class AdminSupport {
+    private final AgenziaImmobiliare nomeAgenzia;
+
+    private String nomeSupport;
+    private String cognomeSupport;
+    private String emailSupport;
+    private String passwordSupport;
 
     public AdminSupport(String nome, String cognome, String email, String password, AgenziaImmobiliare agenziaImmobiliare) {
-        super(nome, cognome, email, password);
-        this.agenziaImmobiliare = agenziaImmobiliare;
+        this.nomeSupport = nome;
+        this.cognomeSupport = cognome;
+        this.emailSupport = email;
+        this.passwordSupport = password;
+        this.nomeAgenzia = agenziaImmobiliare;
     }
 
-    public AgenziaImmobiliare getAgenziaImmobiliare() {
-        return agenziaImmobiliare;
+    public String getNomeSupport() {
+        return nomeSupport;
     }
 
-    @Override
-    public void visualizzaDipendenti() {
-        // TODO document why this method is empty
+    public String getCognomeSupport() {
+        return cognomeSupport;
     }
 
-    @Override
-    public void assumiDipendente() {
-        // TODO document why this method is empty
+    public String getEmailSupport() {
+        return emailSupport;
     }
 
-    @Override
-    public void licenziaDipendente() {
-        // TODO document why this method is empty
-    }
-
-    @Override
-    public void visualizzaImmobili() {
-        // TODO document why this method is empty
-    }
-
-    @Override
-    public void assegnaImmobile() {
-        // TODO document why this method is empty
+    public String getPasswordSupport() {
+        return passwordSupport;
     }
 }

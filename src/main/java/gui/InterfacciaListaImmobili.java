@@ -170,7 +170,7 @@ public class InterfacciaListaImmobili extends JPanel {
             mapDialogInstance.setVisible(true); // Mostra il dialogo
         });
 
-        if(!token.isEmpty() && control.getRawSpecifiche(token).equals("[AGENTE_IMMOBILIARE]")){
+        if(!token.isEmpty() && control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
             Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> NotificationClient.notificheWindow(messaggio)));
         }
 

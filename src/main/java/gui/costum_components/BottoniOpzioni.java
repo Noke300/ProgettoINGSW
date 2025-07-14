@@ -4,7 +4,7 @@ import controller.Controller;
 import controller.ControllerAdministration;
 import controller.ControllerClienti;
 import gui.*;
-import gui.pagine_administrative.InterfacciaAgenteImmobiliare;
+import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;
 import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_clienti.ClientPersonalPage;
 import gui.pagine_clienti.LogIn;

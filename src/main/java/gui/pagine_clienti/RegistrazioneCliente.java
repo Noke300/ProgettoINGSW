@@ -63,9 +63,9 @@ public class RegistrazioneCliente extends JPanel {
 
             Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
                     new String(tempPass), date);
-            if(Controller.registrazioneCliente(newC)){
+            if(control.registrazioneCliente(newC)){
                 String tokenT = null;
-                tokenT = Controller.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
+                tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
                 frame.setContentPane(new Ricerca(frame,control,tokenT));
                 Arrays.fill(tempPass,'0');
                 frame.revalidate();
@@ -76,8 +76,6 @@ public class RegistrazioneCliente extends JPanel {
             }
 
         });
-
-
 
     }
     private void iconSetUp(){

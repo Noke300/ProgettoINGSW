@@ -2,69 +2,39 @@ package model;
 
 import java.util.ArrayList;
 
-public class AgenziaImmobiliare implements Amministrazione {
+public class AgenziaImmobiliare {
     private String nomeAgenzia;
     private String emailAgenzia;
     private String emailAdmin;
     private String passwordAdmin;
+    private String regione;
 
-    private ArrayList<Utente> agentiImmobiliari = new ArrayList<>();
-    private ArrayList<Utente> adminSupport = new ArrayList<>();
+    private ArrayList<AgenteImmobiliare> agentiImmobiliari = new ArrayList<>();
+    private ArrayList<AdminSupport> adminSupport = new ArrayList<>();
     private ArrayList<Immobile> listaImmobili = new ArrayList<>();
 
-    public AgenziaImmobiliare(String nomeAgenzia, String emailAgenzia, String emailAdmin, String passwordAdmin) {
+    public AgenziaImmobiliare(String nomeAgenzia, String emailAgenzia, String emailAdmin, String passwordAdmin,String regione) {
         this.nomeAgenzia = nomeAgenzia;
         this.emailAgenzia = emailAgenzia;
         this.emailAdmin = emailAdmin;
         this.passwordAdmin = passwordAdmin;
+        this.regione = regione;
     }
 
-    public ArrayList<Utente> getAgentiImmobiliari() {
+    public ArrayList<AgenteImmobiliare> getAgentiImmobiliari() {
         return agentiImmobiliari;
     }
 
-    public void setAgentiImmobiliari(ArrayList<Utente> agentiImmobiliari) {
+    public void setAgentiImmobiliari(ArrayList<AgenteImmobiliare> agentiImmobiliari) {
         this.agentiImmobiliari = agentiImmobiliari;
     }
 
-    public ArrayList<Utente> getAdminSupport() {
+    public ArrayList<AdminSupport> getAdminSupport() {
         return adminSupport;
     }
 
-    public void setAdminSupport(ArrayList<Utente> adminSupport) {
+    public void setAdminSupport(ArrayList<AdminSupport> adminSupport) {
         this.adminSupport = adminSupport;
-    }
-
-    public String getNomeAgenzia() {
-        return nomeAgenzia;
-    }
-
-    public void setNomeAgenzia(String nomeAgenzia) {
-        this.nomeAgenzia = nomeAgenzia;
-    }
-
-    public String getEmailAgenzia() {
-        return emailAgenzia;
-    }
-
-    public void setEmailAgenzia(String emailAgenzia) {
-        this.emailAgenzia = emailAgenzia;
-    }
-
-    public String getEmailAdmin() {
-        return emailAdmin;
-    }
-
-    public void setEmailAdmin(String emailAdmin) {
-        this.emailAdmin = emailAdmin;
-    }
-
-    public String getPasswordAdmin() {
-        return passwordAdmin;
-    }
-
-    public void setPasswordAdmin(String passwordAdmin) {
-        this.passwordAdmin = passwordAdmin;
     }
 
     public ArrayList<Immobile> getListaImmobili() {
@@ -75,28 +45,8 @@ public class AgenziaImmobiliare implements Amministrazione {
         this.listaImmobili = listaImmobili;
     }
 
-    @Override
-    public void visualizzaDipendenti() {
-        // TODO document why this method is empty
+    public String getNomeAgenzia() {
+        return nomeAgenzia;
     }
 
-    @Override
-    public void assumiDipendente() {
-        // TODO document why this method is empty
-    }
-
-    @Override
-    public void licenziaDipendente() {
-        // TODO document why this method is empty
-    }
-
-    @Override
-    public void visualizzaImmobili() {
-        // TODO document why this method is empty
-    }
-
-    @Override
-    public void assegnaImmobile() {
-        // TODO document why this method is empty
-    }
 }

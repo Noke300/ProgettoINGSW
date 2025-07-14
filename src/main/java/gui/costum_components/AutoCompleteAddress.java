@@ -15,7 +15,7 @@ import javax.swing.event.DocumentListener;
 import java.io.IOException;
 import java.util.*;
 
-import static gui.pagine_administrative.InserimentoImmobile.regioniProvinceLabelMap;
+import static gui.pagine_administrative.agenteImmobliiare.InserimentoImmobile.regioniProvinceLabelMap;
 
 public class AutoCompleteAddress {
     private static final String GEOAPIFY_API_KEY = "df7445014a484278a655999c41bc28c5";

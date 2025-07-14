@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Thu Jul 03 23:38:53 CEST 2025
  */
 
-package gui.pagine_administrative;
+package gui.pagine_administrative.agenteImmobliiare;
 
 import java.awt.*;
 import java.io.File;

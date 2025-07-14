@@ -7,6 +7,7 @@ package gui.pagine_administrative;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -17,7 +18,8 @@ import controller.ControllerAdministration;
 import controller.NotificationClient;
 import gui.Ricerca;
 import gui.costum_components.BottoniOpzioni;
-import model.Immobile;
+import gui.pagine_administrative.admin.InterfacciaAdmin;
+import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 
@@ -36,36 +38,74 @@ public class LogInAmministrazione extends JPanel {
 
         passwordField1.addActionListener(e -> buttonLogIn.doClick());
 
-        buttonLogIn.addActionListener(e-> {
-             String token1;
-             char[] pass = passwordField1.getPassword();
-             try {
-                 token1 = control.loginAgente(textFildEmail.getText(), new String(pass));
-                 if (token1.isEmpty()) {
-                     JOptionPane.showMessageDialog(
-                             frame,
-                             "Login fallito. Riprova!",
-                             "Errore",
-                             JOptionPane.ERROR_MESSAGE
-                     );
-                    Arrays.fill(pass, ' ');
-                 }else {
-                     this.token = token1;
+        buttonLogIn.addActionListener(e -> {
+            char[] pass = passwordField1.getPassword();
+            String email = textFildEmail.getText();
 
-                     Ricerca.notifiche = new NotificationClient(textFildEmail.getText());
-                     Ricerca.notifiche.start();
-                     ControllerAdministration controlAdmin = new ControllerAdministration();
-                     List<ImmobileEImmagini> immobiliEImmagini = controlAdmin.fetchImmobili(token1);
-                     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-                     frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controlAdmin,this.token,immobiliEImmagini));
-                     Arrays.fill(pass, ' ');
-                     frame.revalidate();
-                     frame.repaint();
-                 }
-             } catch (RuntimeException ex) {
-                 throw new RuntimeException(ex);
-             }
-         });
+            CompletableFuture<String> futureToken = control.loginParallel(email, new String(pass));
+
+            futureToken.thenAccept(token1 -> SwingUtilities.invokeLater(() -> {
+                if (token1.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "Login fallito. Riprova!",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    Arrays.fill(pass, ' ');
+                } else {
+                    this.token = token1;
+
+                    // 👉 Recupero ruolo una volta ottenuto il token valido
+                    String ruolo = control.getRawSpecifiche(token1);
+                    System.out.println("Autenticato come: " + ruolo);
+
+                    ControllerAdministration controlAdmin = new ControllerAdministration();
+
+                    switch (ruolo) {
+                        case "[AGENTE_IMMOBILIARE]":
+                            Ricerca.notifiche = new NotificationClient(email);
+                            Ricerca.notifiche.start();
+
+                            List<ImmobileEImmagini> immobiliEImmagini = controlAdmin.fetchImmobili(token1);
+                            BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+                            frame.setContentPane(new InterfacciaAgenteImmobiliare(
+                                    frame, bottoniOpzioni, controlAdmin, this.token, immobiliEImmagini));
+                            break;
+
+                        case "[ADMIN]":
+                            frame.setContentPane(new InterfacciaAdmin(controlAdmin, this.token));
+                            break;
+
+                        default:
+                            JOptionPane.showMessageDialog(
+                                    frame,
+                                    "Ruolo sconosciuto: " + ruolo,
+                                    "Errore",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                            break;
+                    }
+
+                    Arrays.fill(pass, ' ');
+                    frame.revalidate();
+                    frame.repaint();
+                }
+            })).exceptionally(ex -> {
+                SwingUtilities.invokeLater(() -> {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "Errore durante il login: " + ex.getMessage(),
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                });
+                return null;
+            });
+        });
+
+
 
         buttonCreaAggenzia.addActionListener(e -> {
         });

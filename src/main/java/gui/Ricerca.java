@@ -220,8 +220,7 @@ public class Ricerca extends JPanel {
         });
 
 
-        //TODO controllare che si e' un agente immobiliare
-        if(!token.isEmpty() && control.getRawSpecifiche(token).equals("[AGENTE_IMMOBILIARE]")){
+        if(!token.isEmpty() && control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
                 notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
                 NotificationClient.notificheWindow(messaggio);
             }));

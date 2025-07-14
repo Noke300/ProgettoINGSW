@@ -526,7 +526,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
 
 
-        if(!token.isEmpty() && control.getRawSpecifiche(token).equals("[AGENTE_IMMOBILIARE]")){
+        if(!token.isEmpty() && control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
             Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
                 NotificationClient.notificheWindow(messaggio);
             }));

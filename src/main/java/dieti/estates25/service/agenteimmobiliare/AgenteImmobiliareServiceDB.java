@@ -28,10 +28,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, UserDetailsService {
@@ -157,9 +157,7 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                     .body("Immobile non trovato");
         }
 
-        Immobile immobile;
-
-        immobile = immobileRepository.findImmobileByIdImmobile(idImmobile);
+        Immobile immobile = immobileRepository.findImmobileByIdImmobile(idImmobile);
 
         if (immobile == null) {
             return ResponseEntity
@@ -172,12 +170,10 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Stai cercando di eliminare un immobile che non gestisci tu");
         }
-        //TODO Da testare
         if (immobileRepository.countByIndirizzo(immobile.getIndirizzo()) <= 1){
             indirizzoRepository.deleteById(immobile.getIndirizzo().getIdIndirizzo());
         }
         immobileRepository.delete(immobile);
-        //TODO Idealmente mandare delle notifiche ai clienti che hanno fatto un offerta/prenotato una visita all'immobile
         return ResponseEntity.ok("Immobile eliminato correttamente");
     }
 
@@ -279,6 +275,9 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Non puoi confernare una visita per un immobile non tuo");
         }
+        if (checkData(visita.getDataVisita(), visita.getOraVisita())){
+
+        }
         if (visita.getConferma()) {
             visitaRepository.save(visita);
             return ResponseEntity.ok("Visita confermata");
@@ -286,6 +285,32 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
             visitaRepository.delete(visita);
             return ResponseEntity.ok("Visita rifiutata");
         }
+    }
+
+    public boolean checkData(Date dataVisita, LocalTime oraVisita) {
+        if (dataVisita == null || oraVisita == null) {return false;}
+
+        LocalDate today = LocalDate.now();
+        LocalDate visitaDate = dataVisita.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        if (visitaDate.isBefore(today) || visitaDate.isAfter(today.plusDays(14))) {return false;}
+
+        // Fascia oraria ammessa
+        LocalTime startTime = LocalTime.of(8, 0);
+        LocalTime endTime = LocalTime.of(18, 0);
+
+        // Se non è nell'intervallo base
+        if (oraVisita.isBefore(startTime) || oraVisita.isAfter(endTime)) {return false;}
+
+        // Caso speciale: se la data è oggi, l'orario deve essere nel futuro
+        if (visitaDate.isEqual(today)) {
+            LocalTime now = LocalTime.now();
+            return !oraVisita.isBefore(now);
+        }
+
+        return true;
     }
 
     public Immobile getImmobile(String idImmobile) {

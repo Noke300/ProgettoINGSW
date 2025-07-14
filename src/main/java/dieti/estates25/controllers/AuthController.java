@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
@@ -184,26 +185,29 @@ public class AuthController {
         }
 
         // Aggiungi i filtri basati su valori specifici
-        if (filtri.getClasseEnergetica() != null) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getClasseEnergetica().equals(filtri.getClasseEnergetica()));
+        if (checkFiltri(filtri.getClasseEnergetica(), filtri.getNumStanze(), filtri.getNumBagni(), filtri.getPiano())) {
+            if (filtri.getClasseEnergetica() != null) {
+                filtroComplessivo = filtroComplessivo.and(i -> i.getClasseEnergetica().equals(filtri.getClasseEnergetica()));
+            }
+            if (filtri.getNumBagni() != 0) {
+                filtroComplessivo = filtroComplessivo.and(i -> i.getNumBagni() >= filtri.getNumBagni());
+            }
+            if (filtri.getNumStanze() != 0) {
+                filtroComplessivo = filtroComplessivo.and(i -> i.getNumStanze() >= filtri.getNumStanze());
+            }
+            if (filtri.getPiano() != -2) {
+                filtroComplessivo = filtroComplessivo.and(i -> i.getPiano() >= filtri.getPiano());
+            }
         }
-        if (filtri.getNumBagni() != 0) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getNumBagni() >= filtri.getNumBagni());
-        }
-        if (filtri.getNumStanze() != 0) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getNumStanze() >= filtri.getNumStanze());
-        }
-        if (filtri.getPiano() != 0) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getPiano() >= filtri.getPiano());
-        }
-
         // Gestione del filtro prezzo
-        if (filtri.getPrezzoMin() != 0 && filtri.getPrezzoMax() != 0) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin() && i.getPrezzo() <= filtri.getPrezzoMax());
-        } else if (filtri.getPrezzoMin() != 0) { // Max è 0
-            filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin());
-        } else if (filtri.getPrezzoMax() != 0) { // Min è 0
-            filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() <= filtri.getPrezzoMax());
+        if (checkPrezzi(filtri.getPrezzoMin(), filtri.getPrezzoMax())) {
+            if (filtri.getPrezzoMin() != 0 && filtri.getPrezzoMax() != 0) {
+                filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin() && i.getPrezzo() <= filtri.getPrezzoMax());
+            } else if (filtri.getPrezzoMin() != 0) { // Max è 0
+                filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin());
+            } else if (filtri.getPrezzoMax() != 0) { // Min è 0
+                filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() <= filtri.getPrezzoMax());
+            }
         }
 
         if (filtri.getSuperficie() != 0) {
@@ -219,6 +223,25 @@ public class AuthController {
         return candidati.stream()
                 .filter(filtroComplessivo)
                 .toList();
+    }
+
+    public boolean checkFiltri(String classeEnergetica, int numStanze, int numBagni, int piano) {
+        if (classeEnergetica != null) {
+            List<String> classiValide = Arrays.asList("A+", "A", "B", "C", "D", "E", "F", "G");
+            if (!classiValide.contains(classeEnergetica)) {
+                return false;
+            }
+        }
+        if (numStanze < 0 || numStanze > 10) return false;
+        if (numBagni < 0 || numBagni > 10) return false;
+        if (numStanze > 0 && numBagni >= numStanze) return false;
+        return piano >= -2 && piano <= 10;
+    }
+
+    public boolean checkPrezzi(double prezzoMin, double prezzoMax) {
+        if (prezzoMin < 0 || prezzoMin > 800000) return false;
+        if (prezzoMax < 0 || prezzoMax > 1000000) return false;
+        return (prezzoMin <= prezzoMax);
     }
 
     private List<ImmobileEImmagini> getImmagini(List<Immobile> candidati) {

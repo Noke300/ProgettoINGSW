@@ -10,7 +10,7 @@ import java.util.Date;
 
 class CredenzialiTest {
 
-    private final ClienteServiceDB validator = new ClienteServiceDB(); // La classe che contiene checkDatiCliente
+    private final ClienteServiceDB validator = new ClienteServiceDB();
 
     // Helper per creare una data
     private Date getDate(int year, int month, int day) {

@@ -2,6 +2,7 @@ package gui.costum_components.calender;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
+import controller.Controller;
 import controller.ControllerAgente;
 import gui.costum_components.IconClass;
 import model.Cliente;
@@ -29,7 +30,7 @@ public class CalenderAgenteImmobiliare {
         JPanel controlPanel = new JPanel(new BorderLayout());
         JButton addDateButton = new JButton("Info Giorno");
 
-        addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(), format, frame));
+        addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(), format, frame, control, token));
         controlPanel.add(addDateButton, BorderLayout.SOUTH);
 
         return controlPanel;
@@ -83,7 +84,7 @@ public class CalenderAgenteImmobiliare {
 
             JPanel controlPanel = new JPanel(new BorderLayout());
             JButton addDateButton = new JButton("Info Giorno");
-            addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(), format, frame));
+            addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(), format, frame, control, token));
             controlPanel.add(addDateButton, BorderLayout.SOUTH);
 
             calendarPopup.add(calendar, BorderLayout.CENTER);
@@ -103,7 +104,7 @@ public class CalenderAgenteImmobiliare {
         });
     }
 
-    private static void mostraDettagliVisite(Date selectedDate, DateFormat format, JFrame frame) {
+    private static void mostraDettagliVisite(Date selectedDate, DateFormat format, JFrame frame, ControllerAgente controller, String token) {
         String giornoChiave = format.format(selectedDate);
         List<Visita> visiteDelGiorno = visitePerGiorno.get(giornoChiave);
 
@@ -137,9 +138,20 @@ public class CalenderAgenteImmobiliare {
 
                     accetta.addActionListener(ev -> {
                         visita.setConferma(true);
-                        JOptionPane.showMessageDialog(frame, "Visita confermata.");
+                        if (controller.esitoVisita(token, visita)){
+                            JOptionPane.showMessageDialog(frame, "Visita confermata.");
+                        }else{
+                            JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
+                        }
                     });
-                    rifiuta.addActionListener(ev -> JOptionPane.showMessageDialog(frame, "Visita rifiutata."));
+                    rifiuta.addActionListener(ev -> {
+                        visita.setConferma(false);
+                        if (controller.esitoVisita(token, visita)){
+                            JOptionPane.showMessageDialog(frame, "Visita rifiutata.");
+                        }else{
+                            JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
+                        }
+                    });
                     buttonPanel.add(accetta);
                     buttonPanel.add(rifiuta);
                 } else {

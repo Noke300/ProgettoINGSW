@@ -26,6 +26,7 @@ public class ControllerAgente extends Controller{
     protected static final String GET_AGGENTEIMM        = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
     protected static final String GET_SPECIFICHE_IMM    = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare"; // (duplicato: puoi consolidare)
     protected static final String GET_IMMOBILE          = "http://localhost:8081/auth-agente/getImmobile";
+    protected static final String ESITO_VISITA         = "http://localhost:8081/auth-agente/confermaVisita";
 
 
     public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
@@ -234,6 +235,30 @@ public class ControllerAgente extends Controller{
         } else {
             throw new RuntimeException("Errore nella richiesta: " + response.statusCode() + " - " + response.body());
         }
+    }
+
+    public boolean esitoVisita(String token, Visita visita) {
+
+        String requestBody = gson.toJson(visita);
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(ESITO_VISITA))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante inserimento immobile: " + e.getMessage());
+        }
+
     }
 
 }

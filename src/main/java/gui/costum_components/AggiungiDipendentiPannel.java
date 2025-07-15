@@ -1,6 +1,6 @@
 package gui.costum_components;
 
-import controller.ControllerAdministration;
+import controller.ControllerAdmin;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class AggiungiDipendentiPannel {
 
-    public static void creaPannel(JFrame frame, ControllerAdministration controller, AgenziaImmobiliare admin, String token, DefaultTableModel model) {
+    public static void creaPannel(JFrame frame, ControllerAdmin controller, AgenziaImmobiliare admin, String token, DefaultTableModel model) {
         JDialog dialog = new JDialog(frame, "Aggiungi Dipendente", true);
         dialog.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -48,7 +48,7 @@ public class AggiungiDipendentiPannel {
             String cognome = cognomeField.getText().trim();
             String email = emailField.getText().trim();
             String password = new String(passwordField.getPassword());
-            
+
             if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(dialog, "Completa tutti i campi.");
                 return;

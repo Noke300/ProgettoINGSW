@@ -20,7 +20,12 @@ import java.util.List;
 
 public class ControllerClienti extends Controller {
 
-    protected static final String GET_SPECIFICHE = "http://localhost:8081/auth-cliente/specificheCliente";
+    protected static final String GET_SPECIFICHE        = "http://localhost:8081/auth-cliente/specificheCliente";
+    protected static final String VISITE_IMM_CLIENTE    = "http://localhost:8081/auth-cliente/getVisite";
+    protected static final String PRENOTA_VISITE        = "http://localhost:8081/auth-cliente/visita";
+    protected static final String OFFERTE_CLIENTE       = "http://localhost:8081/auth-cliente/getOfferte";
+
+
 
     public Cliente getSpecifiche(String token) {
         try {
@@ -139,6 +144,29 @@ public class ControllerClienti extends Controller {
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante la richiesta delle offerte: " + e.getMessage());
+        }
+    }
+
+    public boolean inviaVisita(Visita visita, String token) {
+
+        requestBody = gson.toJson(visita);
+
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(PRENOTA_VISITE)) // aggiorna con l'URL corretto
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 201;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante invio visita: " + e.getMessage());
         }
     }
 

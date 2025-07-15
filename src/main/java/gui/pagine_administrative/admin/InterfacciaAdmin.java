@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
-import controller.ControllerAdministration;
+import controller.ControllerAdmin;
 import gui.costum_components.AggiungiDipendentiPannel;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
@@ -26,7 +26,7 @@ import net.miginfocom.swing.*;
 public class InterfacciaAdmin extends JPanel {
     protected AgenziaImmobiliare admin;
     private BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-    public InterfacciaAdmin(JFrame frame,ControllerAdministration controller,String token) {
+    public InterfacciaAdmin(JFrame frame, ControllerAdmin controller, String token) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
         this.admin = controller.getAgenziaImmobiliare(token);
@@ -100,9 +100,7 @@ public class InterfacciaAdmin extends JPanel {
             }
         });
 
-        buttonAggiungiDipendenti.addActionListener(e -> {
-            AggiungiDipendentiPannel.creaPannel(frame,controller,admin,token,model);
-        });
+        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPannel(frame,controller,admin,token,model));
 
 
         panelListaDipendenti.setViewportView(tabella);

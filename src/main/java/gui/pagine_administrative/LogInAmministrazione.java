@@ -14,6 +14,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 
 import controller.Controller;
+import controller.ControllerAdmin;
 import controller.ControllerAdministration;
 import controller.NotificationClient;
 import gui.Ricerca;
@@ -74,7 +75,7 @@ public class LogInAmministrazione extends JPanel {
                             break;
 
                         case "[ADMIN]":
-                            frame.setContentPane(new InterfacciaAdmin(frame,controlAdmin, this.token));
+                            frame.setContentPane(new InterfacciaAdmin(frame,new ControllerAdmin(), this.token));
                             break;
 
                         default:

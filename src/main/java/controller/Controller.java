@@ -28,27 +28,20 @@ public class Controller {
     protected String requestBody;
     private String nameLogIn;
 
-    //TODO separare i vari path nei rispettivi controller
-    protected static final String LOGIN_URL_AGENTE = "http://localhost:8081/auth-agente/login";
-    protected static final String LOGIN_URL_ADMINSUP = "http://localhost:8081/auth-adminSupport/login";
-    protected static final String LOGIN_URL_ADMIN = "http://localhost:8081/auth-admin/login";
-    protected static final String LOGIN_URL_CLIENTE = "http://localhost:8081/auth-cliente/login";
+    protected static final String RICERCA_URL           = "http://localhost:8081/cerca-immobili";
+    protected static final String OFFERTA_URL           = "http://localhost:8081/offerta";
+    protected static final String OFFERTA_LIST          = "http://localhost:8081/visualizza-offerte";
+    protected static final String WHO_URL               = "http://localhost:8081/whoAmI";
 
-    protected static final String VISITE_IMM_CLIENTE = "http://localhost:8081/auth-cliente/getVisite";
-    protected static final String IMMOBILI_URL = "http://localhost:8081/auth-agente/immobili";
-    protected static final String RICERCA_URL = "http://localhost:8081/cerca-immobili";
-    protected static final String VISITE_IMM_AGENTE = "http://localhost:8081/auth-agente/visite";
-    protected static final String PRENOTA_VISITE = "http://localhost:8081/auth-cliente/visita";
-    protected static final String OFFERTA_URL = "http://localhost:8081/offerta";
-    protected static final String OFFERTA_LIST = "http://localhost:8081/visualizza-offerte";
-    protected static final String ELIMINA_IMM = "http://localhost:8081/auth-agente/elimina-immobile";
+
+    protected static final String LOGIN_URL_ADMINSUP    = "http://localhost:8081/auth-adminSupport/login";
+    protected static final String LOGIN_URL_ADMIN       = "http://localhost:8081/auth-admin/login";
+    protected static final String LOGIN_URL_AGENTE      = "http://localhost:8081/auth-agente/login";
+    protected static final String LOGIN_URL_CLIENTE     = "http://localhost:8081/auth-cliente/login";
+
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
-    protected static final String AGGIUNGI_IMMOBILE = "http://localhost:8081/auth-agente/aggiungi-immobile";
-    protected static final String GET_AGGENTEIMM = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
-    protected static final String OFFERTE_CLIENTE = "http://localhost:8081/auth-cliente/getOfferte";
-    protected static final String WHO_URL = "http://localhost:8081/whoAmI";
 
-
+    //TODO separare i vari path nei rispettivi controller
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->
                     new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("HH:mm")))
@@ -299,31 +292,6 @@ public class Controller {
             return response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante invio offerta: " + e.getMessage());
-        }
-    }
-
-    //TODO da spostare in controller clienti
-
-    public boolean inviaVisita(Visita visita, String token) {
-
-        requestBody = gson.toJson(visita);
-
-        try {
-            request = HttpRequest.newBuilder()
-                    .uri(new URI(PRENOTA_VISITE)) // aggiorna con l'URL corretto
-                    .header("Authorization", "Bearer " + token)
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("URI non valido: " + e.getMessage());
-        }
-
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 201;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Errore durante invio visita: " + e.getMessage());
         }
     }
 

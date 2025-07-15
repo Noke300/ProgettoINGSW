@@ -23,6 +23,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import controller.Controller;
+import controller.ControllerClienti;
 import controller.NotificationClient;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
@@ -257,13 +258,19 @@ public class PaginaImmobileDettagliata extends JPanel {
                         Date dataVisita = java.sql.Date.valueOf(dataSelezionata);
                         Visita visita = new Visita(immobile, orario, dataVisita);
 
-                        if (control.inviaVisita(visita,token)) {
-                            JOptionPane.showMessageDialog(visitaDialog, "Richiesta inviata!");
-                            visitaDialog.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(visitaDialog, "Errore durante l'invio della richiesta.");
+                        if (control.getNameLogIn().equals("[CLIENT]")) {
+                            ControllerClienti controllerClienti = new ControllerClienti();
+                            if (controllerClienti.inviaVisita(visita, token)) {
+                                JOptionPane.showMessageDialog(visitaDialog, "Richiesta inviata!");
+                                visitaDialog.dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(visitaDialog, "Errore durante l'invio della richiesta.");
+                            }
+                        }else{
+                            JOptionPane.showMessageDialog(visitaDialog, "Per prenotare una visita bisogna essere un Cliente ");
+
                         }
-                    } else {
+                    } else{
                         JOptionPane.showMessageDialog(visitaDialog, "Seleziona una data prima di inviare.");
                     }
                 });

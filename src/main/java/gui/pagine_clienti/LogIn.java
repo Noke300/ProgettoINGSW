@@ -12,6 +12,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 
 import controller.Controller;
+import controller.ControllerClienti;
 import gui.Home;
 import gui.Ricerca;
 import gui.costum_components.BottoniOpzioni;

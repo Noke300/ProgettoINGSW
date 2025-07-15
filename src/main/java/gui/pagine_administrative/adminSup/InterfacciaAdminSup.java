@@ -5,16 +5,100 @@
 package gui.pagine_administrative.adminSup;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
+
+import controller.ControllerAdmin;
+import controller.ControllerAdminSup;
+import gui.costum_components.AggiungiDipendentiPannel;
+import gui.costum_components.BottoniOpzioni;
+import gui.costum_components.IconClass;
+import model.AdminSupport;
+import model.AgenteImmobiliare;
 import net.miginfocom.swing.*;
 
 /**
  * @author marco
  */
 public class InterfacciaAdminSup extends JPanel {
-    public InterfacciaAdminSup() {
+
+    private BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Agente Immobiliare"});
+    protected AdminSupport adminSup;
+    public InterfacciaAdminSup(JFrame frame, ControllerAdminSup controller, String token) {
         initComponents();
+
+        bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
+        this.adminSup = controller.getAdminSup(token);
+
+        String[] colonne = {"Nome", "Cognome", "Email", "Tipo"};
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // blocca l'editing su tutte le celle
+            }
+        };
+        for (AgenteImmobiliare d : adminSup.getAgentiImmobiliari()){
+            model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
+
+        }
+        JTable tabella = new JTable(model);
+        tabella.getTableHeader().setReorderingAllowed(false);
+        tabella.setFont(IconClass.getFontImmobiliC());
+        tabella.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!tabella.getBounds().contains(e.getPoint())) {
+                    tabella.clearSelection();
+                    buttonElimina.setEnabled(false);
+                }
+            }
+        });
+
+
+        tabella.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                int selectedRow = tabella.getSelectedRow();
+                buttonElimina.setEnabled(selectedRow != -1);
+            }
+        });
+
+        buttonElimina.addActionListener(e -> {
+            int selectedRow = tabella.getSelectedRow();
+            String tipo = (String) tabella.getValueAt(selectedRow, 3); // Colonna 'Tipo'
+            String email = (String) tabella.getValueAt(selectedRow, 2); // Colonna 'Email'
+            boolean success = false;
+
+                for (AgenteImmobiliare d : adminSup.getAgentiImmobiliari()) {
+                    if (d.getEmailAgente().equals(email)) {
+                        success = controller.eliminaAgenteImmobiliare(d, token);
+                        break;
+                    }
+                }
+
+            if (success) {
+                model.removeRow(selectedRow);
+                JOptionPane.showMessageDialog(this, "Dipendente eliminato con successo.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Errore durante l’eliminazione.");
+            }
+        });
+
+        //Todo fsare il costruttore di Sup rispetto a admin
+        //buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPannel(frame,controller,null,token,model,tipoCombo));
+
+
+        panelListaDipendenti.setViewportView(tabella);
+        panelListaDipendenti.revalidate();
+        panelListaDipendenti.repaint();
+
+
+
     }
 
     private void initComponents() {

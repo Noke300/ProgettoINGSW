@@ -16,7 +16,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.formdev.flatlaf.extras.*;
-import controller.ControllerAdministration;
+import controller.ControllerAgente;
 import controller.NotificationClient;
 import gui.Ricerca;
 import gui.costum_components.AutoCompleteAddress;
@@ -47,7 +47,7 @@ public class InserimentoImmobile extends JPanel {
 
     //TODO da rimovere e refactorare le funzioni al sup interno
 
-    public InserimentoImmobile(JFrame frame, ControllerAdministration controllerA,String token) {
+    public InserimentoImmobile(JFrame frame, ControllerAgente controllerA, String token) {
         initComponents();
         base64ListImmagini = new ArrayList<>();
         listNomeImmagini = new ArrayList<>();

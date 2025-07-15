@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import controller.ControllerAdministration;
+import controller.ControllerAgente;
 
 import controller.NotificationClient;
 import gui.Ricerca;
@@ -43,7 +43,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni,ControllerAdministration control, String token,List<ImmobileEImmagini> immobiliEImmagini) {
+    public InterfacciaAgenteImmobiliare(JFrame frame, BottoniOpzioni bottoniOpzioni, ControllerAgente control, String token, List<ImmobileEImmagini> immobiliEImmagini) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,control,token,menuBarOpzioni,menuOpzioni);
 

@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class AggiungiDipendentiPannel {
 
-    public static void creaPannel(JFrame frame, ControllerAdmin controller, AgenziaImmobiliare admin, String token, DefaultTableModel model) {
+    public static void creaPannel(JFrame frame, ControllerAdmin controller, AgenziaImmobiliare admin, String token, DefaultTableModel model,JComboBox<String> tipoCombo) {
         JDialog dialog = new JDialog(frame, "Aggiungi Dipendente", true);
         dialog.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -20,7 +20,6 @@ public class AggiungiDipendentiPannel {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Admin Support", "Agente Immobiliare"});
         JTextField nomeField = new JTextField(15);
         JTextField cognomeField = new JTextField(15);
         JTextField emailField = new JTextField(15);

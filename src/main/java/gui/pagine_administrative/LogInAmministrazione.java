@@ -13,13 +13,11 @@ import javax.swing.border.*;
 
 import com.formdev.flatlaf.extras.*;
 
-import controller.Controller;
-import controller.ControllerAdmin;
-import controller.ControllerAdministration;
-import controller.NotificationClient;
+import controller.*;
 import gui.Ricerca;
 import gui.costum_components.BottoniOpzioni;
 import gui.pagine_administrative.admin.InterfacciaAdmin;
+import gui.pagine_administrative.adminSup.InterfacciaAdminSup;
 import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
@@ -61,7 +59,7 @@ public class LogInAmministrazione extends JPanel {
                     String ruolo = control.getRawSpecifiche(token1);
                     System.out.println("Autenticato come: " + ruolo);
 
-                    ControllerAdministration controlAdmin = new ControllerAdministration();
+                    ControllerAgente controlAdmin = new ControllerAgente();
 
                     switch (ruolo) {
                         case "[AGENTE_IMMOBILIARE]":
@@ -77,6 +75,10 @@ public class LogInAmministrazione extends JPanel {
                         case "[ADMIN]":
                             frame.setContentPane(new InterfacciaAdmin(frame,new ControllerAdmin(), this.token));
                             break;
+
+                            case "[ADMIN_SUPPORT]":
+                                frame.setContentPane(new InterfacciaAdminSup(frame,new ControllerAdminSup(), this.token));
+                                break;
 
                         default:
                             JOptionPane.showMessageDialog(

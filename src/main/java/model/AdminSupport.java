@@ -1,12 +1,15 @@
 package model;
 
-public class AdminSupport {
-    private  AgenziaImmobiliare nomeAgenzia;
+import java.util.ArrayList;
 
-    private  String nomeSupport;
-    private  String cognomeSupport;
-    private  String emailSupport;
-    private  String passwordSupport;
+public class AdminSupport {
+
+    private AgenziaImmobiliare nomeAgenzia;
+    private String nomeSupport;
+    private String cognomeSupport;
+    private String emailSupport;
+    private String passwordSupport;
+    private ArrayList<AgenteImmobiliare> agentiImmobiliari;
 
     public AdminSupport(String nome, String cognome, String email, String password, AgenziaImmobiliare agenziaImmobiliare) {
         this.nomeSupport = nome;
@@ -30,5 +33,13 @@ public class AdminSupport {
 
     public AgenziaImmobiliare getNomeAgenzia() {
         return nomeAgenzia;
+    }
+
+    public ArrayList<AgenteImmobiliare> getAgentiImmobiliari() {
+        return agentiImmobiliari;
+    }
+
+    public void setAgentiImmobiliari(ArrayList<AgenteImmobiliare> agentiImmobiliari) {
+        this.agentiImmobiliari = agentiImmobiliari;
     }
 }

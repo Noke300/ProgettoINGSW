@@ -9,7 +9,6 @@ import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +16,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 //TODO dobbiamo gestire meglio le Exception di questa classe
-public class ControllerAdministration extends Controller{
+public class ControllerAgente extends Controller{
 
 
     protected static final String IMMOBILI_URL          = "http://localhost:8081/auth-agente/immobili";

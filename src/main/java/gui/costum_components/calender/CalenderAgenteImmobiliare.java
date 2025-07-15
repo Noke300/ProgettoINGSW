@@ -2,7 +2,7 @@ package gui.costum_components.calender;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDayChooser;
-import controller.ControllerAdministration;
+import controller.ControllerAgente;
 import gui.costum_components.IconClass;
 import model.Cliente;
 import model.Immobile;
@@ -23,7 +23,7 @@ public class CalenderAgenteImmobiliare {
     private static final JCalendar calendar = new JCalendar();
     private static boolean isPopupOpen = false;
 
-    public static JPanel caricaCalendario(JButton buttonCalendario, ControllerAdministration control, String token, JFrame frame) {
+    public static JPanel caricaCalendario(JButton buttonCalendario, ControllerAgente control, String token, JFrame frame) {
         calenderStarter(buttonCalendario, control, token, frame);
 
         JPanel controlPanel = new JPanel(new BorderLayout());
@@ -35,7 +35,7 @@ public class CalenderAgenteImmobiliare {
         return controlPanel;
     }
 
-    private static void calenderStarter(JButton buttonCalendario, ControllerAdministration control, String token, JFrame frame) {
+    private static void calenderStarter(JButton buttonCalendario, ControllerAgente control, String token, JFrame frame) {
         buttonCalendario.setIcon(IconClass.getCalendarioIcon());
         buttonCalendario.setText(LocalDate.now().toString());
 

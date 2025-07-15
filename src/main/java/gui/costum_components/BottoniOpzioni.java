@@ -1,7 +1,7 @@
 package gui.costum_components;
 
 import controller.Controller;
-import controller.ControllerAdministration;
+import controller.ControllerAgente;
 import controller.ControllerClienti;
 import gui.*;
 import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;
@@ -58,7 +58,7 @@ public class BottoniOpzioni extends JPanel {
             if (this.token == null || this.token.trim().isEmpty()) {
                 frame.setContentPane(new LogInAmministrazione(frame, control, ""));
             } else {
-                ControllerAdministration controlAdmin = new ControllerAdministration();
+                ControllerAgente controlAdmin = new ControllerAgente();
                 List<ImmobileEImmagini> immobileEImmagini = controlAdmin.fetchImmobili(this.token);
                 frame.setContentPane(new InterfacciaAgenteImmobiliare(frame, this, controlAdmin, this.token, immobileEImmagini));
             }

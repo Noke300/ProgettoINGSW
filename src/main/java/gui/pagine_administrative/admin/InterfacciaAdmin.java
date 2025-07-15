@@ -26,6 +26,8 @@ import net.miginfocom.swing.*;
 public class InterfacciaAdmin extends JPanel {
     protected AgenziaImmobiliare admin;
     private BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Admin Support", "Agente Immobiliare"});
+
     public InterfacciaAdmin(JFrame frame, ControllerAdmin controller, String token) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
@@ -100,7 +102,7 @@ public class InterfacciaAdmin extends JPanel {
             }
         });
 
-        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPannel(frame,controller,admin,token,model));
+        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPannel(frame,controller,admin,token,model,tipoCombo));
 
 
         panelListaDipendenti.setViewportView(tabella);

@@ -63,4 +63,15 @@ class CheckPrezziTest {
         boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
         assertFalse(result);
     }
+
+    @Test
+    void testCE9() {
+        double prezzoMin = 200.000;
+        double prezzoMax = 0;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertTrue(result);
+    }
+
+
 }

@@ -233,7 +233,7 @@ public class AuthController {
             }
         }
         if (numStanze < 0 || numStanze > 10) return false;
-        if (numBagni < 0 || numBagni > 10) return false;
+        if (numBagni < -1 || numBagni > 10) return false;
         if (numStanze > 0 && numBagni >= numStanze) return false;
         return piano >= -2 && piano <= 10;
     }
@@ -241,7 +241,10 @@ public class AuthController {
     public boolean checkPrezzi(double prezzoMin, double prezzoMax) {
         if (prezzoMin < 0 || prezzoMin > 800000) return false;
         if (prezzoMax < 0 || prezzoMax > 1000000) return false;
-        return (prezzoMin <= prezzoMax);
+        if (prezzoMax != 0){
+            return (prezzoMin <= prezzoMax);
+        }
+        return true;
     }
 
     private List<ImmobileEImmagini> getImmagini(List<Immobile> candidati) {

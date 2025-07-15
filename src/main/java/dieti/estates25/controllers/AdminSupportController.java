@@ -62,7 +62,7 @@ public class AdminSupportController {
     }
 
     @DeleteMapping("/licenziaAgenteImmobiliare")
-    public ResponseEntity<List<Immobile>> deleteAgente(@RequestBody AgenteImmobiliare agent) {
+    public ResponseEntity<String> deleteAgente(@RequestBody AgenteImmobiliare agent) {
         return adminSupportService.deleteAgenteImmobiliare(agent);
     }
 
@@ -74,5 +74,10 @@ public class AdminSupportController {
     @GetMapping("/specificheCliente")
     public AdminSupport getSpecifiche(){
         return adminSupportService.getSpecifiche();
+    }
+
+    @GetMapping("/getAgentiImmobiliari")
+    public List<AgenteImmobiliare> getAgenti() {
+        return adminSupportService.getAgenti();
     }
 }

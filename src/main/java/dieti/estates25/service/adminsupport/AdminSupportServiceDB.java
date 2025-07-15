@@ -137,12 +137,12 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
         return agentService.addAgent(agent);
     }
 
-    public ResponseEntity<List<Immobile>> deleteAgenteImmobiliare(AgenteImmobiliare agent) {
+    public ResponseEntity<String> deleteAgenteImmobiliare(AgenteImmobiliare agent) {
         AgenteImmobiliare temp = agenteImmobiliareRepository.findByEmailAgente(agent.getEmailAgente());
         if (!temp.getNomeAgenzia().getNomeAgenzia().equals(getAdminSupportByMail(getEmailAutenticato()).getNomeAgenzia().getNomeAgenzia())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(null);
+                    .body("Non puoi licenziare dipendenti che non sono della tua agenzia");
         }
         return agentService.deleteAgent(agent.getEmailAgente());
     }
@@ -191,5 +191,14 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
 
     public AdminSupport getSpecifiche() {
         return adminSupportRepository.findByEmailSupport(getEmailAutenticato());
+    }
+
+    public List<AgenteImmobiliare> getAgenti() {
+        AdminSupport support = adminSupportRepository.findByEmailSupport(getEmailAutenticato());
+        List<AgenteImmobiliare> agenti = agenteImmobiliareRepository.findByNomeAgenzia(support.getNomeAgenzia());
+        for (AgenteImmobiliare a : agenti){
+            a.setPasswordAgente(null);
+        }
+        return agenti;
     }
 }

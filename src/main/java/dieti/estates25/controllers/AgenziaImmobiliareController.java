@@ -88,7 +88,7 @@ public class AgenziaImmobiliareController {
     }
 
     @DeleteMapping("/licenziaAgenteImmobiliare")
-    public ResponseEntity<List<Immobile>> deleteAgente(@RequestBody AgenteImmobiliare agent) {
+    public ResponseEntity<String> deleteAgente(@RequestBody AgenteImmobiliare agent) {
         return agenziaImmobiliareServiceDB.deleteAgenteImmobiliare(agent);
     }
 

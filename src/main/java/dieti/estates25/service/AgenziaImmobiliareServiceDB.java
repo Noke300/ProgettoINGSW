@@ -171,12 +171,12 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
         return adminSupportService.deleteAdminSupport(adminSupport.getEmailSupport());
     }
 
-    public ResponseEntity<List<Immobile>> deleteAgenteImmobiliare(AgenteImmobiliare agent) {
+    public ResponseEntity<String> deleteAgenteImmobiliare(AgenteImmobiliare agent) {
         AgenteImmobiliare temp = agenteImmobiliareRepository.findByEmailAgente(agent.getEmailAgente());
         if (!temp.getNomeAgenzia().getNomeAgenzia().equals(getNomeAgenzia())){
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(null);
+                    .body("Non sei autorizzato a licenziare un dipendente di un'altra agenzia.");
         }
         return agentService.deleteAgent(agent.getEmailAgente());
     }

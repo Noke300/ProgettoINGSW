@@ -16,5 +16,5 @@ public interface AgenteImmobiliareService {
 
     void updateAgent(String mail, AgenteImmobiliare agent);
 
-    ResponseEntity<List<Immobile>> deleteAgent(String mail);
+    ResponseEntity<String> deleteAgent(String mail);
 }

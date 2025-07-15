@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 
 public class GoogleCloudStorageManager implements StorageManagerInterface {
-    private static final String BUCKET_NAME = "msadieti_2025";
+    private static final String BUCKET_NAME = "dieti-estates-2025";
     private static final Dotenv dotenv = Dotenv.load();
     private static final String CREDENTIALS_PATH = dotenv.get("GOOGLE_APPLICATION_CREDENTIALS");
     private final Storage storage;

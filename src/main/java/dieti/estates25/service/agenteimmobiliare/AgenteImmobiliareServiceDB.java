@@ -95,15 +95,14 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     }
 
     @Override
-    public ResponseEntity<List<Immobile>> deleteAgent(String mail) {
+    public ResponseEntity<String> deleteAgent(String mail) {
         if(agentRepository.existsById(mail)) {
-            List<Immobile> immobiliDaGestire = immobileRepository.findAllByAgente_EmailAgente(mail);
             agentRepository.deleteById(mail);
-            return ResponseEntity.ok(immobiliDaGestire);
+            return ResponseEntity.ok("Agente Immobiliare licenziato correttamente");
         }
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(null);
+                .body("L'agente immobiliare che vuoi lincenziare non esiste");
     }
 
     public List<ImmobileEImmagini> getAllImmobili() {
@@ -276,15 +275,17 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                     .body("Non puoi confernare una visita per un immobile non tuo");
         }
         if (checkData(visita.getDataVisita(), visita.getOraVisita())){
-
+            if (visita.getConferma()) {
+                visitaRepository.save(visita);
+                return ResponseEntity.ok("Visita confermata");
+            }else{
+                visitaRepository.delete(visita);
+                return ResponseEntity.ok("Visita rifiutata");
+            }
         }
-        if (visita.getConferma()) {
-            visitaRepository.save(visita);
-            return ResponseEntity.ok("Visita confermata");
-        }else{
-            visitaRepository.delete(visita);
-            return ResponseEntity.ok("Visita rifiutata");
-        }
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Non puoi accettare una visita in questa data/ora");
     }
 
     public boolean checkData(Date dataVisita, LocalTime oraVisita) {

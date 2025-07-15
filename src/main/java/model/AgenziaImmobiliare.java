@@ -9,9 +9,9 @@ public class AgenziaImmobiliare {
     private String passwordAdmin;
     private String regione;
 
-    private ArrayList<AgenteImmobiliare> agentiImmobiliari = new ArrayList<>();
-    private ArrayList<AdminSupport> adminSupport = new ArrayList<>();
-    private ArrayList<Immobile> listaImmobili = new ArrayList<>();
+    private ArrayList<AgenteImmobiliare> agentiImmobiliari;
+    private ArrayList<AdminSupport> adminSupport;
+    private ArrayList<ImmobileEImmagini> listaImmobili ;
 
     public AgenziaImmobiliare(String nomeAgenzia, String emailAgenzia, String emailAdmin, String passwordAdmin,String regione) {
         this.nomeAgenzia = nomeAgenzia;
@@ -37,11 +37,11 @@ public class AgenziaImmobiliare {
         this.adminSupport = adminSupport;
     }
 
-    public ArrayList<Immobile> getListaImmobili() {
+    public ArrayList<ImmobileEImmagini> getListaImmobili() {
         return listaImmobili;
     }
 
-    public void setListaImmobili(ArrayList<Immobile> listaImmobili) {
+    public void setListaImmobili(ArrayList<ImmobileEImmagini> listaImmobili) {
         this.listaImmobili = listaImmobili;
     }
 

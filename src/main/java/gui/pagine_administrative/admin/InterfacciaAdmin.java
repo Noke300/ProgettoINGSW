@@ -15,9 +15,11 @@ import controller.ControllerAdmin;
 import gui.costum_components.AggiungiDipendentiPannel;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
+import gui.costum_components.ImmobilePanelSingolo;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 
 /**
@@ -47,8 +49,19 @@ public class InterfacciaAdmin extends JPanel {
         }
         for (AgenteImmobiliare d : admin.getAgentiImmobiliari()){
             model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
-
         }
+        panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
+        JPanel[] selectedPanel = new JPanel[0];
+
+        Dimension dim  = new Dimension(820,289);
+        for (ImmobileEImmagini immobileEImmagini : admin.getListaImmobili()) {
+            JPanel panel = ImmobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,controller,token,selectedPanel);
+            panel.setName(immobileEImmagini.getImmobile().getId());
+            panel.setMaximumSize(dim);
+            panel.setPreferredSize(dim);
+            panelListaImmobile.add(panel);
+        }
+
         JTable tabella = new JTable(model);
         tabella.getTableHeader().setReorderingAllowed(false);
         tabella.setFont(IconClass.getFontImmobiliC());
@@ -120,6 +133,8 @@ public class InterfacciaAdmin extends JPanel {
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         panelListaDipendenti = new JScrollPane();
+        panelListaImmobileScroll = new JScrollPane();
+        panelListaImmobile = new JPanel();
         panelBottomBar = new JPanel();
         buttonRiorganizzaImmobile = new JButton();
         buttonAggiungiDipendenti = new JButton();
@@ -196,7 +211,21 @@ public class InterfacciaAdmin extends JPanel {
             panelListaDipendenti.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             panelListaDipendenti.setViewportBorder(null);
         }
-        add(panelListaDipendenti, "cell 0 0 13 8,grow");
+        add(panelListaDipendenti, "cell 3 0 10 8,grow");
+
+        //======== panelListaImmobileScroll ========
+        {
+            panelListaImmobileScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelListaImmobileScroll.setViewportBorder(null);
+
+            //======== panelListaImmobile ========
+            {
+                panelListaImmobile.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 2, true));
+                panelListaImmobile.setLayout(new GridLayout(2, 0));
+            }
+            panelListaImmobileScroll.setViewportView(panelListaImmobile);
+        }
+        add(panelListaImmobileScroll, "cell 0 0 3 8");
 
         //======== panelBottomBar ========
         {
@@ -244,6 +273,8 @@ public class InterfacciaAdmin extends JPanel {
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JScrollPane panelListaDipendenti;
+    private JScrollPane panelListaImmobileScroll;
+    private JPanel panelListaImmobile;
     private JPanel panelBottomBar;
     private JButton buttonRiorganizzaImmobile;
     private JButton buttonAggiungiDipendenti;

@@ -11,19 +11,22 @@ import java.awt.*;
 
 public class AggiungiDipendentiPannel {
 
-    public static void creaPannel(JFrame frame, ControllerAdmin controller, AgenziaImmobiliare admin, String token, DefaultTableModel model,JComboBox<String> tipoCombo) {
+    public static void creaPannel(JFrame frame, ControllerAdmin controller, AgenziaImmobiliare admin, String token, DefaultTableModel model, JComboBox<String> tipoCombo) {
         JDialog dialog = new JDialog(frame, "Aggiungi Dipendente", true);
+        dialog.setMinimumSize(new Dimension(700, 550));
         dialog.setLayout(new GridBagLayout());
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        JTextField nomeField = new JTextField(15);
-        JTextField cognomeField = new JTextField(15);
-        JTextField emailField = new JTextField(15);
-        JPasswordField passwordField = new JPasswordField(15);
+        JTextField nomeField = new JTextField();
+        JTextField cognomeField = new JTextField();
+        JTextField emailField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
         JButton aggiungiButton = new JButton("Aggiungi");
 
         dialog.add(new JLabel("Tipo dipendente:"), gbc); gbc.gridy++;
@@ -39,7 +42,6 @@ public class AggiungiDipendentiPannel {
 
         gbc.gridwidth = 2;
         dialog.add(aggiungiButton, gbc);
-
 
         aggiungiButton.addActionListener(ev -> {
             String tipo = (String) tipoCombo.getSelectedItem();
@@ -65,7 +67,7 @@ public class AggiungiDipendentiPannel {
                 AgenteImmobiliare nuovo = new AgenteImmobiliare(admin, admin.getRegione(), password, nome, cognome, email);
                 added = controller.aggiungiAgenteImmobiliare(nuovo, token);
                 if (added) {
-                    model.addRow(new Object[]{nome, cognome, email, "Agente Immobiliari"});
+                    model.addRow(new Object[]{nome, cognome, email, "Agente Immobiliare"});
                 }
             }
 
@@ -81,5 +83,6 @@ public class AggiungiDipendentiPannel {
         dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
     }
+
 
 }

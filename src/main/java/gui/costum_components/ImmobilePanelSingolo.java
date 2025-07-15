@@ -19,8 +19,8 @@ import java.net.URL;
 import java.util.Base64;
 
 public class ImmobilePanelSingolo {
-    private final Color borderColor = new Color(24, 122, 26);
-        private final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
+    private static final Color borderColor = new Color(24, 122, 26);
+        private static final Font borderFont = new Font("Segoe UI", Font.BOLD, 18);
 
         protected static class BorderStyler {
             public static TitledBorder createStyledBorder(String title, Color lineColor, int thickness, Font font) {
@@ -40,7 +40,7 @@ public class ImmobilePanelSingolo {
             }
         }
 
-        public JPanel createImmobileSingoloPanel(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token, JPanel[] selectedPanelRef) {
+        public static JPanel createImmobileSingoloPanel(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token, JPanel[] selectedPanelRef) {
             JPanel panel = new JPanel();
             Immobile immobile = immobileEImmagini.getImmobile();
             panel.setBorder(BorderStyler.createStyledBorder(immobile.getTipoVendita(), borderColor, 1, borderFont));
@@ -93,7 +93,7 @@ public class ImmobilePanelSingolo {
             return panel;
         }
 
-        private void navigateToDetailsPage(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
+        private static void navigateToDetailsPage(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
             if (frame != null) {
                 PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame, immobileEImmagini, control, token);
                 frame.setContentPane(detailsPage);
@@ -104,7 +104,7 @@ public class ImmobilePanelSingolo {
             }
         }
 
-        private void selectPanel(JPanel panel, JPanel[] selectedPanelRef) {
+        private static void selectPanel(JPanel panel, JPanel[] selectedPanelRef) {
             JPanel selectedPanel = selectedPanelRef[0];
 
             if (selectedPanel != null) {
@@ -123,7 +123,7 @@ public class ImmobilePanelSingolo {
             panel.repaint();
         }
 
-        private String extractBorderTitle(Border border) {
+        private static String extractBorderTitle(Border border) {
             if (border instanceof TitledBorder) {
                 return ((TitledBorder) border).getTitle();
             } else if (border instanceof CompoundBorder) {

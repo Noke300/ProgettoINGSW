@@ -41,9 +41,11 @@ public class InterfacciaAdminSup extends JPanel {
                 return false; // blocca l'editing su tutte le celle
             }
         };
-        for (AgenteImmobiliare d : adminSup.getAgentiImmobiliari()){
-            model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
+        if (!adminSup.getAgentiImmobiliari().isEmpty()) {
+            for (AgenteImmobiliare d : adminSup.getAgentiImmobiliari()) {
+                model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
 
+            }
         }
         JTable tabella = new JTable(model);
         tabella.getTableHeader().setReorderingAllowed(false);
@@ -70,7 +72,6 @@ public class InterfacciaAdminSup extends JPanel {
 
         buttonElimina.addActionListener(e -> {
             int selectedRow = tabella.getSelectedRow();
-            String tipo = (String) tabella.getValueAt(selectedRow, 3); // Colonna 'Tipo'
             String email = (String) tabella.getValueAt(selectedRow, 2); // Colonna 'Email'
             boolean success = false;
 

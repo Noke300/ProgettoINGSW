@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
+import model.ImmobileEImmagini;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -14,14 +15,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ControllerAdminSup extends Controller {
 
-    protected static final String ELIMINA_AGENTE_IMM    = "http://localhost:8081/auth-adminSupport/licenziaAgenteImmobiliare";
-    protected static final String ADD_AGENTE_IMM        = "http://localhost:8081/auth-adminSupport/registraAgenteImmobiliare";
+    protected static final String ELIMINA_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/licenziaAgenteImmobiliare";
+    protected static final String ADD_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/registraAgenteImmobiliare";
     //todo ti odio cambia il nome pesso di merda
-    protected static final String GET_ADMIN_SUP        = "http://localhost:8081/auth-adminSupport/specificheCliente";
+    protected static final String GET_ADMIN_SUP = "http://localhost:8081/auth-adminSupport/specificheCliente";
+    protected static final String GET_IMMOBILI = "http://localhost:8081/auth-adminSupport/visualizzaImmobili";
 
     public AdminSupport fetchAdminSup(String token) {
         try {
@@ -53,11 +56,12 @@ public class ControllerAdminSup extends Controller {
 
 
     //TODO funzione backend
+    /*
     public List<AgenteImmobiliare> fetchAgentiImmobiliari(String token) {
 
         try {
             request = HttpRequest.newBuilder()
-                    .uri(new URI("")) // definisci GET_AGENTIIMM correttamente
+                    .uri(new URI()) // definisci GET_AGENTIIMM correttamente
                     .header("Authorization", "Bearer " + token)
                     .GET()
                     .build();
@@ -71,13 +75,14 @@ public class ControllerAdminSup extends Controller {
         }
 
         if (response.statusCode() == 200) {
-            Gson gson = new Gson();
             Type listType = new TypeToken<List<AgenteImmobiliare>>() {}.getType();
             return gson.fromJson(response.body(), listType);
         } else {
             throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
         }
     }
+    /
+     */
 
     public boolean eliminaAgenteImmobiliare(AgenteImmobiliare agenteJson, String token) {
 
@@ -121,12 +126,11 @@ public class ControllerAdminSup extends Controller {
     }
 
 
-
-
     public AdminSupport getAdminSup(String token) {
 
         AdminSupport adminSup = fetchAdminSup(token);
-        adminSup.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
+        adminSup.setAgentiImmobiliari(new ArrayList<>());
+       // adminSup.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
 
         return adminSup;
     }

@@ -17,7 +17,9 @@ public class AdminSupport {
         this.emailSupport = email;
         this.passwordSupport = password;
         this.nomeAgenzia = agenziaImmobiliare;
+        this.agentiImmobiliari = new ArrayList<>();
     }
+
 
     public String getNomeSupport() {
         return nomeSupport;

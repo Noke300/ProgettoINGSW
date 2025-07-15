@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
+import model.ImmobileEImmagini;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -14,6 +15,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ControllerAdmin extends Controller {
@@ -25,8 +27,7 @@ public class ControllerAdmin extends Controller {
     protected static final String ELIMINA_AGENTE_IMM    = "http://localhost:8081/auth-admin/licenziaAgenteImmobiliare";
     protected static final String ADD_AGENTE_IMM        = "http://localhost:8081/auth-admin/registraAgenteImmobiliare";
     protected static final String ADD_ADMINSUP          = "http://localhost:8081/auth-admin/registraAdminSupport";
-
-
+    protected static final String GET_IMMOBILI          = "http://localhost:8081/auth-admin/visualizzaImmobili";
 
 
     public AgenziaImmobiliare fetchAgenziaImmobiliare(String token) {
@@ -119,7 +120,6 @@ public class ControllerAdmin extends Controller {
         }
 
         if (response.statusCode() == 200) {
-            Gson gson = new Gson();
             Type listType = new TypeToken<List<AgenteImmobiliare>>() {}.getType();
             return gson.fromJson(response.body(), listType);
         } else {
@@ -192,13 +192,42 @@ public class ControllerAdmin extends Controller {
     }
 
 
+    public List<ImmobileEImmagini> getListaImmobili(String token) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(GET_IMMOBILI))
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                Type listType = new TypeToken<List<ImmobileEImmagini>>() {}.getType();
+                return new Gson().fromJson(response.body(), listType);
+            } else {
+                System.err.println("Errore HTTP: " + response.statusCode());
+                return Collections.emptyList();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante la visualizzazione immobili: " + e.getMessage());
+        }
+    }
+
+
 
 
     public AgenziaImmobiliare getAgenziaImmobiliare(String token) {
 
         AgenziaImmobiliare agenziaImmobiliare = fetchAgenziaImmobiliare(token);
+
+        agenziaImmobiliare.setAgentiImmobiliari(new ArrayList<>());
+        agenziaImmobiliare.setAdminSupport(new ArrayList<>());
+        agenziaImmobiliare.setListaImmobili(new ArrayList<>());
+
         agenziaImmobiliare.setAdminSupport((ArrayList<AdminSupport>) fetchAdminSupport(token));
         agenziaImmobiliare.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
+        agenziaImmobiliare.setListaImmobili((ArrayList<ImmobileEImmagini>) getListaImmobili(token));
 
         return agenziaImmobiliare;
     }

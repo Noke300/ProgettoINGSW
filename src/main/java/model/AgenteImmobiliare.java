@@ -21,6 +21,14 @@ public class AgenteImmobiliare{
         this.cognomeAgente = cognomeAgente;
         this.nomeAgente = nomeAgente;
     }
+    public AgenteImmobiliare(AgenziaImmobiliare agenziaImmobiliare, String regione, String passwordAgente, String emailAgente, String cognomeAgente, String nomeAgente) {
+        this.nomeAgenzia = agenziaImmobiliare;
+        this.regione = regione;
+        this.passwordAgente = passwordAgente;
+        this.emailAgente = emailAgente;
+        this.cognomeAgente = cognomeAgente;
+        this.nomeAgente = nomeAgente;
+    }
     public AgenteImmobiliare(String emailAgente, String passwordAgente) {
         this.emailAgente = emailAgente;
         this.passwordAgente = passwordAgente;

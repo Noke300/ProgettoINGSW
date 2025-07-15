@@ -5,11 +5,15 @@
 package gui.pagine_administrative.admin;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ControllerAdministration;
+import gui.costum_components.AggiungiDipendentiPannel;
+import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
@@ -20,14 +24,21 @@ import net.miginfocom.swing.*;
  * @author marco
  */
 public class InterfacciaAdmin extends JPanel {
-    private AgenziaImmobiliare admin;
-
-    public InterfacciaAdmin(ControllerAdministration controller,String token) {
+    protected AgenziaImmobiliare admin;
+    private BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    public InterfacciaAdmin(JFrame frame,ControllerAdministration controller,String token) {
         initComponents();
-        admin = controller.getAgenziaImmobiliare(token);
+        bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
+        this.admin = controller.getAgenziaImmobiliare(token);
 
         String[] colonne = {"Nome", "Cognome", "Email", "Tipo"};
-        DefaultTableModel model = new DefaultTableModel(colonne, 0);
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // blocca l'editing su tutte le celle
+            }
+        };
+
 
         for (AdminSupport d : admin.getAdminSupport()) {
             model.addRow(new Object[]{d.getNomeSupport(), d.getCognomeSupport(), d.getEmailSupport(), "Admin Support"});
@@ -36,12 +47,62 @@ public class InterfacciaAdmin extends JPanel {
             model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
 
         }
-
-
-
         JTable tabella = new JTable(model);
+        tabella.getTableHeader().setReorderingAllowed(false);
         tabella.setFont(IconClass.getFontImmobiliC());
         tabella.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!tabella.getBounds().contains(e.getPoint())) {
+                    tabella.clearSelection();
+                    buttonElimina.setEnabled(false);
+                }
+            }
+        });
+
+
+        tabella.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                int selectedRow = tabella.getSelectedRow();
+                buttonElimina.setEnabled(selectedRow != -1);
+            }
+        });
+
+        buttonElimina.addActionListener(e -> {
+            int selectedRow = tabella.getSelectedRow();
+            String tipo = (String) tabella.getValueAt(selectedRow, 3); // Colonna 'Tipo'
+            String email = (String) tabella.getValueAt(selectedRow, 2); // Colonna 'Email'
+            boolean success = false;
+
+            if (tipo.equals("Admin Support")) {
+                for (AdminSupport d : admin.getAdminSupport()) {
+                    if (d.getEmailSupport().equals(email)) {
+                        success = controller.eliminaAdminSupport(d, token);
+                        break;
+                    }
+                }
+            } else if (tipo.equals("Agente Immobiliari")) {
+                for (AgenteImmobiliare d : admin.getAgentiImmobiliari()) {
+                    if (d.getEmailAgente().equals(email)) {
+                        success = controller.eliminaAgenteImmobiliare(d, token);
+                        break;
+                    }
+                }
+            }
+
+            if (success) {
+                model.removeRow(selectedRow);
+                JOptionPane.showMessageDialog(this, "Dipendente eliminato con successo.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Errore durante l’eliminazione.");
+            }
+        });
+
+        buttonAggiungiDipendenti.addActionListener(e -> {
+            AggiungiDipendentiPannel.creaPannel(frame,controller,admin,token,model);
+        });
 
 
         panelListaDipendenti.setViewportView(tabella);
@@ -163,7 +224,6 @@ public class InterfacciaAdmin extends JPanel {
             buttonAggiungiDipendenti.setText("Aggiungi Dipendente");
             buttonAggiungiDipendenti.setBorderPainted(false);
             buttonAggiungiDipendenti.setBackground(UIManager.getColor("Actions.Green"));
-            buttonAggiungiDipendenti.setEnabled(false);
             panelBottomBar.add(buttonAggiungiDipendenti, "cell 2 0 1 2,growy");
 
             //---- buttonElimina ----

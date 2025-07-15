@@ -1,0 +1,86 @@
+package gui.costum_components;
+
+import controller.ControllerAdministration;
+import model.AdminSupport;
+import model.AgenteImmobiliare;
+import model.AgenziaImmobiliare;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+
+public class AggiungiDipendentiPannel {
+
+    public static void creaPannel(JFrame frame, ControllerAdministration controller, AgenziaImmobiliare admin, String token, DefaultTableModel model) {
+        JDialog dialog = new JDialog(frame, "Aggiungi Dipendente", true);
+        dialog.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Admin Support", "Agente Immobiliare"});
+        JTextField nomeField = new JTextField(15);
+        JTextField cognomeField = new JTextField(15);
+        JTextField emailField = new JTextField(15);
+        JPasswordField passwordField = new JPasswordField(15);
+        JButton aggiungiButton = new JButton("Aggiungi");
+
+        dialog.add(new JLabel("Tipo dipendente:"), gbc); gbc.gridy++;
+        dialog.add(tipoCombo, gbc); gbc.gridy++;
+        dialog.add(new JLabel("Nome:"), gbc); gbc.gridy++;
+        dialog.add(nomeField, gbc); gbc.gridy++;
+        dialog.add(new JLabel("Cognome:"), gbc); gbc.gridy++;
+        dialog.add(cognomeField, gbc); gbc.gridy++;
+        dialog.add(new JLabel("Email:"), gbc); gbc.gridy++;
+        dialog.add(emailField, gbc); gbc.gridy++;
+        dialog.add(new JLabel("Password:"), gbc); gbc.gridy++;
+        dialog.add(passwordField, gbc); gbc.gridy++;
+
+        gbc.gridwidth = 2;
+        dialog.add(aggiungiButton, gbc);
+
+
+        aggiungiButton.addActionListener(ev -> {
+            String tipo = (String) tipoCombo.getSelectedItem();
+            String nome = nomeField.getText().trim();
+            String cognome = cognomeField.getText().trim();
+            String email = emailField.getText().trim();
+            String password = new String(passwordField.getPassword());
+            
+            if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Completa tutti i campi.");
+                return;
+            }
+
+            boolean added = false;
+
+            if (tipo.equals("Admin Support")) {
+                AdminSupport nuovo = new AdminSupport(nome, cognome, email, password, admin);
+                added = controller.aggiungiAdminSupport(nuovo, token);
+                if (added) {
+                    model.addRow(new Object[]{nome, cognome, email, "Admin Support"});
+                }
+            } else {
+                AgenteImmobiliare nuovo = new AgenteImmobiliare(admin, admin.getRegione(), password, nome, cognome, email);
+                added = controller.aggiungiAgenteImmobiliare(nuovo, token);
+                if (added) {
+                    model.addRow(new Object[]{nome, cognome, email, "Agente Immobiliari"});
+                }
+            }
+
+            if (added) {
+                JOptionPane.showMessageDialog(dialog, "Dipendente aggiunto con successo.");
+                dialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Errore durante l’aggiunta.");
+            }
+        });
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+    }
+
+}

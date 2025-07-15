@@ -1,12 +1,12 @@
 package model;
 
 public class AdminSupport {
-    private final AgenziaImmobiliare nomeAgenzia;
+    private  AgenziaImmobiliare nomeAgenzia;
 
-    private String nomeSupport;
-    private String cognomeSupport;
-    private String emailSupport;
-    private String passwordSupport;
+    private  String nomeSupport;
+    private  String cognomeSupport;
+    private  String emailSupport;
+    private  String passwordSupport;
 
     public AdminSupport(String nome, String cognome, String email, String password, AgenziaImmobiliare agenziaImmobiliare) {
         this.nomeSupport = nome;
@@ -28,7 +28,7 @@ public class AdminSupport {
         return emailSupport;
     }
 
-    public String getPasswordSupport() {
-        return passwordSupport;
+    public AgenziaImmobiliare getNomeAgenzia() {
+        return nomeAgenzia;
     }
 }

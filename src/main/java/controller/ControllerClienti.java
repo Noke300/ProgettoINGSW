@@ -23,9 +23,6 @@ public class ControllerClienti extends Controller {
     protected static final String GET_SPECIFICHE = "http://localhost:8081/auth-cliente/specificheCliente";
 
     public Cliente getSpecifiche(String token) {
-        HttpClient client = HttpClient.newHttpClient();
-
-        HttpRequest request;
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(GET_SPECIFICHE))
@@ -57,8 +54,6 @@ public class ControllerClienti extends Controller {
     }
 
     public List<Visita> getVisite(String token) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request;
 
         try {
             request = HttpRequest.newBuilder()
@@ -71,7 +66,7 @@ public class ControllerClienti extends Controller {
         }
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 List<Visita> visite = new ArrayList<>();
                 JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();

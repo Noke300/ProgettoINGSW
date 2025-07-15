@@ -74,7 +74,7 @@ public class LogInAmministrazione extends JPanel {
                             break;
 
                         case "[ADMIN]":
-                            frame.setContentPane(new InterfacciaAdmin(controlAdmin, this.token));
+                            frame.setContentPane(new InterfacciaAdmin(frame,controlAdmin, this.token));
                             break;
 
                         default:

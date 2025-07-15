@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 
 public class Controller {
 
-    HttpClient client = HttpClient.newHttpClient();
-    HttpResponse<String> response;
-    HttpRequest request;
+    protected HttpClient client = HttpClient.newHttpClient();
+    protected HttpRequest request;
+    protected HttpResponse<String> response;
+    protected String requestBody;
     private String nameLogIn;
 
     //TODO separare i vari path nei rispettivi controller
@@ -57,8 +58,6 @@ public class Controller {
 
     public List<ImmobileEImmagini> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
 
-        System.out.println(filtri);
-
         Map<String, Map<String, Object>> jsonMap = new HashMap<>();
 
         Map<String, Object> bodyMap = new HashMap<>();
@@ -68,7 +67,7 @@ public class Controller {
         jsonMap.put("indirizzo", bodyMap);
         jsonMap.put("filtri", filtri);
 
-        String requestBody = gson.toJson(jsonMap);
+        requestBody = gson.toJson(jsonMap);
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(RICERCA_URL))
@@ -102,7 +101,7 @@ public class Controller {
         bodyMap.put("passwordCliente", password);
 
         Gson gson = new Gson(); // Assicurati che sia configurato se serve formattazione data o custom type adapter
-        String requestBody = gson.toJson(bodyMap);
+        requestBody = gson.toJson(bodyMap);
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -157,7 +156,7 @@ public class Controller {
 
     private String attemptLogin(String url, String email, String password) {
         Map<String, String> credentials = getPayloadPerTipo(url, email, password);
-        String requestBody = gson.toJson(credentials);
+        requestBody = gson.toJson(credentials);
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -198,7 +197,7 @@ public class Controller {
 
 
     public boolean registrazioneCliente(Cliente cliente) {
-        String requestBody = gson.toJson(cliente);
+        requestBody = gson.toJson(cliente);
 
         try {
             this.request = HttpRequest.newBuilder()
@@ -229,8 +228,7 @@ public class Controller {
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("idImmobile", idImmobile.getId());
 
-
-        String requestBody = gson.toJson(bodyMap);
+        requestBody = gson.toJson(bodyMap);
 
         try {
             URI uri = new URI(OFFERTA_LIST); // endpoint esempio
@@ -283,7 +281,7 @@ public class Controller {
         bodyMap.put("immobile", offerta.getImmobile());
         bodyMap.put("prezzoOfferta", offerta.getPrezzoOfferta());
 
-        String requestBody = gson.toJson(bodyMap);
+        requestBody = gson.toJson(bodyMap);
 
         try {
             request = HttpRequest.newBuilder()
@@ -308,7 +306,7 @@ public class Controller {
 
     public boolean inviaVisita(Visita visita, String token) {
 
-        String requestBody = gson.toJson(visita);
+        requestBody = gson.toJson(visita);
 
         try {
             request = HttpRequest.newBuilder()

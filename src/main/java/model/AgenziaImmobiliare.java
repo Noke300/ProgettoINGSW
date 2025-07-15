@@ -45,6 +45,10 @@ public class AgenziaImmobiliare {
         this.listaImmobili = listaImmobili;
     }
 
+    public String getRegione() {
+        return regione;
+    }
+
     public String getNomeAgenzia() {
         return nomeAgenzia;
     }

@@ -19,15 +19,15 @@ import java.util.*;
 //TODO dobbiamo gestire meglio le Exception di questa classe
 public class ControllerAdministration extends Controller{
 
-    protected HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request;
-    HttpResponse<String> response;
-
     protected static final String GET_SPECIFICHE = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
     protected static final String GET_AGENZIAIMM = "http://localhost:8081/auth-admin/specificheAgenziaImmobiliare";
     protected static final String GET_IMMOBILE = "http://localhost:8081/auth-agente/getImmobile";
     protected static final String GET_AGENTIIMM = "http://localhost:8081/auth-admin/getAgentiImmobiliari";
     protected static final String GET_ADMINSUPPORT = "http://localhost:8081/auth-admin/getAdminSupport";
+    protected static final String ELIMINA_ADMINSUP = "http://localhost:8081/auth-admin/licenziaAdminSupport";
+    protected static final String ELIMINA_AGENTE_IMM = "http://localhost:8081/auth-admin/licenziaAgenteImmobiliare";
+    protected static final String ADD_AGENTE_IMM = "http://localhost:8081/auth-admin/registraAgenteImmobiliare";
+    protected static final String ADD_ADMINSUP = "http://localhost:8081/auth-admin/registraAdminSupport";
 
 
     public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
@@ -99,7 +99,7 @@ public class ControllerAdministration extends Controller{
         }
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 List<Visita> visite = new ArrayList<>();
                 JsonArray jsonArray = JsonParser.parseString(response.body()).getAsJsonArray();
@@ -151,8 +151,30 @@ public class ControllerAdministration extends Controller{
         }
     }
 
-    public AgenteImmobiliare fetchAgenteImmobiliare(String token) {
+    public boolean eliminaAgenteImmobiliare(AgenteImmobiliare agenteJson, String token) {
 
+        requestBody = gson.toJson(agenteJson);
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(ELIMINA_AGENTE_IMM))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Errore nella URI agente: " + e.getMessage());
+        }
+
+        try {
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200 || response.statusCode() == 204;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante l’eliminazione dell’agente: " + e.getMessage());
+        }
+    }
+
+
+    public AgenteImmobiliare fetchAgenteImmobiliare(String token) {
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(GET_AGGENTEIMM))
@@ -177,6 +199,28 @@ public class ControllerAdministration extends Controller{
         }
     }
 
+    public boolean eliminaAdminSupport(AdminSupport adminSupportJson, String token) {
+        requestBody = gson.toJson(adminSupportJson);
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(ELIMINA_ADMINSUP))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Errore nella URI admin: " + e.getMessage());
+        }
+
+        try {
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200 || response.statusCode() == 204;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante l’eliminazione admin: " + e.getMessage());
+        }
+    }
+
+
     public AgenteImmobiliare getSpecifiche(String token) {
 
         try {
@@ -197,8 +241,6 @@ public class ControllerAdministration extends Controller{
             throw new RuntimeException(e);
         }
 
-        System.out.println("Codice risposta: " + response.statusCode());
-
         if (response.statusCode() == 200) {
             Gson gson = new Gson();
             Type listType = new TypeToken<AgenteImmobiliare>() {}.getType();
@@ -209,7 +251,6 @@ public class ControllerAdministration extends Controller{
     }
 
     public AgenziaImmobiliare fetchAgenziaImmobiliare(String token) {
-
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(GET_AGENZIAIMM))
@@ -321,6 +362,44 @@ public class ControllerAdministration extends Controller{
             throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
         }
     }
+
+    public boolean aggiungiAdminSupport(AdminSupport adminJson, String token) {
+         requestBody = gson.toJson(adminJson);
+        try {
+             request = HttpRequest.newBuilder()
+                    .uri(new URI(ADD_ADMINSUP))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+           response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            String body = response.body();
+            return response.statusCode() == 201 || (body != null && body.contains("Admin Support creato"));
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante la registrazione admin support: " + e.getMessage());
+        }
+    }
+
+    public boolean aggiungiAgenteImmobiliare(AgenteImmobiliare agenteJson, String token) {
+         requestBody = gson.toJson(agenteJson);
+
+        try {
+           request = HttpRequest.newBuilder()
+                    .uri(new URI(ADD_AGENTE_IMM))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            String body = response.body();
+            return response.statusCode() == 201 || (body != null && body.contains("Agente Immobiliare creato"));
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante la registrazione agente: " + e.getMessage());
+        }
+    }
+
 
 
 

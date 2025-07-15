@@ -73,7 +73,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         Dimension dim  = new Dimension(820,289);
         for (ImmobileEImmagini immobileEImmagini : immobiliEImmagini) {
-            JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,control,token,selectedPanel);
+            JPanel panel = ImmobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,control,token,selectedPanel);
             panel.setName(immobileEImmagini.getImmobile().getId());
             panel.setMaximumSize(dim);
             panel.setPreferredSize(dim);

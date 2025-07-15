@@ -1,9 +1,9 @@
 package gui.costum_components;
 
-import controller.Controller;
-import controller.ControllerAgente;
-import controller.ControllerClienti;
+import controller.*;
 import gui.*;
+import gui.pagine_administrative.admin.InterfacciaAdmin;
+import gui.pagine_administrative.adminSup.InterfacciaAdminSup;
 import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;
 import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_clienti.ClientPersonalPage;
@@ -58,9 +58,42 @@ public class BottoniOpzioni extends JPanel {
             if (this.token == null || this.token.trim().isEmpty()) {
                 frame.setContentPane(new LogInAmministrazione(frame, control, ""));
             } else {
-                ControllerAgente controlAdmin = new ControllerAgente();
-                List<ImmobileEImmagini> immobileEImmagini = controlAdmin.fetchImmobili(this.token);
-                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame, this, controlAdmin, this.token, immobileEImmagini));
+
+                String ruolo = control.getRawSpecifiche(this.token);
+                Controller controlAdmin;
+
+                switch (ruolo) {
+                    case "[AGENTE_IMMOBILIARE]":
+                        controlAdmin = new ControllerAgente();
+                        controlAdmin.setNameLogIn(control.getNameLogIn());
+
+                        List<ImmobileEImmagini> immobiliEImmagini = ((ControllerAgente) controlAdmin).fetchImmobili(token);
+                        BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+                        frame.setContentPane(new InterfacciaAgenteImmobiliare(
+                                frame, bottoniOpzioni, (ControllerAgente) controlAdmin, this.token, immobiliEImmagini));
+                        break;
+
+                    case "[ADMIN]":
+                        controlAdmin = new ControllerAdmin();
+                        controlAdmin.setNameLogIn(control.getNameLogIn());
+                        frame.setContentPane(new InterfacciaAdmin(frame,new ControllerAdmin(), this.token));
+                        break;
+
+                    case "[ADMIN_SUPPORT]":
+                        controlAdmin = new ControllerAdminSup();
+                        controlAdmin.setNameLogIn(control.getNameLogIn());
+                        frame.setContentPane(new InterfacciaAdminSup(frame,new ControllerAdminSup(), this.token));
+                        break;
+
+                    default:
+                        JOptionPane.showMessageDialog(
+                                frame,
+                                "Ruolo sconosciuto: " + ruolo,
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        break;
+                }
             }
             frame.revalidate();
             frame.repaint();

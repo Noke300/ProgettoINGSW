@@ -51,7 +51,7 @@ public class InterfacciaAdmin extends JPanel {
             model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
         }
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
-        JPanel[] selectedPanel = new JPanel[0];
+        JPanel[] selectedPanel = new JPanel[1];
 
         Dimension dim  = new Dimension(820,289);
         for (ImmobileEImmagini immobileEImmagini : admin.getListaImmobili()) {

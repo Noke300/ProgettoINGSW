@@ -57,26 +57,32 @@ public class LogInAmministrazione extends JPanel {
 
                     // 👉 Recupero ruolo una volta ottenuto il token valido
                     String ruolo = control.getRawSpecifiche(token1);
-                    System.out.println("Autenticato come: " + ruolo);
 
-                    ControllerAgente controlAdmin = new ControllerAgente();
+                    Controller controlAdmin;
 
                     switch (ruolo) {
                         case "[AGENTE_IMMOBILIARE]":
+                            controlAdmin = new ControllerAgente();
+                            controlAdmin.setNameLogIn(control.getNameLogIn());
+
                             Ricerca.notifiche = new NotificationClient(email);
                             Ricerca.notifiche.start();
 
-                            List<ImmobileEImmagini> immobiliEImmagini = controlAdmin.fetchImmobili(token1);
+                            List<ImmobileEImmagini> immobiliEImmagini = ((ControllerAgente) controlAdmin).fetchImmobili(token1);
                             BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
                             frame.setContentPane(new InterfacciaAgenteImmobiliare(
-                                    frame, bottoniOpzioni, controlAdmin, this.token, immobiliEImmagini));
+                                    frame, bottoniOpzioni, (ControllerAgente) controlAdmin, this.token, immobiliEImmagini));
                             break;
 
                         case "[ADMIN]":
+                            controlAdmin = new ControllerAdmin();
+                            controlAdmin.setNameLogIn(control.getNameLogIn());
                             frame.setContentPane(new InterfacciaAdmin(frame,new ControllerAdmin(), this.token));
                             break;
 
                             case "[ADMIN_SUPPORT]":
+                                controlAdmin = new ControllerAdminSup();
+                                controlAdmin.setNameLogIn(control.getNameLogIn());
                                 frame.setContentPane(new InterfacciaAdminSup(frame,new ControllerAdminSup(), this.token));
                                 break;
 

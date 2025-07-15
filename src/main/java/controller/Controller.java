@@ -177,11 +177,11 @@ public class Controller {
 
 
     private static Map<String, String> getPayloadPerTipo(String url, String email, String password) {
-        if (url.contains("agente")) {
+        if (url.contains("auth-agente")) {
             return Map.of("emailAgente", email, "passwordAgente", password);
-        } else if (url.contains("adminSupport")) {
+        } else if (url.contains("auth-adminSupport")) {
             return Map.of("emailSupport", email, "passwordSupport", password);
-        } else if (url.contains("admin")) {
+        } else if (url.contains("auth-admin")) {
             return Map.of("emailAdmin", email, "passwordAdmin", password);
         }
         // Fallback generico se necessario

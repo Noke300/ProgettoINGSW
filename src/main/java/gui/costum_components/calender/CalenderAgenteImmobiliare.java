@@ -158,7 +158,11 @@ public class CalenderAgenteImmobiliare {
                     JButton annulla = new JButton("🔄 Annulla");
                     annulla.addActionListener(ev -> {
                         visita.setConferma(false);
-                        JOptionPane.showMessageDialog(frame, "Visita annullata.");
+                        if (controller.esitoVisita(token, visita)){
+                            JOptionPane.showMessageDialog(frame, "Visita annullata.");
+                        }else{
+                            JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
+                        }
                     });
                     buttonPanel.add(annulla);
                 }

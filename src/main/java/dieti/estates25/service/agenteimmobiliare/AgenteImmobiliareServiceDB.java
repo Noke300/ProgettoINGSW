@@ -264,12 +264,13 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     }
 
     public ResponseEntity<String> confermaVisista(Visita visita) {
+        visita.setId(new VisitaId(visita.getCliente().getEmailCliente(), visita.getImmobile().getIdImmobile()));
         if (!visitaRepository.existsById(visita.getId())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Non puoi confernare una visita che non esiste");
         }
-        if (!visita.getImmobile().getAgente().equals(getAgentByMail(getEmailAutenticato()))) {
+        if (!visita.getImmobile().getAgente().getEmailAgente().equals(getEmailAutenticato())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Non puoi confernare una visita per un immobile non tuo");

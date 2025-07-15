@@ -189,7 +189,7 @@ public class AuthController {
             if (filtri.getClasseEnergetica() != null) {
                 filtroComplessivo = filtroComplessivo.and(i -> i.getClasseEnergetica().equals(filtri.getClasseEnergetica()));
             }
-            if (filtri.getNumBagni() != 0) {
+            if (filtri.getNumBagni() != -1) {
                 filtroComplessivo = filtroComplessivo.and(i -> i.getNumBagni() >= filtri.getNumBagni());
             }
             if (filtri.getNumStanze() != 0) {

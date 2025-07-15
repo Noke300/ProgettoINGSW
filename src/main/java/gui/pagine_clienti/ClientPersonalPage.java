@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerClienti;
+import gui.costum_components.BottoniOpzioni;
 import model.Cliente;
 import model.Offerta;
 import model.Visita;
@@ -23,10 +24,14 @@ public class ClientPersonalPage extends JPanel {
 
     private List<Offerta> listaOfferte;
     private List<Visita> listaVisita;
+    BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+
 
     public ClientPersonalPage(JFrame frame, ControllerClienti controllerClienti,String token) {
         initComponents();
         Cliente cliente = controllerClienti.getSpecifiche(token);
+
+        bottoniOpzioni.setUpOpzioniMenu(frame,controllerClienti,token,menuBarOpzioni,menuOpzioni);
 
         buttonOfferte.addActionListener(e -> {
             final JDialog offertePanel = new JDialog(frame, "Offerte", true);
@@ -104,7 +109,6 @@ public class ClientPersonalPage extends JPanel {
         labelDataN.setText(formatter.format(cliente.getDataN()));
         labelNomeC.setText(cliente.getNome() + " " + cliente.getCognome());
 
-        //TODO non funzionano non so perché
         separatorO.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1)); // Larghezza piena, altezza 1px
         separatorO.setForeground(Color.LIGHT_GRAY); // Colore del tratto
 

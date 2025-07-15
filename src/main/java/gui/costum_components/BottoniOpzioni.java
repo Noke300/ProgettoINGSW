@@ -24,11 +24,14 @@ public class BottoniOpzioni extends JPanel {
     private final JButton buttonAccountAmministrazione = new JButton();
 
     private String token = "";
+    private String ruolo = "";
 
     public void setUpOpzioniMenu(JFrame frame, Controller control, String token, JMenuBar menuBarOpzioni, JMenu menuOpzioni) {
         this.token = token;
         setBottoniSetUpJForm();
-
+        if(this.token != null && !token.isEmpty()) {
+            ruolo = control.getRawSpecifiche(this.token);
+        }
         // BACK HOME
         backButtonHome.addActionListener(e -> {
             menuOpzioni.setVisible(false);
@@ -62,8 +65,6 @@ public class BottoniOpzioni extends JPanel {
                 frame.setContentPane(new LogInAmministrazione(frame, control, ""));
 
             } else {
-
-                String ruolo = control.getRawSpecifiche(this.token);
                 Controller controlAdmin;
 
                 switch (ruolo) {
@@ -119,10 +120,17 @@ public class BottoniOpzioni extends JPanel {
             frame.repaint();
         });
 
-        for (JButton btn : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome, buttonAccountClienti)) {
+
+        buttonAccountClienti.addMouseListener(IconClass.cursorButton());
+
+        for (JButton btn : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome)) {
             btn.addMouseListener(IconClass.cursorButton());
             menuOpzioni.add(btn);
         }
+        if((!(token == null) && !token.isEmpty()) && control.getNameLogIn().equals("[CLIENT]")){
+            menuOpzioni.add(buttonAccountClienti);
+        }
+
     }
 
     private void setBottoniSetUpJForm() {

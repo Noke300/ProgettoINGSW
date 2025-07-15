@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -58,7 +58,8 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JComboBox" ) {
 				name: "listaTipi"
 				"model": new javax.swing.DefaultComboBoxModel {
-					selectedItem: "Casa"
+					selectedItem: "Case e Appartamenti"
+					addElement( "Case e Appartamenti" )
 					addElement( "Casa" )
 					addElement( "Appartamento" )
 				}
@@ -83,10 +84,10 @@ new FormModel {
 					add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 						name: "menuBarContenitorePrezziBox"
 						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBoxPrezzoMax"
+							name: "comboBoxPrezzoMinimo"
 							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: "Prezzo Massimo"
-								addElement( "Prezzo Massimo" )
+								selectedItem: "Prezzo Minimo"
+								addElement( "Prezzo Minimo" )
 								addElement( "Poco" )
 								addElement( "Medio " )
 								addElement( "Simone" )
@@ -94,10 +95,10 @@ new FormModel {
 							"font": new java.awt.Font( "Segoe UI", 0, 16 )
 						} )
 						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBoxPrezzoMinimo"
+							name: "comboBoxPrezzoMax"
 							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: "Prezzo Minimo"
-								addElement( "Prezzo Minimo" )
+								selectedItem: "Prezzo Massimo"
+								addElement( "Prezzo Massimo" )
 								addElement( "Tanto " )
 								addElement( "Poco" )
 							}
@@ -111,8 +112,33 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JComboBox" ) {
 				name: "comboBoxSuperfice"
 				"model": new javax.swing.DefaultComboBoxModel {
-					selectedItem: "Superfice"
-					addElement( "Superfice" )
+					selectedItem: "Superficie"
+					addElement( "Superficie" )
+					addElement( "10m²" )
+					addElement( "30m²" )
+					addElement( "50m²" )
+					addElement( "70m²" )
+					addElement( "90m²" )
+					addElement( "110m²" )
+					addElement( "130m²" )
+					addElement( "150m²" )
+					addElement( "170m²" )
+					addElement( "190m²" )
+					addElement( "210m²" )
+					addElement( "230m²" )
+					addElement( "250m²" )
+					addElement( "270m²" )
+					addElement( "290m²" )
+					addElement( "310m²" )
+					addElement( "330m²" )
+					addElement( "350m²" )
+					addElement( "370m²" )
+					addElement( "390m²" )
+					addElement( "410m²" )
+					addElement( "430m²" )
+					addElement( "450m²" )
+					addElement( "470m²" )
+					addElement( "500m²" )
 				}
 				"foreground": sfield java.awt.Color black
 				"font": new java.awt.Font( "Segoe UI", 0, 18 )
@@ -251,7 +277,8 @@ new FormModel {
 					name: "comboBoxClasseE"
 					"font": new java.awt.Font( "Segoe UI", 0, 16 )
 					"model": new javax.swing.DefaultComboBoxModel {
-						selectedItem: "A+ "
+						selectedItem: "Indifferente"
+						addElement( "Indifferente" )
 						addElement( "A+ " )
 						addElement( "A " )
 						addElement( "B " )
@@ -280,6 +307,7 @@ new FormModel {
 					"model": new javax.swing.SpinnerListModel {
 						list: new java.util.ArrayList {
 							add( "Indifferente" )
+							add( "Scantinato" )
 							add( "Terra" )
 							add( "1" )
 							add( "2" )

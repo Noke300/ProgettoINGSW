@@ -110,7 +110,7 @@ public class LogInAmministrazione extends JPanel {
 
 
 
-        buttonCreaAggenzia.addActionListener(e -> {
+        buttonCreaAgenzia.addActionListener(e -> {
         });
     }
 
@@ -123,13 +123,13 @@ public class LogInAmministrazione extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         labelTitolo = new JLabel();
         labelEmail = new JLabel();
         textFildEmail = new JTextField();
         labelPassword = new JLabel();
         passwordField1 = new JPasswordField();
-        buttonCreaAggenzia = new JButton();
+        buttonCreaAgenzia = new JButton();
         buttonLogIn = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
@@ -137,6 +137,13 @@ public class LogInAmministrazione extends JPanel {
         LogoOpzioni = new JLabel();
 
         //======== this ========
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
+        swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border
+        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
+        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
+        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
+        .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
+        ( ); }} );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -178,15 +185,15 @@ public class LogInAmministrazione extends JPanel {
         passwordField1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         add(passwordField1, "cell 1 2 2 1,aligny center,growy 0");
 
-        //---- buttonCreaAggenzia ----
-        buttonCreaAggenzia.setText("Crea un Aggenzia");
-        buttonCreaAggenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonCreaAggenzia, "cell 1 3,align center top,grow 0 0");
+        //---- buttonCreaAgenzia ----
+        buttonCreaAgenzia.setText("Crea un Agenzia");
+        buttonCreaAgenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        add(buttonCreaAgenzia, "cell 1 3,align center top,grow 0 0");
 
         //---- buttonLogIn ----
         buttonLogIn.setText("Log In");
         buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonLogIn, "cell 1 4,align center top,grow 0 0");
+        add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -224,13 +231,13 @@ public class LogInAmministrazione extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JLabel labelTitolo;
     private JLabel labelEmail;
     private JTextField textFildEmail;
     private JLabel labelPassword;
     private JPasswordField passwordField1;
-    private JButton buttonCreaAggenzia;
+    private JButton buttonCreaAgenzia;
     private JButton buttonLogIn;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;

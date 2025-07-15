@@ -81,6 +81,11 @@ public class Ricerca extends JPanel {
             toggleButtonPortineria.setBackground(Color.WHITE);
 
         });
+
+        comboBoxTipVendita.addActionListener(e -> {
+            String tipoSelezionato = (String) comboBoxTipVendita.getSelectedItem();
+            aggiornaPrezzi(comboBoxPrezzoMinimo, comboBoxPrezzoMax, tipoSelezionato);
+        });
         // Usage for each button
         configureToggleButton(toggleButtonCantina);
         configureToggleButton(toggleButtonBalcone);
@@ -89,6 +94,8 @@ public class Ricerca extends JPanel {
         configureToggleButton(toggleButtonClimatizzazione);
 
         // --- 8. Prezzi ---
+        aggiornaPrezzi(comboBoxPrezzoMinimo, comboBoxPrezzoMax, "Vendita");
+
         menuPrezzi.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
             private boolean ignoreVisibilityFlag = false;
 
@@ -228,6 +235,100 @@ public class Ricerca extends JPanel {
 
     }
 
+    private void aggiornaPrezzi(JComboBox<String> comboMin, JComboBox<String> comboMax, String tipo) {
+
+        if ("Vendita".equals(tipo)) {
+            comboMax.removeAllItems();
+            comboMin.removeAllItems();
+            comboMax.addItem("Prezzo Massimo");
+            comboMin.addItem("Prezzo Minimo");
+
+            comboMax.addItem("200.000€");
+            comboMax.addItem("250.000€");
+            comboMax.addItem("300.000€");
+            comboMax.addItem("350.000€");
+            comboMax.addItem("400.000€");
+            comboMax.addItem("450.000€");
+            comboMax.addItem("500.000€");
+            comboMax.addItem("550.000€");
+            comboMax.addItem("600.000€");
+            comboMax.addItem("650.000€");
+            comboMax.addItem("700.000€");
+            comboMax.addItem("750.000€");
+            comboMax.addItem("800.000€");
+            comboMax.addItem("850.000€");
+            comboMax.addItem("900.000€");
+            comboMax.addItem("950.000€");
+            comboMax.addItem("1.000.000€");
+
+            comboMin.addItem("50.000€");
+            comboMin.addItem("100.000€");
+            comboMin.addItem("150.000€");
+            comboMin.addItem("200.000€");
+            comboMin.addItem("250.000€");
+            comboMin.addItem("300.000€");
+            comboMin.addItem("350.000€");
+            comboMin.addItem("400.000€");
+            comboMin.addItem("450.000€");
+            comboMin.addItem("500.000€");
+            comboMin.addItem("550.000€");
+            comboMin.addItem("600.000€");
+            comboMin.addItem("650.000€");
+            comboMin.addItem("700.000€");
+            comboMin.addItem("750.000€");
+            comboMin.addItem("800.000€");
+        } else if ("Affitto".equals(tipo)) {
+            comboMax.removeAllItems();
+            comboMin.removeAllItems();
+            comboMax.addItem("Prezzo Massimo");
+            comboMin.addItem("Prezzo Minimo");
+
+            comboMax.addItem("200€");
+            comboMax.addItem("250€");
+            comboMax.addItem("300€");
+            comboMax.addItem("350€");
+            comboMax.addItem("400€");
+            comboMax.addItem("450€");
+            comboMax.addItem("500€");
+            comboMax.addItem("550€");
+            comboMax.addItem("600€");
+            comboMax.addItem("650€");
+            comboMax.addItem("700€");
+            comboMax.addItem("750€");
+            comboMax.addItem("800€");
+            comboMax.addItem("850€");
+            comboMax.addItem("900€");
+            comboMax.addItem("950€");
+            comboMax.addItem("1.000€");
+            comboMax.addItem("1.100€");
+            comboMax.addItem("1.200€");
+            comboMax.addItem("1.300€");
+            comboMax.addItem("1.400€");
+            comboMax.addItem("1.500€");
+
+            comboMin.addItem("50€");
+            comboMin.addItem("100€");
+            comboMin.addItem("150€");
+            comboMin.addItem("200€");
+            comboMin.addItem("250€");
+            comboMin.addItem("300€");
+            comboMin.addItem("350€");
+            comboMin.addItem("400€");
+            comboMin.addItem("450€");
+            comboMin.addItem("500€");
+            comboMin.addItem("550€");
+            comboMin.addItem("600€");
+            comboMin.addItem("650€");
+            comboMin.addItem("700€");
+            comboMin.addItem("750€");
+            comboMin.addItem("800€");
+            comboMin.addItem("850€");
+            comboMin.addItem("900€");
+            comboMin.addItem("950€");
+            comboMin.addItem("1.000€");
+        }
+    }
+
     private void performSearchAction(JFrame frame, Controller control) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
@@ -331,15 +432,50 @@ public class Ricerca extends JPanel {
     private Map<String, Object> fetchFiltri(){
         Map<String, Object> filtri = new HashMap<>();
 
-        //filtri.put("prezzoMax", comboBoxPrezzoMax.getSelectedItem());
-        //filtri.put("prezzoMin", comboBoxPrezzoMinimo.getSelectedItem());
-        //filtri.put("superficie", comboBoxSuperfice.getSelectedItem());
-        //filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
-        //filtri.put("tipoImmobile", listaTipi.getSelectedItem());
-        //filtri.put("numBagni", spinnerBagni.getValue());
-        //filtri.put("numStanze", spinnerStanze.getValue());
-        //filtri.put("classeEnergetica", comboBoxClasseE.getSelectedItem());
-        //filtri.put("piano", spinnerPiani.getValue());
+        filtri.put("prezzoMax", traduciPrezzo((String) comboBoxPrezzoMax.getSelectedItem()));
+        filtri.put("prezzoMin", traduciPrezzo((String) comboBoxPrezzoMinimo.getSelectedItem()));
+        filtri.put("superficie", getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
+
+        if(comboBoxTipVendita.getSelectedItem().equals("Qualsiasi")){
+            filtri.put("tipoVendita", null);
+        }else{
+            filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
+        }
+
+        if(listaTipi.getSelectedItem().equals("Case e Appartamenti")){
+            filtri.put("tipoImmobile", null);
+        }else{
+            filtri.put("tipoImmobile", listaTipi.getSelectedItem());
+        }
+
+        //TODO Testare tutti i filtri, in particolare spinner bagni e stanze, se non funziona trasforma le stinghe in int
+        if(spinnerBagni.getValue().equals("Indifferente")){
+            filtri.put("numBagni", -1);
+        }else{
+            filtri.put("numBagni", ((String) spinnerBagni.getValue()).replaceAll("[^\\d]", ""));  //toglie il +
+        }
+
+        if(spinnerStanze.getValue().equals("Indifferente")){
+            filtri.put("numStanze", 0);
+        }else{
+            filtri.put("numStanze", ((String) spinnerStanze.getValue()).replaceAll("[^\\d]", ""));  //toglie il +
+        }
+
+        if(comboBoxClasseE.getSelectedItem().equals("Indifferente")){
+            filtri.put("classeEnergetica", null);
+        }else{
+            filtri.put("classeEnergetica", comboBoxClasseE.getSelectedItem());
+        }
+
+        if(spinnerPiani.getValue().equals("Indifferente")){
+            filtri.put("piano", -2);
+        }else if (spinnerPiani.getValue().equals("Scantinato")){
+            filtri.put("piano", -1);
+        }else if (spinnerPiani.getValue().equals("Terra")){
+            filtri.put("piano", 0);
+        }else{
+            filtri.put("piano", ((String) spinnerPiani.getValue()).replaceAll("[^\\d]", ""));  //toglie il +
+        }
         filtri.put("ascensore", toggleButtonAscensore.isSelected());
         filtri.put("balcone", toggleButtonBalcone.isSelected());
         filtri.put("cantina", toggleButtonCantina.isSelected());
@@ -349,9 +485,38 @@ public class Ricerca extends JPanel {
         return filtri;
     }
 
+    private Integer getSuperficie(String superficieStr) {
+        if (superficieStr.equals("Superficie")) {
+            return 0;
+        }
+
+        // Rimuove tutti i caratteri non numerici
+        String pulito = superficieStr.replaceAll("[^\\d]", "");
+
+        try {
+            return Integer.parseInt(pulito);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Formato non valido: " + superficieStr);
+        }
+    }
+
+    private Double traduciPrezzo(String prezzoStr) {
+        if (prezzoStr.equals("Prezzo Minimo") || prezzoStr.equals("Prezzo Massimo")) {
+            return 0.0;
+        }
+        // Rimuove il simbolo € e i punti di separazione
+        String pulito = prezzoStr.replace("€", "").replace(".", "").trim();
+
+        try {
+            return Double.parseDouble(pulito);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Formato non valido: " + prezzoStr);
+        }
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         labelTitolo = new JLabel();
         mapButton = new JButton();
         searchButton = new JButton();
@@ -360,8 +525,8 @@ public class Ricerca extends JPanel {
         menuBarPrezziTutto = new JMenuBar();
         menuPrezzi = new JMenu();
         menuBarContenitorePrezziBox = new JMenuBar();
-        comboBoxPrezzoMax = new JComboBox<>();
         comboBoxPrezzoMinimo = new JComboBox<>();
+        comboBoxPrezzoMax = new JComboBox<>();
         comboBoxSuperfice = new JComboBox<>();
         buttonFiltri = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
@@ -391,6 +556,12 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
+        . EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax
+        . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,
+        12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans
+        . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .
+        getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -452,6 +623,7 @@ public class Ricerca extends JPanel {
 
         //---- listaTipi ----
         listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
+            "Case e Appartamenti",
             "Casa",
             "Appartamento"
         }));
@@ -477,24 +649,24 @@ public class Ricerca extends JPanel {
                 //======== menuBarContenitorePrezziBox ========
                 {
 
-                    //---- comboBoxPrezzoMax ----
-                    comboBoxPrezzoMax.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "Prezzo Massimo",
+                    //---- comboBoxPrezzoMinimo ----
+                    comboBoxPrezzoMinimo.setModel(new DefaultComboBoxModel<>(new String[] {
+                        "Prezzo Minimo",
                         "Poco",
                         "Medio ",
                         "Simone"
                     }));
-                    comboBoxPrezzoMax.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
+                    comboBoxPrezzoMinimo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
 
-                    //---- comboBoxPrezzoMinimo ----
-                    comboBoxPrezzoMinimo.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "Prezzo Minimo",
+                    //---- comboBoxPrezzoMax ----
+                    comboBoxPrezzoMax.setModel(new DefaultComboBoxModel<>(new String[] {
+                        "Prezzo Massimo",
                         "Tanto ",
                         "Poco"
                     }));
-                    comboBoxPrezzoMinimo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
+                    comboBoxPrezzoMax.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
                 }
                 menuPrezzi.add(menuBarContenitorePrezziBox);
             }
@@ -504,7 +676,32 @@ public class Ricerca extends JPanel {
 
         //---- comboBoxSuperfice ----
         comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
-            "Superfice"
+            "Superficie",
+            "10m\u00b2",
+            "30m\u00b2",
+            "50m\u00b2",
+            "70m\u00b2",
+            "90m\u00b2",
+            "110m\u00b2",
+            "130m\u00b2",
+            "150m\u00b2",
+            "170m\u00b2",
+            "190m\u00b2",
+            "210m\u00b2",
+            "230m\u00b2",
+            "250m\u00b2",
+            "270m\u00b2",
+            "290m\u00b2",
+            "310m\u00b2",
+            "330m\u00b2",
+            "350m\u00b2",
+            "370m\u00b2",
+            "390m\u00b2",
+            "410m\u00b2",
+            "430m\u00b2",
+            "450m\u00b2",
+            "470m\u00b2",
+            "500m\u00b2"
         }));
         comboBoxSuperfice.setForeground(Color.black);
         comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 18));
@@ -618,6 +815,7 @@ public class Ricerca extends JPanel {
             //---- comboBoxClasseE ----
             comboBoxClasseE.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             comboBoxClasseE.setModel(new DefaultComboBoxModel<>(new String[] {
+                "Indifferente",
                 "A+ ",
                 "A ",
                 "B ",
@@ -636,7 +834,7 @@ public class Ricerca extends JPanel {
             internalFrameFiltri.add(labelPiani, "cell 0 4 2 1");
 
             //---- spinnerPiani ----
-            spinnerPiani.setModel(new SpinnerListModel(new String[] {"Indifferente", "Terra", "1", "2", "3", "4", "5+"}));
+            spinnerPiani.setModel(new SpinnerListModel(new String[] {"Indifferente", "Scantinato", "Terra", "1", "2", "3", "4", "5+"}));
             spinnerPiani.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(spinnerPiani, "cell 2 4");
 
@@ -701,7 +899,7 @@ public class Ricerca extends JPanel {
 
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JLabel labelTitolo;
     private JButton mapButton;
     private JButton searchButton;
@@ -710,8 +908,8 @@ public class Ricerca extends JPanel {
     private JMenuBar menuBarPrezziTutto;
     private JMenu menuPrezzi;
     private JMenuBar menuBarContenitorePrezziBox;
-    private JComboBox<String> comboBoxPrezzoMax;
     private JComboBox<String> comboBoxPrezzoMinimo;
+    private JComboBox<String> comboBoxPrezzoMax;
     private JComboBox<String> comboBoxSuperfice;
     private JButton buttonFiltri;
     private JPanel panelMenuBarOpzioniColore;

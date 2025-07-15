@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -45,8 +45,8 @@ new FormModel {
 				"value": "cell 1 2 2 1,aligny center,growy 0"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "buttonCreaAggenzia"
-				"text": "Crea un Aggenzia"
+				name: "buttonCreaAgenzia"
+				"text": "Crea un Agenzia"
 				"font": new java.awt.Font( "Segoe UI", 0, 18 )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 1 3,align center top,grow 0 0"

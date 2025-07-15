@@ -227,7 +227,7 @@ public class Ricerca extends JPanel {
         });
 
 
-        if(!token.isEmpty() && control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
+        if((!(token == null) && !token.isEmpty())&& control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
                 notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
                 NotificationClient.notificheWindow(messaggio);
             }));

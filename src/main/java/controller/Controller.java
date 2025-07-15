@@ -32,6 +32,7 @@ public class Controller {
     protected static final String OFFERTA_URL           = "http://localhost:8081/offerta";
     protected static final String OFFERTA_LIST          = "http://localhost:8081/visualizza-offerte";
     protected static final String WHO_URL               = "http://localhost:8081/whoAmI";
+    protected static final String LOGOUT_URL           = "http://localhost:8081/logout";
 
 
     protected static final String LOGIN_URL_ADMINSUP    = "http://localhost:8081/auth-adminSupport/login";
@@ -40,6 +41,7 @@ public class Controller {
     protected static final String LOGIN_URL_CLIENTE     = "http://localhost:8081/auth-cliente/login";
 
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
+
 
     //TODO separare i vari path nei rispettivi controller
     protected static final Gson gson = new GsonBuilder()
@@ -319,6 +321,25 @@ public class Controller {
             throw new RuntimeException("Errore durante il recupero delle specifiche: " + e.getMessage(), e);
         }
     }
+
+    public boolean eseguiLogout(String token) {
+        try {
+             request = HttpRequest.newBuilder()
+                    .uri(new URI(LOGOUT_URL)) // Assicurati che LOGOUT_URL sia correttamente definito
+                    .header("Authorization", "Bearer " + token)
+                    .POST(HttpRequest.BodyPublishers.noBody()) // Logout non richiede body
+                    .build();
+
+            response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+            String body = response.body();
+            return response.statusCode() == 200 && body != null && body.contains("Logout effettuato");
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante il logout: " + e.getMessage());
+        }
+    }
+
 
 
     public String getNameLogIn() {

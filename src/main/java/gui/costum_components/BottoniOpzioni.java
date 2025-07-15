@@ -40,12 +40,14 @@ public class BottoniOpzioni extends JPanel {
 
         // LOGIN / LOGOUT
         logInButton.addActionListener(e -> {
+
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
             if (this.token == null || this.token.trim().isEmpty()) {
                 frame.setContentPane(new LogIn(frame, control, ""));
             } else {
-                frame.setContentPane(new Ricerca(frame, new Controller(), this.token));
+                control.eseguiLogout(token);
+                frame.setContentPane(new Ricerca(frame, new Controller(), ""));
             }
             frame.revalidate();
             frame.repaint();
@@ -56,7 +58,9 @@ public class BottoniOpzioni extends JPanel {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
             if (this.token == null || this.token.trim().isEmpty()) {
+
                 frame.setContentPane(new LogInAmministrazione(frame, control, ""));
+
             } else {
 
                 String ruolo = control.getRawSpecifiche(this.token);
@@ -88,10 +92,12 @@ public class BottoniOpzioni extends JPanel {
                     default:
                         JOptionPane.showMessageDialog(
                                 frame,
-                                "Ruolo sconosciuto: " + ruolo,
+                                "Bisogna effettuare il log in con un account administrative ",
                                 "Errore",
                                 JOptionPane.ERROR_MESSAGE
                         );
+                        menuOpzioni.setVisible(true);
+                        menuBarOpzioni.setVisible(true);
                         break;
                 }
             }

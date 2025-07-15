@@ -967,7 +967,7 @@ La logica del metodo prevede i seguenti controlli:
     
     \item Verifica che il valore massimo non sia negativo e non ecceda il limite superiore assoluto, fissato a \texttt{1000000}.
     
-    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo.
+    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo, nel caso in cui prezzo massimo sia diverso da 0.
 \end{enumerate}
 
 Questo metodo garantisce che l’intervallo di prezzo sia coerente con i vincoli del sistema, evitando errori logici o valori anomali nelle richieste di ricerca o inserimento.\\
@@ -990,6 +990,8 @@ sono state individuate le seguenti \textbf{classi di equivalenza}:
      \item \textcolor{green}{CE7:} Prezzo minimo minore o uguale di prezzo massimo
      
      \item \textcolor{red}{CE8:} Prezzo minimo maggiore di prezzo massimo
+
+     \item \textcolor{green}{CE9:} Prezzo minimo maggiore di prezzo massimo e prezzo massimo = 0
 \end{itemize}
 
 Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
@@ -1052,6 +1054,15 @@ class CheckPrezziTest {
         boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
         assertFalse(result);
     }
+
+    @Test
+    void testCE9() {
+        double prezzoMin = 200.000;
+        double prezzoMax = 0;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertTrue(result);
+    }
 }
 \end{lstlisting}
 
@@ -1099,9 +1110,9 @@ sono state individuate le seguenti \textbf{classi di equivalenza}:
 
     \item \textcolor{red}{CE6:} numero di stanze maggiore di 10.
 
-    \item \textcolor{green}{CE7:} numero di bagni compreso tra 0 e 10.
+    \item \textcolor{green}{CE7:} numero di bagni compreso tra -1 e 10.
 
-    \item \textcolor{red}{CE8:} numero di bagni minore di 0.
+    \item \textcolor{red}{CE8:} numero di bagni minore di -1.
 
     \item \textcolor{red}{CE9:} numero di bagni maggiore di 10.
 

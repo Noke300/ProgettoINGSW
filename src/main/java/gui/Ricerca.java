@@ -464,7 +464,7 @@ public class Ricerca extends JPanel {
         if(comboBoxClasseE.getSelectedItem().equals("Indifferente")){
             filtri.put("classeEnergetica", null);
         }else{
-            filtri.put("classeEnergetica", comboBoxClasseE.getSelectedItem());
+            filtri.put("classeEnergetica", ((String) comboBoxClasseE.getSelectedItem()).replace(" ", ""));
         }
 
         if(spinnerPiani.getValue().equals("Indifferente")){

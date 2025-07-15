@@ -9,7 +9,41 @@
 \usepackage{multirow}
 \usepackage[table,xcdraw]{xcolor}
 
+% ---------------Per la formattazione del codice java----------------------
 
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegray}{gray}{0.95}
+
+\lstdefinelanguage{Java}{
+  morekeywords={abstract, continue, for, new, switch, assert, default, goto, package, synchronized, boolean, do, if, private, this, break, double, implements, protected, throw, byte, else, import, public, throws, case, enum, instanceof, return, transient, catch, extends, int, short, try, char, final, interface, static, void, class, finally, long, strictfp, volatile, const, float, native, super, while},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+}
+
+\lstset{
+  language=Java,
+  backgroundcolor=\color{codegray},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{teal},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  tabsize=2,
+  showspaces=false,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  captionpos=b
+}
+
+%-----------------------------------------------
 
 \title{Progetto Ingegneria del Software}
 
@@ -548,12 +582,666 @@ TODO
 \newpage
 \section{Testing e valutazione dell'usabilità}
 
-
 \subsection{Strategie adottate per la progettazione dei test}
+
+Abbiamo utilizzato i test \textbf{JUnit} per assicurarci che il codice fosse corretto e per prevenire eventuali regressioni. JUnit è un \textbf{framework di testing per Java} che ci permette di scrivere test automatici su singole unità di codice, come metodi o classi, per verificare che funzionino come dovrebbero.
+
+I test JUnit sono veloci da eseguire, si integrano facilmente nei processi di sviluppo, ad esempio con \textbf{Maven o Gradle}, e supportano il \textbf{debugging} e la manutenzione del codice. Utilizzano annotazioni come \texttt{@Test} e metodi di asserzione come \texttt{assertEquals} e \texttt{assertTrue} per controllare che i risultati siano quelli attesi.
+
+Grazie all'uso di JUnit, siamo riusciti a sviluppare in modo più sicuro, individuando rapidamente eventuali errori e migliorando l'affidabilità complessiva del software.\\
+
+Nello specifico, abbiamo adottato una strategia di \textbf{testing Black Box}, con particolare riferimento alla tecnica \textbf{R-WECT (Robust Equivalence Class Testing)}. Questo approccio prevede la definizione di classi di equivalenza robuste a partire dai requisiti funzionali, concentrandosi esclusivamente sugli input e output del sistema, senza considerare la struttura interna del codice.
+
+La scelta di R-WECT è motivata da diversi vantaggi:
+
+\begin{itemize}
+  \item \textbf{Copertura efficace dei casi limite}: vengono testati non solo i valori validi rappresentativi, ma anche i valori non validi ai confini delle classi, aumentando la probabilità di individuare comportamenti anomali.
+  \item \textbf{Riduzione del numero di test ridondanti}: grazie alla suddivisione sistematica degli input in classi di equivalenza, è possibile coprire ampi scenari con un numero contenuto di casi di test.
+  \item \textbf{Indipendenza dall’implementazione}: l’approccio Black Box consente di testare il software in maniera indipendente rispetto al codice sorgente, facilitando la verifica rispetto ai requisiti e migliorando la manutenibilità.
+\end{itemize}
+
+In sintesi, l'adozione della strategia R-WECT ha permesso di strutturare un piano di test solido, orientato ai requisiti, e particolarmente efficace nell’identificazione di errori nei punti critici del dominio degli input.
+
+\subsection{Metodi sui quali sono stati eseguiti i test}
+
+\subsubsection{Check Data Test}
+
+Il metodo ha lo scopo di verificare che la \textbf{data} e l'\textbf{ora} associata a una richiesta di visita immobiliare rispettino i vincoli imposti dal documento dei requisiti e dal progetto. In particolare, tale metodo viene utilizzato quando un agente immobiliare intende accettare o rifiutare una visita.
+
+La logica di validazione si compone dei seguenti passaggi:
+
+\begin{enumerate}
+  \item \textbf{Controllo su null}: viene verificato che né la data né l'orario della visita siano \texttt{null}. In caso contrario, la richiesta non viene considerata valida.
+  
+  \item \textbf{Validazione dell'intervallo temporale}: la data della visita deve essere compresa tra il giorno corrente e le due settimane successive. Questo intervallo rappresenta il margine temporale massimo consentito per la programmazione delle visite, come specificato nei requisiti funzionali.
+  
+  \item \textbf{Controllo dell'orario nel giorno corrente}: se la data della visita coincide con il giorno corrente, l'orario indicato deve essere successivo all'orario attuale, evitando così la programmazione di visite in orari già trascorsi.
+  
+  \item \textbf{Vincolo sull'orario della visita}: indipendentemente dal giorno selezionato, l’orario della visita deve rientrare nella fascia oraria compresa tra le ore \texttt{08:00} e \texttt{18:00}, in conformità con i vincoli progettuali.
+\end{enumerate}
+
+Questa procedura garantisce che tutte le visite vengano pianificate in maniera coerente con le regole stabilite, assicurando la validità temporale delle richieste e migliorando l'affidabilità del sistema di gestione appuntamenti.\\
+A tale scopo sono state individuate le seguenti \textbf{classi di equivalenza} \textit{(in verde quelle valide ed in rosso quelle non valide)}:
+\begin{itemize}
+    \item \textcolor{green}{CE1:} data della visita compresa tra il giorno corrente e le due settimane successive.
+
+    \item \textcolor{red}{CE2:} data della visita antecedente al giorno corrente.
+
+    \item \textcolor{red}{CE3:} data della visita oltre le due settimane successive.
+
+    \item \textcolor{red}{CE4:} data della visita \texttt{null}.
+
+    \item \textcolor{green}{CE5:} orario compreso tra le ore \texttt{08:00} e \texttt{18:00}.
+
+    \item \textcolor{red}{CE6:} orario prima delle ore \texttt{08:00}.
+
+    \item \textcolor{red}{CE7:} orario dopo le ore \texttt{18:00}.
+
+    \item \textcolor{red}{CE8:} orario delalvisita \texttt{null}.   
+
+    \item \textcolor{green}{CE9:} Data odierna e orario successivo a quello attuale
+
+    \item \textcolor{red}{CE10:} Data odierna e orario antecedente a quello attuale
+    
+\end{itemize}
+
+Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
+
+\begin{lstlisting}
+class CheckDataTest {
+
+    private final AgenteImmobiliareServiceDB validator = new AgenteImmobiliareServiceDB();
+
+    // Helper per creare una data
+    private Date getDate(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, day);
+        return cal.getTime();
+    }
+
+    @Test
+    void testCE1_CE5_CE9() {
+        Calendar cal = Calendar.getInstance(); // oggi
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        Date data = getDate(year, month, day);
+        LocalTime ora = LocalTime.now().plusHours(2);
+
+        boolean result = validator.checkData(data, ora);
+        assertTrue(result);
+    }
+
+    @Test
+    void testCE2_CE5() {
+        Date data = getDate(2024, 11, 9);
+        LocalTime ora = LocalTime.of(8, 0);
+
+        boolean result = validator.checkData(data, ora);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE3_CE5() {
+        Calendar cal = Calendar.getInstance(); // oggi
+        cal.add(Calendar.DAY_OF_MONTH, 15);
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        Date data = getDate(year, month, day);
+        LocalTime ora = LocalTime.of(12, 0);
+
+        boolean result = validator.checkData(data, ora);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE4_CE5() {
+        LocalTime ora = LocalTime.of(8, 0);
+
+        boolean result = validator.checkData(null, ora);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE6() {
+        Calendar cal = Calendar.getInstance(); // oggi
+        cal.add(Calendar.DAY_OF_MONTH, 1); // domani
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        Date data = getDate(year, month, day);
+        LocalTime ora = LocalTime.of(6, 0);
+
+        boolean result = validator.checkData(data, ora);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE7() {
+        Calendar cal = Calendar.getInstance(); // oggi
+        cal.add(Calendar.DAY_OF_MONTH, 1); // domani
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        Date data = getDate(year, month, day);
+        LocalTime ora = LocalTime.of(20, 0);
+
+        boolean result = validator.checkData(data, ora);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE8() {
+        Calendar cal = Calendar.getInstance(); // oggi
+        cal.add(Calendar.DAY_OF_MONTH, 1); // domani
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        Date data = getDate(year, month, day);
+
+        boolean result = validator.checkData(data, null);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE10() {
+        Calendar cal = Calendar.getInstance(); // oggi
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        Date data = getDate(year, month, day);
+        LocalTime ora = LocalTime.now().minusHours(2);
+
+        boolean result = validator.checkData(data, ora);
+        assertFalse(result);
+    }
+}
+\end{lstlisting}
+
+%----------------------------------------------------------------------------
+
+\subsubsection{Credenziali Test}
+
+Questo ha lo scopo di validare i dati inseriti da un cliente durante il processo di registrazione, verificando che rispettino determinati vincoli sintattici e logici. I parametri presi in input sono:
+
+\begin{itemize}
+    \item \texttt{emailCliente} --- l'indirizzo email fornito;
+    \item \texttt{passwordCliente} --- la password scelta;
+    \item \texttt{dataN} --- la data di nascita del cliente.
+\end{itemize}
+
+Il controllo avviene attraverso le seguenti fasi:
+
+\begin{enumerate}
+    \item Viene verificato che l'email non sia nulla e rispetti uno standard del tipo\\
+    \texttt{nome@dominio.estensione}
+    
+    \item Viene verificato che la password non sia nulla e rispetti i seguenti vincoli:
+    \begin{itemize}
+        \item presenza di almeno una lettera maiuscola;
+        \item presenza di almeno una cifra numerica;
+        \item presenza di almeno un carattere speciale;
+        \item lunghezza minima di 8 caratteri.
+    \end{itemize}
+    
+    \item Viene effettuato un controllo sull'età del cliente, accertandoci che abbia almeno 18 anni.
+\end{enumerate}
+
+In sintesi, il metodo restituisce \texttt{true} solo se tutti i dati forniti sono validi, completi e rispettano i vincoli richiesti.\\
+
+sono state individuate le seguenti \textbf{classi di equivalenza} \textit{(in verde quelle valide ed in rosso quelle non valide)}:\\
+
+\begin{itemize}
+    \item \textcolor{green}{CE1:} Email con formato corretto.
+    
+    \item \textcolor{red}{CE2:} Email senza \texttt{@}.
+
+    \item \textcolor{red}{CE3:} Email con caratteri non validi.
+
+    \item \textcolor{red}{CE4:} Email \texttt{null}.
+
+    \item \textcolor{green}{CE5:} password con formato corretto.
+
+    \item \textcolor{red}{CE6:} password con meno di 8 caratteri.
+
+    \item \textcolor{red}{CE7:} password con solo lettere minuscole.
+
+    \item \textcolor{red}{CE8:} password senza caratteri speciali.
+
+    \item \textcolor{red}{CE9:} password null.
+
+    \item \textcolor{green}{CE10:} Il cliente ha almeno 18 anni.
+
+    \item \textcolor{red}{CE11:} Il cliente ha meno di 18 anni.
+
+    \item \textcolor{red}{CE12:} la Data è null.
+\end{itemize}
+
+Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
+
+\begin{lstlisting}
+class CredenzialiTest {
+
+    private final ClienteServiceDB validator = new ClienteServiceDB();
+
+    // Helper per creare una data
+    private Date getDate(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month - 1, day); // Mese 0-based
+        return cal.getTime();
+    }
+
+    @Test
+    void testCE1_CE5_CE10() {
+        String email = "prova@esempio.com";
+        String password = "Password1!";
+        Date data = getDate(2003, 11, 1);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertTrue(result);
+    }
+
+    @Test
+    void testCE2_CE5_CE10() {
+        String email = "provaesempio.com"; // email non valida
+        String password = "Password1!";
+        Date data = getDate(2002, 12, 11);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE3_CE5_CE10() {
+        String email = "prova@esempio&.com"; // carattere speciale non ammesso
+        String password = "password1!";
+        Date data = getDate(2000, 1, 1);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE4_CE5_CE10() {
+        String email = null;
+        String password = "password1!";
+        Date data = getDate(2000, 1, 1);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE6_CE10() {
+        String email = "prova@esempio.com";
+        String password = "Pass1!"; // troppo corta
+        Date data = getDate(2003, 11, 1);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE7_CE10() {
+        String email = "prova@esempio.com";
+        String password = "password1!"; // senza maiuscole
+        Date data = getDate(2001, 10, 17);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE8_CE10() {
+        String email = "prova@esempio.com";
+        String password = "Password1"; // senza caratteri speciali
+        Date data = getDate(1999, 4, 14);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE9_CE10() {
+        String email = "prova@esempio.com";
+        String password = null;
+        Date data = getDate(2003, 11, 1);
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE5_CE11() {
+        String email = "test@example.com";
+        String password = "Password1!";
+
+        Calendar oggi = Calendar.getInstance();
+        oggi.add(Calendar.YEAR, -17);
+        Date data = oggi.getTime(); // minorenne
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE5_CE12() {
+        String email = "prova@esempio.com";
+        String password = "Password1!";
+        Date data = null;
+
+        boolean result = validator.checkDatiCliente(email, password, data);
+        assertFalse(result);
+    }
+}
+\end{lstlisting}
+
+%----------------------------------------------------------------------------
+
+\subsubsection{Check Prezzi}
+
+Si occupa della validazione di un intervallo di prezzo, utilizzato per effettuare ricerche filtrate di immobili. Riceve in ingresso due parametri di tipo \texttt{double}:
+
+\begin{itemize}
+    \item \texttt{prezzoMin} --- il prezzo minimo richiesto;
+    \item \texttt{prezzoMax} --- il prezzo massimo richiesto.
+\end{itemize}
+
+La logica del metodo prevede i seguenti controlli:
+
+\begin{enumerate}
+    \item Verifica che il valore minimo non sia negativo e non superi la soglia massima consentita per quel campo, fissata a \texttt{800000}.
+    
+    \item Verifica che il valore massimo non sia negativo e non ecceda il limite superiore assoluto, fissato a \texttt{1000000}.
+    
+    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo.
+\end{enumerate}
+
+Questo metodo garantisce che l’intervallo di prezzo sia coerente con i vincoli del sistema, evitando errori logici o valori anomali nelle richieste di ricerca o inserimento.\\
+
+sono state individuate le seguenti \textbf{classi di equivalenza}:
+
+\begin{itemize}
+    \item \textcolor{green}{CE1:} Prezzo minimo compreso tra 0 e 800.000
+
+    \item \textcolor{red}{CE2:} Prezzo minimo minore di 0
+
+    \item \textcolor{red}{CE3:} Prezzo minimo maggiore di 800.000
+
+    \item \textcolor{green}{CE4:} Prezzo massimo compreso tra 0 e 1.000.000
+
+    \item \textcolor{red}{CE5:} Prezzo massimo minore di 0
+
+     \item \textcolor{red}{CE6:} Prezzo minimo maggiore di 1.000.000
+
+     \item \textcolor{green}{CE7:} Prezzo minimo minore o uguale di prezzo massimo
+     
+     \item \textcolor{red}{CE8:} Prezzo minimo maggiore di prezzo massimo
+\end{itemize}
+
+Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
+
+\begin{lstlisting}
+class CheckPrezziTest {
+
+    private final AuthController validator = new AuthController();
+
+    @Test
+    void testCE1_CE4_CE7() {
+        double prezzoMin = 100000;
+        double prezzoMax = 200000;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertTrue(result);
+    }
+
+    @Test
+    void testCE2_CE4() {
+        double prezzoMin = -100000;
+        double prezzoMax = 200000;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE3_CE4() {
+        double prezzoMin = 900000;
+        double prezzoMax = 200000;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE5() {
+        double prezzoMin = 100000;
+        double prezzoMax = -200000;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE6() {
+        double prezzoMin = 100000;
+        double prezzoMax = 1500000;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE8() {
+        double prezzoMin = 200.000;
+        double prezzoMax = 100.000;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertFalse(result);
+    }
+}
+\end{lstlisting}
+
+%---------------------------------------------------------------------------
+
+\subsubsection{Check Filtri Test}
+
+Il metodo effettua la validazione dei parametri relativi ai filtri di ricerca applicabili a un immobile. Accetta in ingresso i seguenti argomenti:
+
+\begin{itemize}
+    \item \texttt{classeEnergetica} --- una stringa che rappresenta la classe energetica dell’immobile;
+    \item \texttt{numStanze} --- minimo numero di stanze richieste;
+    \item \texttt{numBagni} --- minimo numero di bagni richiesti;
+    \item \texttt{piano} --- minimo piano, o numero di piani, dell’immobile.
+\end{itemize}
+
+La logica di controllo è articolata come segue:
+
+\begin{enumerate}
+    \item Se la \texttt{classe energetica} è diversa da \texttt{null}, viene verificato che essa appartenga a una lista di classi energetiche ammesse: \texttt{"A+"}, \texttt{"A"}, \texttt{"B"}, \texttt{"C"}, \texttt{"D"}, \texttt{"E"}, \texttt{"F"}, \texttt{"G"}.
+
+    \item Viene controllato che il numero di stanze sia compreso nell’intervallo \texttt{[0, 10]}.
+
+    \item Analogamente, viene verificato che anche il numero di bagni rientri nell’intervallo \texttt{[0, 10]}.
+
+    \item È inoltre presente un vincolo logico: se è stato specificato almeno una stanza (\texttt{numStanze > 0}), il numero di bagni deve necessariamente essere inferiore al numero di stanze.
+
+    \item Infine, viene verificato che il valore del piano sia compreso tra \texttt{-2} e \texttt{10}.
+\end{enumerate}
+
+Questo metodo consente di garantire che i filtri inseriti dall’utente siano coerenti, logici e rientrino nei limiti imposti dal sistema.\\
+
+sono state individuate le seguenti \textbf{classi di equivalenza}:
+
+\begin{itemize}
+    \item \textcolor{green}{CE1:} classe energetica appartenente alle classi energetiche ammesse: \texttt{"A+"}, \texttt{"A"}, \texttt{"B"}, \texttt{"C"}, \texttt{"D"}, \texttt{"E"}, \texttt{"F"}, \texttt{"G"}.
+
+    \item \textcolor{green}{CE2:} classe energetica \texttt{null}.
+
+    \item \textcolor{red}{CE3:} classe energetica diversa dalle stringhe amesse sopracitate.
+
+    \item \textcolor{green}{CE4:} numero di stanze compreso tra 0 e 10.
+
+    \item \textcolor{red}{CE5:} numero di stanze minore di 0.
+
+    \item \textcolor{red}{CE6:} numero di stanze maggiore di 10.
+
+    \item \textcolor{green}{CE7:} numero di bagni compreso tra 0 e 10.
+
+    \item \textcolor{red}{CE8:} numero di bagni minore di 0.
+
+    \item \textcolor{red}{CE9:} numero di bagni maggiore di 10.
+
+    \item \textcolor{green}{CE10:} piano compreso tra -2 e 10.
+
+    \item \textcolor{red}{CE11:} piano minore di -2.
+
+    \item \textcolor{red}{CE12:} piano maggiore di 10.
+
+    \item \textcolor{green}{CE13:} Numero di bagni minore del numero di stanze e numero di stanze compreso tra 1 e 10.
+
+    \item \textcolor{green}{CE14:} Numero di bagni maggiore o uguale del numero di stanze e numero di stanze uguale a 0.
+
+    \item \textcolor{red}{CE15:} Numero di bagni maggiore o uguale del numero di stanze e numero di stanze compreso tra 1 e 10.  
+\end{itemize}
+
+Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
+
+\begin{lstlisting}
+class CheckFiltriTest {
+
+    private final AuthController validator = new AuthController();
+
+    @Test
+    void testCE1_CE4_CE7_C10_C13() {
+        String classeEnergetica = "A+";
+        int numStanze = 5;
+        int numBagni = 2;
+        int piano = 0;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertTrue(result);
+    }
+
+    @Test
+    void testCE2_CE4_CE7_C10_C14() {
+        int numStanze = 0;
+        int numBagni = 3;
+        int piano = 10;
+
+        boolean result = validator.checkFiltri(null, numStanze, numBagni, piano);
+        assertTrue(result);
+    }
+
+    @Test
+    void testCE3_CE4_CE7_C10() {
+        String classeEnergetica = "prova";
+        int numStanze = 0;
+        int numBagni = 0;
+        int piano = 0;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE5_CE7_C10() {
+        String classeEnergetica = "B";
+        int numStanze = -1;
+        int numBagni = 3;
+        int piano = 7;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE6_CE7_C10() {
+        String classeEnergetica = "C";
+        int numStanze = 11;
+        int numBagni = 2;
+        int piano = 0;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE4_CE8_C10() {
+        String classeEnergetica = "A+";
+        int numStanze = 5;
+        int numBagni = -3;
+        int piano = 9;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE4_CE9_C10() {
+        String classeEnergetica = "A+";
+        int numStanze = 0;
+        int numBagni = 13;
+        int piano = 9;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE4_CE7_C11() {
+        String classeEnergetica = "A+";
+        int numStanze = 5;
+        int numBagni = 3;
+        int piano = -5;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE1_CE4_CE7_C12() {
+        String classeEnergetica = "E";
+        int numStanze = 5;
+        int numBagni = 3;
+        int piano = 51;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+
+    @Test
+    void testCE15() {
+        String classeEnergetica = "E";
+        int numStanze = 5;
+        int numBagni = 6;
+        int piano = 3;
+
+        boolean result = validator.checkFiltri(classeEnergetica, numStanze, numBagni, piano);
+        assertFalse(result);
+    }
+}
+\end{lstlisting}
+
+%---------------------------------------------------------------------------
+
+\subsection{Usabilità}
 TODO
-
 \subsubsection{Expert reviews}
-
+TODO
 \subsubsection{Descrizione della Checklist utilizzata}
 TODO
 \subsubsection{Applicazione della Checklist}

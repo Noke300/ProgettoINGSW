@@ -22,6 +22,10 @@ public class CalenderAgenteImmobiliare {
     private static final Map<String, List<Visita>> visitePerGiorno = new HashMap<>();
     private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static final JCalendar calendar = new JCalendar();
+    // Sposta queste variabili a livello della classe (come static)
+    private static DateColorManager dateColorManager;
+    private static JDialog calendarPopup;
+
     private static boolean isPopupOpen = false;
 
     public static JPanel caricaCalendario(JButton buttonCalendario, ControllerAgente control, String token, JFrame frame) {
@@ -30,7 +34,9 @@ public class CalenderAgenteImmobiliare {
         JPanel controlPanel = new JPanel(new BorderLayout());
         JButton addDateButton = new JButton("Info Giorno");
 
-        addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(), format, frame, control, token));
+        addDateButton.addActionListener(h ->
+                mostraDettagliVisite(calendar.getDate(), format, frame, control, token, dateColorManager, calendarPopup)
+        );
         controlPanel.add(addDateButton, BorderLayout.SOUTH);
 
         return controlPanel;
@@ -46,7 +52,7 @@ public class CalenderAgenteImmobiliare {
 
             calendar.setLocale(Locale.ITALY);
             JDayChooser dayChooser = calendar.getDayChooser();
-            DateColorManager dateColorManager = new DateColorManager(dayChooser);
+             dateColorManager = new DateColorManager(dayChooser);
 
             visitePerGiorno.clear();
             List<Visita> visite = control.getVisite(token);
@@ -55,7 +61,7 @@ public class CalenderAgenteImmobiliare {
             for (Visita visita : visite) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(visita.getDataVisita());
-                cal.add(Calendar.DAY_OF_MONTH, 1); // ⚠️ Se non necessario, rimuovi questo offset
+                cal.add(Calendar.DAY_OF_MONTH, 1);
                 Date adjustedDate = cal.getTime();
                 visita.setDataVisita(adjustedDate);
 
@@ -77,15 +83,16 @@ public class CalenderAgenteImmobiliare {
                 }
             });
 
-            final JDialog calendarPopup = new JDialog(frame, "Calendario", true);
+            calendarPopup = new JDialog(frame, "Calendario", true);
             calendarPopup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             calendarPopup.setSize(700, 450);
             calendarPopup.setResizable(false);
 
             JPanel controlPanel = new JPanel(new BorderLayout());
             JButton addDateButton = new JButton("Info Giorno");
-            addDateButton.addActionListener(h -> mostraDettagliVisite(calendar.getDate(), format, frame, control, token));
-            controlPanel.add(addDateButton, BorderLayout.SOUTH);
+            addDateButton.addActionListener(h ->
+                    mostraDettagliVisite(calendar.getDate(), format, frame, control, token, dateColorManager, calendarPopup)
+            );            controlPanel.add(addDateButton, BorderLayout.SOUTH);
 
             calendarPopup.add(calendar, BorderLayout.CENTER);
             calendarPopup.add(controlPanel, BorderLayout.SOUTH);
@@ -104,13 +111,23 @@ public class CalenderAgenteImmobiliare {
         });
     }
 
-    private static void mostraDettagliVisite(Date selectedDate, DateFormat format, JFrame frame, ControllerAgente controller, String token) {
+
+    private static void mostraDettagliVisite(Date selectedDate, DateFormat format, JFrame frame,
+                                             ControllerAgente controller, String token,
+                                             DateColorManager dateColorManager, JDialog calendarPopup) {
+
         String giornoChiave = format.format(selectedDate);
         List<Visita> visiteDelGiorno = visitePerGiorno.get(giornoChiave);
 
         if (visiteDelGiorno != null && !visiteDelGiorno.isEmpty()) {
             JPanel containerPanel = new JPanel();
             containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+
+            JDialog dettaglioDialog = new JDialog(frame, "Visite del " + giornoChiave, true);
+            dettaglioDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            dettaglioDialog.setSize(650, 450);
+            dettaglioDialog.setResizable(false);
+            dettaglioDialog.setLocationRelativeTo(frame);
 
             for (Visita visita : visiteDelGiorno) {
                 Immobile imm = visita.getImmobile();
@@ -132,38 +149,48 @@ public class CalenderAgenteImmobiliare {
                 visitaPanel.add(info);
 
                 JPanel buttonPanel = new JPanel();
+
                 if (!visita.getConferma()) {
                     JButton accetta = new JButton("✅ Accetta");
                     JButton rifiuta = new JButton("❌ Rifiuta");
 
                     accetta.addActionListener(ev -> {
                         visita.setConferma(true);
-                        if (controller.esitoVisita(token, visita)){
+                        if (controller.esitoVisita(token, visita)) {
                             JOptionPane.showMessageDialog(frame, "Visita confermata.");
-                        }else{
+                        } else {
                             JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
                         }
+                        dateColorManager.updateDayColors(true);
+                        dettaglioDialog.dispose();
                     });
+
                     rifiuta.addActionListener(ev -> {
                         visita.setConferma(false);
-                        if (controller.esitoVisita(token, visita)){
+                        if (controller.esitoVisita(token, visita)) {
                             JOptionPane.showMessageDialog(frame, "Visita rifiutata.");
-                        }else{
+                        } else {
                             JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
                         }
+                        dateColorManager.updateDayColors(true);
+                        dettaglioDialog.dispose();
                     });
+
                     buttonPanel.add(accetta);
                     buttonPanel.add(rifiuta);
                 } else {
                     JButton annulla = new JButton("🔄 Annulla");
                     annulla.addActionListener(ev -> {
                         visita.setConferma(false);
-                        if (controller.esitoVisita(token, visita)){
+                        if (controller.esitoVisita(token, visita)) {
                             JOptionPane.showMessageDialog(frame, "Visita annullata.");
-                        }else{
+                        } else {
                             JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
                         }
+                        dateColorManager.updateDayColors(true);
+                        dettaglioDialog.dispose();
                     });
+
                     buttonPanel.add(annulla);
                 }
 
@@ -174,12 +201,16 @@ public class CalenderAgenteImmobiliare {
 
             JScrollPane scrollPane = new JScrollPane(containerPanel);
             scrollPane.setPreferredSize(new Dimension(600, 400));
+            dettaglioDialog.add(scrollPane);
+            dettaglioDialog.setVisible(true);
 
-            JOptionPane.showMessageDialog(frame, scrollPane, "Visite del " + giornoChiave, JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(frame, "Nessuna visita per questo giorno.", "Informazioni", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
+
+
 
     public static JCalendar getCalendar() {
         return calendar;

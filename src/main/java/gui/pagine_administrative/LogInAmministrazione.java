@@ -116,7 +116,7 @@ public class LogInAmministrazione extends JPanel {
 
 
 
-        buttonCreaAggenzia.addActionListener(e -> {
+        buttonCreaAgenzia.addActionListener(e -> {
         });
 
     }
@@ -136,7 +136,7 @@ public class LogInAmministrazione extends JPanel {
         textFildEmail = new JTextField();
         labelPassword = new JLabel();
         passwordField1 = new JPasswordField();
-        buttonCreaAggenzia = new JButton();
+        buttonCreaAgenzia = new JButton();
         buttonLogIn = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
@@ -185,15 +185,15 @@ public class LogInAmministrazione extends JPanel {
         passwordField1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         add(passwordField1, "cell 1 2 2 1,aligny center,growy 0");
 
-        //---- buttonCreaAggenzia ----
-        buttonCreaAggenzia.setText("Crea un Aggenzia");
-        buttonCreaAggenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonCreaAggenzia, "cell 1 3,align center top,grow 0 0");
+        //---- buttonCreaAgenzia ----
+        buttonCreaAgenzia.setText("Crea un Agenzia");
+        buttonCreaAgenzia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        add(buttonCreaAgenzia, "cell 1 3,align center top,grow 0 0");
 
         //---- buttonLogIn ----
         buttonLogIn.setText("Log In");
         buttonLogIn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonLogIn, "cell 1 4,align center top,grow 0 0");
+        add(buttonLogIn, "cell 2 3,align center top,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -237,7 +237,7 @@ public class LogInAmministrazione extends JPanel {
     private JTextField textFildEmail;
     private JLabel labelPassword;
     private JPasswordField passwordField1;
-    private JButton buttonCreaAggenzia;
+    private JButton buttonCreaAgenzia;
     private JButton buttonLogIn;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;

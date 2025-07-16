@@ -8,6 +8,7 @@
 \usepackage[italian]{babel}
 \usepackage{multirow}
 \usepackage[table,xcdraw]{xcolor}
+\usepackage{tabularx}
 
 % ---------------Per la formattazione del codice java----------------------
 
@@ -487,7 +488,144 @@ Dopo aver completato tutti i campi, l'agente immobiliare può cliccare sul tasto
 }
 \end{center}
 
+\subsubsection{Fai Offerta}
 
+\subsubsection*{Mock-Up}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Fai_Offerta 1.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+Il cliente, dopo aver effettuato una ricerca, si troverà davanti alla lista degli immobili più coerenti. 
+Cliccando su uno di questi immobili, verrà reindirizzato alla pagina relativa all'immobile selezionato.
+
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Fai_Offerta 2.png}};
+    \end{tikzpicture}
+
+\end{figure}
+
+Nella pagina relativa all'immobile, troverà la descrizione dell'immobile e, sulla sinistra, i pulsanti per \textbf{fare l'offerta} e \textbf{richiedere visita}. 
+Cliccando su \textit{fai offerta}, si aprirà una pagina per digitare un'offerta, seguita successivamente da una pagina di conferma dell'offerta.
+
+\subsubsection*{Cockburn}
+
+
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|llll|}
+\hline
+\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#2} &
+  \multicolumn{4}{c|}{\textbf{Fai Offerta}} \\ \hline
+\textbf{Goal in Context} &
+  \multicolumn{4}{l|}{Il cliente vuole fare un offerta ad un immobile} \\ \hline
+\textbf{Preconditions} &
+  \multicolumn{4}{l|}{\begin{tabular}[c]{@{}l@{}}-Deve essersi autentificato come cliente\\ -Deve aver cercato nella barra di ricerca l'immobile\end{tabular}} \\ \hline
+\textbf{Success End Condition} &
+  \multicolumn{4}{l|}{L'offerta è stata correttamente inviata all'agente immobiliare} \\ \hline
+\textbf{Failed End Condition} &
+  \multicolumn{4}{l|}{L'offerta non viene inviata all'agente immobiliare} \\ \hline
+\textbf{Trigger} &
+  \multicolumn{4}{l|}{Il cliente seleziona un immobile nella lista immobili in M00} \\ \hline
+ &
+  \multicolumn{1}{l|}{\textbf{Step n.}} &
+  \multicolumn{1}{l|}{\textbf{Cliente}} &
+  \multicolumn{1}{l|}{\textbf{API}} &
+  \textbf{System} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{1} &
+  \multicolumn{1}{l|}{Il cliente seleziona un immobile in M00} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{2} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M01 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{3} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{Mostra Immobile sulla mappa} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{4} &
+  \multicolumn{1}{l|}{Preme sui "Fai Offerta"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{5} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M02 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{6} &
+  \multicolumn{1}{l|}{Inserisce una offerta e preme "Invia"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{7} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M03 \\ \cline{2-5} 
+\multirow{-9}{*}{\textbf{Main Scenario}} &
+  \multicolumn{1}{l|}{8} &
+  \multicolumn{1}{l|}{Seleziona "Invia Offerta"} &
+  \multicolumn{1}{l|}{} &
+   \\ \hline
+ &
+  \multicolumn{1}{l|}{6a} &
+  \multicolumn{1}{l|}{Preme su "Cancella"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+\multirow{-2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} &
+  \multicolumn{1}{l|}{7a} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M01 \\ \hline
+ &
+  \multicolumn{1}{l|}{8b} &
+  \multicolumn{1}{l|}{Seleziona "Cancella Offerta"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+\multirow{-2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Ripensamento sull'offerta)\end{tabular}}} &
+  \multicolumn{1}{l|}{9b} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M02 \\ \hline
+\end{tabular}
+}
+\end{table}
 
 
 \newpage
@@ -967,7 +1105,7 @@ La logica del metodo prevede i seguenti controlli:
     
     \item Verifica che il valore massimo non sia negativo e non ecceda il limite superiore assoluto, fissato a \texttt{1000000}.
     
-    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo, nel caso in cui prezzo massimo sia diverso da 0.
+    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo.
 \end{enumerate}
 
 Questo metodo garantisce che l’intervallo di prezzo sia coerente con i vincoli del sistema, evitando errori logici o valori anomali nelle richieste di ricerca o inserimento.\\
@@ -990,8 +1128,6 @@ sono state individuate le seguenti \textbf{classi di equivalenza}:
      \item \textcolor{green}{CE7:} Prezzo minimo minore o uguale di prezzo massimo
      
      \item \textcolor{red}{CE8:} Prezzo minimo maggiore di prezzo massimo
-
-     \item \textcolor{green}{CE9:} Prezzo minimo maggiore di prezzo massimo e prezzo massimo = 0
 \end{itemize}
 
 Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
@@ -1054,15 +1190,6 @@ class CheckPrezziTest {
         boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
         assertFalse(result);
     }
-
-    @Test
-    void testCE9() {
-        double prezzoMin = 200.000;
-        double prezzoMax = 0;
-
-        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
-        assertTrue(result);
-    }
 }
 \end{lstlisting}
 
@@ -1110,9 +1237,9 @@ sono state individuate le seguenti \textbf{classi di equivalenza}:
 
     \item \textcolor{red}{CE6:} numero di stanze maggiore di 10.
 
-    \item \textcolor{green}{CE7:} numero di bagni compreso tra -1 e 10.
+    \item \textcolor{green}{CE7:} numero di bagni compreso tra 0 e 10.
 
-    \item \textcolor{red}{CE8:} numero di bagni minore di -1.
+    \item \textcolor{red}{CE8:} numero di bagni minore di 0.
 
     \item \textcolor{red}{CE9:} numero di bagni maggiore di 10.
 

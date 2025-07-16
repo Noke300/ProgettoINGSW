@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
@@ -59,25 +60,65 @@ public class RegistrazioneCliente extends JPanel {
 
         buttonRegistrati.addActionListener(e -> {
             char[] tempPass = passwordField1.getPassword();
-            Date date = Date.valueOf(textFildData.getText());
+            Date date;
+            try{
+                date = Date.valueOf(textFildData.getText());
+            }catch (IllegalArgumentException exception){
+                JOptionPane.showMessageDialog(frame, "Inserire un valore valido per la data di nascita");
+                return;
+            }
 
-            Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
-                    new String(tempPass), date);
-            if(control.registrazioneCliente(newC)){
-                String tokenT = null;
-                tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
-                frame.setContentPane(new Ricerca(frame,control,tokenT));
-                Arrays.fill(tempPass,'0');
-                frame.revalidate();
-                frame.repaint();
+            if(checkDati(textFildNome.getText(), textFildCognome.getText(), textFildEmail.getText(), new String(tempPass), date)){
+                Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
+                        new String(tempPass), date);
+                if(control.registrazioneCliente(newC)){
+                    String tokenT;
+                    tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
+                    frame.setContentPane(new Ricerca(frame,control,tokenT));
+                    Arrays.fill(tempPass,'0');
+                    frame.revalidate();
+                    frame.repaint();
+                }else{
+                    Arrays.fill(tempPass,'0');
+                    JOptionPane.showMessageDialog(frame, "Esiste già un account associato a questa mail");
+                }
             }else{
-                Arrays.fill(tempPass,'0');
-                System.out.println("Errore");
+                JOptionPane.showMessageDialog(frame, "Compila tutti i campi correttamente.");
             }
 
         });
 
     }
+
+    private boolean checkDati(String nome, String cognome, String email, String password, Date data) {
+        if (nome == null || nome.isEmpty() ||
+                cognome == null || cognome.isEmpty() ||
+                email == null || email.isEmpty() ||
+                password == null || password.isEmpty()) {
+            return false;
+        }
+
+        // Regex per email valida
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        if (!email.matches(emailRegex)) {
+            return false;
+        }
+
+        // Regex per password:
+        // almeno 1 maiuscola, 1 numero, 1 carattere speciale, minimo 8 caratteri
+        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
+        if (!password.matches(passwordRegex)) {
+            return false;
+        }
+
+        // Controllo età (almeno 18 anni)
+        Calendar oggi = Calendar.getInstance();
+        oggi.add(Calendar.YEAR, -18);
+        java.util.Date limiteMinimo = oggi.getTime();
+
+        return data.before(limiteMinimo);
+    }
+
     private void iconSetUp(){
         buttonCalender.setIcon(IconClass.getCalendarioIcon());
         iconEmail.setIcon(IconClass.getEmailIcon());
@@ -171,7 +212,7 @@ public class RegistrazioneCliente extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Marco Scotto
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         labelNome = new JLabel();
         textFildNome = new JTextField();
         iconNome = new JLabel();
@@ -200,12 +241,12 @@ public class RegistrazioneCliente extends JPanel {
         calendarSelector = new JCalendar();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
-        .EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing.border.TitledBorder.CENTER,javax
-        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dialo\u0067",java.awt.Font.BOLD,
-        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
-        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("borde\u0072".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
+        ( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border
+        . TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt
+        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
+        propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -253,13 +294,13 @@ public class RegistrazioneCliente extends JPanel {
 
         //---- textFildData ----
         textFildData.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        add(textFildData, "cell 1 2 2 1,aligny center,growy 0");
+        add(textFildData, "cell 1 2 3 1,aligny center,growy 0");
 
         //---- buttonCalender ----
         buttonCalender.setIcon(UIManager.getIcon("OptionPane.questionIcon"));
         buttonCalender.setBackground(new Color(0x00ffffff, true));
         buttonCalender.setBorder(null);
-        add(buttonCalender, "cell 3 2,alignx left,growx 0");
+        add(buttonCalender, "cell 4 2,alignx left,growx 0");
 
         //---- labelEmail ----
         labelEmail.setText("Email :");
@@ -356,7 +397,7 @@ public class RegistrazioneCliente extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Marco Scotto
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JLabel labelNome;
     private JTextField textFildNome;
     private JLabel iconNome;

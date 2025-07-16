@@ -34,6 +34,7 @@ public class InterfacciaAdmin extends JPanel {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
         this.admin = controller.getAgenziaImmobiliare(token);
+        labelNomeAzzienda.setText("Admin di " + admin.getNomeAgenzia());
 
         String[] colonne = {"Nome", "Cognome", "Email", "Tipo"};
         DefaultTableModel model = new DefaultTableModel(colonne, 0) {
@@ -86,32 +87,44 @@ public class InterfacciaAdmin extends JPanel {
         });
 
         buttonElimina.addActionListener(e -> {
+
             int selectedRow = tabella.getSelectedRow();
             String tipo = (String) tabella.getValueAt(selectedRow, 3); // Colonna 'Tipo'
             String email = (String) tabella.getValueAt(selectedRow, 2); // Colonna 'Email'
+            String nome = (String) tabella.getValueAt(selectedRow, 0); // Colonna 'Nome'
+            String cognome = (String) tabella.getValueAt(selectedRow, 1); // Colonna 'Cognome'
             boolean success = false;
 
-            if (tipo.equals("Admin Support")) {
-                for (AdminSupport d : admin.getAdminSupport()) {
-                    if (d.getEmailSupport().equals(email)) {
-                        success = controller.eliminaAdminSupport(d, token);
-                        break;
-                    }
-                }
-            } else if (tipo.equals("Agente Immobiliari")) {
-                for (AgenteImmobiliare d : admin.getAgentiImmobiliari()) {
-                    if (d.getEmailAgente().equals(email)) {
-                        success = controller.eliminaAgenteImmobiliare(d, token);
-                        break;
-                    }
-                }
-            }
+            int scelta = JOptionPane.showConfirmDialog(
+                    null,
+                    "Sei sicuro di voler licenziare l'" + tipo + " " + nome + " " + cognome + "'?",
+                    "Conferma Licenziamento",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
 
-            if (success) {
-                model.removeRow(selectedRow);
-                JOptionPane.showMessageDialog(this, "Dipendente eliminato con successo.");
-            } else {
-                JOptionPane.showMessageDialog(this, "Errore durante l’eliminazione.");
+            if (scelta == JOptionPane.YES_OPTION) {
+                if (tipo.equals("Admin Support")) {
+                    for (AdminSupport d : admin.getAdminSupport()) {
+                        if (d.getEmailSupport().equals(email)) {
+                            success = controller.eliminaAdminSupport(d, token);
+                            break;
+                        }
+                    }
+                } else if (tipo.equals("Agente Immobiliari")) {
+                    for (AgenteImmobiliare d : admin.getAgentiImmobiliari()) {
+                        if (d.getEmailAgente().equals(email)) {
+                            success = controller.eliminaAgenteImmobiliare(d, token);
+                            break;
+                        }
+                    }
+                }
+                if (success) {
+                    model.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(this, "Dipendente eliminato con successo.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Errore durante l’eliminazione.");
+                }
             }
         });
 
@@ -127,7 +140,7 @@ public class InterfacciaAdmin extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         panelOpzioni = new JPanel();
         labelNomeAzzienda = new JLabel();
         menuBarOpzioni = new JMenuBar();
@@ -142,6 +155,12 @@ public class InterfacciaAdmin extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
+        .EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER,javax
+        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,
+        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
+        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062ord\u0065r".equals(e.
+        getPropertyName()))throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -267,7 +286,7 @@ public class InterfacciaAdmin extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JPanel panelOpzioni;
     private JLabel labelNomeAzzienda;
     private JMenuBar menuBarOpzioni;

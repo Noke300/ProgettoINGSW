@@ -1105,7 +1105,7 @@ La logica del metodo prevede i seguenti controlli:
     
     \item Verifica che il valore massimo non sia negativo e non ecceda il limite superiore assoluto, fissato a \texttt{1000000}.
     
-    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo.
+    \item Infine, il metodo verifica che il prezzo minimo sia minore o uguale al prezzo massimo, nel caso in cui prezzo massimo sia diverso da 0.
 \end{enumerate}
 
 Questo metodo garantisce che l’intervallo di prezzo sia coerente con i vincoli del sistema, evitando errori logici o valori anomali nelle richieste di ricerca o inserimento.\\
@@ -1128,6 +1128,8 @@ sono state individuate le seguenti \textbf{classi di equivalenza}:
      \item \textcolor{green}{CE7:} Prezzo minimo minore o uguale di prezzo massimo
      
      \item \textcolor{red}{CE8:} Prezzo minimo maggiore di prezzo massimo
+
+     \item \textcolor{green}{CE9:} Prezzo minimo maggiore di prezzo massimo e prezzo massimo = 0
 \end{itemize}
 
 Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
@@ -1190,13 +1192,21 @@ class CheckPrezziTest {
         boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
         assertFalse(result);
     }
+
+    @Test
+    void testCE9() {
+        double prezzoMin = 200.000;
+        double prezzoMax = 0;
+
+        boolean result = validator.checkPrezzi(prezzoMin, prezzoMax);
+        assertTrue(result);
+    }
 }
 \end{lstlisting}
 
 %---------------------------------------------------------------------------
 
 \subsubsection{Check Filtri Test}
-
 Il metodo effettua la validazione dei parametri relativi ai filtri di ricerca applicabili a un immobile. Accetta in ingresso i seguenti argomenti:
 
 \begin{itemize}

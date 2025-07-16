@@ -79,6 +79,29 @@ TODO
 
 \subsection{Casi d'uso}
 
+\subsubsection*{Use Case Diagram}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,15);
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,15);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=15cm]{Immagini/Use Case Diagram DietiEstas25.jpg}};
+    \end{tikzpicture}
+
+\end{figure}
+
+
 \begin{table}[H]
 \begin{tabular}{|c|l|}
 \hline
@@ -152,7 +175,7 @@ Abbiamo individuato le seguenti \textit{Personas} che rappresentano i diversi ut
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Antonio_Vincenti.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Antonio_Vincenti.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -182,7 +205,7 @@ A tale scopo, l'applicativo deve essere \textbf{intuitivo} per poter essere util
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Gennaro_Ioffredo.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Gennaro_Ioffredo.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -212,7 +235,7 @@ L’applicativo dovrà quindi essere \textbf{chiaro e semplice da usare}, adatto
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Monica_Tiberini.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Monica_Tiberini.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -242,7 +265,7 @@ L’applicativo deve permettere di \textbf{gestire in modo rapido e fluido le op
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Raffaele_Sepe.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Raffaele_Sepe.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -286,7 +309,7 @@ TODO
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Cerca_Immobile 1.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Cerca_Immobile 1.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -307,7 +330,7 @@ Dopo aver aperto l'applicativo si visualizza la pagina con la barra di ricerca, 
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,12);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=12cm]{Cerca_Immobile 2.png}};
+            {\includegraphics[width=15cm,height=12cm]{Immagini/Cerca_Immobile 2.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -371,7 +394,7 @@ Si presenta quindi una pagina con una lista di immobili trovati in funzione dell
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Agente_Immobiliare 1.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Agente_Immobiliare 1.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -397,7 +420,7 @@ Infine, in basso a sinistra è presente il tasto \textbf{Aggiungi immobile}, che
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Agente_Immobiliare 2.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Agente_Immobiliare 2.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -507,7 +530,7 @@ Dopo aver completato tutti i campi, l'agente immobiliare può cliccare sul tasto
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Fai_Offerta 1.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Fai_Offerta 1.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -531,7 +554,7 @@ Cliccando su uno di questi immobili, verrà reindirizzato alla pagina relativa a
 
         \clip[rounded corners=10pt] (0,0) rectangle (15,9);
         \node[anchor=south west, inner sep=0pt] at (0,0) 
-            {\includegraphics[width=15cm,height=9cm]{Fai_Offerta 2.png}};
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Fai_Offerta 2.png}};
     \end{tikzpicture}
 
 \end{figure}
@@ -546,7 +569,7 @@ Cliccando su \textit{fai offerta}, si aprirà una pagina per digitare un'offerta
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|llll|}
 \hline
-\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#2} &
+\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#3} &
   \multicolumn{4}{c|}{\textbf{Fai Offerta}} \\ \hline
 \textbf{Goal in Context} &
   \multicolumn{4}{l|}{Il cliente vuole fare un offerta ad un immobile} \\ \hline
@@ -627,6 +650,90 @@ Cliccando su \textit{fai offerta}, si aprirà una pagina per digitare un'offerta
 }
 \end{table}
 
+\subsubsection{Accetta Visita}
+\subsubsection*{Mock-Up}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Immagini/Accetta Visita.jpg}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\subsubsection*{CockBurn}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|lll|}
+\hline
+\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#4} &
+  \multicolumn{3}{c|}{\textbf{Accetta Visita}} \\ \hline
+\textbf{Goal in Context} &
+  \multicolumn{3}{l|}{L'agente immobiliare vuole accettare una visita da parte di un cliente} \\ \hline
+\textbf{Preconditions} &
+  \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}-Deve essersi autentificato come agente immobiliare di un'azienda\\ -Deve aver ricevuto una richiesta di visita da parte di un cliente\end{tabular}} \\ \hline
+\textbf{Success End Condition} &
+  \multicolumn{3}{l|}{La richiesta di visita è stata accettata con successo} \\ \hline
+\textbf{Failed End Condition} &
+  \multicolumn{3}{l|}{La richiesta di visita non è stata accettata con successo} \\ \hline
+\textbf{Trigger} &
+  \multicolumn{3}{l|}{L'agente immobiliare seleziona "Calendario" in M00} \\ \hline
+ &
+  \multicolumn{1}{l|}{\textbf{Step n.}} &
+  \multicolumn{1}{l|}{\textbf{Agente Immobiliare}} &
+  \textbf{System} \\ \cline{2-4} 
+ &
+  \multicolumn{1}{l|}{1} &
+  \multicolumn{1}{l|}{Seleziona "Calendario"} &
+   \\ \cline{2-4} 
+ &
+  \multicolumn{1}{l|}{2} &
+  \multicolumn{1}{l|}{} &
+  Mostra M01 \\ \cline{2-4} 
+ &
+  \multicolumn{1}{l|}{4} &
+  \multicolumn{1}{l|}{Seleziona un giorno verde} &
+   \\ \cline{2-4} 
+ &
+  \multicolumn{1}{l|}{5} &
+  \multicolumn{1}{l|}{} &
+  Mostra M02 \\ \cline{2-4} 
+\multirow{-6}{*}{\textbf{Main Scenario}} &
+  \multicolumn{1}{l|}{6} &
+  \multicolumn{1}{l|}{Preme il pulsante "Accetta"} &
+   \\ \hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Preme il pulsante "Rifiuta")\end{tabular}} &
+  \multicolumn{1}{l|}{6a} &
+  \multicolumn{1}{l|}{Preme il pulsante "Rifiuta"} &
+   \\ \hline
+ &
+  \multicolumn{1}{l|}{6a} &
+  \multicolumn{1}{l|}{Preme il pulsante "Indietro"} &
+   \\ \cline{2-4} 
+\multirow{-2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Preme il pulsante "Indietro")\end{tabular}}} &
+  \multicolumn{1}{l|}{7a} &
+  \multicolumn{1}{l|}{} &
+  Mostra M01 \\ \hline
+\end{tabular}
+}
+\end{table}
 
 \newpage
 \section{Documento di Design del Sistema}

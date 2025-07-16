@@ -1,4 +1,4 @@
-package gui;
+package gui.pagine_comuni;
 
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
@@ -7,7 +7,6 @@ import controller.NotificationClient;
 import gui.costum_components.*;
 import gui.costum_components.maps.MapLoader;
 import gui.costum_components.maps.SimplifiedMapLoader;
-import gui.pagine_administrative.LogInAmministrazione;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -516,7 +515,7 @@ public class Ricerca extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         labelTitolo = new JLabel();
         mapButton = new JButton();
         searchButton = new JButton();
@@ -556,12 +555,6 @@ public class Ricerca extends JPanel {
         LogoOpzioni2 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
-        . EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax
-        . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,
-        12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans
-        . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .
-        getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
@@ -899,7 +892,7 @@ public class Ricerca extends JPanel {
 
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JLabel labelTitolo;
     private JButton mapButton;
     private JButton searchButton;

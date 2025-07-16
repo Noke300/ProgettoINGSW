@@ -13,7 +13,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import com.toedter.calendar.*;
 import controller.Controller;
-import gui.Ricerca;
+import gui.pagine_comuni.Ricerca;
 import gui.costum_components.IconClass;
 import model.Cliente;
 import net.miginfocom.swing.*;

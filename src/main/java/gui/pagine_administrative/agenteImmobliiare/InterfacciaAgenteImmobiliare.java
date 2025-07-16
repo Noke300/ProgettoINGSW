@@ -15,7 +15,7 @@ import javax.swing.border.*;
 import controller.ControllerAgente;
 
 import controller.NotificationClient;
-import gui.Ricerca;
+import gui.pagine_comuni.Ricerca;
 import gui.costum_components.*;
 import gui.costum_components.calender.CalenderAgenteImmobiliare;
 import gui.costum_components.maps.MapLoader;

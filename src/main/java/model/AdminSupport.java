@@ -10,6 +10,8 @@ public class AdminSupport {
     private String emailSupport;
     private String passwordSupport;
     private ArrayList<AgenteImmobiliare> agentiImmobiliari;
+    private ArrayList<ImmobileEImmagini> immobiliE;
+
 
     public AdminSupport(String nome, String cognome, String email, String password, AgenziaImmobiliare agenziaImmobiliare) {
         this.nomeSupport = nome;
@@ -43,5 +45,13 @@ public class AdminSupport {
 
     public void setAgentiImmobiliari(ArrayList<AgenteImmobiliare> agentiImmobiliari) {
         this.agentiImmobiliari = agentiImmobiliari;
+    }
+
+    public ArrayList<ImmobileEImmagini> getImmobiliE() {
+        return immobiliE;
+    }
+
+    public void setImmobiliE(ArrayList<ImmobileEImmagini> immobiliE) {
+        this.immobiliE = immobiliE;
     }
 }

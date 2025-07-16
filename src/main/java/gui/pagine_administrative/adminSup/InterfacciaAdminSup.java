@@ -11,13 +11,14 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 
-import controller.ControllerAdmin;
 import controller.ControllerAdminSup;
 import gui.costum_components.AggiungiDipendentiPannel;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
+import gui.costum_components.ImmobilePanelSingolo;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
+import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
 
 /**
@@ -25,12 +26,12 @@ import net.miginfocom.swing.*;
  */
 public class InterfacciaAdminSup extends JPanel {
 
-    private BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Agente Immobiliare"});
     protected AdminSupport adminSup;
     public InterfacciaAdminSup(JFrame frame, ControllerAdminSup controller, String token) {
         initComponents();
 
+        BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
         bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
         this.adminSup = controller.getAdminSup(token);
 
@@ -47,6 +48,19 @@ public class InterfacciaAdminSup extends JPanel {
 
             }
         }
+
+        panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
+        JPanel[] selectedPanel = new JPanel[1];
+
+        Dimension dim  = new Dimension(820,289);
+        for (ImmobileEImmagini immobileEImmagini : adminSup.getImmobiliE()) {
+            JPanel panel = ImmobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,controller,token,selectedPanel);
+            panel.setName(immobileEImmagini.getImmobile().getId());
+            panel.setMaximumSize(dim);
+            panel.setPreferredSize(dim);
+            panelListaImmobile.add(panel);
+        }
+
         JTable tabella = new JTable(model);
         tabella.getTableHeader().setReorderingAllowed(false);
         tabella.setFont(IconClass.getFontImmobiliC());
@@ -90,8 +104,7 @@ public class InterfacciaAdminSup extends JPanel {
             }
         });
 
-        //Todo fsare il costruttore di Sup rispetto a admin
-        //buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPannel(frame,controller,null,token,model,tipoCombo));
+        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPanelAdminSup(frame,controller,null,token,model,tipoCombo));
 
 
         panelListaDipendenti.setViewportView(tabella);
@@ -110,6 +123,8 @@ public class InterfacciaAdminSup extends JPanel {
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
         panelListaDipendenti = new JScrollPane();
+        panelListaImmobileScroll = new JScrollPane();
+        panelListaImmobile = new JPanel();
         panelBottomBar = new JPanel();
         buttonRiorganizzaImmobile = new JButton();
         buttonAggiungiDipendenti = new JButton();
@@ -131,7 +146,7 @@ public class InterfacciaAdminSup extends JPanel {
             "[0,center]0" +
             "[24,grow,fill]0" +
             "[9,fill]0" +
-            "[14,grow,fill]",
+            "[0,grow,fill]",
             // rows
             "[48,grow,fill]" +
             "[48,grow,fill]" +
@@ -182,10 +197,24 @@ public class InterfacciaAdminSup extends JPanel {
 
         //======== panelListaDipendenti ========
         {
-            panelListaDipendenti.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             panelListaDipendenti.setViewportBorder(null);
+            panelListaDipendenti.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         }
-        add(panelListaDipendenti, "cell 0 0 12 8,grow");
+        add(panelListaDipendenti, "cell 3 0 9 8,grow");
+
+        //======== panelListaImmobileScroll ========
+        {
+            panelListaImmobileScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelListaImmobileScroll.setViewportBorder(null);
+
+            //======== panelListaImmobile ========
+            {
+                panelListaImmobile.setBorder(new LineBorder(UIManager.getColor("Actions.Green"), 2, true));
+                panelListaImmobile.setLayout(new GridLayout(2, 0));
+            }
+            panelListaImmobileScroll.setViewportView(panelListaImmobile);
+        }
+        add(panelListaImmobileScroll, "cell 0 0 3 8,grow");
 
         //======== panelBottomBar ========
         {
@@ -213,7 +242,6 @@ public class InterfacciaAdminSup extends JPanel {
             buttonAggiungiDipendenti.setText("Aggiungi Dipendente");
             buttonAggiungiDipendenti.setBorderPainted(false);
             buttonAggiungiDipendenti.setBackground(UIManager.getColor("Actions.Green"));
-            buttonAggiungiDipendenti.setEnabled(false);
             panelBottomBar.add(buttonAggiungiDipendenti, "cell 2 0 1 2,growy");
 
             //---- buttonElimina ----
@@ -234,6 +262,8 @@ public class InterfacciaAdminSup extends JPanel {
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
     private JScrollPane panelListaDipendenti;
+    private JScrollPane panelListaImmobileScroll;
+    private JPanel panelListaImmobile;
     private JPanel panelBottomBar;
     private JButton buttonRiorganizzaImmobile;
     private JButton buttonAggiungiDipendenti;

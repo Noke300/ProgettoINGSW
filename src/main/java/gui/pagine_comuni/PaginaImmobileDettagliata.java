@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Apr 26 03:06:22 CEST 2025
  */
 
-package gui;
+package gui.pagine_comuni;
 
 
 import java.awt.*;
@@ -29,7 +29,6 @@ import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.costum_components.maps.MapLoader;
 import gui.costum_components.OffertaPannel;
-import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_clienti.LogIn;
 import model.Immobile;
 import model.ImmobileEImmagini;

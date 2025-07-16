@@ -14,7 +14,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 
 import controller.*;
-import gui.Ricerca;
+import gui.pagine_comuni.Ricerca;
 import gui.costum_components.BottoniOpzioni;
 import gui.pagine_administrative.admin.InterfacciaAdmin;
 import gui.pagine_administrative.adminSup.InterfacciaAdminSup;

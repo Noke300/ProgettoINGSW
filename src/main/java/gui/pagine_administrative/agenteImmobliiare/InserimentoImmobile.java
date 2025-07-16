@@ -18,7 +18,7 @@ import javax.swing.event.DocumentListener;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerAgente;
 import controller.NotificationClient;
-import gui.Ricerca;
+import gui.pagine_comuni.Ricerca;
 import gui.costum_components.AutoCompleteAddress;
 import gui.costum_components.IconClass;
 import gui.costum_components.maps.MapLoader;

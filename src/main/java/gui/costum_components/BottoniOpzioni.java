@@ -2,6 +2,7 @@ package gui.costum_components;
 
 import controller.*;
 import gui.*;
+import gui.pagine_comuni.Ricerca;
 import gui.pagine_administrative.admin.InterfacciaAdmin;
 import gui.pagine_administrative.adminSup.InterfacciaAdminSup;
 import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;

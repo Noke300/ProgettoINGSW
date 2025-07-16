@@ -2,14 +2,13 @@
  * Created by JFormDesigner on Tue Apr 22 11:59:05 CEST 2025
  */
 
-package gui;
+package gui.pagine_comuni;
 
 import controller.Controller;
 import controller.NotificationClient;
 import gui.costum_components.*;
 import gui.costum_components.maps.MapLoader;
 import gui.costum_components.maps.SimplifiedMapLoader;
-import gui.pagine_administrative.LogInAmministrazione;
 import model.Immobile;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.MigLayout;

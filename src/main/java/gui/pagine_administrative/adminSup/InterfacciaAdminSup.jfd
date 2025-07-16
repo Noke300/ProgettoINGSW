@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center"
-			"$columnConstraints": "0[139,grow,fill]0[117,fill]0[96,fill]0[96,fill]0[93,fill]0[112,fill]0[0,fill]0[71,fill]0[0,center]0[24,grow,fill]0[9,fill]0[14,grow,fill]"
+			"$columnConstraints": "0[139,grow,fill]0[117,fill]0[96,fill]0[96,fill]0[93,fill]0[112,fill]0[0,fill]0[71,fill]0[0,center]0[24,grow,fill]0[9,fill]0[0,grow,fill]"
 			"$rowConstraints": "[48,grow,fill][48,grow,fill][48,grow,center][grow,center][grow,fill][grow,fill][grow,fill][grow,fill]"
 		} ) {
 			name: "this"
@@ -44,10 +44,23 @@ new FormModel {
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "panelListaDipendenti"
+				"viewportBorder": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				"horizontalScrollBarPolicy": 32
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 0 9 8,grow"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "panelListaImmobileScroll"
 				"verticalScrollBarPolicy": 22
 				"viewportBorder": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+					"rows": 2
+				} ) {
+					name: "panelListaImmobile"
+					"border": new javax.swing.border.LineBorder( new com.jformdesigner.model.SwingColor( "Actions.Green" ), 2, true )
+				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 12 8,grow"
+				"value": "cell 0 0 3 8,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "insets 0,hidemode 3,gap 5 5"
@@ -71,7 +84,6 @@ new FormModel {
 					"text": "Aggiungi Dipendente"
 					"borderPainted": false
 					"background": #SwingColor0
-					"enabled": false
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 2 0 1 2,growy"
 				} )
@@ -88,8 +100,8 @@ new FormModel {
 				"value": "south,growy"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 655, 435 )
+			"location": new java.awt.Point( 35, 100 )
+			"size": new java.awt.Dimension( 670, 435 )
 		} )
 	}
 }

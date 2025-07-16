@@ -1,7 +1,7 @@
 package gui.costum_components;
 
 import controller.Controller;
-import gui.PaginaImmobileDettagliata;
+import gui.pagine_comuni.PaginaImmobileDettagliata;
 import model.Immobile;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.MigLayout;
@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.ByteArrayInputStream;
-import java.net.URL;
 import java.util.Base64;
 
 public class ImmobilePanelSingolo {

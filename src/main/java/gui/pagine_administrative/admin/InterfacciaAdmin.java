@@ -115,7 +115,7 @@ public class InterfacciaAdmin extends JPanel {
             }
         });
 
-        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPannel(frame,controller,admin,token,model,tipoCombo));
+        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPanelAdmin(frame,controller,admin,token,model,tipoCombo));
 
 
         panelListaDipendenti.setViewportView(tabella);

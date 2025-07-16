@@ -126,11 +126,35 @@ public class ControllerAdminSup extends Controller {
     }
 
 
+    public List<ImmobileEImmagini> getListaImmobili(String token) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(GET_IMMOBILI))
+                    .header("Authorization", "Bearer " + token)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                Type listType = new TypeToken<List<ImmobileEImmagini>>() {}.getType();
+                return new Gson().fromJson(response.body(), listType);
+            } else {
+                System.err.println("Errore HTTP: " + response.statusCode());
+                return Collections.emptyList();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante la visualizzazione immobili: " + e.getMessage());
+        }
+    }
+
     public AdminSupport getAdminSup(String token) {
 
         AdminSupport adminSup = fetchAdminSup(token);
         adminSup.setAgentiImmobiliari(new ArrayList<>());
+        adminSup.setImmobiliE(new ArrayList<>());
        // adminSup.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
+        adminSup.setImmobiliE((ArrayList<ImmobileEImmagini>) getListaImmobili(token));
 
         return adminSup;
     }

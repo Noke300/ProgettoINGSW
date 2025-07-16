@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.ControllerClienti;
-import controller.NotificationClient;
+import gui.pagine_comuni.Ricerca;
 import net.miginfocom.swing.*;
 
 public class Home extends JPanel {

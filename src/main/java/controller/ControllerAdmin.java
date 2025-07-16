@@ -218,13 +218,21 @@ public class ControllerAdmin extends Controller {
 
         AgenziaImmobiliare agenziaImmobiliare = fetchAgenziaImmobiliare(token);
 
-        agenziaImmobiliare.setAgentiImmobiliari(new ArrayList<>());
-        agenziaImmobiliare.setAdminSupport(new ArrayList<>());
-        agenziaImmobiliare.setListaImmobili(new ArrayList<>());
+        List<AdminSupport> adminSupportList = fetchAdminSupport(token);
+        List<AgenteImmobiliare> agentiList = fetchAgentiImmobiliari(token);
+        List<ImmobileEImmagini> immobiliList = getListaImmobili(token);
 
-        agenziaImmobiliare.setAdminSupport((ArrayList<AdminSupport>) fetchAdminSupport(token));
-        agenziaImmobiliare.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
-        agenziaImmobiliare.setListaImmobili((ArrayList<ImmobileEImmagini>) getListaImmobili(token));
+        agenziaImmobiliare.setAdminSupport(
+                adminSupportList != null ? new ArrayList<>(adminSupportList) : new ArrayList<>()
+        );
+
+        agenziaImmobiliare.setAgentiImmobiliari(
+                agentiList != null ? new ArrayList<>(agentiList) : new ArrayList<>()
+        );
+
+        agenziaImmobiliare.setListaImmobili(
+                immobiliList != null ? new ArrayList<>(immobiliList) : new ArrayList<>()
+        );
 
         return agenziaImmobiliare;
     }

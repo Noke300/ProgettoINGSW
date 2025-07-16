@@ -56,7 +56,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             immobili.add(i.getImmobile());
         }
 
-        if(immobili.isEmpty()) {
+        if(!immobili.isEmpty()) {
             geoPos = new GeoPosition(immobili.getLast().getLanIm(),immobili.getLast().getLanIm());
         }else{
             geoPos = new GeoPosition(40.000,39.000);

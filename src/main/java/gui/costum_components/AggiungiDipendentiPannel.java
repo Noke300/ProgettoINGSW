@@ -65,7 +65,7 @@ public class AggiungiDipendentiPannel {
                     model.addRow(new Object[]{nome, cognome, email, "Admin Support"});
                 }
             } else {
-                AgenteImmobiliare nuovo = new AgenteImmobiliare(admin, admin.getRegione(), password, nome, cognome, email);
+                AgenteImmobiliare nuovo = new AgenteImmobiliare(admin, admin.getRegione(), password, email, cognome, nome);
                 added = controller.aggiungiAgenteImmobiliare(nuovo, token);
                 if (added) {
                     model.addRow(new Object[]{nome, cognome, email, "Agente Immobiliare"});
@@ -129,7 +129,7 @@ public class AggiungiDipendentiPannel {
             }
 
             boolean added = false;
-            AgenteImmobiliare nuovo = new AgenteImmobiliare(admin, "", password, nome, cognome, email);
+            AgenteImmobiliare nuovo = new AgenteImmobiliare(admin, "", password, email, cognome, nome);
             added = controller.aggiungiAgenteImmobiliare(nuovo, token);
 
             if (added) {

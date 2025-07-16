@@ -257,7 +257,5 @@ public class Immobile {
         return portineria;
     }
 
-    public void setPortineria(boolean portineria) {
-        this.portineria = portineria;
-    }
+    public boolean isTrasportoPubblico() {return trasportoPubblico;}
 }

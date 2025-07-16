@@ -47,6 +47,11 @@ public class IconClass {
     private static final FontIcon NOME_CLIENTE = FontIcon.of(FontAwesomeSolid.USER, 24);
     private static final FontIcon BACK_BUTTON = FontIcon.of(FontAwesomeSolid.ARROW_ALT_CIRCLE_LEFT, 30);
 
+    private static final FontIcon SCUOLA_ICON = FontIcon.of(FontAwesomeSolid.SCHOOL, 18);
+    private static final FontIcon TRANSPORT_ICON = FontIcon.of(FontAwesomeSolid.TRAIN, 18);
+    private static final FontIcon PARCHI_ICON = FontIcon.of(FontAwesomeSolid.TREE, 18);
+
+
     //Font
     private static final Font FONT_IMMOBILE_CARATTERISTICHE = new Font("SansSerif", Font.PLAIN, 18);
 
@@ -95,4 +100,7 @@ public class IconClass {
     public static FontIcon getNomeCliente() { return NOME_CLIENTE; }
     public static Font getFontImmobiliC() { return FONT_IMMOBILE_CARATTERISTICHE; }
     public static FontIcon getBackButton(){return  BACK_BUTTON;}
+    public static FontIcon getScuolaIcon() { return SCUOLA_ICON; }
+    public static FontIcon getTransportIcon() { return TRANSPORT_ICON; }
+   public static  FontIcon getParchiIcon() { return PARCHI_ICON; }
 }

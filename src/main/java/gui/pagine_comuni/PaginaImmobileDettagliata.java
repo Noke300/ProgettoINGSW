@@ -99,6 +99,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         yAxis.setTickUnit(new NumberTickUnit(20000));
 
         ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setBackground(new Color(0, 0, 0, 0));
         panelChart.add(chartPanel, BorderLayout.CENTER);
 
         CategoryPlot plot = chart.getCategoryPlot();
@@ -453,22 +454,27 @@ public class PaginaImmobileDettagliata extends JPanel {
 
         JLabel numStanze = new JLabel(immobile.getNumStanze() + " locali");
         numStanze.setFont(IconClass.getFontImmobiliC());
+        numStanze.setIcon(IconClass.getNumeroStanzeIcon());
         paramPanel.add(numStanze);
 
         JLabel numBagni = new JLabel(immobile.getNumBagni() + " bagni");
         numBagni.setFont(IconClass.getFontImmobiliC());
+        numBagni.setIcon(IconClass.getNumeroBagniIcon());
         paramPanel.add(numBagni);
 
         JLabel piano = new JLabel("Piano " + (immobile.getPiano()<=0 ? "Terra" : immobile.getPiano()));
         piano.setFont(IconClass.getFontImmobiliC());
+        piano.setIcon(IconClass.getPianiIcon());
         paramPanel.add(piano);
 
         JLabel supeficie = new JLabel(immobile.getSuperficie() + " m²");
         supeficie.setFont(IconClass.getFontImmobiliC());
+        supeficie.setIcon(IconClass.getHomeButtonIcon());
         paramPanel.add(supeficie);
 
         JLabel classeEnergetica = new JLabel("Classe energetica: " + immobile.getClasseEnergetica());
         classeEnergetica.setFont(IconClass.getFontImmobiliC());
+        classeEnergetica.setIcon(IconClass.getClasseEnergeticaIcon());
         paramPanel.add(classeEnergetica);
 
 

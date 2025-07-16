@@ -214,9 +214,6 @@ public class ControllerAdmin extends Controller {
         }
     }
 
-
-
-
     public AgenziaImmobiliare getAgenziaImmobiliare(String token) {
 
         AgenziaImmobiliare agenziaImmobiliare = fetchAgenziaImmobiliare(token);

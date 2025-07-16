@@ -130,36 +130,6 @@ public class MapLoader {
             }
         });
 
-// Se il click avviene vicino a un marker, viene mostrato il popup con le info.
-// Se non è su un marker, la mappa viene centrata sul punto cliccato.
-        mapViewer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Point clickedPoint = e.getPoint();
-                Rectangle viewport = mapViewer.getViewportBounds();
-                boolean markerFound = false;
-
-                // Scorri tutti i waypoint per vedere se il click è vicino aduno di essi
-                for (CustomWaypoint waypoint : waypoints) {
-
-                    Point2D markerPoint = calcoloPosizione(mapViewer,waypoint,viewport);
-                    if (clickedPoint.distance(markerPoint) < HITBOX_RADIUS+7) {
-                        markerFound = true;
-                        // Aggiorna il pannello con le informazioni del waypoint
-                        detailsTextArea.setText("Informazioni: " + waypoint.getInfo() + "\n" +
-                                "Indirizzo: " + getAddressFromCoordinates(waypoint.getPosition()));
-                        detailsPanel.setVisible(true);  // Rendi visibile il pannello
-                        break;
-                    }
-                }
-
-                if (!markerFound) {
-                    // Se il click non è su un marker, nascondi o svuota il pannello
-                    detailsTextArea.setText("");
-                    detailsPanel.setVisible(false);
-                }
-            }
-        });
     }
 
     public static Point2D calcoloPosizione(JXMapViewer mapViewer,Waypoint waypoint, Rectangle viewport){

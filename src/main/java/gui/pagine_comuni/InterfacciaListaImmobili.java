@@ -97,7 +97,7 @@ public class InterfacciaListaImmobili extends JPanel {
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
 
-        Dimension dim  = new Dimension(820,289);
+        Dimension dim  = new Dimension(780,270);
         for (ImmobileEImmagini immobileEImmagini : immobili) {
             JPanel panel = immobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,control,token,selectedPanel);
             panel.setName(immobileEImmagini.getImmobile().getId());

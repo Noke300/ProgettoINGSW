@@ -52,7 +52,7 @@ public class InterfacciaAdminSup extends JPanel {
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
         JPanel[] selectedPanel = new JPanel[1];
 
-        Dimension dim  = new Dimension(820,289);
+        Dimension dim  = new Dimension(750,289);
         for (ImmobileEImmagini immobileEImmagini : adminSup.getImmobiliE()) {
             JPanel panel = ImmobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,controller,token,selectedPanel);
             panel.setName(immobileEImmagini.getImmobile().getId());

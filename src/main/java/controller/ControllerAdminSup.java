@@ -20,9 +20,9 @@ import java.util.List;
 
 public class ControllerAdminSup extends Controller {
 
+    protected static final String GET_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/getAgentiImmobiliari";
     protected static final String ELIMINA_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/licenziaAgenteImmobiliare";
     protected static final String ADD_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/registraAgenteImmobiliare";
-    //todo ti odio cambia il nome pesso di merda
     protected static final String GET_ADMIN_SUP = "http://localhost:8081/auth-adminSupport/specificheCliente";
     protected static final String GET_IMMOBILI = "http://localhost:8081/auth-adminSupport/visualizzaImmobili";
 
@@ -56,12 +56,11 @@ public class ControllerAdminSup extends Controller {
 
 
     //TODO funzione backend
-    /*
     public List<AgenteImmobiliare> fetchAgentiImmobiliari(String token) {
 
         try {
             request = HttpRequest.newBuilder()
-                    .uri(new URI()) // definisci GET_AGENTIIMM correttamente
+                    .uri(new URI(GET_AGENTE_IMM)) // definisci GET_AGENTIIMM correttamente
                     .header("Authorization", "Bearer " + token)
                     .GET()
                     .build();
@@ -81,8 +80,7 @@ public class ControllerAdminSup extends Controller {
             throw new RuntimeException("Errore HTTP: " + response.statusCode() + " - " + response.body());
         }
     }
-    /
-     */
+
 
     public boolean eliminaAgenteImmobiliare(AgenteImmobiliare agenteJson, String token) {
 
@@ -153,7 +151,7 @@ public class ControllerAdminSup extends Controller {
         AdminSupport adminSup = fetchAdminSup(token);
         adminSup.setAgentiImmobiliari(new ArrayList<>());
         adminSup.setImmobiliE(new ArrayList<>());
-       // adminSup.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
+        adminSup.setAgentiImmobiliari((ArrayList<AgenteImmobiliare>) fetchAgentiImmobiliari(token));
         adminSup.setImmobiliE((ArrayList<ImmobileEImmagini>) getListaImmobili(token));
 
         return adminSup;

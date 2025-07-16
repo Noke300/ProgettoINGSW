@@ -8,6 +8,7 @@ import gui.costum_components.IconClass;
 import model.Cliente;
 import model.Immobile;
 import model.Visita;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -137,15 +138,7 @@ public class CalenderAgenteImmobiliare {
                 visitaPanel.setLayout(new BoxLayout(visitaPanel, BoxLayout.Y_AXIS));
                 visitaPanel.setBorder(BorderFactory.createTitledBorder("🕒 Visita alle " + visita.getOraVisita()));
 
-                JTextArea info = new JTextArea(
-                        "🏠 Tipo immobile: " + imm.getTipoImmobile() + "\n" +
-                                "💸 Prezzo: €" + imm.getPrezzo() + "\n" +
-                                "📍 Indirizzo: " + imm.getIndirizzo() + "\n" +
-                                "👤 Cliente: " + cl.getNome() + " " + cl.getCognome() + "\n" +
-                                "✅ Confermata: " + (visita.getConferma() ? "✅ Sì" : "❌ No")
-                );
-                info.setFont(new Font("SansSerif", Font.PLAIN, 16));
-                info.setEditable(false);
+                JTextArea info = getJTextArea(visita, imm, cl);
                 visitaPanel.add(info);
 
                 JPanel buttonPanel = new JPanel();
@@ -209,7 +202,19 @@ public class CalenderAgenteImmobiliare {
         }
     }
 
-
+    @NotNull
+    private static JTextArea getJTextArea(Visita visita, Immobile imm, Cliente cl) {
+        JTextArea info = new JTextArea(
+                "🏠 Tipo immobile: " + imm.getTipoImmobile() + "\n" +
+                        "💸 Prezzo: €" + imm.getPrezzo() + "\n" +
+                        "📍 Indirizzo: " + imm.getIndirizzo() + "\n" +
+                        "👤 Cliente: " + cl.getNome() + " " + cl.getCognome() + "\n" +
+                        "✅ Confermata: " + (visita.getConferma() ? "✅ Sì" : "❌ No")
+        );
+        info.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        info.setEditable(false);
+        return info;
+    }
 
 
     public static JCalendar getCalendar() {

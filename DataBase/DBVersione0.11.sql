@@ -30,7 +30,7 @@ CREATE TABLE AgenteImmobiliare(
 	NomeAgente VARCHAR(255) NOT NULL,
 	CognomeAgente VARCHAR(255) NOT NULL,
 	EmailAgente VARCHAR(255) PRIMARY KEY,
-	PasswordAgente VARCHAR(255) NOT NULL UNIQUE,
+	PasswordAgente VARCHAR(255) NOT NULL,
 	NomeAgenzia VARCHAR(255),
 FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 
@@ -40,7 +40,7 @@ CREATE TABLE AdminSupport(
 	NomeSupport VARCHAR(255) NOT NULL,
 	CognomeSupport VARCHAR(255) NOT NULL,
 	EmailSupport VARCHAR(255) PRIMARY KEY,
-	PasswordSupport VARCHAR(255) NOT NULL UNIQUE,
+	PasswordSupport VARCHAR(255) NOT NULL,
 	NomeAgenzia VARCHAR(255),
     FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
 	

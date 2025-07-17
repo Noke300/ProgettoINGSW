@@ -69,7 +69,8 @@ public class PaginaImmobileDettagliata extends JPanel {
         labelPrezzo.setText(immobile.getPrezzo() +" €");
         labelPrezzo.setFont(new Font("Segoe UI", Font.BOLD,28));
 
-        //TODO da rendere come funzione ausilare che carica i dati nella chiamata (Thread)
+
+        BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Visualizzato "+immobile.getTipoImmobile()+" in "+ immobile.getTipoVendita()+" : "+ immobile.getIndirizzo().toString());
 
         List<Offerta> offerteIM = control.getOffertePerImmobile(immobile);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();

@@ -19,9 +19,6 @@ public class GoogleCloudStorageManager implements StorageManagerInterface {
     private static final String CREDENTIALS_PATH = dotenv.get("GOOGLE_APPLICATION_CREDENTIALS");
     private final Storage storage;
 
-    /**
-     * Costruttore
-     */
     public GoogleCloudStorageManager() throws IOException {
         FileInputStream serviceAccount = new FileInputStream(CREDENTIALS_PATH);
         GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
@@ -66,7 +63,6 @@ public class GoogleCloudStorageManager implements StorageManagerInterface {
     }
 
     public void deleteFolder(String folderName) {
-        // Assicuriamoci che finisca con uno slash
         if (!folderName.endsWith("/")) {
             folderName += "/";
         }

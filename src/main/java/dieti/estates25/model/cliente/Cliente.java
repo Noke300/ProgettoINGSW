@@ -33,8 +33,6 @@ public class Cliente {
 
     public Cliente() {}
 
-    // Getters and Setters
-
     public String getEmailCliente() { return this.emailCliente; }
     public void setEmailCliente(String emailCliente) { this.emailCliente = emailCliente; }
     public String getNome() { return this.nome; }

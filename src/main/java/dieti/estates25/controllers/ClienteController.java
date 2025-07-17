@@ -3,7 +3,7 @@ package dieti.estates25.controllers;
 import dieti.estates25.model.Offerta;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.cliente.Cliente;
-import dieti.estates25.service.cliente.ClienteServiceDB;
+import dieti.estates25.service.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,9 +40,9 @@ public class ClienteController {
         return clienteService.addCliente(cliente);
     }
 
-    @PutMapping("/clienti/{mail}")
-    public void updateCliente(@PathVariable String mail, @RequestBody Cliente cliente) {
-        clienteService.updateCliente(mail, cliente);
+    @PutMapping("/clienti")
+    public void updateCliente(@RequestBody Cliente cliente) {
+        clienteService.updateCliente(cliente);
     }
 
     @DeleteMapping("/clienti/{mail}")

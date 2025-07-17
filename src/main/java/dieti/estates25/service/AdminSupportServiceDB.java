@@ -1,4 +1,4 @@
-package dieti.estates25.service.adminsupport;
+package dieti.estates25.service;
 
 import dieti.estates25.database.GoogleCloudStorageManager;
 import dieti.estates25.database.GoogleCloudStorageService;
@@ -9,8 +9,6 @@ import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.adminsupport.AdminSupportPrincipal;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.repositories.*;
-import dieti.estates25.service.JWTService;
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -32,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminSupportServiceDB implements AdminSupportService, UserDetailsService {
+public class AdminSupportServiceDB implements UserDetailsService {
 
     @Autowired
     private JWTService jwtService;
@@ -59,18 +57,15 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    @Override
     public List<AdminSupport> getAllAdminSupport() {
         return adminSupportRepository.findAll();
     }
 
-    @Override
     public AdminSupport getAdminSupportByMail(String mail) {
         Optional<AdminSupport> adminSupport = this.adminSupportRepository.findById(mail);
         return  adminSupport.orElse(null);
     }
 
-    @Override
     public ResponseEntity<String> addAdminSupport(AdminSupport adminSupport) {
         if (adminSupportRepository.findByEmailSupport(adminSupport.getEmailSupport()) != null) {
             return ResponseEntity
@@ -84,12 +79,10 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
                 .body("Admin Support creato correttamente");
     }
 
-    @Override
     public void updateAdminSupport(String mail, AdminSupport adminSupport) {
         adminSupportRepository.save(adminSupport);
     }
 
-    @Override
     public ResponseEntity<String> deleteAdminSupport(String mail) {
         if(adminSupportRepository.existsById(mail)) {
             adminSupportRepository.deleteById(mail);
@@ -100,7 +93,6 @@ public class AdminSupportServiceDB implements AdminSupportService, UserDetailsSe
                 .body("Admin Support non trovato");
     }
 
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AdminSupport adminSupport = adminSupportRepository.findByEmailSupport(username);
 

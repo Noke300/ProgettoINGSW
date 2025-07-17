@@ -1,15 +1,11 @@
-package dieti.estates25.service.agenteimmobiliare;
+package dieti.estates25.service;
 
 import dieti.estates25.database.GoogleCloudStorageManager;
 import dieti.estates25.database.GoogleCloudStorageService;
-import dieti.estates25.database.StorageManagerInterface;
 import dieti.estates25.model.*;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
-import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import dieti.estates25.repositories.*;
-import dieti.estates25.service.JWTService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -34,7 +30,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 @Service
-public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, UserDetailsService {
+public class AgenteImmobiliareServiceDB implements UserDetailsService {
 
     @Autowired
     private AgenteImmobiliareRepository agentRepository;
@@ -64,18 +60,16 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
     private GoogleCloudStorageService storageService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    @Override
+
     public List<AgenteImmobiliare> getAllAgents() {
         return agentRepository.findAll();
     }
 
-    @Override
     public AgenteImmobiliare getAgentByMail(String mail) {
         Optional<AgenteImmobiliare> agent = this.agentRepository.findById(mail);
         return  agent.orElse(null);
     }
 
-    @Override
     public ResponseEntity<String> addAgent(AgenteImmobiliare agent) {
         if (agentRepository.findByEmailAgente(agent.getEmailAgente()) != null) {
             return ResponseEntity
@@ -89,12 +83,10 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                 .body("Utente creato correttamente");
     }
 
-    @Override
-    public void updateAgent(String mail, AgenteImmobiliare agent) {
+    public void updateAgent(AgenteImmobiliare agent) {
         agentRepository.save(agent);
     }
 
-    @Override
     public ResponseEntity<String> deleteAgent(String mail) {
         if(agentRepository.existsById(mail)) {
             agentRepository.deleteById(mail);
@@ -194,7 +186,6 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
 
         String idCartella = immobile.getIdImmobile();
 
-        //TODO gestire meglio le exception
         try {
             storageManager = new GoogleCloudStorageManager();
         } catch (IOException e) {

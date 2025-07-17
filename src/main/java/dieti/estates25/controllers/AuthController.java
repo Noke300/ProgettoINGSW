@@ -22,11 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -50,10 +48,6 @@ public class AuthController {
 
     @Autowired
     private NotificaService notificaService;
-
-    private GoogleCloudStorageManager storageManager;
-
-    private GoogleCloudStorageService storageService;
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -260,13 +254,14 @@ public class AuthController {
     private List<ImmobileEImmagini> getImmagini(List<Immobile> candidati) {
 
         List<ImmobileEImmagini> immobileEImmagini = new ArrayList<>();
+        GoogleCloudStorageManager storageManager;
 
         try {
             storageManager = new GoogleCloudStorageManager();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        storageService = new GoogleCloudStorageService(storageManager);
+        GoogleCloudStorageService storageService = new GoogleCloudStorageService(storageManager);
 
         for(Immobile i : candidati){
             List<ImmagineImmobile> imm = immagineImmobileRepository.findAllByImmobile(i);

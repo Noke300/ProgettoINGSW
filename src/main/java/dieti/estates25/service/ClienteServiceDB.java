@@ -1,14 +1,11 @@
-package dieti.estates25.service.cliente;
+package dieti.estates25.service;
 
 import dieti.estates25.model.Offerta;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.VisitaId;
-import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.model.cliente.ClientePrincipal;
 import dieti.estates25.repositories.*;
-import dieti.estates25.service.JWTService;
-import dieti.estates25.service.NotificaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -24,7 +21,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ClienteServiceDB implements ClienteService, UserDetailsService {
+public class ClienteServiceDB implements UserDetailsService {
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -59,18 +55,15 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);   //numero di round che permettono una grande sicurezza senza troppo tempo per il calcolo
 
-    @Override
     public List<Cliente> getAllClients() {
         return clienteRepository.findAll();
     }
 
-    @Override
     public Cliente getClienteByMail(String mail) {
         Optional<Cliente> cliente = this.clienteRepository.findById(mail);
         return cliente.orElse(null);
     }
 
-    @Override
     public ResponseEntity<String> addCliente(Cliente cliente) {
         if (!checkDatiCliente(cliente.getEmailCliente(), cliente.getPasswordCliente(), cliente.getDataN())){
             return ResponseEntity
@@ -102,12 +95,10 @@ public class ClienteServiceDB implements ClienteService, UserDetailsService {
         return dataN.before(oggi.getTime());
     }
 
-    @Override
-    public void updateCliente(String mail, Cliente cliente) {
+    public void updateCliente(Cliente cliente) {
         clienteRepository.save(cliente);
     }
 
-    @Override
     public void deleteCliente(String mail) {
         clienteRepository.deleteById(mail);
     }

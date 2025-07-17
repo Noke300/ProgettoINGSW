@@ -2,7 +2,7 @@ package cliente;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import dieti.estates25.service.cliente.ClienteServiceDB;
+import dieti.estates25.service.ClienteServiceDB;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;

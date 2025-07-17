@@ -1,10 +1,9 @@
 package dieti.estates25.controllers;
 
-import dieti.estates25.model.Immobile;
 import dieti.estates25.model.ImmobileEImmagini;
 import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
-import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
+import dieti.estates25.service.AdminSupportServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

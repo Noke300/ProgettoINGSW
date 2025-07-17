@@ -1,6 +1,6 @@
 package agenteimmobiliare;
 
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
+import dieti.estates25.service.AgenteImmobiliareServiceDB;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;

@@ -25,8 +25,7 @@ public class VisitaId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof VisitaId)) return false;
-        VisitaId that = (VisitaId) o;
+        if (!(o instanceof VisitaId that)) return false;
         return Objects.equals(clienteId, that.clienteId) &&
                 Objects.equals(immobileId, that.immobileId);
     }

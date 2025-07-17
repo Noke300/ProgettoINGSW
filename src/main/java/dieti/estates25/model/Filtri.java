@@ -30,6 +30,8 @@ public class Filtri {
 
     private boolean climatizzazione;
 
+    //getter e setter
+
     public double getPrezzoMin() {
         return prezzoMin;
     }

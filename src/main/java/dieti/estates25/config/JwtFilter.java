@@ -1,9 +1,9 @@
 package dieti.estates25.config;
 
 import dieti.estates25.service.AgenziaImmobiliareServiceDB;
-import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
-import dieti.estates25.service.cliente.ClienteServiceDB;
+import dieti.estates25.service.AdminSupportServiceDB;
+import dieti.estates25.service.AgenteImmobiliareServiceDB;
+import dieti.estates25.service.ClienteServiceDB;
 import dieti.estates25.service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -56,17 +56,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if ("cliente".equals(ruolo)) {
-                userDetails = context.getBean(ClienteServiceDB.class).loadUserByUsername(email);
-            } else if ("agente".equals(ruolo)) {
-                userDetails = context.getBean(AgenteImmobiliareServiceDB.class).loadUserByUsername(email);
-            } else if ("adminSupport".equals(ruolo)) {
-                userDetails = context.getBean(AdminSupportServiceDB.class).loadUserByUsername(email);
-            } else if ("admin".equals(ruolo)) {
-                userDetails = context.getBean(AgenziaImmobiliareServiceDB.class).loadUserByUsername(email);
-            } else {
-                throw new ServletException("Ruolo inesistente");
-            }
+            userDetails = switch (ruolo) {
+                case "cliente" -> context.getBean(ClienteServiceDB.class).loadUserByUsername(email);
+                case "agente" -> context.getBean(AgenteImmobiliareServiceDB.class).loadUserByUsername(email);
+                case "adminSupport" -> context.getBean(AdminSupportServiceDB.class).loadUserByUsername(email);
+                case "admin" -> context.getBean(AgenziaImmobiliareServiceDB.class).loadUserByUsername(email);
+                case null, default -> throw new ServletException("Ruolo inesistente");
+            };
 
             if(jwtService.validateToken(token, userDetails)){
                 UsernamePasswordAuthenticationToken authToken =

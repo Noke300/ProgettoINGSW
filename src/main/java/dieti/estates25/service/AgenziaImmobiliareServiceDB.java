@@ -10,8 +10,6 @@ import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliarePrincipal;
 import dieti.estates25.repositories.*;
-import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -92,7 +90,6 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
         agenziaImmobiliareRepository.save(agenzia);
     }
 
-    //TODO testare le cascade
     public void deleteAgenziaImmobiliare(String name) {
         agenziaImmobiliareRepository.deleteById(name);
     }

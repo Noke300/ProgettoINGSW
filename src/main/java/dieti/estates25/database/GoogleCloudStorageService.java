@@ -4,23 +4,16 @@ import java.io.IOException;
 
 public class GoogleCloudStorageService {
 	
-	private StorageManagerInterface storageManager;
-	/**
-     * 
-     * Costruttore
-     */
+	private final StorageManagerInterface storageManager;
+
     public GoogleCloudStorageService(StorageManagerInterface storageManager) {
         this.storageManager = storageManager;
     }
 
-    
-
     public String uploadHouseImage(String fileName, String base64Data, String idCartella) throws IOException {
         return storageManager.uploadFile(fileName, base64Data, idCartella);
     }
-    
-    
-   
+
     public String downloadHouseImage(String fileName) throws IOException {
         return storageManager.downloadImageAsBase64(fileName);
     }

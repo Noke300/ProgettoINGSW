@@ -4,7 +4,7 @@ import dieti.estates25.model.Immobile;
 import dieti.estates25.model.ImmobileEImmagini;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
+import dieti.estates25.service.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,9 +36,9 @@ public class AgenteImmobiliareController {
         return agentService.getAgentByMail(mail);
     }
 
-    @PutMapping("/agenti/{mail}")
-    public void updateAgent(@PathVariable String mail, @RequestBody AgenteImmobiliare agent) {
-        agentService.updateAgent(mail, agent);
+    @PutMapping("/agenti")
+    public void updateAgent(@RequestBody AgenteImmobiliare agent) {
+        agentService.updateAgent(agent);
     }
 
     @DeleteMapping("/agenti/{mail}")

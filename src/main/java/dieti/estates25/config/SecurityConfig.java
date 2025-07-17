@@ -1,9 +1,9 @@
 package dieti.estates25.config;
 
 import dieti.estates25.service.AgenziaImmobiliareServiceDB;
-import dieti.estates25.service.adminsupport.AdminSupportServiceDB;
-import dieti.estates25.service.agenteimmobiliare.AgenteImmobiliareServiceDB;
-import dieti.estates25.service.cliente.ClienteServiceDB;
+import dieti.estates25.service.AdminSupportServiceDB;
+import dieti.estates25.service.AgenteImmobiliareServiceDB;
+import dieti.estates25.service.ClienteServiceDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

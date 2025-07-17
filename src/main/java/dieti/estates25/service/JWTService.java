@@ -41,7 +41,7 @@ public class JWTService {
                 .add(claims)
                 .subject(email)
                 .issuedAt( new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))  //valido per 30 minuti
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))  //valido per 60 minuti
                 .and()
                 .signWith(getKey())
                 .compact();

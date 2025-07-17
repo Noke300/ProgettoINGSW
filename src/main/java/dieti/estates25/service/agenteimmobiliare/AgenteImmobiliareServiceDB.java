@@ -165,9 +165,12 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
         }
 
         if (immobileRepository.countByIndirizzo(immobile.getIndirizzo()) <= 1){
-            indirizzoRepository.deleteById(immobile.getIndirizzo().getIdIndirizzo());
+            String idIndirizzo = immobile.getIndirizzo().getIdIndirizzo();
+            immobileRepository.delete(immobile);
+            indirizzoRepository.deleteById(idIndirizzo);
+        }else{
+            immobileRepository.delete(immobile);
         }
-        immobileRepository.delete(immobile);
         return ResponseEntity.ok("Immobile eliminato correttamente");
     }
 

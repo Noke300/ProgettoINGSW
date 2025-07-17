@@ -104,7 +104,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                         JOptionPane.YES_NO_OPTION
                 );
 
-                if (conferma == JOptionPane.YES_OPTION) {
+                    if (conferma == JOptionPane.YES_OPTION) {
                     control.eliminaImmobile(selectedPanel[0].getName(), token);
                     panelListaImmobile.remove(selectedPanel[0]);
                     selectedPanel = null;

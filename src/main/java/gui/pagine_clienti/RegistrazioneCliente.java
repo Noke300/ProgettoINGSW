@@ -13,22 +13,21 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import com.toedter.calendar.*;
 import controller.Controller;
-import gui.costum_components.BottoniOpzioni;
 import gui.pagine_comuni.Ricerca;
 import gui.costum_components.IconClass;
 import model.Cliente;
 import net.miginfocom.swing.*;
 
 public class RegistrazioneCliente extends JPanel {
-    BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-
-    public RegistrazioneCliente(JFrame frame,Controller control) {
+    public RegistrazioneCliente(JFrame frame,Controller control,String token) {
        initComponents();
        iconSetUp();
        hellperBoxs();
-
-       bottoniOpzioni.setUpOpzioniMenu(frame,control,"",menuBarOpzioni,menuOpzioni);
-
+        ricercaButton.addActionListener(e-> {
+            frame.setContentPane(new Ricerca(frame,control,token));
+            frame.revalidate();
+            frame.repaint();
+        });
         buttonCalender.addActionListener(e -> {
             final JDialog calendarDialog = new JDialog(frame, "Calendario", true);
             calendarDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -172,7 +171,7 @@ public class RegistrazioneCliente extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        // Generated using JFormDesigner Evaluation license - Marco Scotto
         labelNome = new JLabel();
         textFildNome = new JTextField();
         iconNome = new JLabel();
@@ -192,11 +191,21 @@ public class RegistrazioneCliente extends JPanel {
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
+        logInButton = new JButton();
+        ricercaButton = new JButton();
+        buttonAccountAmministrazione = new JButton();
+        backButtonHome = new JButton();
         LogoOpzioni = new JLabel();
         labelTitolo = new JLabel();
         calendarSelector = new JCalendar();
 
         //======== this ========
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
+        .EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing.border.TitledBorder.CENTER,javax
+        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dialo\u0067",java.awt.Font.BOLD,
+        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
+        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("borde\u0072".equals(e.
+        getPropertyName()))throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,hidemode 3,align center center",
             // columns
@@ -298,6 +307,33 @@ public class RegistrazioneCliente extends JPanel {
                     menuOpzioni.setForeground(new Color(0x66ff66));
                     menuOpzioni.setBackground(Color.green);
                     menuOpzioni.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+                    //---- logInButton ----
+                    logInButton.setText("Log In");
+                    logInButton.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
+                    logInButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuOpzioni.add(logInButton);
+
+                    //---- ricercaButton ----
+                    ricercaButton.setText("Ricerca");
+                    ricercaButton.setIcon(UIManager.getIcon("PasswordField.revealIcon"));
+                    ricercaButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuOpzioni.add(ricercaButton);
+
+                    //---- buttonAccountAmministrazione ----
+                    buttonAccountAmministrazione.setText("Account Amministrazione");
+                    buttonAccountAmministrazione.setIcon(UIManager.getIcon("FileChooser.newFolderIcon"));
+                    buttonAccountAmministrazione.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuOpzioni.add(buttonAccountAmministrazione);
+
+                    //---- backButtonHome ----
+                    backButtonHome.setHorizontalTextPosition(SwingConstants.RIGHT);
+                    backButtonHome.setText("Home");
+                    backButtonHome.setVerticalAlignment(SwingConstants.TOP);
+                    backButtonHome.setVerticalTextPosition(SwingConstants.TOP);
+                    backButtonHome.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+                    backButtonHome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                    menuOpzioni.add(backButtonHome);
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
@@ -320,7 +356,7 @@ public class RegistrazioneCliente extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    // Generated using JFormDesigner Evaluation license - Marco Scotto
     private JLabel labelNome;
     private JTextField textFildNome;
     private JLabel iconNome;
@@ -340,6 +376,10 @@ public class RegistrazioneCliente extends JPanel {
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
+    private JButton logInButton;
+    private JButton ricercaButton;
+    private JButton buttonAccountAmministrazione;
+    private JButton backButtonHome;
     private JLabel LogoOpzioni;
     private JLabel labelTitolo;
     private JCalendar calendarSelector;

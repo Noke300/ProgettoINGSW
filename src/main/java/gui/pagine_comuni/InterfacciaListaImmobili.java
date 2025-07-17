@@ -18,6 +18,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +61,7 @@ public class InterfacciaListaImmobili extends JPanel {
             if(!searchField.getText().isEmpty()) {
                 GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
                 Ricerca ricerca = new Ricerca(frame,control,token);
+                BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Ricerca di Immobili : "+searchField.getText());
                 assert geoPos != null;
                 List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, ricerca.fetchFiltri());
                 if (!immobiles.isEmpty()) {

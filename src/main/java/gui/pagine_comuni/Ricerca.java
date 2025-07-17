@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Ricerca extends JPanel {
     private final String FilterString = "Indifferente" ;
     private String token;
     public static NotificationClient notifiche;
-    private final BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+    protected BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     private final AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
     public Ricerca(JFrame frame, Controller control, String token) {
         this.token = token;
@@ -352,7 +353,10 @@ public class Ricerca extends JPanel {
 
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
 
-        searchButton.addActionListener(e -> performSearchAction(frame,control));
+        searchButton.addActionListener(e -> {
+            BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Ricerca di Immobili : "+searchField.getText());
+            performSearchAction(frame,control);
+        });
         //Cerca con Invio
         searchField.addActionListener(e -> searchButton.doClick());
 

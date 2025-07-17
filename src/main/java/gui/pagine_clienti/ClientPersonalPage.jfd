@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.6" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -61,18 +61,6 @@ new FormModel {
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 4 2 1,align center center,grow 0 0"
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "datiLabel"
-				"text": "Dati"
-				"verticalAlignment": 1
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 4 2 6"
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "contenutoPanel"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 4 2 6"
-			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonOfferte"
 				"text": "Offerte"
@@ -86,6 +74,16 @@ new FormModel {
 				"font": #Font2
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 1 5,alignx center,growx 0"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "contenutoPanel"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+					"axis": 0
+				} ) {
+					name: "panelInterno"
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 4 2 4,grow"
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "panelMenuBarOpzioniColore"
@@ -137,4 +135,3 @@ new FormModel {
 		} )
 	}
 }
-

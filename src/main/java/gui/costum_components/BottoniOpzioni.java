@@ -13,8 +13,11 @@ import model.ImmobileEImmagini;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class BottoniOpzioni extends JPanel {
@@ -24,6 +27,8 @@ public class BottoniOpzioni extends JPanel {
     private final JButton buttonRicerca = new JButton();
     private final JButton backButtonHome = new JButton();
     private final JButton buttonAccountAmministrazione = new JButton();
+
+    private static Map<LocalDateTime,String> mapLog = new HashMap<>();
 
     private String token = "";
     private String ruolo = "";
@@ -175,5 +180,9 @@ public class BottoniOpzioni extends JPanel {
             logInButton.setText("Logout");
             logInButton.setIcon(IconClass.getLogOutIcon());
         }
+    }
+
+    public static Map<LocalDateTime, String> getMapLog() {
+        return mapLog;
     }
 }

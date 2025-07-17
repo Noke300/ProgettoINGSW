@@ -13,6 +13,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
 
 public class OffertaPannel {
 
@@ -141,7 +142,6 @@ public class OffertaPannel {
 
 // Azione al click
             inviaButton.addActionListener(h -> {
-                //TODO credo che questi ormai siano controlli ridonanti, decidi tu se lasciarli
                 String testo = campoOfferta.getText().trim();
                 if (!testo.isEmpty()) {
                     try {
@@ -154,6 +154,7 @@ public class OffertaPannel {
 
                             boolean risOfferta=controller.inviaOfferta(offerta,token);
                             if(risOfferta){
+                                BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Offerta Richiesta : "+offerta.getPrezzoOfferta()+" \n"+"Per "+immobile.getIndirizzo().toString());
                                 JOptionPane.showMessageDialog(offerteDialog, "Offerta inviata con successo: €" + prezzo, "Conferma", JOptionPane.INFORMATION_MESSAGE);
                                 offerteDialog.dispose();
                             }else{

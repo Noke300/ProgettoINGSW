@@ -13,6 +13,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import com.toedter.calendar.*;
 import controller.Controller;
+import gui.costum_components.BottoniOpzioni;
 import gui.pagine_comuni.Ricerca;
 import gui.costum_components.IconClass;
 import model.Cliente;
@@ -62,6 +63,7 @@ public class RegistrazioneCliente extends JPanel {
             if(control.registrazioneCliente(newC)){
                 String tokenT = null;
                 tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
+                BottoniOpzioni.getMapLog().clear();
                 frame.setContentPane(new Ricerca(frame,control,tokenT));
                 Arrays.fill(tempPass,'0');
                 frame.revalidate();

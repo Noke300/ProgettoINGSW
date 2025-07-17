@@ -7,7 +7,11 @@ package gui.pagine_clienti;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerClienti;
@@ -70,6 +74,8 @@ public class ClientPersonalPage extends JPanel {
             offertePanel.setVisible(true);
         });
 
+        buttonLog.addActionListener(e -> aggiornaContenutoPanel(BottoniOpzioni.getMapLog(),panelInterno));
+
         listaVisita = controllerClienti.getVisite(token);
         buttonVisite.addActionListener(e -> {
             final JDialog visitePanel = new JDialog(frame, "Visite", true);
@@ -124,6 +130,30 @@ public class ClientPersonalPage extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
+    public static void aggiornaContenutoPanel(Map<LocalDateTime, String> dati, JPanel contenutoPanel) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        contenutoPanel.removeAll(); // 🔄 Pulisce contenuto esistente
+        contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
+
+        Map<LocalDateTime, String> ordinata = new TreeMap<>(dati); // 🕓 Ordina per chiave
+
+        for (Map.Entry<LocalDateTime, String> entry : ordinata.entrySet()) {
+            LocalDateTime data = entry.getKey();
+            String testo = entry.getValue();
+
+            JLabel riga = new JLabel("🕓 " + data.format(formatter) + " → " + testo);
+            riga.setFont(new Font("SansSerif", Font.PLAIN, 20));
+            riga.setAlignmentX(Component.LEFT_ALIGNMENT);
+            contenutoPanel.add(riga);
+
+            contenutoPanel.add(Box.createRigidArea(new Dimension(0, 5))); // spazio tra le righe
+        }
+
+        contenutoPanel.revalidate();
+        contenutoPanel.repaint();
+    }
+
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
@@ -134,10 +164,10 @@ public class ClientPersonalPage extends JPanel {
         labelDataN = new JLabel();
         separatorV = new JSeparator();
         buttonLog = new JButton();
-        datiLabel = new JLabel();
-        contenutoPanel = new JScrollPane();
         buttonOfferte = new JButton();
         buttonVisite = new JButton();
+        contenutoPanel = new JScrollPane();
+        panelInterno = new JPanel();
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -203,12 +233,6 @@ public class ClientPersonalPage extends JPanel {
         buttonLog.setIcon(UIManager.getIcon("FileView.directoryIcon"));
         add(buttonLog, "cell 0 4 2 1,align center center,grow 0 0");
 
-        //---- datiLabel ----
-        datiLabel.setText("Dati");
-        datiLabel.setVerticalAlignment(SwingConstants.TOP);
-        add(datiLabel, "cell 3 4 2 6");
-        add(contenutoPanel, "cell 3 4 2 6");
-
         //---- buttonOfferte ----
         buttonOfferte.setText("Offerte");
         buttonOfferte.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -218,6 +242,17 @@ public class ClientPersonalPage extends JPanel {
         buttonVisite.setText("Visite");
         buttonVisite.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         add(buttonVisite, "cell 1 5,alignx center,growx 0");
+
+        //======== contenutoPanel ========
+        {
+
+            //======== panelInterno ========
+            {
+                panelInterno.setLayout(new BoxLayout(panelInterno, BoxLayout.X_AXIS));
+            }
+            contenutoPanel.setViewportView(panelInterno);
+        }
+        add(contenutoPanel, "cell 3 4 2 4,grow");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -275,10 +310,10 @@ public class ClientPersonalPage extends JPanel {
     private JLabel labelDataN;
     private JSeparator separatorV;
     private JButton buttonLog;
-    private JLabel datiLabel;
-    private JScrollPane contenutoPanel;
     private JButton buttonOfferte;
     private JButton buttonVisite;
+    private JScrollPane contenutoPanel;
+    private JPanel panelInterno;
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;

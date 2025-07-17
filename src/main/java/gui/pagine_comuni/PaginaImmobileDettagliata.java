@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -262,6 +263,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                         if (control.getNameLogIn().equals("[CLIENT]")) {
                             ControllerClienti controllerClienti = new ControllerClienti();
                             if (controllerClienti.inviaVisita(visita, token)) {
+                                BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Visita Richiesta il : "+ visita.getDataVisita() +"alle "+visita.getOraVisita()+"\n Per"+immobile.getIndirizzo().toString());
                                 JOptionPane.showMessageDialog(visitaDialog, "Richiesta inviata!");
                                 visitaDialog.dispose();
                             } else {

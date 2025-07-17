@@ -51,6 +51,13 @@ public class IconClass {
     private static final FontIcon TRANSPORT_ICON = FontIcon.of(FontAwesomeSolid.TRAIN, 18);
     private static final FontIcon PARCHI_ICON = FontIcon.of(FontAwesomeSolid.TREE, 18);
 
+    //Visite
+    private static final FontIcon SOLE_ICON = FontIcon.of(FontAwesomeSolid.SUN, 18);
+    private static final FontIcon PIOGGIA_ICON = FontIcon.of(FontAwesomeSolid.CLOUD_RAIN, 18);
+    private static final FontIcon NUVOLE_ICON = FontIcon.of(FontAwesomeSolid.CLOUD, 18);
+    private static final FontIcon SOLE_NUVOLE_ICON = FontIcon.of(FontAwesomeSolid.CLOUD_SUN, 18);
+    private static final FontIcon NEVE_ICON = FontIcon.of(FontAwesomeSolid.SNOWFLAKE, 18);
+
 
     //Font
     private static final Font FONT_IMMOBILE_CARATTERISTICHE = new Font("SansSerif", Font.PLAIN, 18);
@@ -102,5 +109,10 @@ public class IconClass {
     public static FontIcon getBackButton(){return  BACK_BUTTON;}
     public static FontIcon getScuolaIcon() { return SCUOLA_ICON; }
     public static FontIcon getTransportIcon() { return TRANSPORT_ICON; }
-   public static  FontIcon getParchiIcon() { return PARCHI_ICON; }
+    public static  FontIcon getParchiIcon() { return PARCHI_ICON; }
+    public static FontIcon getSoleIcon() { return SOLE_ICON; }
+    public static FontIcon getPioggiaIcon(){return PIOGGIA_ICON;}
+    public static FontIcon getNuvoleIcon(){return NUVOLE_ICON;}
+    public static FontIcon getSoleNuvoleIcon(){return SOLE_NUVOLE_ICON;}
+    public static FontIcon getNeveIcon(){return NEVE_ICON;}
 }

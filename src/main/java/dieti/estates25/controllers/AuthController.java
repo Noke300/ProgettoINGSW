@@ -164,65 +164,75 @@ public class AuthController {
             return candidati;
         }
 
-        // Inizia con un predicato che accetta tutto
         Predicate<Immobile> filtroComplessivo = immobile -> true;
 
-        // Aggiungi i filtri booleani solo se sono impostati a true
-        if (filtri.getAscensore()) {
-            filtroComplessivo = filtroComplessivo.and(Immobile::getAscensore);
-        }
-        if (filtri.getBalcone()) {
-            filtroComplessivo = filtroComplessivo.and(Immobile::getBalcone);
-        }
-        if (filtri.getCantina()) {
-            filtroComplessivo = filtroComplessivo.and(Immobile::getCantina);
-        }
-        if (filtri.getPortineria()) {
-            filtroComplessivo = filtroComplessivo.and(Immobile::getPortineria);
-        }
-        if (filtri.getClimatizzazione()) {
-            filtroComplessivo = filtroComplessivo.and(Immobile::getClimatizzazione);
-        }
-
-        // Aggiungi i filtri basati su valori specifici
-        if (checkFiltri(filtri.getClasseEnergetica(), filtri.getNumStanze(), filtri.getNumBagni(), filtri.getPiano())) {
-            if (filtri.getClasseEnergetica() != null) {
-                filtroComplessivo = filtroComplessivo.and(i -> i.getClasseEnergetica().equals(filtri.getClasseEnergetica()));
-            }
-            if (filtri.getNumBagni() != -1) {
-                filtroComplessivo = filtroComplessivo.and(i -> i.getNumBagni() >= filtri.getNumBagni());
-            }
-            if (filtri.getNumStanze() != 0) {
-                filtroComplessivo = filtroComplessivo.and(i -> i.getNumStanze() >= filtri.getNumStanze());
-            }
-            if (filtri.getPiano() != -2) {
-                filtroComplessivo = filtroComplessivo.and(i -> i.getPiano() >= filtri.getPiano());
-            }
-        }
-        // Gestione del filtro prezzo
-        if (checkPrezzi(filtri.getPrezzoMin(), filtri.getPrezzoMax())) {
-            if (filtri.getPrezzoMin() != 0 && filtri.getPrezzoMax() != 0) {
-                filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin() && i.getPrezzo() <= filtri.getPrezzoMax());
-            } else if (filtri.getPrezzoMin() != 0) { // Max è 0
-                filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() >= filtri.getPrezzoMin());
-            } else if (filtri.getPrezzoMax() != 0) { // Min è 0
-                filtroComplessivo = filtroComplessivo.and(i -> i.getPrezzo() <= filtri.getPrezzoMax());
-            }
-        }
-
-        if (filtri.getSuperficie() != 0) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getSuperficie() >= filtri.getSuperficie());
-        }
-        if (filtri.getTipoImmobile() != null) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getTipoImmobile().equals(filtri.getTipoImmobile()));
-        }
-        if (filtri.getTipoVendita() != null) {
-            filtroComplessivo = filtroComplessivo.and(i -> i.getTipoVendita().equals(filtri.getTipoVendita()));
-        }
+        filtroComplessivo = filtroComplessivo
+                .and(filtriBooleani(filtri))
+                .and(filtriValori(filtri))
+                .and(filtroPrezzo(filtri))
+                .and(filtriStringa(filtri));
 
         return candidati.stream()
                 .filter(filtroComplessivo)
                 .toList();
+    }
+
+    private Predicate<Immobile> filtriBooleani(Filtri f) {
+        Predicate<Immobile> p = immobile -> true;
+
+        if (f.getAscensore()) p = p.and(Immobile::getAscensore);
+        if (f.getBalcone()) p = p.and(Immobile::getBalcone);
+        if (f.getCantina()) p = p.and(Immobile::getCantina);
+        if (f.getPortineria()) p = p.and(Immobile::getPortineria);
+        if (f.getClimatizzazione()) p = p.and(Immobile::getClimatizzazione);
+
+        return p;
+    }
+
+    private Predicate<Immobile> filtriValori(Filtri f) {
+        Predicate<Immobile> p = immobile -> true;
+
+        if (checkFiltri(f.getClasseEnergetica(), f.getNumStanze(), f.getNumBagni(), f.getPiano())) {
+            if (f.getClasseEnergetica() != null) {
+                p = p.and(i -> i.getClasseEnergetica().equals(f.getClasseEnergetica()));
+            }
+            if (f.getNumBagni() != -1) {
+                p = p.and(i -> i.getNumBagni() >= f.getNumBagni());
+            }
+            if (f.getNumStanze() != 0) {
+                p = p.and(i -> i.getNumStanze() >= f.getNumStanze());
+            }
+            if (f.getPiano() != -2) {
+                p = p.and(i -> i.getPiano() >= f.getPiano());
+            }
+        }
+
+        return p;
+    }
+
+    private Predicate<Immobile> filtroPrezzo(Filtri f) {
+        double min = f.getPrezzoMin();
+        double max = f.getPrezzoMax();
+
+        if (!checkPrezzi(min, max)) return immobile -> false;
+
+        if (min == 0 && max == 0) return immobile -> true;
+        if (min != 0 && max != 0) return i -> i.getPrezzo() >= min && i.getPrezzo() <= max;
+        if (min != 0) return i -> i.getPrezzo() >= min;
+        return i -> i.getPrezzo() <= max;
+    }
+
+    private Predicate<Immobile> filtriStringa(Filtri f) {
+        Predicate<Immobile> p = immobile -> true;
+
+        if (f.getTipoImmobile() != null) {
+            p = p.and(i -> i.getTipoImmobile().equals(f.getTipoImmobile()));
+        }
+        if (f.getTipoVendita() != null) {
+            p = p.and(i -> i.getTipoVendita().equals(f.getTipoVendita()));
+        }
+
+        return p;
     }
 
     public boolean checkFiltri(String classeEnergetica, int numStanze, int numBagni, int piano) {

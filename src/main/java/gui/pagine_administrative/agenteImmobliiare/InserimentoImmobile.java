@@ -384,8 +384,9 @@ public class InserimentoImmobile extends JPanel {
             if(numeroField.getText().isEmpty()) tuttiCampiCompilati = false;
             if(capField.getText().isEmpty()) tuttiCampiCompilati = false;
 
-            if(superficieField.getText().isEmpty()) tuttiCampiCompilati = false;
-            if(priceField.getText().isEmpty()) tuttiCampiCompilati = false;
+
+            if(superficieField.getText().isEmpty() || !superficieField.getText().matches("\\d+")) tuttiCampiCompilati = false;
+            if(priceField.getText().isEmpty() || !priceField.getText().matches("\\d+")) tuttiCampiCompilati = false;
             if(descriptionArea.getText().isEmpty()) tuttiCampiCompilati = false;
             if(base64ListImmagini.isEmpty()) tuttiCampiCompilati = false;
 
@@ -438,7 +439,7 @@ public class InserimentoImmobile extends JPanel {
               }
 
             }else{
-                JOptionPane.showMessageDialog(null, "Compilare tutti i campi obbligatori");
+                JOptionPane.showMessageDialog(null, "Compilare correttamente tutti i campi");
             }
 
         });

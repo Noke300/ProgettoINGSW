@@ -133,7 +133,8 @@ public class ImmobilePanelSingolo {
 
     private static void navigateToDetailsPage(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
             if (frame != null) {
-                PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame, immobileEImmagini, control, token);
+                Container content = frame.getContentPane();
+                PaginaImmobileDettagliata detailsPage = new PaginaImmobileDettagliata(frame, immobileEImmagini, control, token,content);
                 frame.setContentPane(detailsPage);
                 frame.revalidate();
                 frame.repaint();

@@ -234,7 +234,7 @@ public class Ricerca extends JPanel {
 
     }
 
-    private void aggiornaPrezzi(JComboBox<String> comboMin, JComboBox<String> comboMax, String tipo) {
+    public static void aggiornaPrezzi(JComboBox<String> comboMin, JComboBox<String> comboMax, String tipo) {
 
         if ("Vendita".equals(tipo)) {
             comboMax.removeAllItems();
@@ -428,7 +428,7 @@ public class Ricerca extends JPanel {
         });
     }
 
-    private Map<String, Object> fetchFiltri(){
+    public Map<String, Object> fetchFiltri(){
         Map<String, Object> filtri = new HashMap<>();
 
         filtri.put("prezzoMax", traduciPrezzo((String) comboBoxPrezzoMax.getSelectedItem()));
@@ -611,7 +611,6 @@ public class Ricerca extends JPanel {
         searchField.setBackground(null);
         searchField.setFont(new Font("Segoe UI", Font.PLAIN, 30));
         searchField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-        searchField.setText("Cerca Qualcosa");
         add(searchField, "cell 1 2 5 1,aligny center,grow 100 0");
 
         //---- listaTipi ----

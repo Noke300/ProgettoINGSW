@@ -1,6 +1,7 @@
 package model;
 
-import java.util.List;
+
+import org.jxmapviewer.viewer.GeoPosition;
 
 public class Immobile {
     private String idImmobile;
@@ -65,6 +66,8 @@ public class Immobile {
         this.agente = null;
         this.indirizzo = null;
     }
+
+
 
     public AgenziaImmobiliare getAgenziaImmobiliare() {
         return nomeAgenzia;
@@ -258,4 +261,9 @@ public class Immobile {
     }
 
     public boolean isTrasportoPubblico() {return trasportoPubblico;}
+
+    public String  getGeoPosition() {
+        return this.getIndirizzo().toString();
+    }
+
 }

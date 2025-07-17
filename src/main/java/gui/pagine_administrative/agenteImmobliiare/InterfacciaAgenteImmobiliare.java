@@ -56,17 +56,11 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             immobili.add(i.getImmobile());
         }
 
-        if(!immobili.isEmpty()) {
-            geoPos = new GeoPosition(immobili.getLast().getLanIm(),immobili.getLast().getLanIm());
-        }else{
-            geoPos = new GeoPosition(40.000,39.000);
-        }
-
         Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
             NotificationClient.notificheWindow(messaggio);
         }));
 
-
+        geoPos = MapLoader.getCoordinatesFromAddress(immobili.getFirst().getGeoPosition());
         mapLoader = new MapLoader(geoPos, panelMap, immobili);
         // In the initComponents method, replace the GridLayout with MigLayout
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row

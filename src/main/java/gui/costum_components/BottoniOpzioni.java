@@ -21,6 +21,7 @@ public class BottoniOpzioni extends JPanel {
 
     private final JButton logInButton = new JButton();
     private final JButton buttonAccountClienti = new JButton();
+    private final JButton buttonRicerca = new JButton();
     private final JButton backButtonHome = new JButton();
     private final JButton buttonAccountAmministrazione = new JButton();
 
@@ -108,6 +109,7 @@ public class BottoniOpzioni extends JPanel {
         });
 
         // ACCOUNT CLIENTI
+        buttonAccountClienti.addMouseListener(IconClass.cursorButton());
         buttonAccountClienti.addActionListener(e -> {
             menuOpzioni.setVisible(false);
             menuBarOpzioni.setVisible(false);
@@ -121,10 +123,20 @@ public class BottoniOpzioni extends JPanel {
             frame.repaint();
         });
 
+        //RICERCA
 
-        buttonAccountClienti.addMouseListener(IconClass.cursorButton());
+        buttonRicerca.addActionListener(e -> {
+            menuOpzioni.setVisible(false);
+            menuBarOpzioni.setVisible(false);
+            frame.setContentPane(new Ricerca(frame, new Controller(), this.token));
+            frame.revalidate();
+            frame.repaint();
+        });
 
-        for (JButton btn : Arrays.asList(logInButton, buttonAccountAmministrazione, backButtonHome)) {
+
+
+
+        for (JButton btn : Arrays.asList(logInButton, buttonAccountAmministrazione,buttonRicerca, backButtonHome)) {
             btn.addMouseListener(IconClass.cursorButton());
             menuOpzioni.add(btn);
         }
@@ -146,6 +158,10 @@ public class BottoniOpzioni extends JPanel {
         buttonAccountClienti.setText("Account Clienti");
         buttonAccountClienti.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         buttonAccountClienti.setIcon(IconClass.getNomeCliente());
+
+        buttonRicerca.setText("Ricerca");
+        buttonRicerca.setIcon(IconClass.getSearcherIcon());
+        buttonRicerca.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         setUpLogInOutButton();
     }

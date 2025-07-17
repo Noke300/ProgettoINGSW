@@ -127,33 +127,6 @@ new FormModel {
 						"foreground": new java.awt.Color( 102, 255, 102, 255 )
 						"background": sfield java.awt.Color green
 						"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "logInButton"
-							"text": "Log In"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.detailsViewIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "ricercaButton"
-							"text": "Ricerca"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "PasswordField.revealIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "buttonAccountAmministrazione"
-							"text": "Account Amministrazione"
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.newFolderIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "backButtonHome"
-							"horizontalTextPosition": 4
-							"text": "Home"
-							"verticalAlignment": 1
-							"verticalTextPosition": 1
-							"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "East"

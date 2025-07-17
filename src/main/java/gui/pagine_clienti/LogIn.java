@@ -51,7 +51,7 @@ public class LogIn extends JPanel {
                  }
          });
          buttonRegistrati.addActionListener(e-> {
-             frame.setContentPane(new RegistrazioneCliente(frame,control,this.token));
+             frame.setContentPane(new RegistrazioneCliente(frame,control));
              frame.revalidate();
              frame.repaint();
          });

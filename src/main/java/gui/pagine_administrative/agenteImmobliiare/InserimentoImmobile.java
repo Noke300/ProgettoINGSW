@@ -18,12 +18,14 @@ import javax.swing.event.DocumentListener;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerAgente;
 import controller.NotificationClient;
+import gui.costum_components.BottoniOpzioni;
 import gui.pagine_comuni.Ricerca;
 import gui.costum_components.AutoCompleteAddress;
 import gui.costum_components.IconClass;
 import gui.costum_components.maps.MapLoader;
 import model.AgenteImmobiliare;
 import model.Immobile;
+import model.ImmobileEImmagini;
 import model.Indirizzo;
 import net.miginfocom.swing.*;
 import org.jetbrains.annotations.NotNull;
@@ -45,10 +47,12 @@ public class InserimentoImmobile extends JPanel {
     JCheckBox climatizzazione = new JCheckBox("Climatizzazione");
     JCheckBox portineria = new JCheckBox("Portineria");
 
+    BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     //TODO da rimovere e refactorare le funzioni al sup interno
 
     public InserimentoImmobile(JFrame frame, ControllerAgente controllerA, String token) {
         initComponents();
+        bottoniOpzioni.setUpOpzioniMenu(frame,controllerA,token,menuBarOpzioni,menuOpzioni);
         base64ListImmagini = new ArrayList<>();
         listNomeImmagini = new ArrayList<>();
 
@@ -404,7 +408,7 @@ public class InserimentoImmobile extends JPanel {
                         Integer.parseInt(capField.getText()),
                         String.valueOf(regioneCombo.getSelectedItem()),
                         geoP.getLatitude(),geoP.getLongitude());
-                Immobile immobileTemp = new Immobile(
+                        Immobile immobileTemp = new Immobile(
                         agenteTemp.getAgenziaImmobiliare(),
                         indirizzoT,
                         agenteTemp,
@@ -456,12 +460,29 @@ public class InserimentoImmobile extends JPanel {
                     base64ListImmagini.add(base64Image);
                     listNomeImmagini.add(imgFile.getName());
                 } catch (IOException ex) {
-                    System.out.println("Error: " + ex.getMessage());
                     ex.printStackTrace();
                 }
                 imageBarPanel.add(cell);
                 imageBarPanel.revalidate();
                 imageBarPanel.repaint();
+            }
+        });
+
+        buttonBack.setIcon(IconClass.getBackButton());
+        buttonBack.addActionListener(e -> {
+            int scelta = JOptionPane.showConfirmDialog(
+                    frame,
+                    "Sei sicuro di voler tornare indietro?\nTutti i dati inseriti saranno persi.",
+                    "Conferma operazione",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (scelta == JOptionPane.YES_OPTION) {
+                List<ImmobileEImmagini> immobileEImmaginis = controllerA.fetchImmobili(token);
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame,bottoniOpzioni,controllerA,token,immobileEImmaginis));
+                frame.revalidate();
+                frame.repaint();
             }
         });
 
@@ -507,7 +528,6 @@ public class InserimentoImmobile extends JPanel {
             NotificationClient.notificheWindow(messaggio);
         }));
 
-
         return caratteristicheButton;
     }
 
@@ -515,8 +535,6 @@ public class InserimentoImmobile extends JPanel {
         byte[] fileContent = Files.readAllBytes(imageFile.toPath());
         return Base64.getEncoder().encodeToString(fileContent);
     }
-
-    //TODO Spostare in classe Util //chiedo scusa
 
     public static Map<String, List<String>> regioniProvinceLabelMap() {
         Map<String, List<String>> map = new TreeMap<>(); // Ordina le regioni alfabeticamente
@@ -553,8 +571,9 @@ public class InserimentoImmobile extends JPanel {
         panelMenuBarOpzioniColore = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
-        LogoOpzioni = new JLabel();
+        buttonBack = new JButton();
         labelTitolo = new JLabel();
+        LogoOpzioni = new JLabel();
 
         //======== this ========
         setLayout(new MigLayout(
@@ -600,19 +619,24 @@ public class InserimentoImmobile extends JPanel {
             }
             panelMenuBarOpzioniColore.add(menuBarOpzioni, BorderLayout.EAST);
 
-            //---- LogoOpzioni ----
-            LogoOpzioni.setIcon(new FlatSVGIcon("Logo.svg"));
-            LogoOpzioni.setIconTextGap(2);
-            panelMenuBarOpzioniColore.add(LogoOpzioni, BorderLayout.WEST);
-
-            //---- labelTitolo ----
-            labelTitolo.setText("DietiEstates25 ");
-            labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 50));
-            labelTitolo.setForeground(UIManager.getColor("Button.background"));
-            labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
-            panelMenuBarOpzioniColore.add(labelTitolo, BorderLayout.CENTER);
+            //---- buttonBack ----
+            buttonBack.setText("Back");
+            buttonBack.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+            buttonBack.setBackground(new Color(0x00ffffff, true));
+            buttonBack.setBorderPainted(false);
+            panelMenuBarOpzioniColore.add(buttonBack, BorderLayout.WEST);
         }
         add(panelMenuBarOpzioniColore, "north");
+
+        //---- labelTitolo ----
+        labelTitolo.setText("DietiEstates25 ");
+        labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 50));
+        labelTitolo.setForeground(UIManager.getColor("Button.background"));
+        labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        //---- LogoOpzioni ----
+        LogoOpzioni.setIcon(new FlatSVGIcon("Logo.svg"));
+        LogoOpzioni.setIconTextGap(2);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -622,7 +646,8 @@ public class InserimentoImmobile extends JPanel {
     private JPanel panelMenuBarOpzioniColore;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
-    private JLabel LogoOpzioni;
+    private JButton buttonBack;
     private JLabel labelTitolo;
+    private JLabel LogoOpzioni;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

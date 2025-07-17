@@ -93,7 +93,9 @@ new FormModel {
 					"value": "cell 2 2,align left center,grow 0 0"
 				} )
 				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
-					name: "menuBarContenitorePrezziBox"
+					name: "menuBarPrezziTutto"
+					"background": new com.jformdesigner.model.SwingColor( "Button.background" )
+					"border": new com.jformdesigner.model.SwingBorder( "CheckBox.border" )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menuPrezzi"
 						"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
@@ -103,30 +105,33 @@ new FormModel {
 						"border": new com.jformdesigner.model.SwingBorder( "ComboBox.border" )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
 						"font": new java.awt.Font( "Segoe UI", 0, 18 )
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBoxPrezzoMax"
-							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: "Prezzo Massimo"
-								addElement( "Prezzo Massimo" )
-								addElement( "Poco" )
-								addElement( "Medio " )
-								addElement( "Simone" )
-							}
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
-						} )
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBoxPrezzoMinimo"
-							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: "Prezzo Minimo"
-								addElement( "Prezzo Minimo" )
-								addElement( "Tanto " )
-								addElement( "Poco" )
-							}
-							"font": new java.awt.Font( "Segoe UI", 0, 16 )
+						add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+							name: "menuBarContenitorePrezziBox"
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxPrezzoMinimo"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Prezzo Minimo"
+									addElement( "Prezzo Minimo" )
+									addElement( "Poco" )
+									addElement( "Medio " )
+									addElement( "Simone" )
+								}
+								"font": new java.awt.Font( "Segoe UI", 0, 16 )
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxPrezzoMax"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Prezzo Massimo"
+									addElement( "Prezzo Massimo" )
+									addElement( "Tanto " )
+									addElement( "Poco" )
+								}
+								"font": new java.awt.Font( "Segoe UI", 0, 16 )
+							} )
 						} )
 					} )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 2,align left center,grow 0 0"
+					"value": "cell 3 2"
 				} )
 				add( new FormComponent( "javax.swing.JComboBox" ) {
 					name: "comboBoxSuperfice"
@@ -174,7 +179,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 15, 10 )
-			"size": new java.awt.Dimension( 720, 700 )
+			"size": new java.awt.Dimension( 775, 620 )
 		} )
 	}
 }

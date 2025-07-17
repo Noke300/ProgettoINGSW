@@ -22,13 +22,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import controller.Controller;
-import controller.ControllerClienti;
-import controller.NotificationClient;
+import controller.*;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.costum_components.maps.MapLoader;
 import gui.costum_components.OffertaPannel;
+import gui.pagine_administrative.admin.InterfacciaAdmin;
+import gui.pagine_administrative.adminSup.InterfacciaAdminSup;
+import gui.pagine_administrative.agenteImmobliiare.InterfacciaAgenteImmobiliare;
 import gui.pagine_clienti.LogIn;
 import model.Immobile;
 import model.ImmobileEImmagini;
@@ -58,7 +59,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
     //TODO distanzia i bottoni di aggiungi offerta e richiedi visita nella GUI pls
 
-    public PaginaImmobileDettagliata(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token) {
+    public PaginaImmobileDettagliata(JFrame frame, ImmobileEImmagini immobileEImmagini, Controller control, String token,Container content) {
         initComponents();
 
         Immobile immobile = immobileEImmagini.getImmobile();
@@ -288,8 +289,11 @@ public class PaginaImmobileDettagliata extends JPanel {
             }
         });
 
+        buttonBack.setIcon(IconClass.getBackButton());
         buttonBack.addActionListener(e ->{
-            //TODO
+          frame.setContentPane(content);
+          frame.revalidate();
+          frame.repaint();
         });
 
         JPanel pannelloContenuto = new JPanel();
@@ -543,7 +547,7 @@ public class PaginaImmobileDettagliata extends JPanel {
                 NotificationClient.notificheWindow(messaggio);
             }));
         }
-
+        
 
     }
 

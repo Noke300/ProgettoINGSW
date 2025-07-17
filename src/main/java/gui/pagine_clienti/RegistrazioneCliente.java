@@ -19,15 +19,11 @@ import model.Cliente;
 import net.miginfocom.swing.*;
 
 public class RegistrazioneCliente extends JPanel {
-    public RegistrazioneCliente(JFrame frame,Controller control,String token) {
+    public RegistrazioneCliente(JFrame frame,Controller control) {
        initComponents();
        iconSetUp();
        hellperBoxs();
-        ricercaButton.addActionListener(e-> {
-            frame.setContentPane(new Ricerca(frame,control,token));
-            frame.revalidate();
-            frame.repaint();
-        });
+
         buttonCalender.addActionListener(e -> {
             final JDialog calendarDialog = new JDialog(frame, "Calendario", true);
             calendarDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

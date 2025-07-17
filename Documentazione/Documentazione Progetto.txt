@@ -806,11 +806,94 @@ TODO
 \subsection{Diagramma delle classi di design}
 TODO
 \subsection{Sequence Diagram}
-TODO
 
+\subsubsection{Ricerca Immobile}
 
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,20); 
 
+        \clip[rounded corners=10pt] (0,0) rectangle (15,20);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=20cm]{Immagini/Cerca Immobile sequence.jpg}};
+    \end{tikzpicture}
 
+\end{figure}
+
+\subsubsection{Inserisci Immobile}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,20); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,20);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=20cm]{Immagini/Inserisci Immobile sequence.jpg}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\subsubsection{Fai Offerta}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,20); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,20);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=20cm]{Immagini/Fai Offerta sequence.jpg}};
+    \end{tikzpicture}
+
+\end{figure}
+
+\subsubsection{Accetta Visita}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,20); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,20);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=20cm]{Immagini/Accetta Visita sequence.jpg}};
+    \end{tikzpicture}
+
+\end{figure}
 
 \newpage
 \section{Processo di sviluppo}

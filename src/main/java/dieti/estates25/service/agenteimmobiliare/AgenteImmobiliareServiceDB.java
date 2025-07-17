@@ -164,11 +164,6 @@ public class AgenteImmobiliareServiceDB implements AgenteImmobiliareService, Use
                     .body("Immobile non trovato");
         }
 
-        if (!immobile.getAgente().getEmailAgente().equals(getEmailAutenticato())) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body("Stai cercando di eliminare un immobile che non gestisci tu");
-        }
         if (immobileRepository.countByIndirizzo(immobile.getIndirizzo()) <= 1){
             indirizzoRepository.deleteById(immobile.getIndirizzo().getIdIndirizzo());
         }

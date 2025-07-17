@@ -76,7 +76,6 @@ public class AgenteImmobiliareController {
         return agentService.aggiungiImmobile(request);
     }
 
-    //TODO Da testare
     @PostMapping("confermaVisita")
     public ResponseEntity<String> confermaVisita(@RequestBody Visita visita) {
         return agentService.confermaVisista(visita);

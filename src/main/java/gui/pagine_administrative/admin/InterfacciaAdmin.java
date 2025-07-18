@@ -16,6 +16,7 @@ import gui.costum_components.AggiungiDipendentiPannel;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
 import gui.costum_components.ImmobilePanelSingolo;
+import gui.pagine_administrative.LogInAmministrazione;
 import model.AdminSupport;
 import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
@@ -32,7 +33,7 @@ public class InterfacciaAdmin extends JPanel {
 
     public InterfacciaAdmin(JFrame frame, ControllerAdmin controller, String token) {
         initComponents();
-        bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
+        bottoniOpzioni.setUpOpzioniMenu(frame, controller, token, menuBarOpzioni, menuOpzioni);
         this.admin = controller.getAgenziaImmobiliare(token);
         labelNomeAzzienda.setText("Admin di " + admin.getNomeAgenzia());
 
@@ -48,15 +49,15 @@ public class InterfacciaAdmin extends JPanel {
         for (AdminSupport d : admin.getAdminSupport()) {
             model.addRow(new Object[]{d.getNomeSupport(), d.getCognomeSupport(), d.getEmailSupport(), "Admin Support"});
         }
-        for (AgenteImmobiliare d : admin.getAgentiImmobiliari()){
+        for (AgenteImmobiliare d : admin.getAgentiImmobiliari()) {
             model.addRow(new Object[]{d.getNomeAgente(), d.getCognomeAgente(), d.getEmailAgente(), "Agente Immobiliari"});
         }
         panelListaImmobile.setLayout(new MigLayout("wrap 1, align center")); // One component per row
         JPanel[] selectedPanel = new JPanel[1];
 
-        Dimension dim  = new Dimension(750,289);
+        Dimension dim = new Dimension(750, 289);
         for (ImmobileEImmagini immobileEImmagini : admin.getListaImmobili()) {
-            JPanel panel = ImmobilePanelSingolo.createImmobileSingoloPanel(frame,immobileEImmagini,controller,token,selectedPanel);
+            JPanel panel = ImmobilePanelSingolo.createImmobileSingoloPanel(frame, immobileEImmagini, controller, token, selectedPanel);
             panel.setName(immobileEImmagini.getImmobile().getId());
             panel.setMaximumSize(dim);
             panel.setPreferredSize(dim);
@@ -128,15 +129,69 @@ public class InterfacciaAdmin extends JPanel {
             }
         });
 
-        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPanelAdmin(frame,controller,admin,token,model,tipoCombo));
+        buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPanelAdmin(frame, controller, admin, token, model, tipoCombo));
 
 
         panelListaDipendenti.setViewportView(tabella);
         panelListaDipendenti.revalidate();
         panelListaDipendenti.repaint();
 
+        SwingUtilities.invokeLater(() -> {
+            if (admin.getPasswordAdmin().contains(admin.getNomeAgenzia())) {
+
+                JDialog dialog = new JDialog(frame, "Imposta nuova password", true);
+                dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+                JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+                JLabel labelPass = new JLabel("Nuova Password:");
+                JPasswordField passwordField = new JPasswordField();
+                JButton inviaButton = new JButton("Invia");
+                JButton logoutButton = new JButton("Logout");
+
+                panel.add(labelPass);
+                panel.add(passwordField);
+                panel.add(inviaButton);
+                panel.add(logoutButton);
+
+                dialog.getContentPane().add(panel);
+                dialog.setSize(350, 150);
+                dialog.setLocationRelativeTo(frame);
+
+                inviaButton.addActionListener(e -> {
+                    String newPassword = new String(passwordField.getPassword()).trim();
+                    if (newPassword.isEmpty()) {
+                        JOptionPane.showMessageDialog(dialog, "La password non può essere vuota.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        admin.setPasswordAdmin(newPassword);
+                        controller.aggiornaCredenzialiRemoto(token, admin);
+                        dialog.dispose();
+
+                        frame.revalidate();
+                        frame.repaint();
+                    }
+                });
+
+                logoutButton.addActionListener(e -> {
+                    // Logica per fare il logout, ad esempio tornare alla schermata di login
+                    controller.eseguiLogout(token);
+                    JOptionPane.showMessageDialog(dialog, "Hai effettuato il logout.");
+                    dialog.dispose();
+
+
+                    frame.setContentPane(new LogInAmministrazione(frame, controller, "")); // Chiude tutto se necessario
+                    frame.revalidate();
+                    frame.repaint();
+                });
+
+                dialog.setVisible(true);
+            }
+        });
+
+
 
     }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

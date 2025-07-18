@@ -45,6 +45,14 @@ public class AgenziaImmobiliare {
         this.listaImmobili = listaImmobili;
     }
 
+    public String getPasswordAdmin() {
+        return passwordAdmin;
+    }
+
+    public void setPasswordAdmin(String passwordAdmin) {
+        this.passwordAdmin = passwordAdmin;
+    }
+
     public String getRegione() {
         return regione;
     }

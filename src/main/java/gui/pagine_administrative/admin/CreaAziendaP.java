@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.PanelUI;
+
 import com.formdev.flatlaf.extras.*;
 import controller.Controller;
 import gui.costum_components.BottoniOpzioni;
@@ -61,7 +63,8 @@ public class CreaAziendaP extends JPanel {
     }
 
 
-    private static String capitalizeFirstLetter(String str) {
+
+    public static String capitalizeFirstLetter(String str) {
         if (str == null || str.isEmpty()) return str;
 
         str = str.replaceAll(" ","");

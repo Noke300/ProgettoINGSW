@@ -20,6 +20,8 @@ import java.util.List;
 
 public class ControllerAdmin extends Controller {
 
+
+    protected static final String MODIFICA_PASS          = "http://localhost:8081/auth-admin/aggiornaCredenziali";
     protected static final String GET_AGENZIAIMM        = "http://localhost:8081/auth-admin/specificheAgenziaImmobiliare";
     protected static final String GET_AGENTIIMM         = "http://localhost:8081/auth-admin/getAgentiImmobiliari";
     protected static final String GET_ADMINSUPPORT      = "http://localhost:8081/auth-admin/getAdminSupport";
@@ -183,7 +185,7 @@ public class ControllerAdmin extends Controller {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             String body = response.body();
             return response.statusCode() == 201 || (body != null && body.contains("Agente Immobiliare creato"));
         } catch (URISyntaxException | IOException | InterruptedException e) {
@@ -194,13 +196,13 @@ public class ControllerAdmin extends Controller {
 
     public List<ImmobileEImmagini> getListaImmobili(String token) {
         try {
-            HttpRequest request = HttpRequest.newBuilder()
+             request = HttpRequest.newBuilder()
                     .uri(new URI(GET_IMMOBILI))
                     .header("Authorization", "Bearer " + token)
                     .GET()
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 Type listType = new TypeToken<List<ImmobileEImmagini>>() {}.getType();
@@ -213,6 +215,30 @@ public class ControllerAdmin extends Controller {
             throw new RuntimeException("Errore durante la visualizzazione immobili: " + e.getMessage());
         }
     }
+
+    public void aggiornaCredenzialiRemoto(String token, AgenziaImmobiliare agenzia) {
+        try {
+            String jsonBody = new Gson().toJson(agenzia);
+
+             request = HttpRequest.newBuilder()
+                    .uri(new URI(MODIFICA_PASS))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+           response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Credenziali aggiornate con successo.");
+            } else {
+                System.err.println("Errore nell'aggiornamento: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante l'aggiornamento credenziali: " + e.getMessage());
+        }
+    }
+
 
     public AgenziaImmobiliare getAgenziaImmobiliare(String token) {
 

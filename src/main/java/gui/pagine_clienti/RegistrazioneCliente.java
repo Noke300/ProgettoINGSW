@@ -8,12 +8,12 @@ import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import com.toedter.calendar.*;
 import controller.Controller;
-import gui.costum_components.BottoniOpzioni;
 import gui.pagine_comuni.Ricerca;
 import gui.costum_components.IconClass;
 import model.Cliente;
@@ -53,29 +53,69 @@ public class RegistrazioneCliente extends JPanel {
         });
 
 
-
         buttonRegistrati.addActionListener(e -> {
             char[] tempPass = passwordField1.getPassword();
-            Date date = Date.valueOf(textFildData.getText());
+            Date date;
+            try{
+                date = Date.valueOf(textFildData.getText());
+            }catch (IllegalArgumentException exception){
+                JOptionPane.showMessageDialog(frame, "Inserire un valore valido per la data di nascita");
+                return;
+            }
 
-            Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
-                    new String(tempPass), date);
-            if(control.registrazioneCliente(newC)){
-                String tokenT = null;
-                tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
-                BottoniOpzioni.getMapLog().clear();
-                frame.setContentPane(new Ricerca(frame,control,tokenT));
-                Arrays.fill(tempPass,'0');
-                frame.revalidate();
-                frame.repaint();
+            if(checkDati(textFildNome.getText(), textFildCognome.getText(), textFildEmail.getText(), new String(tempPass), date)){
+                Cliente newC = new Cliente(textFildNome.getText(),textFildCognome.getText(),textFildEmail.getText(),
+                        new String(tempPass), date);
+                if(control.registrazioneCliente(newC)){
+                    String tokenT;
+                    tokenT = control.logInClient(newC.getEmailcliente(),newC.getPasswordcliente());
+                    frame.setContentPane(new Ricerca(frame,control,tokenT));
+                    Arrays.fill(tempPass,'0');
+                    frame.revalidate();
+                    frame.repaint();
+                }else{
+                    Arrays.fill(tempPass,'0');
+                    JOptionPane.showMessageDialog(frame, "Esiste già un account associato a questa mail");
+                }
             }else{
                 Arrays.fill(tempPass,'0');
                 System.out.println("Errore");
+                JOptionPane.showMessageDialog(frame, "Compila tutti i campi correttamente.");
             }
 
         });
 
     }
+
+    private boolean checkDati(String nome, String cognome, String email, String password, Date data) {
+        if (nome == null || nome.isEmpty() ||
+                cognome == null || cognome.isEmpty() ||
+                email == null || email.isEmpty() ||
+                password == null || password.isEmpty()) {
+            return false;
+        }
+
+        // Regex per email valida
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        if (!email.matches(emailRegex)) {
+            return false;
+        }
+
+        // Regex per password:
+        // almeno 1 maiuscola, 1 numero, 1 carattere speciale, minimo 8 caratteri
+        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
+        if (!password.matches(passwordRegex)) {
+            return false;
+        }
+
+        // Controllo età (almeno 18 anni)
+        Calendar oggi = Calendar.getInstance();
+        oggi.add(Calendar.YEAR, -18);
+        java.util.Date limiteMinimo = oggi.getTime();
+
+        return data.before(limiteMinimo);
+    }
+
     private void iconSetUp(){
         buttonCalender.setIcon(IconClass.getCalendarioIcon());
         iconEmail.setIcon(IconClass.getEmailIcon());

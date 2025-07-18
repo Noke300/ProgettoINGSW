@@ -1,0 +1,136 @@
+JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.7" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,hidemode 3,align center center"
+			"$columnConstraints": "[292,grow,fill][292,grow,fill][292,grow,fill][292,grow,fill][72,fill]ind"
+			"$rowConstraints": "rel[186,grow,fill]0[186,grow,fill]0[186,grow,fill]0[186,grow,fill][28,fill]0[69,fill]0[186,grow,fill]0[186,grow,top]0[21,grow,fill]0[]"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelNome"
+				"text": "Nome Azienda :"
+				"font": &Font0 new java.awt.Font( "Segoe UI", 0, 22 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0,alignx right,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textFildNome"
+				"font": &Font1 new java.awt.Font( "Segoe UI", 0, 20 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 0 3 1,aligny center,growy 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconNome"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelEmailAzienda"
+				"text": "Email Azienda :"
+				"font": #Font0
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1,alignx right,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textFildEmailAzienda"
+				"font": #Font1
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 1 3 1,aligny center,growy 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconCognome"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelAdmin"
+				"text": "Email Admin :"
+				"font": #Font0
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2,alignx right,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textFildAdmin"
+				"font": #Font1
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 2 3 1,aligny center,growy 0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonCalender"
+				"icon": new com.jformdesigner.model.SwingIcon( 2, "OptionPane.questionIcon" )
+				"background": new java.awt.Color( 255, 255, 255, 0 )
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 2,alignx left,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelPassword"
+				"text": "Regione :"
+				"font": new java.awt.Font( "Segoe UI", 0, 22 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 3,alignx right,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBoxRegione"
+				"font": new java.awt.Font( "Segoe UI", 0, 20 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 3 3 1,aligny center,growy 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconEmail"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 3"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "iconPass"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 6"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonRegistrati"
+				"text": "Invia Richiesta"
+				"font": new java.awt.Font( "Segoe UI", 0, 18 )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 7 2 1,aligny center,grow 100 0"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "panelMenuBarOpzioniColore"
+				"foreground": sfield java.awt.Color green
+				"background": new com.jformdesigner.model.SwingColor( "Actions.Green" )
+				"border": new javax.swing.border.MatteBorder( 1, 1, 1, 1, sfield java.awt.Color black )
+				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+					name: "menuBarOpzioni"
+					"background": new java.awt.Color( 102, 255, 102, 255 )
+					"borderPainted": false
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menuOpzioni"
+						"text": "Opzioni"
+						"icon": new com.jformdesigner.model.SwingIcon( 2, "Table.descendingSortIcon" )
+						"horizontalAlignment": 0
+						"horizontalTextPosition": 2
+						"foreground": new java.awt.Color( 102, 255, 102, 255 )
+						"background": sfield java.awt.Color green
+						"font": new java.awt.Font( "Segoe UI", 0, 16 )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "East"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "LogoOpzioni"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/Logo.svg" )
+					"iconTextGap": 2
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "West"
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "north"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 640, 515 )
+		} )
+	}
+}

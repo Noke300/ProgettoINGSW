@@ -40,6 +40,8 @@ public class Controller {
     protected static final String LOGIN_URL_CLIENTE     = "http://localhost:8081/auth-cliente/login";
 
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
+    protected static final String REGISTRAZIONE_URL_AZIENDA = "http://localhost:8081/auth-admin/register";
+
 
 
     //TODO separare i vari path nei rispettivi controller
@@ -213,6 +215,30 @@ public class Controller {
         }
         return false;
     }
+
+
+    public boolean registrazioneAgenzia(AgenziaImmobiliare agenzia) {
+         requestBody = gson.toJson(agenzia);
+
+        try {
+             request = HttpRequest.newBuilder()
+                    .uri(new URI(REGISTRAZIONE_URL_AZIENDA)) // Assicurati di definire questa costante
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200 || response.statusCode() == 201) {
+                return true;
+            }
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Errore URI: " + e.getMessage());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore nella richiesta: " + e.getMessage());
+        }
+
+        return false;
+    }
+
 
 
 

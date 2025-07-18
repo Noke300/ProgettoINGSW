@@ -14,6 +14,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 
 import controller.*;
+import gui.pagine_administrative.admin.CreaAziendaP;
 import gui.pagine_comuni.Ricerca;
 import gui.costum_components.BottoniOpzioni;
 import gui.pagine_administrative.admin.InterfacciaAdmin;
@@ -114,9 +115,10 @@ public class LogInAmministrazione extends JPanel {
             });
         });
 
-
-
         buttonCreaAgenzia.addActionListener(e -> {
+            frame.setContentPane(new CreaAziendaP(frame,control,bottoniOpzioni));
+            frame.revalidate();
+            frame.repaint();
         });
 
     }

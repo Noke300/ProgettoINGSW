@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -60,6 +61,8 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
     private GoogleCloudStorageService storageService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    @Autowired
+    private OffertaRepository offertaRepository;
 
     public List<AgenteImmobiliare> getAllAgents() {
         return agentRepository.findAll();
@@ -306,5 +309,63 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
 
     public Immobile getImmobile(String idImmobile) {
         return immobileRepository.findImmobileByIdImmobile(idImmobile);
+    }
+
+    public ResponseEntity<String> controOfferta(Offerta offerta) {
+        if (offerta == null || !offertaRepository.existsById(offerta.getIdOfferta())){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Offerta inesistente");
+        }
+
+        Offerta oldOfferta = offertaRepository.findById(offerta.getIdOfferta()).orElse(null);
+        assert oldOfferta != null;
+        if(offerta.getPrezzoOfferta() == null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Inserire un prezzo valido");
+        }
+
+        if(oldOfferta.getEsitoOfferta() != null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("L'offerta ha gà un esito");
+        }
+
+        offerta.setContrOfferta(true);
+        offerta.setEsitoOfferta(null);
+        offerta.setDataOfferta(LocalDateTime.now());
+        offerta.setImmobile(oldOfferta.getImmobile());
+        offerta.setCliente(oldOfferta.getCliente());
+        offertaRepository.save(offerta);
+
+        return ResponseEntity.ok("Contro offerta inviata correttamente");
+    }
+
+    public ResponseEntity<String> accettaOfferta(Offerta offerta) {
+        if (offerta == null || !offertaRepository.existsById(offerta.getIdOfferta())){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Offerta inesistente");
+        }
+        Offerta oldOfferta = offertaRepository.findById(offerta.getIdOfferta()).orElse(null);
+        assert oldOfferta != null;
+        if(offerta.getEsitoOfferta() == null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Esito incerto");
+        }
+        if(Boolean.FALSE.equals(offerta.getEsitoOfferta())){
+            oldOfferta.setEsitoOfferta(false);
+            offertaRepository.save(oldOfferta);
+            return ResponseEntity.ok("Offerta Rifiutata");
+        }
+        oldOfferta.setEsitoOfferta(true);
+        offertaRepository.save(oldOfferta);
+
+        Immobile immobile = immobileRepository.findImmobileByIdImmobile(oldOfferta.getImmobile().getIdImmobile());
+        immobile.setVenduto(true);
+        immobileRepository.save(immobile);
+        return ResponseEntity.ok("Offerta accettata");
     }
 }

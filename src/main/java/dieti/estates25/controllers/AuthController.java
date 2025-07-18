@@ -107,7 +107,7 @@ public class AuthController {
             offerta.setCliente(clienteRepository.findByEmailCliente(getEmailAutenticato()));
             offerta.setContrOfferta(false);
             offerta.setDataOfferta(LocalDateTime.now());
-            offerta.setEsitoOfferta(false);
+            offerta.setEsitoOfferta(null);
             offerta = offertaRepository.save(offerta);
             offerta.setImmobile(immobileRepository.findImmobileByIdImmobile(offerta.getImmobile().getIdImmobile()));
 
@@ -115,7 +115,7 @@ public class AuthController {
         }else if(getAuthorities().equals("[AGENTE_IMMOBILIARE]")){
             offerta.setContrOfferta(true);
             offerta.setDataOfferta(LocalDateTime.now());
-            offerta.setEsitoOfferta(false);
+            offerta.setEsitoOfferta(null);
             offertaRepository.save(offerta);
         }
         return ResponseEntity
@@ -158,7 +158,7 @@ public class AuthController {
             return candidati;
         }
 
-        Predicate<Immobile> filtroComplessivo = immobile -> true;
+        Predicate<Immobile> filtroComplessivo = immobile -> !immobile.getVenduto();
 
         filtroComplessivo = filtroComplessivo
                 .and(filtriBooleani(filtri))

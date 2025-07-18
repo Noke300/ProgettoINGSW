@@ -1,5 +1,6 @@
 package dieti.estates25.service;
 
+import dieti.estates25.model.Immobile;
 import dieti.estates25.model.Offerta;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.VisitaId;
@@ -185,6 +186,33 @@ public class ClienteServiceDB implements UserDetailsService {
             v.getImmobile().getNomeAgenzia().setPasswordAdmin(null);
         }
         return visite;
+    }
+
+    public ResponseEntity<String> esitoOfferta(Offerta offerta) {
+        if (offerta == null || !offerta.getContrOfferta() || !offertaRepository.existsById(offerta.getIdOfferta())){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Offerta inesistente o non contro Offerta");
+        }
+        Offerta oldOfferta = offertaRepository.findById(offerta.getIdOfferta()).orElse(null);
+        assert oldOfferta != null;
+        if(offerta.getEsitoOfferta() == null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Esito incerto");
+        }
+        if(Boolean.FALSE.equals(offerta.getEsitoOfferta())){
+            oldOfferta.setEsitoOfferta(false);
+            offertaRepository.save(oldOfferta);
+            return ResponseEntity.ok("Offerta Rifiutata");
+        }
+        oldOfferta.setEsitoOfferta(true);
+        offertaRepository.save(oldOfferta);
+
+        Immobile immobile = immobileRepository.findImmobileByIdImmobile(oldOfferta.getImmobile().getIdImmobile());
+        immobile.setVenduto(true);
+        immobileRepository.save(immobile);
+        return ResponseEntity.ok("Offerta accettata");
     }
 }
 

@@ -2,6 +2,7 @@ package dieti.estates25.controllers;
 
 import dieti.estates25.model.Immobile;
 import dieti.estates25.model.ImmobileEImmagini;
+import dieti.estates25.model.Offerta;
 import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.AgenteImmobiliareServiceDB;
@@ -81,6 +82,11 @@ public class AgenteImmobiliareController {
         return agentService.confermaVisista(visita);
     }
 
+    @PostMapping("accettaOfferta")
+    public ResponseEntity<String> accettaOfferta(@RequestBody Offerta offerta) {
+        return agentService.accettaOfferta(offerta);
+    }
+
     @GetMapping("/specificheAgenteImmobiliare")
     public AgenteImmobiliare getSpecifiche(){
         return agentService.getSpecifiche();
@@ -91,4 +97,8 @@ public class AgenteImmobiliareController {
         return agentService.getImmobile(idImmobile);
     }
 
+    @PostMapping("controOfferta")
+    public ResponseEntity<String> controOfferta(@RequestBody Offerta offerta) {
+        return agentService.controOfferta(offerta);
+    }
 }

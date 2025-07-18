@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ImmobileRepository extends JpaRepository<Immobile, Long> {
+public interface ImmobileRepository extends JpaRepository<Immobile, String> {
 
     List<Immobile> findAllByAgente_EmailAgente(String agenteEmailAgente);
 

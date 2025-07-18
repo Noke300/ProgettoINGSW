@@ -80,5 +80,10 @@ public class ClienteController {
         return clienteService.getVisite();
     }
 
+    @PostMapping("/controOfferta")
+    public ResponseEntity<String> esitoOfferta(@RequestBody Offerta offerta) {
+        return clienteService.esitoOfferta(offerta);
+    }
+
 }
 

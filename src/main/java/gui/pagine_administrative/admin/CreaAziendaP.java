@@ -41,7 +41,12 @@ public class CreaAziendaP extends JPanel {
             AgenziaImmobiliare agenziaImmobiliare = new AgenziaImmobiliare(textFildNome.getText(),textFildEmailAzienda.getText(),textFildAdmin.getText(),password, comboBoxRegione.getSelectedItem().toString());
 
             if(controller.registrazioneAgenzia(agenziaImmobiliare)){
-                JOptionPane.showMessageDialog(frame, "Registrazione avvenuta con successo.\nEmail: "+textFildAdmin.getText()+"\nPassword : "+password);
+
+                UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 20)); // Puoi modificare la dimensione e il tipo
+                JOptionPane.showMessageDialog(frame,
+                        "Registrazione avvenuta con successo.\nEmail: " + textFildAdmin.getText() + "\nPassword: " + password);
+
+
                 frame.setContentPane(new LogInAmministrazione(frame,controller,""));
                 frame.revalidate();
                 frame.repaint();
@@ -59,17 +64,18 @@ public class CreaAziendaP extends JPanel {
     private static String capitalizeFirstLetter(String str) {
         if (str == null || str.isEmpty()) return str;
 
+        str = str.replaceAll(" ","");
+
         char firstChar = str.charAt(0);
         if (Character.isLowerCase(firstChar)) {
             firstChar = Character.toUpperCase(firstChar);
         }
-        String nome = firstChar + str.substring(1);
+        str = firstChar + str.substring(1);
 
         Random random = new Random();
         int numeroCasuale = random.nextInt(100) + 1;
-        nome = nome.replaceAll(" ","");
 
-        return nome + numeroCasuale + "!";
+        return str + numeroCasuale + "!";
     }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

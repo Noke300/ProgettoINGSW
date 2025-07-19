@@ -24,7 +24,7 @@ public class ControllerClienti extends Controller {
     protected static final String VISITE_IMM_CLIENTE    = "http://localhost:8081/auth-cliente/getVisite";
     protected static final String PRENOTA_VISITE        = "http://localhost:8081/auth-cliente/visita";
     protected static final String OFFERTE_CLIENTE       = "http://localhost:8081/auth-cliente/getOfferte";
-
+    protected static final String ACCETTA_OFFERTA       = "http://localhost:8081/auth-cliente/controOfferta";
 
 
 
@@ -179,6 +179,28 @@ public class ControllerClienti extends Controller {
         }
     }
 
+    public boolean accettaOfferta(Offerta offerta, String token) {
+
+        String requestBody = gson.toJson(offerta);
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(ACCETTA_OFFERTA))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante l'esito dell'offerta: " + e.getMessage());
+        }
+    }
 
 
 

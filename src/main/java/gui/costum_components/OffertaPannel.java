@@ -3,7 +3,6 @@ package gui.costum_components;
 import controller.Controller;
 import controller.ControllerAgente;
 import gui.pagine_clienti.LogIn;
-import model.Cliente;
 import model.Immobile;
 import model.Offerta;
 
@@ -17,11 +16,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OffertaPannel {
 
-    public static void setUpPannel(String token, JFrame frame, Immobile immobile, ControllerAgente controller) {
+    public static void setUpPannel(String token, JFrame frame, Immobile immobile, Controller controller) {
         if(!"".equals(token)) {
             JDialog offerteDialog = new JDialog(frame, "Proponi prezzo", true);
             offerteDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

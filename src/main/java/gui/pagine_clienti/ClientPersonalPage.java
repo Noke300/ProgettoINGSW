@@ -103,13 +103,13 @@ public class ClientPersonalPage extends JPanel {
 
                 accetta.addActionListener(e -> {
                     Offerta offerta = new Offerta(label.getName(),true);
-                  //  controllerClienti.contrOfferta(offerta,token); // Aggiungi chiamata se disponibile
+                    controllerClienti.accettaOfferta(offerta,token); // Aggiungi chiamata se disponibile
                     JOptionPane.showMessageDialog(contenutoPanel, "✅ Offerta accettata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 });
 
                 rifiuta.addActionListener(e -> {
                     Offerta offerta = new Offerta(label.getName(),false);
-                    //controllerClienti.contrOfferta(offerta,token); // Ag
+                    controllerClienti.accettaOfferta(offerta,token); // Ag
                     JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                     // controllerClienti.rifiutaOfferta(data); // idem sopra
                 });

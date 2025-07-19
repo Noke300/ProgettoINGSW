@@ -212,6 +212,7 @@ public class ClienteServiceDB implements UserDetailsService {
         Immobile immobile = immobileRepository.findImmobileByIdImmobile(oldOfferta.getImmobile().getIdImmobile());
         immobile.setVenduto(true);
         immobileRepository.save(immobile);
+        visitaRepository.deleteAll(visitaRepository.findByImmobile(immobile));
         notificaService.inviaNotifica(immobile.getAgente().getEmailAgente(), "Hanno accettato una contro Offerta");
         return ResponseEntity.ok("Offerta accettata");
     }

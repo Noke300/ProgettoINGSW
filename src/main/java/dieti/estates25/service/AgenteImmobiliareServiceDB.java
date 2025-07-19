@@ -367,6 +367,7 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
         Immobile immobile = immobileRepository.findImmobileByIdImmobile(oldOfferta.getImmobile().getIdImmobile());
         immobile.setVenduto(true);
         immobileRepository.save(immobile);
+        visitaRepository.deleteAll(visitaRepository.findByImmobile(immobile));
         return ResponseEntity.ok("Offerta accettata");
     }
 }

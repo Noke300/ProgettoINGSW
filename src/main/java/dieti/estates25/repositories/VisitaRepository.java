@@ -16,4 +16,6 @@ public interface VisitaRepository extends JpaRepository<Visita, VisitaId> {
     boolean existsVisitaByClienteAndImmobile(Cliente cliente, Immobile immobile);
 
     List<Visita> findAllByCliente(Cliente cliente);
+
+    List<Visita> findByImmobile(Immobile immobile);
 }

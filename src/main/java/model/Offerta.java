@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Offerta {
 
-
+    private String idOfferta;
 
     private Immobile immobile;
 
@@ -29,10 +29,10 @@ public class Offerta {
     public Offerta(Immobile immobile,Double prezzoOfferta) {
         this.immobile = immobile;
         this.prezzoOfferta = prezzoOfferta;
+        this.esitoOfferta = null;
     }
 
     public Offerta(@Nullable Cliente cliente, LocalDateTime dataOfferta, Double prezzoOfferta, Immobile immobile, Boolean contrOfferta, Boolean esitoOfferta) {
-        this.esitoOfferta = null;
         this.cliente = cliente;
         this.dataOfferta = dataOfferta;
         this.prezzoOfferta = prezzoOfferta;
@@ -93,7 +93,7 @@ public class Offerta {
         return contrOfferta;
     }
 
-    public void setContrOfferta(Boolean contrOfferta) {
-        this.contrOfferta = contrOfferta;
+    public String getIdOfferta() {
+        return idOfferta;
     }
 }

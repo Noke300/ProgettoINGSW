@@ -239,9 +239,6 @@ public class Controller {
         return false;
     }
 
-
-
-
     ///TODO Questo sara usato per gli immobili servira una con la sepicifica di un agente immobiliare
     public List<Offerta> getOffertePerImmobile(Immobile idImmobile) {
 

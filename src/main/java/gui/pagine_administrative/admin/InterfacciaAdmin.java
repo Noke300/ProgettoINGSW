@@ -98,7 +98,7 @@ public class InterfacciaAdmin extends JPanel {
 
             int scelta = JOptionPane.showConfirmDialog(
                     null,
-                    "Sei sicuro di voler licenziare l'" + tipo + " " + nome + " " + cognome + "'?",
+                    "Sei sicuro di voler licenziare l'" + tipo + " " + nome + " " + cognome + " ?",
                     "Conferma Licenziamento",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE
@@ -122,9 +122,9 @@ public class InterfacciaAdmin extends JPanel {
                 }
                 if (success) {
                     model.removeRow(selectedRow);
-                    JOptionPane.showMessageDialog(this, "Dipendente eliminato con successo.");
+                    JOptionPane.showMessageDialog(this, "Dipendente lincenziato con successo.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Errore durante l’eliminazione.");
+                    JOptionPane.showMessageDialog(this, "Errore durante il licenziamento.");
                 }
             }
         });

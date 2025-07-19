@@ -2,6 +2,7 @@ package gui.costum_components;
 
 import controller.Controller;
 import gui.pagine_clienti.LogIn;
+import model.Cliente;
 import model.Immobile;
 import model.Offerta;
 
@@ -200,7 +201,7 @@ public class OffertaPannel {
 
         List<Offerta> offerteInSospeso = listaOfferte.stream()
                 .filter(o -> o.getEsitoOfferta() == null)
-                .collect(Collectors.toList());
+                .toList();
 
         if (offerteInSospeso.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Non ci sono offerte in sospeso.", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -224,7 +225,7 @@ public class OffertaPannel {
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)
             ));
 
-            card.add(new JLabel("📌 Cliente: " + offerta.getCliente()));
+            card.add(new JLabel("📌 Cliente: " + (offerta.getCliente() != null ? offerta.getCliente() : "")));
             card.add(new JLabel("🏡 Immobile: " + offerta.getImmobile().getIndirizzo()));
             card.add(new JLabel("💰 Prezzo offerto: €" + offerta.getPrezzoOfferta()));
             card.add(new JLabel("📅 Data: " + offerta.getDataOfferta()));
@@ -236,18 +237,48 @@ public class OffertaPannel {
             JButton accettaBtn = new JButton("Accetta");
 
             rifiutaBtn.addActionListener(e -> {
-               // controller.esito(offerta, "rifiutata", token);
-                card.setVisible(false); // Rimuove la card visivamente
+                int scelta = JOptionPane.showOptionDialog(pannelloOfferte, "Sei sicuro di voler rifiutare questa proposta?", "Conferma rifiuto",                          // Titolo della finestra
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        null,
+                        null
+                );
+                if (scelta == JOptionPane.YES_NO_OPTION){
+                    offerta.setEsitoOfferta(false);
+                    if(controller.esito(offerta, token)){
+                        card.setVisible(false); // Rimuove la card visivamente
+                        dialog.dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(pannelloOfferte, "C'è stato un errore durante l'invio della risposta");
+                    }
+                }
             });
 
             contoBtn.addActionListener(e -> {
                 // Potresti aprire un altro dialog simile al tuo "proponi prezzo"
                 apriDialogControOfferta(frame, offerta, controller, token);
+                card.setVisible(false); // Rimuove la card visivamente
+                dialog.dispose();
             });
 
             accettaBtn.addActionListener(e -> {
-               // controller.esito(offerta, "accettata", token);
-                card.setVisible(false);
+                int scelta = JOptionPane.showOptionDialog(pannelloOfferte, "Sei sicuro di voler accettare questa proposta?", "Conferma proposta",                          // Titolo della finestra
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        null,
+                        null
+                );
+                if (scelta == JOptionPane.YES_NO_OPTION){
+                    offerta.setEsitoOfferta(true);
+                    if(controller.esito(offerta, token)){
+                        card.setVisible(false);
+                        dialog.dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(pannelloOfferte, "C'è stato un errore durante l'invio della risposta");
+                    }
+                }
             });
 
             bottoniPanel.add(rifiutaBtn);
@@ -314,11 +345,13 @@ public class OffertaPannel {
 
         inviaBtn.addActionListener(a -> {
             try {
+                Offerta nuovaOfferta = new Offerta(offerta);
                 double nuovoPrezzo = Double.parseDouble(campoPrezzo.getText().replace(",", "."));
                 Immobile imm = new Immobile(offerta.getImmobile().getId());
-                Offerta nuovaOfferta = new Offerta(imm, nuovoPrezzo);
+                nuovaOfferta.setPrezzoOfferta(nuovoPrezzo);
+                nuovaOfferta.setContrOfferta(true);
 
-                boolean risultato = controller.inviaOfferta(nuovaOfferta, token);
+                boolean risultato = controller.contrOfferta(nuovaOfferta, token);
                 if (risultato) {
                     JOptionPane.showMessageDialog(dialog, "Contro-offerta inviata: €" + nuovoPrezzo);
                     BottoniOpzioni.getMapLog().put(LocalDateTime.now(),

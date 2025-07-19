@@ -433,9 +433,9 @@ public class InserimentoImmobile extends JPanel {
                         String.valueOf(tipoImmobile.getSelectedItem()));
 
               if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
-                  System.out.println("Inserimento immagini sucesso");
+                  System.out.println("Inserimento avvenuto con sucesso");
               }else {
-                  System.out.println("Errore inserimento immagini");
+                  System.out.println("Errore inserimento immobile");
               }
 
             }else{

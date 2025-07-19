@@ -34,6 +34,7 @@ public class InterfacciaAdminSup extends JPanel {
         BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
         bottoniOpzioni.setUpOpzioniMenu(frame,controller,token,menuBarOpzioni,menuOpzioni);
         this.adminSup = controller.getAdminSup(token);
+        labelNomeAzzienda.setText("Admin di supporto per: " + adminSup.getNomeAgenzia().getNomeAgenzia());
 
         String[] colonne = {"Nome", "Cognome", "Email", "Tipo"};
         DefaultTableModel model = new DefaultTableModel(colonne, 0) {

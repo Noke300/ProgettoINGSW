@@ -32,13 +32,24 @@ public class Offerta {
         this.esitoOfferta = null;
     }
 
-    public Offerta(@Nullable Cliente cliente, LocalDateTime dataOfferta, Double prezzoOfferta, Immobile immobile, Boolean contrOfferta, Boolean esitoOfferta) {
+    public Offerta(String id, @Nullable Cliente cliente, LocalDateTime dataOfferta, Double prezzoOfferta, Immobile immobile, Boolean contrOfferta, Boolean esitoOfferta) {
+        this.idOfferta = id;
         this.cliente = cliente;
         this.dataOfferta = dataOfferta;
         this.prezzoOfferta = prezzoOfferta;
         this.immobile = immobile;
         this.contrOfferta = contrOfferta;
         this.esitoOfferta = esitoOfferta;
+    }
+
+    public Offerta(Offerta offerta){
+        this.idOfferta = offerta.getIdOfferta();
+        this.cliente = offerta.getCliente();
+        this.dataOfferta = offerta.getDataOfferta();
+        this.prezzoOfferta = offerta.getPrezzoOfferta();
+        this.immobile = offerta.getImmobile();
+        this.contrOfferta = offerta.getContrOfferta();
+        this.esitoOfferta = offerta.getEsitoOfferta();
     }
 
     public Immobile getImmobile() {
@@ -95,5 +106,13 @@ public class Offerta {
 
     public String getIdOfferta() {
         return idOfferta;
+    }
+
+    public void setIdOfferta(String idOfferta) {
+        this.idOfferta = idOfferta;
+    }
+
+    public void setContrOfferta(@Nullable Boolean contrOfferta) {
+        this.contrOfferta = contrOfferta;
     }
 }

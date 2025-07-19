@@ -42,6 +42,9 @@ public class Controller {
     protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
     protected static final String REGISTRAZIONE_URL_AZIENDA = "http://localhost:8081/auth-admin/register";
 
+    protected static final String ESITO_OFFERTA         = "http://localhost:8081/auth-agente/accettaOfferta";
+    protected static final String CONTRO_OFFERTA         = "http://localhost:8081/auth-agente/controOfferta";
+
 
 
     //TODO separare i vari path nei rispettivi controller
@@ -50,7 +53,11 @@ public class Controller {
                     new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("HH:mm")))
             )
             .setDateFormat("yyyy-MM-dd")
-            .create();//oggetto che serve a fare
+            .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) -> {
+                return new JsonPrimitive(src.toString()); // formato ISO-8601
+            })
+            .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, typeOfT, context) -> LocalDateTime.parse(json.getAsString()))
+            .create();
 
     public List<ImmobileEImmagini> ricerca(GeoPosition geoPos, Map<String, Object> filtri) {
 
@@ -269,6 +276,7 @@ public class Controller {
                     JsonObject obj = elem.getAsJsonObject();
 
                     // Recupera i singoli campi dal JSON
+                    String id = gson.fromJson(obj.get("idOfferta"), String.class);
                     Double prezzoOfferta = gson.fromJson(obj.get("prezzoOfferta"), Double.class);
                     LocalDateTime dataOfferta = LocalDateTime.parse(obj.get("dataOfferta").getAsString());
                     JsonElement esitoElement = obj.get("esitoOfferta");
@@ -280,7 +288,7 @@ public class Controller {
                     Cliente cliente = gson.fromJson(obj.get("cliente"), Cliente.class);
 
                     // Costruisci offerta
-                    Offerta offerta = new Offerta(cliente, dataOfferta, prezzoOfferta, immobile, contrOfferta, esitoOfferta);
+                    Offerta offerta = new Offerta(id, cliente, dataOfferta, prezzoOfferta, immobile, contrOfferta, esitoOfferta);
                     offerte.add(offerta);
                 }
                 return offerte;
@@ -363,13 +371,57 @@ public class Controller {
         }
     }
 
-
-
     public String getNameLogIn() {
         return nameLogIn;
     }
 
     public void setNameLogIn(String nameLogIn) {
         this.nameLogIn = nameLogIn;
+    }
+
+    public boolean esito(Offerta offerta, String token) {
+
+        String requestBody = gson.toJson(offerta);
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(ESITO_OFFERTA))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante l'esito dell'offerta: " + e.getMessage());
+        }
+    }
+
+    public boolean contrOfferta(Offerta offerta, String token) {
+
+        String requestBody = gson.toJson(offerta);
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(CONTRO_OFFERTA))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URI non valido: " + e.getMessage());
+        }
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante l'esito dell'offerta: " + e.getMessage());
+        }
     }
 }

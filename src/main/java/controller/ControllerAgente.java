@@ -28,7 +28,6 @@ public class ControllerAgente extends Controller{
     protected static final String GET_IMMOBILE          = "http://localhost:8081/auth-agente/getImmobile";
     protected static final String ESITO_VISITA         = "http://localhost:8081/auth-agente/confermaVisita";
 
-
     public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
 
         Map<String, Object> jsonMap = new HashMap<>();

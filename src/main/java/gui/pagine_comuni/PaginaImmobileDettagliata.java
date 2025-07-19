@@ -416,7 +416,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        // Generated using JFormDesigner Evaluation license - Alessio Nesi
         panelTopBar = new JPanel();
         menuBarOpzioni = new JMenuBar();
         menuOpzioni = new JMenu();
@@ -424,6 +424,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         scrollPaneDettagli = new JPanel();
         labelPrezzo = new JLabel();
         buttonOfferta = new JButton();
+        hSpacer1 = new JPanel(null);
         buttonVisita = new JButton();
         labelPrezzoAlto = new JLabel();
         labelPrezzoUltimo = new JLabel();
@@ -433,6 +434,12 @@ public class PaginaImmobileDettagliata extends JPanel {
         buttonSinistraImg = new JButton();
 
         //======== this ========
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.
+        border.EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder.CENTER
+        ,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font
+        .BOLD,12),java.awt.Color.red), getBorder())); addPropertyChangeListener(
+        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062ord\u0065r"
+        .equals(e.getPropertyName()))throw new RuntimeException();}});
         setLayout(new MigLayout(
             "fill,hidemode 3",
             // columns
@@ -501,6 +508,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         buttonOfferta.setText("Proponi prezzo");
         buttonOfferta.setFont(buttonOfferta.getFont().deriveFont(buttonOfferta.getFont().getStyle() & ~Font.BOLD, buttonOfferta.getFont().getSize() + 5f));
         add(buttonOfferta, "cell 4 1");
+        add(hSpacer1, "cell 4 1");
 
         //---- buttonVisita ----
         buttonVisita.setText("Richiedi Visita");
@@ -525,12 +533,25 @@ public class PaginaImmobileDettagliata extends JPanel {
 
         //======== panelChart ========
         {
+            panelChart.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing
+            . border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder
+            . CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .
+            awt .Font .BOLD ,12 ), java. awt. Color. red) ,panelChart. getBorder( )) )
+            ; panelChart. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+            ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} )
+            ;
             panelChart.setLayout(new BorderLayout());
         }
 
         //======== panelImmagineImmobile ========
         {
             panelImmagineImmobile.setBorder(new EtchedBorder(EtchedBorder.RAISED, UIManager.getColor("Actions.Green"), null));
+            panelImmagineImmobile.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
+            . EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax
+            . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,
+            12 ), java. awt. Color. red) ,panelImmagineImmobile. getBorder( )) ); panelImmagineImmobile. addPropertyChangeListener (new java. beans
+            . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .
+            getPropertyName () )) throw new RuntimeException( ); }} );
             panelImmagineImmobile.setLayout(new BorderLayout(1, 1));
 
             //---- buttonDestraImg ----
@@ -550,7 +571,7 @@ public class PaginaImmobileDettagliata extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    // Generated using JFormDesigner Evaluation license - Alessio Nesi
     private JPanel panelTopBar;
     private JMenuBar menuBarOpzioni;
     private JMenu menuOpzioni;
@@ -558,6 +579,7 @@ public class PaginaImmobileDettagliata extends JPanel {
     private JPanel scrollPaneDettagli;
     private JLabel labelPrezzo;
     private JButton buttonOfferta;
+    private JPanel hSpacer1;
     private JButton buttonVisita;
     private JLabel labelPrezzoAlto;
     private JLabel labelPrezzoUltimo;

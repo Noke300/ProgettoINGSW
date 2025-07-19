@@ -56,7 +56,7 @@ public class ImmobilePanelSingolo {
                 Image image = ImageIO.read(bis);
                 bis.close();
 
-                Image scaledImage = image.getScaledInstance(330, 180, Image.SCALE_SMOOTH);
+                Image scaledImage = image.getScaledInstance(320, 160, Image.SCALE_SMOOTH);
                 JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
                 imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 panel.add(imageLabel, "cell 0 0 2 2");

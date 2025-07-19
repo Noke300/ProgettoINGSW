@@ -41,14 +41,14 @@ public class ClientPersonalPage extends JPanel {
         buttonOfferte.addActionListener(e -> {
             listaOfferte = controllerClienti.getOfferte(token);
             Map<LocalDateTime, String> mappa = getOfferteMap(listaOfferte);
-            aggiornaContenutoPanel(mappa, panelInterno);
+            aggiornaContenutoPanel(mappa, panelInterno, controllerClienti);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
 
         // 🔄 Bottone Log
         buttonLog.addActionListener(e -> {
-            aggiornaContenutoPanel(BottoniOpzioni.getMapLog(), panelInterno);
+            aggiornaContenutoPanel(BottoniOpzioni.getMapLog(), panelInterno, controllerClienti);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
@@ -56,7 +56,7 @@ public class ClientPersonalPage extends JPanel {
         // 🔄 Bottone Visite
         listaVisita = controllerClienti.getVisite(token);
         buttonVisite.addActionListener(e -> {
-            aggiornaContenutoPanel(getVisiteMap(listaVisita), panelInterno);
+            aggiornaContenutoPanel(getVisiteMap(listaVisita), panelInterno, controllerClienti);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
@@ -79,8 +79,7 @@ public class ClientPersonalPage extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
-    // 🔄 Metodo aggiornato con bottoni dinamici
-    public static void aggiornaContenutoPanel(Map<LocalDateTime, String> dati, JPanel contenutoPanel) {
+    public static void aggiornaContenutoPanel(Map<LocalDateTime, String> dati, JPanel contenutoPanel, ControllerClienti controllerClienti) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         contenutoPanel.removeAll();
         contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
@@ -105,7 +104,7 @@ public class ClientPersonalPage extends JPanel {
 
                 accetta.addActionListener(e -> {
                     JOptionPane.showMessageDialog(contenutoPanel, "✅ Offerta accettata il " + data.format(formatter));
-                    // qui potresti chiamare controllerClienti.accettaOfferta(...)
+                    //TODO capire come cazzo fare
                 });
 
                 rifiuta.addActionListener(e -> {
@@ -138,7 +137,7 @@ public class ClientPersonalPage extends JPanel {
                     " | Tipo: " + (isControfferta ? "Controfferta" : "In Attesa");
 
             if (isControfferta) {
-                testo += " | ⚖️ Azione: [Bottoni Attivi]";
+                testo += " | ";
             }
 
             dati.put(data, testo);

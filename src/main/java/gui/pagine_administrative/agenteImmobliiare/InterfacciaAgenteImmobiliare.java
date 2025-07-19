@@ -101,7 +101,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
 
         buttonOfferteVisualizza.addActionListener(e -> {
-            List<Offerta> offertas = new ArrayList<>();
+            List<Offerta> offertas;
             Immobile immobile = new Immobile(selectedPanel[0].getName());
             offertas = control.getOffertePerImmobile(immobile);
             OffertaPannel.mostraOfferteInSospeso(frame,offertas,control,token);

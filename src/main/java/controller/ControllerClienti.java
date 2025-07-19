@@ -27,6 +27,7 @@ public class ControllerClienti extends Controller {
 
 
 
+
     public Cliente getSpecifiche(String token) {
         try {
             request = HttpRequest.newBuilder()
@@ -126,15 +127,23 @@ public class ControllerClienti extends Controller {
                     JsonObject obj = elem.getAsJsonObject();
 
                     // Parsing dei campi
+                    String id = gson.fromJson(obj.get("idOfferta"), String.class);
                     Cliente cliente = gson.fromJson(obj.get("cliente"), Cliente.class);
                     LocalDateTime dataOfferta = LocalDateTime.parse(obj.get("dataOfferta").getAsString());
                     Double prezzoOfferta = obj.get("prezzoOfferta").getAsDouble();
                     Immobile immobile = gson.fromJson(obj.get("immobile"), Immobile.class);
-                    Boolean contrOfferta = obj.has("contrOfferta") ? obj.get("contrOfferta").getAsBoolean() : null;
-                    Boolean esitoOfferta = obj.has("esitoOfferta") ? obj.get("esitoOfferta").getAsBoolean() : null;
+
+                    Boolean contrOfferta = (obj.has("contrOfferta") && !obj.get("contrOfferta").isJsonNull())
+                            ? obj.get("contrOfferta").getAsBoolean()
+                            : null;
+
+                    Boolean esitoOfferta = (obj.has("esitoOfferta") && !obj.get("esitoOfferta").isJsonNull())
+                            ? obj.get("esitoOfferta").getAsBoolean()
+                            : null;
+
 
                     // Costruzione oggetto Offerta
-                    Offerta offerta = new Offerta(cliente, dataOfferta, prezzoOfferta, immobile, contrOfferta, esitoOfferta);
+                    Offerta offerta = new Offerta(id, cliente, dataOfferta, prezzoOfferta, immobile, contrOfferta, esitoOfferta);
                     offerte.add(offerta);
                 }
 

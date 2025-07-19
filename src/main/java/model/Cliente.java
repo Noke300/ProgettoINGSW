@@ -48,6 +48,6 @@ public class Cliente {
     }
     @Override
     public String toString() {
-        return getCognome() + " " +getEmailcliente() + " " + getPasswordcliente();
+        return getCognome() + " " +getEmailcliente();
     }
 }

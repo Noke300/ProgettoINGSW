@@ -102,6 +102,7 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
 
     public List<ImmobileEImmagini> getAllImmobili() {
         List<Immobile> immobili =  immobileRepository.findAllByAgente_EmailAgente(getEmailAutenticato());
+        immobili = immobili.stream().filter(immobile -> !immobile.getVenduto()).toList();
         return getImmagini(immobili);
     }
 

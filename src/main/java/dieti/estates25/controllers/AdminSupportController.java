@@ -35,9 +35,9 @@ public class AdminSupportController {
         return adminSupportService.getAdminSupportByMail(mail);
     }
 
-    @PutMapping("/adminSupport/{mail}")
-    public void updateAdminSupport(@PathVariable String mail, @RequestBody AdminSupport agent) {
-        adminSupportService.updateAdminSupport(mail, agent);
+    @PutMapping("/adminSupport")
+    public void updateAdminSupport(@RequestBody AdminSupport agent) {
+        adminSupportService.updateAdminSupport(agent);
     }
 
     @DeleteMapping("/adminSupport/{mail}")

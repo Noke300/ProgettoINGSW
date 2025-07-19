@@ -79,7 +79,7 @@ public class AdminSupportServiceDB implements UserDetailsService {
                 .body("Admin Support creato correttamente");
     }
 
-    public void updateAdminSupport(String mail, AdminSupport adminSupport) {
+    public void updateAdminSupport(AdminSupport adminSupport) {
         adminSupportRepository.save(adminSupport);
     }
 
@@ -142,6 +142,7 @@ public class AdminSupportServiceDB implements UserDetailsService {
     public List<ImmobileEImmagini> getImmobili() {
         List<Immobile> immobili = immobileRepository.findAllByAgente_NomeAgenzia(getAdminSupportByMail(getEmailAutenticato()).getNomeAgenzia());
         List<ImmobileEImmagini> candidati = getImmagini(immobili);
+        candidati = candidati.stream().filter(immobileEImmagini -> !immobileEImmagini.getImmobile().getVenduto()).toList();
 
         for (ImmobileEImmagini i : candidati) {
             i.getImmobile().getAgente().setPasswordAgente(null);

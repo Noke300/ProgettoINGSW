@@ -181,6 +181,7 @@ public class AgenziaImmobiliareServiceDB implements UserDetailsService {
     public List<ImmobileEImmagini> getImmobili() {
         List<Immobile> immobili =  immobileRepository.findAllByAgente_NomeAgenzia(agenziaImmobiliareRepository.findAgenziaImmobiliareByNomeAgenzia(getNomeAgenzia()));
         List<ImmobileEImmagini> candidati = getImmagini(immobili);
+        candidati = candidati.stream().filter(immobileEImmagini -> !immobileEImmagini.getImmobile().getVenduto()).toList();
 
         for (ImmobileEImmagini i : candidati) {
             i.getImmobile().getAgente().setPasswordAgente(null);

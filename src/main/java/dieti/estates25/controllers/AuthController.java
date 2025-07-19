@@ -68,6 +68,7 @@ public class AuthController {
     public List<Offerta> visualizzaOfferte(@RequestBody Immobile immobile) {
         if (immobile.getIdImmobile() == null) return new ArrayList<>();
         List<Offerta> offerte = offertaRepository.findAllByImmobileIdImmobileEquals(immobile.getIdImmobile());
+        offerte = offerte.stream().filter(offerta -> !offerta.getContrOfferta()).toList();
         for(Offerta o : offerte) {
             if (o.getCliente() != null)
                 o.getCliente().setPasswordCliente(null);

@@ -148,7 +148,6 @@ public class ControllerAdmin extends Controller {
         }
 
         if (response.statusCode() == 200) {
-            Gson gson = new Gson();
             Type listType = new TypeToken<List<AdminSupport>>() {}.getType();
             return gson.fromJson(response.body(), listType);
         } else {

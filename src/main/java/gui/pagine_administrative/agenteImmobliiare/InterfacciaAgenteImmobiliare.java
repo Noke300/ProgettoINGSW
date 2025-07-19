@@ -83,9 +83,11 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                     if (selectedPanel[0] == null) {
                        buttonElimina.setEnabled(false);
                        buttonAggiungiOfferta.setEnabled(false);
+                       buttonOfferteVisualizza.setEnabled(false);
                     }else{
                         buttonAggiungiOfferta.setEnabled(true);
                         buttonElimina.setEnabled(true);
+                        buttonOfferteVisualizza.setEnabled(true);
                     }
                 }
             });
@@ -95,6 +97,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         buttonAggiungiOfferta.addActionListener(e -> {
             Immobile impTem = control.fetchImmobile(token,selectedPanel[0].getName());
             OffertaPannel.setUpPannel(token,frame,impTem,control);
+        });
+
+        buttonOfferteVisualizza.addActionListener(e -> {
+
+           //mettere la lisat offerte 
+           // OffertaPannel.mostraOfferteInSospeso(frame,,control,token);
         });
 
 
@@ -151,6 +159,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         panelBottomBar = new JPanel();
         buttonAggiungImmobile = new JButton();
         buttonAggiungiOfferta = new JButton();
+        buttonOfferteVisualizza = new JButton();
         buttonElimina = new JButton();
 
         //======== this ========
@@ -257,7 +266,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 "insets 0,hidemode 3,gap 5 5",
                 // columns
                 "[88,grow 1,fill]unrel" +
-                "[123,grow 1,fill]0" +
+                "[123,grow 1,fill]rel" +
                 "[grow 1,fill]rel" +
                 "[grow 1,fill]",
                 // rows
@@ -276,7 +285,14 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             buttonAggiungiOfferta.setBorderPainted(false);
             buttonAggiungiOfferta.setBackground(UIManager.getColor("Actions.Green"));
             buttonAggiungiOfferta.setEnabled(false);
-            panelBottomBar.add(buttonAggiungiOfferta, "cell 2 0 1 2,growy");
+            panelBottomBar.add(buttonAggiungiOfferta, "cell 1 0 1 2,growy");
+
+            //---- buttonOfferteVisualizza ----
+            buttonOfferteVisualizza.setText("Visualizza Offerte");
+            buttonOfferteVisualizza.setBorderPainted(false);
+            buttonOfferteVisualizza.setBackground(UIManager.getColor("Actions.Green"));
+            buttonOfferteVisualizza.setEnabled(false);
+            panelBottomBar.add(buttonOfferteVisualizza, "cell 2 0 1 2");
 
             //---- buttonElimina ----
             buttonElimina.setText("Elimina");
@@ -302,6 +318,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     private JPanel panelBottomBar;
     private JButton buttonAggiungImmobile;
     private JButton buttonAggiungiOfferta;
+    private JButton buttonOfferteVisualizza;
     private JButton buttonElimina;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

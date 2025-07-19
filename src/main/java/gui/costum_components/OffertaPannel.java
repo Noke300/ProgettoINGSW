@@ -14,6 +14,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OffertaPannel {
 
@@ -193,5 +195,148 @@ public class OffertaPannel {
             frame.repaint();
         }
 }
+
+    public static void mostraOfferteInSospeso(JFrame frame, List<Offerta> listaOfferte, Controller controller, String token) {
+
+        List<Offerta> offerteInSospeso = listaOfferte.stream()
+                .filter(o -> o.getEsitoOfferta() == null)
+                .collect(Collectors.toList());
+
+        if (offerteInSospeso.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Non ci sono offerte in sospeso.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        JDialog dialog = new JDialog(frame, "Offerte In Sospeso", true);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setSize(600, 500);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel pannelloOfferte = new JPanel();
+        pannelloOfferte.setLayout(new BoxLayout(pannelloOfferte, BoxLayout.Y_AXIS));
+        pannelloOfferte.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        for (Offerta offerta : offerteInSospeso) {
+            JPanel card = new JPanel();
+            card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+            card.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)
+            ));
+
+            card.add(new JLabel("📌 Cliente: " + offerta.getCliente()));
+            card.add(new JLabel("🏡 Immobile: " + offerta.getImmobile().getIndirizzo()));
+            card.add(new JLabel("💰 Prezzo offerto: €" + offerta.getPrezzoOfferta()));
+            card.add(new JLabel("📅 Data: " + offerta.getDataOfferta()));
+
+            JPanel bottoniPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
+            JButton rifiutaBtn = new JButton("Rifiuta");
+            JButton contoBtn = new JButton("Contro Offerta");
+            JButton accettaBtn = new JButton("Accetta");
+
+            rifiutaBtn.addActionListener(e -> {
+               // controller.esito(offerta, "rifiutata", token);
+                card.setVisible(false); // Rimuove la card visivamente
+            });
+
+            contoBtn.addActionListener(e -> {
+                // Potresti aprire un altro dialog simile al tuo "proponi prezzo"
+                apriDialogControOfferta(frame, offerta, controller, token);
+            });
+
+            accettaBtn.addActionListener(e -> {
+               // controller.esito(offerta, "accettata", token);
+                card.setVisible(false);
+            });
+
+            bottoniPanel.add(rifiutaBtn);
+            bottoniPanel.add(contoBtn);
+            bottoniPanel.add(accettaBtn);
+
+            card.add(bottoniPanel);
+            card.add(Box.createRigidArea(new Dimension(0, 10)));
+
+            pannelloOfferte.add(card);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(pannelloOfferte);
+        dialog.add(scrollPane, BorderLayout.CENTER);
+
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+    }
+
+    public static void apriDialogControOfferta(JFrame frame, Offerta offerta, Controller controller, String token) {
+        JDialog dialog = new JDialog(frame, "Contro Offerta", true);
+        dialog.setSize(500, 400);
+        dialog.setResizable(false);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel contenuto = new JPanel();
+        contenuto.setLayout(new BoxLayout(contenuto, BoxLayout.Y_AXIS));
+        contenuto.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel descrizione = new JLabel("<html>Fai una contro-offerta per l'immobile: <b>" +
+                offerta.getImmobile().getIndirizzo() + "</b><br>Prezzo attuale: €" + offerta.getPrezzoOfferta() + "</html>");
+        descrizione.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        contenuto.add(descrizione);
+        contenuto.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JTextField campoPrezzo = new JTextField();
+        campoPrezzo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        campoPrezzo.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        contenuto.add(new JLabel("Nuova proposta (€):"));
+        contenuto.add(campoPrezzo);
+
+        JButton inviaBtn = new JButton("Invia Contro Offerta");
+        inviaBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        inviaBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inviaBtn.setBackground(new Color(52, 152, 219)); // blu
+        inviaBtn.setForeground(Color.WHITE);
+        inviaBtn.setEnabled(false);
+        contenuto.add(Box.createRigidArea(new Dimension(0, 20)));
+        contenuto.add(inviaBtn);
+
+        campoPrezzo.getDocument().addDocumentListener(new DocumentListener() {
+            private void checkInput() {
+                try {
+                    double valore = Double.parseDouble(campoPrezzo.getText().replace(",", "."));
+                    inviaBtn.setEnabled(valore > 0);
+                } catch (NumberFormatException e) {
+                    inviaBtn.setEnabled(false);
+                }
+            }
+            public void insertUpdate(DocumentEvent e) { checkInput(); }
+            public void removeUpdate(DocumentEvent e) { checkInput(); }
+            public void changedUpdate(DocumentEvent e) { checkInput(); }
+        });
+
+        inviaBtn.addActionListener(a -> {
+            try {
+                double nuovoPrezzo = Double.parseDouble(campoPrezzo.getText().replace(",", "."));
+                Immobile imm = new Immobile(offerta.getImmobile().getId());
+                Offerta nuovaOfferta = new Offerta(imm, nuovoPrezzo);
+
+                boolean risultato = controller.inviaOfferta(nuovaOfferta, token);
+                if (risultato) {
+                    JOptionPane.showMessageDialog(dialog, "Contro-offerta inviata: €" + nuovoPrezzo);
+                    BottoniOpzioni.getMapLog().put(LocalDateTime.now(),
+                            "Contro-Offerta: €" + nuovoPrezzo + " per " + imm.getIndirizzo());
+                    dialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Invio non riuscito", "Errore", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(dialog, "Prezzo non valido!", "Errore", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialog.add(contenuto, BorderLayout.CENTER);
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+    }
+
+
 
 }

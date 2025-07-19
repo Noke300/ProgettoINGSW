@@ -114,7 +114,7 @@ public class AuthController {
 
             notificaService.inviaNotifica(offerta.getImmobile().getAgente().getEmailAgente(), "Hanno fatto una nuova offerta");
         }else if(getAuthorities().equals("[AGENTE_IMMOBILIARE]")){
-            offerta.setContrOfferta(true);
+            offerta.setContrOfferta(false);
             offerta.setDataOfferta(LocalDateTime.now());
             offerta.setEsitoOfferta(null);
             offertaRepository.save(offerta);

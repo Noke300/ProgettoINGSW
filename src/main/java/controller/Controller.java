@@ -274,7 +274,8 @@ public class Controller {
                     // Recupera i singoli campi dal JSON
                     Double prezzoOfferta = gson.fromJson(obj.get("prezzoOfferta"), Double.class);
                     LocalDateTime dataOfferta = LocalDateTime.parse(obj.get("dataOfferta").getAsString());
-                    Boolean esitoOfferta = obj.get("esitoOfferta").getAsBoolean();
+                    JsonElement esitoElement = obj.get("esitoOfferta");
+                    Boolean esitoOfferta = esitoElement != null && !esitoElement.isJsonNull() ? esitoElement.getAsBoolean() : null;
                     Boolean contrOfferta = obj.get("contrOfferta").getAsBoolean();
 
                     // Gestione Immobile e Cliente (se sono oggetti complessi)

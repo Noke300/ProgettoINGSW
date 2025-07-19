@@ -22,6 +22,7 @@ import gui.costum_components.maps.MapLoader;
 import model.AgenteImmobiliare;
 import model.Immobile;
 import model.ImmobileEImmagini;
+import model.Offerta;
 import net.miginfocom.swing.*;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -100,9 +101,10 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
         });
 
         buttonOfferteVisualizza.addActionListener(e -> {
-
-           //mettere la lisat offerte 
-           // OffertaPannel.mostraOfferteInSospeso(frame,,control,token);
+            List<Offerta> offertas = new ArrayList<>();
+            Immobile immobile = new Immobile(selectedPanel[0].getName());
+            offertas = control.getOffertePerImmobile(immobile);
+            OffertaPannel.mostraOfferteInSospeso(frame,offertas,control,token);
         });
 
 

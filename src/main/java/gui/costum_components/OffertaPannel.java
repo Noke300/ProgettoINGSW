@@ -146,27 +146,31 @@ public class OffertaPannel {
             inviaButton.addActionListener(h -> {
                 String testo = campoOfferta.getText().trim();
                 if (!testo.isEmpty()) {
-                    try {
-                        double prezzo = Double.parseDouble(testo);
-                        if (prezzo <= 0) {
-                            JOptionPane.showMessageDialog(offerteDialog, "Inserisci un valore numerico valido!", "Errore", JOptionPane.ERROR_MESSAGE);
-                        }else {
-                            Immobile immTemp = new Immobile(immobile.getId());
-                            Offerta offerta = new Offerta(immTemp,prezzo);
+                    if (controller.getNameLogIn().equals("[CLIENT]")) {
+                        try {
+                            double prezzo = Double.parseDouble(testo);
+                            if (prezzo <= 0) {
+                                JOptionPane.showMessageDialog(offerteDialog, "Inserisci un valore numerico valido!", "Errore", JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                Immobile immTemp = new Immobile(immobile.getId());
+                                Offerta offerta = new Offerta(immTemp, prezzo);
 
-                            boolean risOfferta=controller.inviaOfferta(offerta,token);
-                            if(risOfferta){
-                                BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Offerta Richiesta : "+offerta.getPrezzoOfferta()+" \n"+"Per "+immobile.getIndirizzo().toString());
-                                JOptionPane.showMessageDialog(offerteDialog, "Offerta inviata con successo: €" + prezzo, "Conferma", JOptionPane.INFORMATION_MESSAGE);
-                                offerteDialog.dispose();
-                            }else{
-                                JOptionPane.showMessageDialog(offerteDialog, "Invio offerta non riuscito", "Errore", JOptionPane.ERROR_MESSAGE);
+                                boolean risOfferta = controller.inviaOfferta(offerta, token);
+                                if (risOfferta) {
+                                    BottoniOpzioni.getMapLog().put(LocalDateTime.now(), "Offerta Richiesta : " + offerta.getPrezzoOfferta() + " \n" + "Per " + immobile.getIndirizzo().toString());
+                                    JOptionPane.showMessageDialog(offerteDialog, "Offerta inviata con successo: €" + prezzo, "Conferma", JOptionPane.INFORMATION_MESSAGE);
+                                    offerteDialog.dispose();
+                                } else {
+                                    JOptionPane.showMessageDialog(offerteDialog, "Invio offerta non riuscito", "Errore", JOptionPane.ERROR_MESSAGE);
 
+                                }
                             }
+                            // chiudi il dialog se vuoi
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(offerteDialog, "Inserisci un valore numerico valido!", "Errore", JOptionPane.ERROR_MESSAGE);
                         }
-                        // chiudi il dialog se vuoi
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(offerteDialog, "Inserisci un valore numerico valido!", "Errore", JOptionPane.ERROR_MESSAGE);
+                    }else {
+                        JOptionPane.showMessageDialog(offerteDialog, "Bisogna essere registrato con un account cliente per fare un offerta ", "Attenzione", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(offerteDialog, "Il campo non può essere vuoto.", "Attenzione", JOptionPane.WARNING_MESSAGE);

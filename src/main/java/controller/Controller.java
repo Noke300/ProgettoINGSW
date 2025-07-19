@@ -107,12 +107,12 @@ public class Controller {
         requestBody = gson.toJson(bodyMap);
 
         try {
-            HttpRequest request = HttpRequest.newBuilder()
+             request = HttpRequest.newBuilder()
                     .uri(new URI(LOGIN_URL_CLIENTE))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+           response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
                 setNameLogIn(getRawSpecifiche(response.body().replace("\"", "")));
@@ -162,13 +162,13 @@ public class Controller {
         requestBody = gson.toJson(credentials);
 
         try {
-            HttpRequest request = HttpRequest.newBuilder()
+            request = HttpRequest.newBuilder()
                     .uri(new URI(url))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+           response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200 && response.body() != null && !response.body().isBlank()) {
                 String token = response.body().replace("\"", "").trim();
@@ -337,8 +337,6 @@ public class Controller {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Risposta da /whoAmI: [" + response.body() + "]");
 
             if (response.statusCode() == 200 && response.body() != null && !response.body().isBlank()) {
                 String ruolo = response.body().trim(); // Stringa pura, es: "[ADMIN]"

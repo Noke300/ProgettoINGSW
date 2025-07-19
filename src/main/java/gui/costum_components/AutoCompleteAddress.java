@@ -25,7 +25,9 @@ public class AutoCompleteAddress {
         JPopupMenu suggestionPopup = new JPopupMenu();
         suggestionPopup.setFocusable(false);
 
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
+        final DocumentListener[] listenerHolder = new DocumentListener[1];
+
+        listenerHolder[0] = new DocumentListener() {
             private final Timer timer = new Timer(500, e -> fetchAndShowSuggestions());
 
             {
@@ -65,18 +67,34 @@ public class AutoCompleteAddress {
                     for (String suggestion : suggestions) {
                         JMenuItem item = new JMenuItem(suggestion);
                         item.addActionListener(ev -> {
+                            // Rimuove temporaneamente il listener
+                            searchField.getDocument().removeDocumentListener(listenerHolder[0]);
+
                             searchField.setText(suggestion);
                             suggestionPopup.setVisible(false);
+
+                            // Ripristina il focus e riattiva il listener
+                            SwingUtilities.invokeLater(() -> {
+                                searchField.requestFocusInWindow();
+                                searchField.getDocument().addDocumentListener(listenerHolder[0]);
+                            });
                         });
                         suggestionPopup.add(item);
                     }
 
-                    suggestionPopup.setPopupSize(searchField.getWidth(), searchField.getHeight() * suggestions.size()+50 / 5 + 10);
+                    suggestionPopup.setPopupSize(
+                            searchField.getWidth(),
+                            searchField.getHeight() * suggestions.size() + 50 / 5 + 10
+                    );
                     suggestionPopup.show(searchField, 0, searchField.getHeight());
                 });
             }
-        });
+        };
+
+        // Registra il listener iniziale
+        searchField.getDocument().addDocumentListener(listenerHolder[0]);
     }
+
 
     public void setupSearchAutocomplete(JTextField searchField,JTextField viaField,JTextField capField,JTextField civicoField,JTextField cittaField,JComboBox<String> regioneCombo, JComboBox<String> provinciaCombo) {
         JPopupMenu suggestionPopup = new JPopupMenu();

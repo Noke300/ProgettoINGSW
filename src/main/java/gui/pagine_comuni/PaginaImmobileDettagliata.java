@@ -144,9 +144,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
         buttonOfferta.addActionListener(e -> OffertaPannel.setUpPannel(token,frame,immobile,control));
 
-        buttonVisita.addActionListener(e -> {
-            VisitaPanel.createPanel(token, frame, immobile, control);
-        });
+        buttonVisita.addActionListener(e -> VisitaPanel.createPanel(token, frame, immobile, control));
 
         buttonBack.setIcon(IconClass.getBackButton());
         buttonBack.addActionListener(e ->{

@@ -56,7 +56,6 @@
 
 Cose da fare:
 \begin{itemize}
-  \item  Le immagini in Latex caricano solo a Simone perché noi non le abbiamo, andrebbe trovato il modo per farle vedere a tutti.
   \item  Nella sezione "Persistenza dati" andrà aggiunto l'eventuale    database per le immagini, e le eventuali modifiche/aggiunte alla parte già esistente.
 \end{itemize}
 
@@ -121,9 +120,7 @@ Agente Immobiliare & \begin{tabular}[c]{@{}l@{}}-Gestisce Richiesta Visita,\\ -G
 
 \begin{itemize}
     \item \textbf{Cercare Immobile:} Appena entrati nell'applicativo non bisogna fare l'accesso al proprio account per poter ricercare un immobile. Usando la barra di ricerca si potrà cercare l'immobile in funzione della via e della città; è anche disponibile una ricerca per filtri, oppure utilizzando una cartina interattiva.
-    
-    \item \textbf{Modifica Credenziali:} ??? % Inserisci qui la descrizione quando disponibile.
-    
+        
     \item \textbf{Aggiungi Azienda:} Si può fare la richiesta per aprire un nuovo account Azienda, se la richiesta va a buon fine si ricevono le credenziali per l'account amministrazione.
     
     \item \textbf{Accesso Utente:} Si può accedere al proprio account Utente.
@@ -739,13 +736,64 @@ Cliccando su \textit{fai offerta}, si aprirà una pagina per digitare un'offerta
 \section{Documento di Design del Sistema}
 
 \subsection{Descrizione dell'Architettura}
-\subsubsection{TODO}
+La scelta d'architettura è un processo fondamentale per la realizzazione dell'applicativo, poiché influenza tutte le successive scelte di design, è una buona architettura consente di modellare le componenti del software in modo tale da coprire tutti i requisiti strutturali.\\
+
+
+Nel nostro progetto abbiamo adottato un'architettura a \textbf{tre livelli} (\textit{three-tier architecture}), un modello di progettazione software che suddivide l'applicazione in tre componenti principali, ognuno con responsabilità distinte:
+
+\begin{itemize}
+    \item \textbf{Livello di Presentazione (Presentation Layer)}: è il livello con cui interagisce l'utente. Nel nostro caso, si tratta dell'interfaccia grafica (GUI), realizzata con \texttt{Swing}, che consente l'inserimento e la visualizzazione dei dati.
+
+    \item \textbf{Livello Logico (Business Logic Layer)}: contiene la logica dell'applicazione. Questo livello riceve le richieste dal front-end, applica le regole di business e coordina l'accesso ai dati. È stato implementato attraverso \texttt{controller} e \texttt{servizi} che gestiscono le operazioni principali dell'applicazione.
+
+    \item \textbf{Livello Dati (Data Access Layer)}: si occupa della comunicazione con il database o con fonti dati esterne. Nel nostro progetto utilizziamo DAO (Data Access Object) per astrarre e centralizzare l'accesso ai dati persistenti.
+\end{itemize}
+
+\subsection*{Vantaggi}
+
+L'adozione di questa architettura ha comportato diversi benefici:
+
+\begin{itemize}
+    \item \textbf{Separazione delle responsabilità}: ogni livello è indipendente e gestisce un aspetto specifico del sistema, facilitando manutenzione e debugging.
+    \item \textbf{Modularità}: le modifiche a un livello (ad esempio, al database o all'interfaccia utente) non influenzano direttamente gli altri livelli.
+    \item \textbf{Riutilizzabilità}: la logica e il data layer possono essere riutilizzati con diverse interfacce (es. web, mobile).
+    \item \textbf{Scalabilità}: ogni livello può essere migliorato o sostituito in modo indipendente per adattarsi a esigenze future.
+\end{itemize}
+
+\subsubsection{Architettura Client}
+TODO MARCO
+
+    Il client, sviluppato con Java \texttt{Swing}, rappresenta il \textbf{livello di presentazione} dell'applicazione. Esso si occupa di interagire con l'utente e di inviare le richieste al server. A livello architetturale, abbiamo adottato un approccio basato sul \textbf{pattern MVC (Model-View-Controller)} per organizzare le componenti dell'interfaccia:
+
+    \begin{itemize}
+        \item \textbf{Model}: rappresenta i dati dell'applicazione (ad esempio, le classi \texttt{Cliente}, \texttt{Immobile}, ecc.).
+        \item \textbf{View}: gestisce la visualizzazione e l'interazione utente (le varie finestre grafiche realizzate in Swing).
+        \item \textbf{Controller}: media tra view e model, processando gli input dell'utente e orchestrando le chiamate ai servizi server.
+    \end{itemize}
+    
+    Questa scelta ha favorito una buona separazione tra logica di interfaccia e logica applicativa, migliorando la manutenibilità e l’estensibilità dell’interfaccia grafica.
+
+
+\subsubsection{Architettura Server}
+
+Per il server, è stata adottata un'architettura a \textbf{strati} (Layered Architecture), che prevede la suddivisione del codice backend nei seguenti livelli principali:
+
+\begin{itemize}
+  \item \textbf{Controller}: espone le API REST, riceve le richieste HTTP e invoca i servizi appropriati.
+  \item \textbf{Service}: contiene la logica applicativa, esegue operazioni di business e interagisce con il livello di accesso ai dati.
+  \item \textbf{Repository}: si occupa della persistenza dei dati, utilizzando Spring Data JPA per accedere al database.
+  \item \textbf{Model}: include le classi che rappresentano le entità del dominio.
+\end{itemize}
+
+L'utilizzo dell'architettura a strati nel \textbf{tier Server} contribuisce ad una maggiore modularità, testabilità e chiarezza del progetto.
+
+
 
 \subsection{Linguaggi di programmazione utilizzati}
 
 Per il lato backend è stato utilizzato java con il framework Spring, che ci ha permesso di avere una connessione al databse che non dipendesse dal DBMS utilizzato, e di rendere sicure le richieste fatte al server. Questo è stato possibile rispettivamente grazie a Spring-JPA (Java Persistence API) e Spring-security.
 
-
+TODO MARCO
 
 
 
@@ -753,7 +801,12 @@ Per il lato backend è stato utilizzato java con il framework Spring, che ci ha 
 
 \subsubsection{Architettura e Scelte Tecnologiche}
 
-Il sistema prevede la persistenza delle informazioni attraverso l'utilizzo di un database relazionale \textbf{PostgreSQL}. L'interazione tra il database e il backend Java è gestita tramite il modulo \textbf{Spring Data JPA}, che consente una forte astrazione rispetto al DBMS utilizzato. Questa configurazione permette di mantenere una struttura modulare e facilmente estendibile, agevolando un'eventuale migrazione verso altri database relazionali compatibili con lo standard JPA (Java Persistence API), come MySQL o Oracle DB.
+Il sistema prevede la persistenza delle informazioni attraverso l'utilizzo di un database relazionale \textbf{PostgreSQL}. L'interazione tra il database e il backend Java è gestita tramite il modulo \textbf{Spring Data JPA}, che consente una forte astrazione rispetto al DBMS utilizzato. Questa configurazione permette di mantenere una struttura modulare e facilmente estendibile, agevolando un'eventuale migrazione verso altri database relazionali compatibili con lo standard JPA (Java Persistence API), come MySQL o Oracle DB.\\
+\\
+Abbiamo scelto di utilizzare Google Cloud perché ci permetteva di avere su uno stesso servizio sia una istanza SQL che una istanza Virtual Machine, ed essere quindi anche in grado di sfruttare al meglio le interconnessioni già presenti tra i due cloud; inoltre permetteva di avere un credito gratuito di 300 Euro che ci ha permesso di comprare il necessario. 
+\\
+\\
+Il nostro database si trova quindi interamente su una istanza cloud SQL, mentre le immagini vengono salvati in un altro servizio offerto da Google Cloud ovvero Google Cloud Storage che permette di conservarle e infine salvare il relativo URL nel database.
 
 \subsubsection{Mapping e Gestione degli Oggetti Persistenti}
 
@@ -769,6 +822,8 @@ La gestione della sicurezza è un aspetto centrale del sistema. In particolare:
   \item La fase di \textbf{registrazione} include controlli per evitare la creazione di account con email già esistenti. In caso di duplicati, il sistema restituisce un messaggio di errore e non procede alla persistenza dei dati.
   
   \item La comunicazione tra client e server avviene tramite protocollo \textbf{HTTPS}, garantendo la cifratura end-to-end dei dati in transito.
+
+  
 \end{itemize}
 
 \subsubsection{Autenticazione e Autorizzazione}
@@ -782,9 +837,11 @@ Per il controllo degli accessi e la protezione delle API, viene utilizzato il fr
   \item È inoltre presente un meccanismo di \textbf{token blacklist}, che consente di invalidare token specifici (ad esempio in fase di logout), impedendone l’uso futuro.
 \end{enumerate}
 
+Inoltre per quanto riguarda database, l'istanza SQL di Google Cloud permette la connessione solo a IP riconosciuti e precedentemente inseriti. Quindi mettendo come IP riconoscibile solamente quello della istanza cloud Virtual Machine ci permette di avere una maggiore sicurezza per quanto riguarda accessi indersiderati al database.
+
 \subsubsection{Validazioni e Gestione degli Errori}
 
-Per garantire l’integrità dei dati, sono state implementate diverse validazioni sia lato backend (es. con annotazioni \texttt{@NotBlank}, \texttt{@Email}, ecc.), sia durante la comunicazione client-server. In caso di errori, il backend restituisce codici HTTP appropriati:
+Per garantire l’integrità dei dati, sono state implementate diverse validazioni sia lato backend (es. con annotazioni \texttt{@NotBlank}, \texttt{@Email}, ecc.), sia durante la comunicazione client-server. In caso di errori, il backend restituisce codici HTTP appropriati, ad esempio:
 
 \begin{itemize}
   \item \texttt{200 OK} per richieste andate a buon fine.
@@ -828,6 +885,8 @@ TODO
     \end{tikzpicture}
 
 \end{figure}
+
+
 
 \subsubsection{Inserisci Immobile}
 

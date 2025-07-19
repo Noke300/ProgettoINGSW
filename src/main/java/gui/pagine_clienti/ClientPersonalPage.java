@@ -40,8 +40,8 @@ public class ClientPersonalPage extends JPanel {
         // 🔄 Bottone Offerte
         buttonOfferte.addActionListener(e -> {
             listaOfferte = controllerClienti.getOfferte(token);
-            Map<LocalDateTime, String> mappa = getOfferteMap(listaOfferte);
-            aggiornaContenutoPanel(mappa, panelInterno, controllerClienti);
+            Map<LocalDateTime, JLabel> mappa = getOfferteMap(listaOfferte);
+            aggiornaContenutoPanel(mappa, panelInterno, controllerClienti,token);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
@@ -79,6 +79,55 @@ public class ClientPersonalPage extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
+    public static void aggiornaContenutoPanel(Map<LocalDateTime, JLabel> dati, JPanel contenutoPanel, ControllerClienti controllerClienti,String token) {
+        contenutoPanel.removeAll();
+        contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
+
+        Map<LocalDateTime, JLabel> ordinata = new TreeMap<>(dati);
+
+        for (Map.Entry<LocalDateTime, JLabel> entry : ordinata.entrySet()) {
+            LocalDateTime data = entry.getKey();
+            JLabel label = entry.getValue();
+
+            JPanel rigaPanel = new JPanel();
+            rigaPanel.setLayout(new BoxLayout(rigaPanel, BoxLayout.X_AXIS));
+            rigaPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            rigaPanel.add(label);
+
+            // Controllo testuale dentro JLabel
+            String testo = label.getText();
+            if (testo.contains("Controfferta")) {
+                JButton accetta = new JButton("Accetta");
+                JButton rifiuta = new JButton("Rifiuta");
+
+                accetta.addActionListener(e -> {
+                    Offerta offerta = new Offerta(label.getName(),true);
+                  //  controllerClienti.contrOfferta(offerta,token); // Aggiungi chiamata se disponibile
+                    JOptionPane.showMessageDialog(contenutoPanel, "✅ Offerta accettata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                });
+
+                rifiuta.addActionListener(e -> {
+                    Offerta offerta = new Offerta(label.getName(),false);
+                    //controllerClienti.contrOfferta(offerta,token); // Ag
+                    JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    // controllerClienti.rifiutaOfferta(data); // idem sopra
+                });
+
+                rigaPanel.add(Box.createHorizontalStrut(10));
+                rigaPanel.add(accetta);
+                rigaPanel.add(Box.createHorizontalStrut(5));
+                rigaPanel.add(rifiuta);
+            }
+
+            contenutoPanel.add(rigaPanel);
+            contenutoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+
+        contenutoPanel.revalidate();
+        contenutoPanel.repaint();
+    }
+
     public static void aggiornaContenutoPanel(Map<LocalDateTime, String> dati, JPanel contenutoPanel, ControllerClienti controllerClienti) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         contenutoPanel.removeAll();
@@ -98,26 +147,6 @@ public class ClientPersonalPage extends JPanel {
             riga.setFont(new Font("SansSerif", Font.PLAIN, 20));
             rigaPanel.add(riga);
 
-            if (testo.contains("Controfferta")) {
-                JButton accetta = new JButton("Accetta");
-                JButton rifiuta = new JButton("Rifiuta");
-
-                accetta.addActionListener(e -> {
-                    JOptionPane.showMessageDialog(contenutoPanel, "✅ Offerta accettata il " + data.format(formatter));
-                    //TODO capire come cazzo fare
-                });
-
-                rifiuta.addActionListener(e -> {
-                    JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(formatter));
-                    // qui potresti chiamare controllerClienti.rifiutaOfferta(...)
-                });
-
-                rigaPanel.add(Box.createHorizontalStrut(10));
-                rigaPanel.add(accetta);
-                rigaPanel.add(Box.createHorizontalStrut(5));
-                rigaPanel.add(rifiuta);
-            }
-
             contenutoPanel.add(rigaPanel);
             contenutoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
@@ -126,8 +155,9 @@ public class ClientPersonalPage extends JPanel {
         contenutoPanel.repaint();
     }
 
-    public static Map<LocalDateTime, String> getOfferteMap(List<Offerta> listaOfferte) {
-        Map<LocalDateTime, String> dati = new HashMap<>();
+
+    public static Map<LocalDateTime, JLabel> getOfferteMap(List<Offerta> listaOfferte) {
+        Map<LocalDateTime, JLabel> dati = new HashMap<>();
         for (Offerta offerta : listaOfferte) {
             LocalDateTime data = offerta.getDataOfferta();
             boolean isControfferta = Boolean.TRUE.equals(offerta.getContrOfferta());
@@ -136,11 +166,11 @@ public class ClientPersonalPage extends JPanel {
                     " | 📍 Immobile: " + offerta.getImmobile().getIndirizzo().toString() +
                     " | Tipo: " + (isControfferta ? "Controfferta" : "In Attesa");
 
-            if (isControfferta) {
-                testo += " | ";
-            }
+            JLabel label = new JLabel("🕓 " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " → " + testo);
+            label.setName(offerta.getIdOfferta());
+            label.setFont(new Font("SansSerif", Font.PLAIN, 20));
 
-            dati.put(data, testo);
+            dati.put(data, label);
         }
         return dati;
     }
@@ -164,6 +194,7 @@ public class ClientPersonalPage extends JPanel {
         }
         return dati;
     }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

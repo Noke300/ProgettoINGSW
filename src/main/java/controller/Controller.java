@@ -402,26 +402,5 @@ public class Controller {
         }
     }
 
-    public boolean contrOfferta(Offerta offerta, String token) {
 
-        String requestBody = gson.toJson(offerta);
-        HttpRequest request;
-        try {
-            request = HttpRequest.newBuilder()
-                    .uri(new URI(CONTRO_OFFERTA))
-                    .header("Authorization", "Bearer " + token)
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("URI non valido: " + e.getMessage());
-        }
-
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 200;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Errore durante l'esito dell'offerta: " + e.getMessage());
-        }
-    }
 }

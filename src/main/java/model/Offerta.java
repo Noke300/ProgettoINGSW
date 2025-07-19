@@ -31,7 +31,10 @@ public class Offerta {
         this.prezzoOfferta = prezzoOfferta;
         this.esitoOfferta = null;
     }
-
+    public Offerta(String id,boolean contrOfferta){
+        this.idOfferta = id;
+        this.contrOfferta = contrOfferta;
+    }
     public Offerta(String id, @Nullable Cliente cliente, LocalDateTime dataOfferta, Double prezzoOfferta, Immobile immobile, Boolean contrOfferta, Boolean esitoOfferta) {
         this.idOfferta = id;
         this.cliente = cliente;

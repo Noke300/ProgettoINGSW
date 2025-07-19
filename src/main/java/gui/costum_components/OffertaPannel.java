@@ -1,6 +1,7 @@
 package gui.costum_components;
 
 import controller.Controller;
+import controller.ControllerAgente;
 import gui.pagine_clienti.LogIn;
 import model.Cliente;
 import model.Immobile;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class OffertaPannel {
 
-    public static void setUpPannel(String token, JFrame frame, Immobile immobile, Controller controller) {
+    public static void setUpPannel(String token, JFrame frame, Immobile immobile, ControllerAgente controller) {
         if(!"".equals(token)) {
             JDialog offerteDialog = new JDialog(frame, "Proponi prezzo", true);
             offerteDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -197,7 +198,7 @@ public class OffertaPannel {
         }
 }
 
-    public static void mostraOfferteInSospeso(JFrame frame, List<Offerta> listaOfferte, Controller controller, String token) {
+    public static void mostraOfferteInSospeso(JFrame frame, List<Offerta> listaOfferte, ControllerAgente controller, String token) {
 
         List<Offerta> offerteInSospeso = listaOfferte.stream()
                 .filter(o -> o.getEsitoOfferta() == null)
@@ -298,7 +299,7 @@ public class OffertaPannel {
         dialog.setVisible(true);
     }
 
-    public static void apriDialogControOfferta(JFrame frame, Offerta offerta, Controller controller, String token) {
+    public static void apriDialogControOfferta(JFrame frame, Offerta offerta, ControllerAgente controller, String token) {
         JDialog dialog = new JDialog(frame, "Contro Offerta", true);
         dialog.setSize(500, 400);
         dialog.setResizable(false);

@@ -83,7 +83,7 @@ public class ImmobilePanelSingolo {
         bagniLabel.setFont(labelFont);
         panel.add(bagniLabel, "cell 3 1");
 
-        JLabel prezzoLabel = new JLabel("Prezzo : " + immobile.getPrezzo());
+        JLabel prezzoLabel = new JLabel("Prezzo : " + immobile.getPrezzo() + "€");
         prezzoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         panel.add(prezzoLabel, "cell 0 3");
 

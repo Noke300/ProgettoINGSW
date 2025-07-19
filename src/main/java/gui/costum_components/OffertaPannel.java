@@ -200,7 +200,7 @@ public class OffertaPannel {
         }
 }
 
-    public static void mostraOfferteInSospeso(JFrame frame, List<Offerta> listaOfferte, ControllerAgente controller, String token) {
+    public static void mostraOfferteInSospeso(JFrame frame, List<Offerta> listaOfferte, ControllerAgente controller, String token, JPanel panelListaImmobile, JPanel jPanel) {
 
         List<Offerta> offerteInSospeso = listaOfferte.stream()
                 .filter(o -> o.getEsitoOfferta() == null)
@@ -277,6 +277,9 @@ public class OffertaPannel {
                     offerta.setEsitoOfferta(true);
                     if(controller.esito(offerta, token)){
                         card.setVisible(false);
+                        panelListaImmobile.remove(jPanel);
+                        panelListaImmobile.repaint();
+                        panelListaImmobile.revalidate();
                         dialog.dispose();
                     }else{
                         JOptionPane.showMessageDialog(pannelloOfferte, "C'è stato un errore durante l'invio della risposta");

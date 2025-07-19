@@ -104,7 +104,12 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
             List<Offerta> offertas;
             Immobile immobile = new Immobile(selectedPanel[0].getName());
             offertas = control.getOffertePerImmobile(immobile);
-            OffertaPannel.mostraOfferteInSospeso(frame,offertas,control,token);
+            OffertaPannel.mostraOfferteInSospeso(frame,offertas,control,token,panelListaImmobile,selectedPanel[0]);
+
+            buttonElimina.setEnabled(false);
+            buttonOfferteVisualizza.setEnabled(false);
+            buttonAggiungiOfferta.setEnabled(false);
+
         });
 
 
@@ -119,9 +124,13 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
                     if (conferma == JOptionPane.YES_OPTION) {
                     control.eliminaImmobile(selectedPanel[0].getName(), token);
+
                     panelListaImmobile.remove(selectedPanel[0]);
                     selectedPanel = null;
+
                     buttonElimina.setEnabled(false);
+                    buttonOfferteVisualizza.setEnabled(false);
+                    buttonAggiungiOfferta.setEnabled(false);
                     panelListaImmobile.revalidate();
                     panelListaImmobile.repaint();
                 }

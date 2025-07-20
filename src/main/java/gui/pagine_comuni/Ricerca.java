@@ -93,7 +93,6 @@ public class Ricerca extends JPanel {
         // --- 8. Prezzi ---
 
         // Prezzo Minimo
-        JComboBox<String> comboPrezzoMin = new JComboBox<>();
         JMenuItem minItem = new JMenuItem("Minimo:");
         minItem.setEnabled(false);
         menuPrezzi.add(minItem);

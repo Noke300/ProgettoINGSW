@@ -105,30 +105,6 @@ new FormModel {
 						"border": new com.jformdesigner.model.SwingBorder( "ComboBox.border" )
 						"foreground": new java.awt.Color( 255, 255, 255, 255 )
 						"font": new java.awt.Font( "Segoe UI", 0, 18 )
-						add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
-							name: "menuBarContenitorePrezziBox"
-							add( new FormComponent( "javax.swing.JComboBox" ) {
-								name: "comboBoxPrezzoMinimo"
-								"model": new javax.swing.DefaultComboBoxModel {
-									selectedItem: "Prezzo Minimo"
-									addElement( "Prezzo Minimo" )
-									addElement( "Poco" )
-									addElement( "Medio " )
-									addElement( "Simone" )
-								}
-								"font": new java.awt.Font( "Segoe UI", 0, 16 )
-							} )
-							add( new FormComponent( "javax.swing.JComboBox" ) {
-								name: "comboBoxPrezzoMax"
-								"model": new javax.swing.DefaultComboBoxModel {
-									selectedItem: "Prezzo Massimo"
-									addElement( "Prezzo Massimo" )
-									addElement( "Tanto " )
-									addElement( "Poco" )
-								}
-								"font": new java.awt.Font( "Segoe UI", 0, 16 )
-							} )
-						} )
 					} )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 3 2"

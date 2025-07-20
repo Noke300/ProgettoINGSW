@@ -55,51 +55,18 @@ public class LogInAmministrazione extends JPanel {
                     Arrays.fill(pass, ' ');
                 } else {
                     this.token = token1;
+                    Controller controlAdmin = null;
 
-                    // 👉 Recupero ruolo una volta ottenuto il token valido
-                    String ruolo = control.getRawSpecifiche(token1);
-
-                    Controller controlAdmin;
-
-                    switch (ruolo) {
-                        case "[AGENTE_IMMOBILIARE]":
-                            controlAdmin = new ControllerAgente();
-                            controlAdmin.setNameLogIn(control.getNameLogIn());
-
-                            Ricerca.notifiche = new NotificationClient(email);
-                            Ricerca.notifiche.start();
-
-                            List<ImmobileEImmagini> immobiliEImmagini = ((ControllerAgente) controlAdmin).fetchImmobili(token1);
-                            BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-                            frame.setContentPane(new InterfacciaAgenteImmobiliare(
-                                    frame, bottoniOpzioni, (ControllerAgente) controlAdmin, this.token, immobiliEImmagini));
-                            break;
-
-                        case "[ADMIN]":
-                            controlAdmin = new ControllerAdmin();
-                            controlAdmin.setNameLogIn(control.getNameLogIn());
-                            frame.setContentPane(new InterfacciaAdmin(frame,new ControllerAdmin(), this.token));
-                            break;
-
-                            case "[ADMIN_SUPPORT]":
-                                controlAdmin = new ControllerAdminSup();
-                                controlAdmin.setNameLogIn(control.getNameLogIn());
-                                frame.setContentPane(new InterfacciaAdminSup(frame,new ControllerAdminSup(), this.token));
-                                break;
-
-                        default:
-                            JOptionPane.showMessageDialog(
-                                    frame,
-                                    "Ruolo sconosciuto: " + ruolo,
-                                    "Errore",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-                            break;
+                    String ruolo = control.getRawSpecifiche(this.token);
+                    if(ruolo.equals("[AGENTE_IMMOBILIARE]")){
+                        Ricerca.notifiche = new NotificationClient(email);
+                        Ricerca.notifiche.start();
                     }
-
+                    loginAministrazione(frame,controlAdmin,this.token,ruolo);
                     Arrays.fill(pass, ' ');
                     frame.revalidate();
                     frame.repaint();
+
                 }
             })).exceptionally(ex -> {
                 SwingUtilities.invokeLater(() -> {
@@ -128,6 +95,43 @@ public class LogInAmministrazione extends JPanel {
         super.addNotify();
         // Assicurati che tutti i menu popup siano nascosti quando il pannello viene aggiunto
         MenuSelectionManager.defaultManager().clearSelectedPath();
+    }
+
+    public static void loginAministrazione(JFrame frame, Controller controlAdmin, String token,String ruolo) {
+        // 👉 Recupero ruolo una volta ottenuto il token valido
+        switch (ruolo) {
+            case "[AGENTE_IMMOBILIARE]":
+                controlAdmin = new ControllerAgente();
+                controlAdmin.setNameLogIn(ruolo);
+
+                List<ImmobileEImmagini> immobiliEImmagini = ((ControllerAgente) controlAdmin).fetchImmobili(token);
+                BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(
+                        frame, bottoniOpzioni, (ControllerAgente) controlAdmin, token, immobiliEImmagini));
+                break;
+
+            case "[ADMIN]":
+                controlAdmin = new ControllerAdmin();
+                controlAdmin.setNameLogIn(ruolo);
+                frame.setContentPane(new InterfacciaAdmin(frame,new ControllerAdmin(), token));
+                break;
+
+            case "[ADMIN_SUPPORT]":
+                controlAdmin = new ControllerAdminSup();
+                controlAdmin.setNameLogIn(ruolo);
+                frame.setContentPane(new InterfacciaAdminSup(frame,new ControllerAdminSup(), token));
+                break;
+
+            default:
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "Ruolo sconosciuto: " + ruolo,
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                break;
+        }
+
     }
 
     private void initComponents() {

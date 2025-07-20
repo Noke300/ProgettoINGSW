@@ -386,7 +386,7 @@ public class PaginaImmobileDettagliata extends JPanel {
 
 // Mappa
         JPanel mappaPanel = new JPanel(new BorderLayout());
-        mappaPanel.setPreferredSize(new Dimension(600, 150));
+        mappaPanel.setPreferredSize(new Dimension(600, 350));
         GeoPosition geoP = new GeoPosition(immobile.getLanIm(),immobile.getLongIm());
         //TODO MapLoder da covert in metodo statico
         new MapLoader(geoP, mappaPanel, List.of(immobile));

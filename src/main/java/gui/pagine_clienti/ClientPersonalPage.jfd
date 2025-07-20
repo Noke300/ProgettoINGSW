@@ -6,16 +6,9 @@ new FormModel {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center,gap 10 5"
 			"$columnConstraints": "0[107,fill]0[74,fill]0[fill]0[111,grow,center]0[225,center]0[62,shrink 0,fill]0"
-			"$rowConstraints": "[73,top]0[73,center]0[73,center]0[]0[73,center]0[73,center]0[84,top]0[90,center]0[29]0[77]0[21,top]0"
+			"$rowConstraints": "rel[73,top]0[64,center][73,center]0[]0[73,center]0[73,center]0[84,top]0[90,center]0[29]0[77]0[21,top]0"
 		} ) {
 			name: "this"
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "LogoOpzioni2"
-				"icon": &SwingIcon0 new com.jformdesigner.model.SwingIcon( 0, "/Logo.svg" )
-				"iconTextGap": 2
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0 2 2,align center center,grow 0 0"
-			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelEmail"
 				"text": "Email"
@@ -39,6 +32,16 @@ new FormModel {
 				name: "separatorO"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 2 0 1 10"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelClient"
+				"disabledIcon": new com.jformdesigner.model.SwingIcon( 2, "OptionPane.warningIcon" )
+				"horizontalAlignment": 0
+				"horizontalTextPosition": 0
+				"icon": new com.jformdesigner.model.SwingIcon( 2, "FileView.fileIcon" )
+				"verticalAlignment": 3
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0 2 2,grow"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelDataN"
@@ -109,7 +112,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "LogoOpzioni"
-					"icon": #SwingIcon0
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/Logo.svg" )
 					"iconTextGap": 2
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Before"
@@ -130,7 +133,7 @@ new FormModel {
 				"value": "north,growx"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 65 )
+			"location": new java.awt.Point( 180, 75 )
 			"size": new java.awt.Dimension( 655, 510 )
 		} )
 	}

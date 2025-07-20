@@ -22,6 +22,8 @@ import java.util.List;
 public class Ricerca extends JPanel {
 
     private JPopupMenu popupMenu;
+    protected JComboBox<String> comboPrezzoMax = new JComboBox<>();
+    protected JComboBox<String> comboPrezzoMin = new JComboBox<>();
     private final String FilterString = "Indifferente" ;
     private String token;
     public static NotificationClient notifiche;
@@ -81,11 +83,6 @@ public class Ricerca extends JPanel {
             toggleButtonPortineria.setBackground(Color.WHITE);
 
         });
-
-        comboBoxTipVendita.addActionListener(e -> {
-            String tipoSelezionato = (String) comboBoxTipVendita.getSelectedItem();
-            aggiornaPrezzi(comboBoxPrezzoMinimo, comboBoxPrezzoMax, tipoSelezionato);
-        });
         // Usage for each button
         configureToggleButton(toggleButtonCantina);
         configureToggleButton(toggleButtonBalcone);
@@ -94,7 +91,36 @@ public class Ricerca extends JPanel {
         configureToggleButton(toggleButtonClimatizzazione);
 
         // --- 8. Prezzi ---
-        aggiornaPrezzi(comboBoxPrezzoMinimo, comboBoxPrezzoMax, "Vendita");
+
+        // Prezzo Minimo
+        JComboBox<String> comboPrezzoMin = new JComboBox<>();
+        JMenuItem minItem = new JMenuItem("Minimo:");
+        minItem.setEnabled(false);
+        menuPrezzi.add(minItem);
+        menuPrezzi.add(comboPrezzoMin);
+
+        // Prezzo Massimo
+        JMenuItem maxItem = new JMenuItem("Massimo:");
+        maxItem.setEnabled(false);
+        menuPrezzi.add(maxItem);
+        menuPrezzi.add(comboPrezzoMax);
+
+        // Listener su listaTipi
+        comboBoxTipVendita.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                String tipo = e.getItem().toString();
+                aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, tipo);
+            }
+        });
+
+// ✅ Chiamata iniziale manuale per popolare i combo box
+        SwingUtilities.invokeLater(() -> {
+            String tipoIniziale = (String) comboBoxTipVendita.getSelectedItem();
+            if (tipoIniziale != null) {
+                aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, tipoIniziale);
+            }
+        });
+        aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, "Vendita");
 
         menuPrezzi.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
             private boolean ignoreVisibilityFlag = false;
@@ -112,7 +138,7 @@ public class Ricerca extends JPanel {
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 // Prevent the menu from being hidden when combo boxes are focused/open
                 SwingUtilities.invokeLater(() -> {
-                    if (comboBoxPrezzoMax.isPopupVisible() || comboBoxPrezzoMinimo.isPopupVisible()) {
+                    if (comboPrezzoMax.isPopupVisible() || comboPrezzoMin.isPopupVisible()) {
                         ignoreVisibilityFlag = true;
                         menuPrezzi.setPopupMenuVisible(true);
                         ignoreVisibilityFlag = false;
@@ -127,7 +153,7 @@ public class Ricerca extends JPanel {
         });
 
         // Add listeners to ensure the combo boxes keep the menu open
-        comboBoxPrezzoMinimo.addPopupMenuListener(new PopupMenuListener() {
+        comboPrezzoMin.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 // Keep the parent menu open
@@ -146,7 +172,7 @@ public class Ricerca extends JPanel {
             }
         });
 
-        comboBoxPrezzoMax.addPopupMenuListener(new PopupMenuListener() {
+        comboPrezzoMax.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 // Keep the parent menu open
@@ -235,99 +261,30 @@ public class Ricerca extends JPanel {
 
     }
 
-    public static void aggiornaPrezzi(JComboBox<String> comboMin, JComboBox<String> comboMax, String tipo) {
-
-        if ("Vendita".equals(tipo)) {
-            comboMax.removeAllItems();
-            comboMin.removeAllItems();
-            comboMax.addItem("Prezzo Massimo");
-            comboMin.addItem("Prezzo Minimo");
-
-            comboMax.addItem("200.000€");
-            comboMax.addItem("250.000€");
-            comboMax.addItem("300.000€");
-            comboMax.addItem("350.000€");
-            comboMax.addItem("400.000€");
-            comboMax.addItem("450.000€");
-            comboMax.addItem("500.000€");
-            comboMax.addItem("550.000€");
-            comboMax.addItem("600.000€");
-            comboMax.addItem("650.000€");
-            comboMax.addItem("700.000€");
-            comboMax.addItem("750.000€");
-            comboMax.addItem("800.000€");
-            comboMax.addItem("850.000€");
-            comboMax.addItem("900.000€");
-            comboMax.addItem("950.000€");
-            comboMax.addItem("1.000.000€");
-
-            comboMin.addItem("50.000€");
-            comboMin.addItem("100.000€");
-            comboMin.addItem("150.000€");
-            comboMin.addItem("200.000€");
-            comboMin.addItem("250.000€");
-            comboMin.addItem("300.000€");
-            comboMin.addItem("350.000€");
-            comboMin.addItem("400.000€");
-            comboMin.addItem("450.000€");
-            comboMin.addItem("500.000€");
-            comboMin.addItem("550.000€");
-            comboMin.addItem("600.000€");
-            comboMin.addItem("650.000€");
-            comboMin.addItem("700.000€");
-            comboMin.addItem("750.000€");
-            comboMin.addItem("800.000€");
-        } else if ("Affitto".equals(tipo)) {
-            comboMax.removeAllItems();
-            comboMin.removeAllItems();
-            comboMax.addItem("Prezzo Massimo");
-            comboMin.addItem("Prezzo Minimo");
-
-            comboMax.addItem("200€");
-            comboMax.addItem("250€");
-            comboMax.addItem("300€");
-            comboMax.addItem("350€");
-            comboMax.addItem("400€");
-            comboMax.addItem("450€");
-            comboMax.addItem("500€");
-            comboMax.addItem("550€");
-            comboMax.addItem("600€");
-            comboMax.addItem("650€");
-            comboMax.addItem("700€");
-            comboMax.addItem("750€");
-            comboMax.addItem("800€");
-            comboMax.addItem("850€");
-            comboMax.addItem("900€");
-            comboMax.addItem("950€");
-            comboMax.addItem("1.000€");
-            comboMax.addItem("1.100€");
-            comboMax.addItem("1.200€");
-            comboMax.addItem("1.300€");
-            comboMax.addItem("1.400€");
-            comboMax.addItem("1.500€");
-
-            comboMin.addItem("50€");
-            comboMin.addItem("100€");
-            comboMin.addItem("150€");
-            comboMin.addItem("200€");
-            comboMin.addItem("250€");
-            comboMin.addItem("300€");
-            comboMin.addItem("350€");
-            comboMin.addItem("400€");
-            comboMin.addItem("450€");
-            comboMin.addItem("500€");
-            comboMin.addItem("550€");
-            comboMin.addItem("600€");
-            comboMin.addItem("650€");
-            comboMin.addItem("700€");
-            comboMin.addItem("750€");
-            comboMin.addItem("800€");
-            comboMin.addItem("850€");
-            comboMin.addItem("900€");
-            comboMin.addItem("950€");
-            comboMin.addItem("1.000€");
+    private static void caricaPrezzi(JComboBox<String> combo, String label, String[] valori) {
+        combo.removeAllItems();
+        combo.addItem(label);
+        for (String prezzo : valori) {
+            combo.addItem(prezzo);
         }
     }
+
+    public static void aggiornaPrezzi(JComboBox<String> comboMin, JComboBox<String> comboMax, String tipo) {
+        String[] prezziVenditaMin = {"50.000€", "100.000€", "150.000€", "200.000€", "250.000€", "300.000€", "350.000€", "400.000€", "450.000€", "500.000€", "550.000€", "600.000€", "650.000€", "700.000€", "750.000€", "800.000€"};
+        String[] prezziVenditaMax = {"200.000€", "250.000€", "300.000€", "350.000€", "400.000€", "450.000€", "500.000€", "550.000€", "600.000€", "650.000€", "700.000€", "750.000€", "800.000€", "850.000€", "900.000€", "950.000€", "1.000.000€"};
+
+        String[] prezziAffittoMin = {"50€", "100€", "150€", "200€", "250€", "300€", "350€", "400€", "450€", "500€", "550€", "600€", "650€", "700€", "750€", "800€", "850€", "900€", "950€", "1.000€"};
+        String[] prezziAffittoMax = {"200€", "250€", "300€", "350€", "400€", "450€", "500€", "550€", "600€", "650€", "700€", "750€", "800€", "850€", "900€", "950€", "1.000€", "1.100€", "1.200€", "1.300€", "1.400€", "1.500€"};
+
+        if ("Vendita".equals(tipo)) {
+            caricaPrezzi(comboMin, "Prezzo Minimo", prezziVenditaMin);
+            caricaPrezzi(comboMax, "Prezzo Massimo", prezziVenditaMax);
+        } else if ("Affitto".equals(tipo)) {
+            caricaPrezzi(comboMin, "Prezzo Minimo", prezziAffittoMin);
+            caricaPrezzi(comboMax, "Prezzo Massimo", prezziAffittoMax);
+        }
+    }
+
 
     private void performSearchAction(JFrame frame, Controller control) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
@@ -435,8 +392,8 @@ public class Ricerca extends JPanel {
     public Map<String, Object> fetchFiltri(){
         Map<String, Object> filtri = new HashMap<>();
 
-        filtri.put("prezzoMax", traduciPrezzo((String) comboBoxPrezzoMax.getSelectedItem()));
-        filtri.put("prezzoMin", traduciPrezzo((String) comboBoxPrezzoMinimo.getSelectedItem()));
+        filtri.put("prezzoMax", traduciPrezzo((String) comboPrezzoMax.getSelectedItem()));
+        filtri.put("prezzoMin", traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));
         filtri.put("superficie", getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
 
         if(comboBoxTipVendita.getSelectedItem().equals("Qualsiasi")){
@@ -451,7 +408,6 @@ public class Ricerca extends JPanel {
             filtri.put("tipoImmobile", listaTipi.getSelectedItem());
         }
 
-        //TODO Testare tutti i filtri, in particolare spinner bagni e stanze, se non funziona trasforma le stinghe in int
         if(spinnerBagni.getValue().equals("Indifferente")){
             filtri.put("numBagni", -1);
         }else{
@@ -527,9 +483,6 @@ public class Ricerca extends JPanel {
         listaTipi = new JComboBox<>();
         menuBarPrezziTutto = new JMenuBar();
         menuPrezzi = new JMenu();
-        menuBarContenitorePrezziBox = new JMenuBar();
-        comboBoxPrezzoMinimo = new JComboBox<>();
-        comboBoxPrezzoMax = new JComboBox<>();
         comboBoxSuperfice = new JComboBox<>();
         buttonFiltri = new JButton();
         panelMenuBarOpzioniColore = new JPanel();
@@ -641,30 +594,6 @@ public class Ricerca extends JPanel {
                 menuPrezzi.setBorder(UIManager.getBorder("ComboBox.border"));
                 menuPrezzi.setForeground(Color.white);
                 menuPrezzi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-
-                //======== menuBarContenitorePrezziBox ========
-                {
-
-                    //---- comboBoxPrezzoMinimo ----
-                    comboBoxPrezzoMinimo.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "Prezzo Minimo",
-                        "Poco",
-                        "Medio ",
-                        "Simone"
-                    }));
-                    comboBoxPrezzoMinimo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
-
-                    //---- comboBoxPrezzoMax ----
-                    comboBoxPrezzoMax.setModel(new DefaultComboBoxModel<>(new String[] {
-                        "Prezzo Massimo",
-                        "Tanto ",
-                        "Poco"
-                    }));
-                    comboBoxPrezzoMax.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                    menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
-                }
-                menuPrezzi.add(menuBarContenitorePrezziBox);
             }
             menuBarPrezziTutto.add(menuPrezzi);
         }
@@ -903,9 +832,6 @@ public class Ricerca extends JPanel {
     private JComboBox<String> listaTipi;
     private JMenuBar menuBarPrezziTutto;
     private JMenu menuPrezzi;
-    private JMenuBar menuBarContenitorePrezziBox;
-    private JComboBox<String> comboBoxPrezzoMinimo;
-    private JComboBox<String> comboBoxPrezzoMax;
     private JComboBox<String> comboBoxSuperfice;
     private JButton buttonFiltri;
     private JPanel panelMenuBarOpzioniColore;

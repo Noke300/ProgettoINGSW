@@ -58,6 +58,9 @@ public class IconClass {
     private static final FontIcon SOLE_NUVOLE_ICON = FontIcon.of(FontAwesomeSolid.CLOUD_SUN, 18);
     private static final FontIcon NEVE_ICON = FontIcon.of(FontAwesomeSolid.SNOWFLAKE, 18);
 
+    //User
+    private static final FontIcon UTENTE_ICON = FontIcon.of(FontAwesomeSolid.USER, 55);
+
 
     //Font
     private static final Font FONT_IMMOBILE_CARATTERISTICHE = new Font("SansSerif", Font.PLAIN, 18);
@@ -115,4 +118,7 @@ public class IconClass {
     public static FontIcon getNuvoleIcon(){return NUVOLE_ICON;}
     public static FontIcon getSoleNuvoleIcon(){return SOLE_NUVOLE_ICON;}
     public static FontIcon getNeveIcon(){return NEVE_ICON;}
+    public static FontIcon getUtenteIcon(){return UTENTE_ICON;}
+
+
 }

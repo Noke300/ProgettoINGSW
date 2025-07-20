@@ -19,6 +19,7 @@ import com.formdev.flatlaf.extras.*;
 import controller.ControllerAgente;
 import controller.NotificationClient;
 import gui.costum_components.BottoniOpzioni;
+import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_comuni.Ricerca;
 import gui.costum_components.AutoCompleteAddress;
 import gui.costum_components.IconClass;
@@ -376,7 +377,6 @@ public class InserimentoImmobile extends JPanel {
 
 
         buttonConferma.addActionListener(e -> {
-            /* TODO possibile modifica di salvamento dati in login ---MapLoder da modificare */
             boolean tuttiCampiCompilati = true;
 
             if(viaField.getText().isEmpty()) tuttiCampiCompilati = false;
@@ -433,9 +433,13 @@ public class InserimentoImmobile extends JPanel {
                         String.valueOf(tipoImmobile.getSelectedItem()));
 
               if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
-                  System.out.println("Inserimento avvenuto con sucesso");
+                  JOptionPane.showMessageDialog(null, "Inserimento Completato");
+                  LogInAmministrazione.loginAministrazione(frame,controllerA,token,controllerA.getNameLogIn());
+                  frame.revalidate();
+                  frame.repaint();
+
               }else {
-                  System.out.println("Errore inserimento immobile");
+                  JOptionPane.showMessageDialog(null, "Error nel inserimento del immobile ");
               }
 
             }else{

@@ -17,6 +17,7 @@ import javax.swing.border.*;
 import com.formdev.flatlaf.extras.*;
 import controller.ControllerClienti;
 import gui.costum_components.BottoniOpzioni;
+import gui.costum_components.IconClass;
 import model.Cliente;
 import model.Offerta;
 import model.Visita;
@@ -35,6 +36,7 @@ public class ClientPersonalPage extends JPanel {
         initComponents();
         Cliente cliente = controllerClienti.getSpecifiche(token);
 
+        labelClient.setIcon(IconClass.getUtenteIcon());
         bottoniOpzioni.setUpOpzioniMenu(frame, controllerClienti, token, menuBarOpzioni, menuOpzioni);
 
         // 🔄 Bottone Offerte
@@ -199,10 +201,10 @@ public class ClientPersonalPage extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
-        LogoOpzioni2 = new JLabel();
         labelEmail = new JLabel();
         labelNomeC = new JLabel();
         separatorO = new JSeparator();
+        labelClient = new JLabel();
         labelDataN = new JLabel();
         separatorV = new JSeparator();
         buttonLog = new JButton();
@@ -227,8 +229,8 @@ public class ClientPersonalPage extends JPanel {
             "[225,center]0" +
             "[62,shrink 0,fill]0",
             // rows
-            "[73,top]0" +
-            "[73,center]0" +
+            "rel[73,top]0" +
+            "[64,center]" +
             "[73,center]0" +
             "[]0" +
             "[73,center]0" +
@@ -238,11 +240,6 @@ public class ClientPersonalPage extends JPanel {
             "[29]0" +
             "[77]0" +
             "[21,top]0"));
-
-        //---- LogoOpzioni2 ----
-        LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
-        LogoOpzioni2.setIconTextGap(2);
-        add(LogoOpzioni2, "cell 0 0 2 2,align center center,grow 0 0");
 
         //---- labelEmail ----
         labelEmail.setText("Email");
@@ -260,6 +257,14 @@ public class ClientPersonalPage extends JPanel {
         labelNomeC.setFont(new Font("Segoe UI", Font.PLAIN, 28));
         add(labelNomeC, "cell 0 2 2 1,growy");
         add(separatorO, "cell 2 0 1 10");
+
+        //---- labelClient ----
+        labelClient.setDisabledIcon(UIManager.getIcon("OptionPane.warningIcon"));
+        labelClient.setHorizontalAlignment(SwingConstants.CENTER);
+        labelClient.setHorizontalTextPosition(SwingConstants.CENTER);
+        labelClient.setIcon(UIManager.getIcon("FileView.fileIcon"));
+        labelClient.setVerticalAlignment(SwingConstants.BOTTOM);
+        add(labelClient, "cell 0 0 2 2,grow");
 
         //---- labelDataN ----
         labelDataN.setText("00-00-0000");
@@ -345,10 +350,10 @@ public class ClientPersonalPage extends JPanel {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
-    private JLabel LogoOpzioni2;
     private JLabel labelEmail;
     private JLabel labelNomeC;
     private JSeparator separatorO;
+    private JLabel labelClient;
     private JLabel labelDataN;
     private JSeparator separatorV;
     private JButton buttonLog;

@@ -185,8 +185,36 @@ public class InterfacciaListaImmobili extends JPanel {
             Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> NotificationClient.notificheWindow(messaggio)));
         }
 
+        // Prezzo Minimo
+        JComboBox<String> comboPrezzoMin = new JComboBox<>();
+        JMenuItem minItem = new JMenuItem("Minimo:");
+        minItem.setEnabled(false);
+        menuPrezzi.add(minItem);
+        menuPrezzi.add(comboPrezzoMin);
 
-        Ricerca.aggiornaPrezzi(comboBoxPrezzoMinimo,comboBoxPrezzoMax,listaTipi.getSelectedItem().toString());
+        // Prezzo Massimo
+        JComboBox<String> comboPrezzoMax = new JComboBox<>();
+        JMenuItem maxItem = new JMenuItem("Massimo:");
+        maxItem.setEnabled(false);
+        menuPrezzi.add(maxItem);
+        menuPrezzi.add(comboPrezzoMax);
+
+        // Listener su listaTipi
+        listaTipi.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                String tipo = e.getItem().toString();
+                Ricerca.aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, tipo);
+            }
+        });
+
+// ✅ Chiamata iniziale manuale per popolare i combo box
+        SwingUtilities.invokeLater(() -> {
+            String tipoIniziale = (String) listaTipi.getSelectedItem();
+            if (tipoIniziale != null) {
+                Ricerca.aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, tipoIniziale);
+            }
+        });
+
 
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
@@ -223,7 +251,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
-        // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
         panelTopBar = new JPanel();
         backButton = new JButton();
         menuBarOpzioni = new JMenuBar();
@@ -235,9 +263,6 @@ public class InterfacciaListaImmobili extends JPanel {
         listaTipi = new JComboBox<>();
         menuBarPrezziTutto = new JMenuBar();
         menuPrezzi = new JMenu();
-        menuBarContenitorePrezziBox = new JMenuBar();
-        comboBoxPrezzoMinimo = new JComboBox<>();
-        comboBoxPrezzoMax = new JComboBox<>();
         comboBoxSuperfice = new JComboBox<>();
         panelMap = new JPanel();
         panelListaImmobileScroll = new JScrollPane();
@@ -246,13 +271,6 @@ public class InterfacciaListaImmobili extends JPanel {
 
         //======== this ========
         setBorder(new BevelBorder(BevelBorder.LOWERED));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing
-        . border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder
-        . CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .
-        awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder( )) )
-        ;  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
-        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} )
-        ;
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center",
             // columns
@@ -376,30 +394,6 @@ public class InterfacciaListaImmobili extends JPanel {
                     menuPrezzi.setBorder(UIManager.getBorder("ComboBox.border"));
                     menuPrezzi.setForeground(Color.white);
                     menuPrezzi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-
-                    //======== menuBarContenitorePrezziBox ========
-                    {
-
-                        //---- comboBoxPrezzoMinimo ----
-                        comboBoxPrezzoMinimo.setModel(new DefaultComboBoxModel<>(new String[] {
-                            "Prezzo Minimo",
-                            "Poco",
-                            "Medio ",
-                            "Simone"
-                        }));
-                        comboBoxPrezzoMinimo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                        menuBarContenitorePrezziBox.add(comboBoxPrezzoMinimo);
-
-                        //---- comboBoxPrezzoMax ----
-                        comboBoxPrezzoMax.setModel(new DefaultComboBoxModel<>(new String[] {
-                            "Prezzo Massimo",
-                            "Tanto ",
-                            "Poco"
-                        }));
-                        comboBoxPrezzoMax.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                        menuBarContenitorePrezziBox.add(comboBoxPrezzoMax);
-                    }
-                    menuPrezzi.add(menuBarContenitorePrezziBox);
                 }
                 menuBarPrezziTutto.add(menuPrezzi);
             }
@@ -455,7 +449,7 @@ public class InterfacciaListaImmobili extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
     private JPanel panelTopBar;
     private JButton backButton;
     private JMenuBar menuBarOpzioni;
@@ -467,9 +461,6 @@ public class InterfacciaListaImmobili extends JPanel {
     private JComboBox<String> listaTipi;
     private JMenuBar menuBarPrezziTutto;
     private JMenu menuPrezzi;
-    private JMenuBar menuBarContenitorePrezziBox;
-    private JComboBox<String> comboBoxPrezzoMinimo;
-    private JComboBox<String> comboBoxPrezzoMax;
     private JComboBox<String> comboBoxSuperfice;
     private JPanel panelMap;
     private JScrollPane panelListaImmobileScroll;

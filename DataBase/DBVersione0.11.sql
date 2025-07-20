@@ -77,7 +77,7 @@ CREATE TABLE Immobile (
     Balcone BOOLEAN,
     Cantina BOOLEAN,
     Portineria BOOLEAN,
-    Climatizzatione BOOLEAN,
+    Climatizzazione BOOLEAN,
     Venduto BOOLEAN DEFAULT FALSE,
     Scuole BOOLEAN DEFAULT FALSE,
     Parchi BOOLEAN DEFAULT FALSE,

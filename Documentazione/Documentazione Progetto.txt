@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[14pt]{extarticle}
 \usepackage{graphicx} % Required for inserting images
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm, margin=2.5cm]{geometry}
 \usepackage{graphicx}
@@ -285,9 +285,102 @@ Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amminist
 \subsection{Requisiti dell'applicativo}
 
 \subsubsection{Requisiti Non-Funzionali}
-TODO
+
+\begin{itemize}
+    \item \textbf{Performance ed Efficienza}
+    \begin{itemize}
+        \item L'applicazione deve essere performante e affidabile.
+        \item La ricerca degli immobili deve essere efficiente e veloce.
+    \end{itemize}
+
+    \item \textbf{Usabilità}
+    \begin{itemize}
+        \item L'interfaccia deve essere intuitiva, rapida e piacevole da usare.
+    \end{itemize}
+
+    \item \textbf{Portabilità}
+    \begin{itemize}
+        \item Il sistema deve essere fruibile come applicazione mobile, desktop o web-based.
+    \end{itemize}
+
+    \item \textbf{Sicurezza}
+    \begin{itemize}
+        \item Le credenziali utente devono essere salvate in modo sicuro.
+        \item Deve essere disponibile l'autenticazione tramite provider terzi (Google, Facebook, GitHub).
+    \end{itemize}
+
+    \item \textbf{Affidabilità}
+    \begin{itemize}
+        \item Il sistema deve gestire notifiche affidabili.
+        \item Il tracciamento storico delle offerte e delle attività deve essere sicuro e persistente.
+    \end{itemize}
+
+    \item \textbf{Manutenibilità e Scalabilità}
+    \begin{itemize}
+        \item Il sistema deve prevedere un'architettura che consenta l'aggiunta futura di nuove funzionalità (es. affitti brevi, calendario appuntamenti).
+        \item L'integrazione con API esterne deve essere stabile e facilmente gestibile.
+    \end{itemize}
+\end{itemize}
+
 \subsubsection{Requisiti di Dominio}
-TODO
+
+\begin{itemize}
+    \item \textbf{Gestione Ruoli e Accessi}
+    \begin{itemize}
+        \item Ogni agenzia ha un amministratore con credenziali predefinite modificabili.
+        \item Gli amministratori possono creare altri account di supporto.
+        \item I gestori delle agenzie possono creare account per gli agenti immobiliari.
+        \item Gli utenti si registrano tramite e-mail/password o con provider terzi.
+    \end{itemize}
+
+    \item \textbf{Gestione degli Immobili}
+    \begin{itemize}
+        \item Gli agenti possono caricare immobili con dettagli (foto, descrizione, prezzo, ecc.).
+        \item Ogni immobile è categorizzato in ``vendita'' o ``affitto''.
+        \item Ogni immobile è associato a una posizione geografica selezionabile su mappa interattiva.
+    \end{itemize}
+
+    \item \textbf{Ricerca Immobili}
+    \begin{itemize}
+        \item Gli utenti possono effettuare ricerche avanzate con parametri multipli.
+        \item È obbligatorio il filtraggio per città o comune.
+        \item \textit{Opzionale}: ricerca per raggio da un punto specificato su mappa.
+    \end{itemize}
+
+    \item \textbf{Prenotazione Visite}
+    \begin{itemize}
+        \item Le visite sono prenotabili entro le due settimane successive.
+        \item Gli agenti ricevono notifiche al momento della prenotazione.
+        \item Gli agenti possono accettare o rifiutare l'appuntamento.
+        \item Il cliente può selezionare un nuovo orario in caso di rifiuto.
+        \item \textit{Apprezzata}: integrazione con un calendario visuale.
+    \end{itemize}
+
+    \item \textbf{Previsioni Meteo}
+    \begin{itemize}
+        \item Durante la prenotazione, l’utente può consultare le previsioni meteo (tramite API come Open Meteo).
+    \end{itemize}
+
+    \item \textbf{Gestione Offerte}
+    \begin{itemize}
+        \item Gli utenti possono fare offerte anche inferiori al prezzo richiesto.
+        \item Gli agenti possono accettare, rifiutare o fare controproposte.
+        \item Esiste uno storico delle offerte, visibile a clienti e agenti.
+        \item Gli agenti possono inserire manualmente offerte ricevute offline.
+    \end{itemize}
+
+    \item \textbf{Analisi del Contesto Urbano}
+    \begin{itemize}
+        \item Quando viene creata un’inserzione, il sistema verifica (tramite API come Geoapify) la vicinanza a scuole, parchi e trasporti pubblici.
+        \item Se presenti, viene mostrata un'etichetta nell'inserzione.
+    \end{itemize}
+
+    \item \textbf{Attività Utente}
+    \begin{itemize}
+        \item Gli utenti possono visualizzare un riepilogo delle proprie attività: immobili visualizzati, visite prenotate, offerte fatte.
+    \end{itemize}
+\end{itemize}
+
 \subsection{Approfondimento Casi D'uso significativi}
 
 \subsubsection{Ricerca Immobile}
@@ -362,36 +455,101 @@ Se il prezzo minimo è maggiore del prezzo massimo, quando si premerà per la ri
 \subsubsection*{Cockburn}
 
 
-\begin{table}[]
+
+\begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|cccc|}
+\begin{tabular}{|c|clll|}
 \hline
-\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#4} & \multicolumn{4}{c|}{\textbf{Ricerca Immobile}} \\ \hline
-\textbf{Goal in Context} & \multicolumn{4}{l|}{Utente vorrebbe trovare una lista di immobili con le caratteristiche selezionate} \\ \hline
-\textbf{Preconditions} & \multicolumn{4}{l|}{Nessuna} \\ \hline
-\textbf{Success End Condition} & \multicolumn{4}{l|}{Utente trova una lista con le specifiche da lui inserite} \\ \hline
-\textbf{Failed End Condition} & \multicolumn{4}{l|}{Non visualizza la liste delle case con le specifiche inserite} \\ \hline
-\textbf{Primary Actor} & \multicolumn{4}{l|}{Utente} \\ \hline
-\textbf{Trigger} & \multicolumn{4}{l|}{Utente apre applicazione} \\ \hline
- & \multicolumn{1}{c|}{\textbf{Step n.}} & \multicolumn{1}{c|}{\textbf{Utente}} & \multicolumn{1}{c|}{\textbf{API generica}} & \textbf{System} \\ \cline{2-5} 
- & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{Mostra M00} \\ \cline{2-5} 
- & \multicolumn{1}{l|}{2} & \multicolumn{1}{l|}{Riempie i Campi} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} \\ \cline{2-5} 
- & \multicolumn{1}{l|}{3} & \multicolumn{1}{l|}{Clicca il pulsante "Ricerca"} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} \\ \cline{2-5} 
- & \multicolumn{1}{l|}{4} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{Mostra M03} \\ \cline{2-5} 
-\multirow{-6}{*}{\textbf{Main Scenario}} & \multicolumn{1}{l|}{5} & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Restituisce sulla mappa \\ la posizione degli \\ immobili della lista\end{tabular}} & \multicolumn{1}{l|}{} \\ \hline
-\multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{4a} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \begin{tabular}[c]{@{}c@{}}Mostra M02 \\ con messaggio:\\ "Seleziona un luogo"\end{tabular} \\ \cline{2-5} 
-\multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{5a} & \multicolumn{1}{l|}{Clicca "Ok"} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} \\ \cline{2-5} 
-\multicolumn{1}{|l|}{\multirow{-3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Extension \#1\\ (Non seleziona una \\ delle scelte poste\\ dall'API in fase di \\ inserimento "Città\\  o Comune")\end{tabular}}}} & \multicolumn{1}{l|}{6a} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \begin{tabular}[c]{@{}c@{}}Riparti da \\ step 1 main scenario\end{tabular} \\ \hline
-\multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{4b} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \begin{tabular}[c]{@{}c@{}}Mostra M03\\ con messaggio:\\ "Non ci sono immobili\\ con le specifiche richieste"\end{tabular} \\ \cline{2-5} 
-\multicolumn{1}{|l|}{} & \multicolumn{1}{l|}{5b} & \multicolumn{1}{l|}{Clicca "Ok"} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} \\ \cline{2-5} 
-\multicolumn{1}{|l|}{\multirow{-3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Extension \#2\\ (Seleziona una\\ ricerca che\\ non dà risultati)\end{tabular}}}} & \multicolumn{1}{l|}{6b} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \begin{tabular}[c]{@{}c@{}}Riparti da\\ Step 1 main scenario\end{tabular} \\ \hline
-\multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{4c} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \begin{tabular}[c]{@{}c@{}}Mostra M03\\ con messaggio:\\ "Non ci sono immobili in\\ questa Città o Comune"\end{tabular} \\ \cline{2-5} 
-\multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{5c} & \multicolumn{1}{c|}{Clicca "Ok"} & \multicolumn{1}{c|}{} &  \\ \cline{2-5} 
-\multicolumn{1}{|l|}{\multirow{-3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Extension \#3\\ (Seleziona una\\ città che non\\ ha immobili)\end{tabular}}}} & \multicolumn{1}{c|}{6c} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \begin{tabular}[c]{@{}c@{}}Riparti da\\ step 1 main scenario\end{tabular} \\ \hline
-\multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{4d} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & Mostra M04 \\ \cline{2-5} 
-\multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{5d} & \multicolumn{1}{c|}{Clicca "Ok"} & \multicolumn{1}{c|}{} &  \\ \cline{2-5} 
-\multicolumn{1}{|l|}{\multirow{-3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Extension \#4\\ (Impostato\\ prezzo minimo\\ maggiore prezzo\\ massimo)\end{tabular}}}} & \multicolumn{1}{c|}{6d} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \begin{tabular}[c]{@{}c@{}}Riparti da\\ step 1 main scenario\end{tabular} \\ \hline
+\textbf{USE CASE \#1} &
+  \multicolumn{4}{c|}{\multirow{2}{*}{\textbf{Ricerca Immobile}}} \\ \cline{1-1}
+\textbf{Goal in Context} &
+  \multicolumn{4}{c|}{} \\ \hline
+\textbf{Preconditions} &
+  \multicolumn{4}{l|}{Nessuna} \\ \hline
+\textbf{Success End Condition} &
+  \multicolumn{4}{l|}{Utente trova una lista con le specifiche da lui inserite} \\ \hline
+\textbf{Failed End Condition} &
+  \multicolumn{4}{l|}{Non visualizza la liste delle case con le specifiche inserite} \\ \hline
+\textbf{Primary Actor} &
+  \multicolumn{4}{l|}{Utente} \\ \hline
+\textbf{Trigger} &
+  \multicolumn{4}{l|}{Utente apre applicazione} \\ \hline
+\multirow{6}{*}{\textbf{Main Scenario}} &
+  \multicolumn{1}{c|}{\textbf{Step n.}} &
+  \multicolumn{1}{c|}{\textbf{Utente}} &
+  \multicolumn{1}{l|}{\textbf{API generica}} &
+  \multicolumn{1}{c|}{\textbf{System}} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{1} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M00 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{2} &
+  \multicolumn{1}{l|}{Riempie i Campi} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{3} &
+  \multicolumn{1}{l|}{Clicca il pulsante "Ricerca"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M03 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Restituisce sulla mappa \\ la posizione degli \\ immobili della lista\end{tabular}} &
+   \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Non si seleziona una\\ delle scelte proposte\\ dall'API nella\\ ricerca)\end{tabular}}} &
+  \multicolumn{1}{c|}{4a} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Mostra M02\\ con scritto\\ "Seleziona luogo"\end{tabular}} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5a} &
+  \multicolumn{1}{l|}{Clicca "Ok"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6a} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Riparti da step 1\\ main scenario\end{tabular}} \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Seleziona una ricerca\\ che non dà risultati)\end{tabular}}} &
+  \multicolumn{1}{c|}{4b} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Mostra M03\\ con scritto\\ "Non ci sono\\ immobili con le \\ specifiche scelte"\end{tabular}} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5b} &
+  \multicolumn{1}{l|}{Clicca "Ok"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{l|}{6b} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \begin{tabular}[c]{@{}l@{}}Riparti da step 1\\ Main scenario\end{tabular} \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Impostato prezzo\\ minimo maggiore \\ prezzo massimo)\end{tabular}}} &
+  \multicolumn{1}{c|}{4c} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{Mostra M04} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5c} &
+  \multicolumn{1}{c|}{Clicca "Ok"} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6c} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Riparti da\\ step 1 main scenario\end{tabular}} \\ \hline
 \end{tabular}%
 }
 \end{table}
@@ -574,6 +732,21 @@ Se tutti i campi non vengono inseriti correttamente comparirà la pagina di erro
   \multicolumn{1}{c|}{} &
   \multicolumn{1}{c|}{} &
   \begin{tabular}[c]{@{}c@{}}Riprendi dallo \\ step 2 Main Scenario\end{tabular} \\ \hline
+  \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#4\\ (Non si inseriscono\\ tutti i campi)\end{tabular}}} &
+  \multicolumn{1}{c|}{8d} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{Mostra M04} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{9d} &
+  \multicolumn{1}{c|}{Preme "Si"} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{10d} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{Mostra M01} \\ \hline
 \end{tabular}
 }
 \end{center}
@@ -655,88 +828,36 @@ Se non viene inserita un offerta uscirà una pagina di errore.
 \subsubsection*{Cockburn}
 
 
+
 \begin{table}[H]
+\centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|llll|}
+\begin{tabular}{|c|clll|}
 \hline
-\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#3} &
-  \multicolumn{4}{c|}{\textbf{Fai Offerta}} \\ \hline
-\textbf{Goal in Context} &
-  \multicolumn{4}{l|}{Il cliente vuole fare un offerta ad un immobile} \\ \hline
-\textbf{Preconditions} &
-  \multicolumn{4}{l|}{\begin{tabular}[c]{@{}l@{}}-Deve essersi autentificato come cliente\\ -Deve aver cercato nella barra di ricerca l'immobile\end{tabular}} \\ \hline
-\textbf{Success End Condition} &
-  \multicolumn{4}{l|}{L'offerta è stata correttamente inviata all'agente immobiliare} \\ \hline
-\textbf{Failed End Condition} &
-  \multicolumn{4}{l|}{L'offerta non viene inviata all'agente immobiliare} \\ \hline
-\textbf{Trigger} &
-  \multicolumn{4}{l|}{Il cliente seleziona un immobile nella lista immobili in M00} \\ \hline
- &
-  \multicolumn{1}{l|}{\textbf{Step n.}} &
-  \multicolumn{1}{l|}{\textbf{Cliente}} &
-  \multicolumn{1}{l|}{\textbf{API}} &
-  \textbf{System} \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{1} &
-  \multicolumn{1}{l|}{Il cliente seleziona un immobile in M00} &
-  \multicolumn{1}{l|}{} &
-   \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{2} &
-  \multicolumn{1}{l|}{} &
-  \multicolumn{1}{l|}{} &
-  Mostra M01 \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{3} &
-  \multicolumn{1}{l|}{} &
-  \multicolumn{1}{l|}{Mostra Immobile sulla mappa} &
-   \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{4} &
-  \multicolumn{1}{l|}{Preme sui "Fai Offerta"} &
-  \multicolumn{1}{l|}{} &
-   \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{5} &
-  \multicolumn{1}{l|}{} &
-  \multicolumn{1}{l|}{} &
-  Mostra M02 \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{6} &
-  \multicolumn{1}{l|}{Inserisce una offerta e preme "Invia"} &
-  \multicolumn{1}{l|}{} &
-   \\ \cline{2-5} 
- &
-  \multicolumn{1}{l|}{7} &
-  \multicolumn{1}{l|}{} &
-  \multicolumn{1}{l|}{} &
-  Mostra M03 \\ \cline{2-5} 
-\multirow{-9}{*}{\textbf{Main Scenario}} &
-  \multicolumn{1}{l|}{8} &
-  \multicolumn{1}{l|}{Seleziona "Invia Offerta"} &
-  \multicolumn{1}{l|}{} &
-   \\ \hline
- &
-  \multicolumn{1}{l|}{6a} &
-  \multicolumn{1}{l|}{Preme su "Cancella"} &
-  \multicolumn{1}{l|}{} &
-   \\ \cline{2-5} 
-\multirow{-2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} &
-  \multicolumn{1}{l|}{7a} &
-  \multicolumn{1}{l|}{} &
-  \multicolumn{1}{l|}{} &
-  Mostra M01 \\ \hline
- &
-  \multicolumn{1}{l|}{8b} &
-  \multicolumn{1}{l|}{Seleziona "Cancella Offerta"} &
-  \multicolumn{1}{l|}{} &
-   \\ \cline{2-5} 
-\multirow{-2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Ripensamento sull'offerta)\end{tabular}}} &
-  \multicolumn{1}{l|}{9b} &
-  \multicolumn{1}{l|}{} &
-  \multicolumn{1}{l|}{} &
-  Mostra M02 \\ \hline
-\end{tabular}
+\textbf{USE CASE \#3} & \multicolumn{4}{c|}{\textbf{Fai Offerta}} \\ \hline
+\textbf{Goal in Context} & \multicolumn{4}{l|}{Il cliente vuole fare un offerta ad un immobile} \\ \hline
+\textbf{Preconditions} & \multicolumn{4}{l|}{\begin{tabular}[c]{@{}l@{}}-Deve essersi autentificato come cliente\\ -Deve aver cercato nella barra di ricerca l’immobile\end{tabular}} \\ \hline
+\textbf{Success End Condition} & \multicolumn{4}{l|}{L’offerta `e stata correttamente inviata all’agente immobiliare} \\ \hline
+\textbf{Failed End Condition} & \multicolumn{4}{l|}{L’offerta non viene inviata all’agente immobiliare} \\ \hline
+\textbf{Primary Actor} & \multicolumn{4}{l|}{Cliente} \\ \hline
+\textbf{Trigger} & \multicolumn{4}{l|}{Il cliente seleziona un immobile nella lista immobili in M00} \\ \hline
+\multirow{9}{*}{\textbf{Main Scenario}} & \multicolumn{1}{c|}{\textbf{Step n.}} & \multicolumn{1}{c|}{\textbf{Cliente}} & \multicolumn{1}{c|}{\textbf{API}} & \multicolumn{1}{c|}{\textbf{System}} \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{1} & \multicolumn{1}{l|}{Il cliente seleziona un immobile in M00} & \multicolumn{1}{l|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{2} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & Mostra M01 \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{3} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{Mostra Immobile sulla mappa} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{4} & \multicolumn{1}{l|}{Preme su "Fai Offerta"} & \multicolumn{1}{l|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{5} & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{} & Mostra M02 \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{6} & \multicolumn{1}{l|}{Inserisce una offerta e preme "Invia"} & \multicolumn{1}{l|}{} &  \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{7} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & Mostra M03 \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{8} & \multicolumn{1}{l|}{Preme su "Invia Offerta"} & \multicolumn{1}{l|}{} &  \\ \hline
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} & \multicolumn{1}{c|}{6a} & \multicolumn{1}{l|}{Preme su "Cancella"} & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{7a} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & Mostra M01 \\ \hline
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Ripensamento sull'offerta)\end{tabular}}} & \multicolumn{1}{c|}{8b} & \multicolumn{1}{l|}{Seleziona "Cancella Offerta"} & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{9b} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & Mostra M01 \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#3\\ (Non si inserisce \\ nessuna offerta)\end{tabular}}} & \multicolumn{1}{c|}{7c} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Mostra M03} \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{8c} & \multicolumn{1}{c|}{Preme "Ok"} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ & \multicolumn{1}{c|}{9c} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Mostra M02} \\ \hline
+\end{tabular}%
 }
 \end{table}
 
@@ -850,59 +971,107 @@ Quando si fà una scelta se di accettare o di rifiutare usciranno due pagine di 
 \subsubsection*{CockBurn}
 
 
+
 \begin{table}[H]
+\centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|c|lll|}
+\begin{tabular}{|c|clll|}
 \hline
-\cellcolor[HTML]{FFFFFF}\textbf{USE CASE \#4} &
-  \multicolumn{3}{c|}{\textbf{Accetta Visita}} \\ \hline
+\textbf{USE CASE \#4} &
+  \multicolumn{4}{c|}{\textbf{Accetta Visita}} \\ \hline
 \textbf{Goal in Context} &
-  \multicolumn{3}{l|}{L'agente immobiliare vuole accettare una visita da parte di un cliente} \\ \hline
+  \multicolumn{4}{l|}{L’agente immobiliare vuole accettare una visita da parte di un cliente} \\ \hline
 \textbf{Preconditions} &
-  \multicolumn{3}{l|}{\begin{tabular}[c]{@{}l@{}}-Deve essersi autentificato come agente immobiliare di un'azienda\\ -Deve aver ricevuto una richiesta di visita da parte di un cliente\end{tabular}} \\ \hline
+  \multicolumn{4}{l|}{\begin{tabular}[c]{@{}l@{}}-Deve essersi autentificato come agente immobiliare di un’azienda\\ -Deve aver ricevuto una richiesta di visita da parte di un cliente\end{tabular}} \\ \hline
 \textbf{Success End Condition} &
-  \multicolumn{3}{l|}{La richiesta di visita è stata accettata con successo} \\ \hline
+  \multicolumn{4}{l|}{L’offerta `e stata correttamente inviata all’agente immobiliare} \\ \hline
 \textbf{Failed End Condition} &
-  \multicolumn{3}{l|}{La richiesta di visita non è stata accettata con successo} \\ \hline
+  \multicolumn{4}{l|}{L’offerta non viene inviata all’agente immobiliare} \\ \hline
+\textbf{Primary Actor} &
+  \multicolumn{4}{l|}{Cliente} \\ \hline
 \textbf{Trigger} &
-  \multicolumn{3}{l|}{L'agente immobiliare seleziona "Calendario" in M00} \\ \hline
+  \multicolumn{4}{l|}{Il cliente seleziona un immobile nella lista immobili in M00} \\ \hline
+\multirow{9}{*}{\textbf{Main Scenario}} &
+  \multicolumn{1}{c|}{\textbf{Step n.}} &
+  \multicolumn{1}{c|}{\textbf{Cliente}} &
+  \multicolumn{1}{c|}{\textbf{API}} &
+  \multicolumn{1}{c|}{\textbf{System}} \\ \cline{2-5} 
  &
-  \multicolumn{1}{l|}{\textbf{Step n.}} &
-  \multicolumn{1}{l|}{\textbf{Agente Immobiliare}} &
-  \textbf{System} \\ \cline{2-4} 
- &
-  \multicolumn{1}{l|}{1} &
-  \multicolumn{1}{l|}{Seleziona "Calendario"} &
-   \\ \cline{2-4} 
- &
-  \multicolumn{1}{l|}{2} &
+  \multicolumn{1}{c|}{1} &
+  \multicolumn{1}{l|}{Il cliente seleziona un immobile in M00} &
   \multicolumn{1}{l|}{} &
-  Mostra M01 \\ \cline{2-4} 
+   \\ \cline{2-5} 
  &
-  \multicolumn{1}{l|}{4} &
-  \multicolumn{1}{l|}{Seleziona un giorno verde} &
-   \\ \cline{2-4} 
- &
-  \multicolumn{1}{l|}{5} &
+  \multicolumn{1}{c|}{2} &
   \multicolumn{1}{l|}{} &
-  Mostra M02 \\ \cline{2-4} 
-\multirow{-6}{*}{\textbf{Main Scenario}} &
-  \multicolumn{1}{l|}{6} &
-  \multicolumn{1}{l|}{Preme il pulsante "Accetta"} &
-   \\ \hline
-\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Preme il pulsante "Rifiuta")\end{tabular}} &
-  \multicolumn{1}{l|}{6a} &
-  \multicolumn{1}{l|}{Preme il pulsante "Rifiuta"} &
-   \\ \hline
+  \multicolumn{1}{l|}{} &
+  Mostra M01 \\ \cline{2-5} 
  &
-  \multicolumn{1}{l|}{6a} &
-  \multicolumn{1}{l|}{Preme il pulsante "Indietro"} &
-   \\ \cline{2-4} 
-\multirow{-2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Preme il pulsante "Indietro")\end{tabular}}} &
-  \multicolumn{1}{l|}{7a} &
+  \multicolumn{1}{c|}{3} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{Mostra Immobile sulla mappa} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{4} &
+  \multicolumn{1}{l|}{Preme su "Fai Offerta"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{5} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{} &
+  Mostra M02 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{6} &
+  \multicolumn{1}{l|}{Inserisce una offerta e preme "Invia"} &
+  \multicolumn{1}{l|}{} &
+   \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{7} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M03 \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{8} &
+  \multicolumn{1}{l|}{Preme su "Invia Offerta"} &
+  \multicolumn{1}{l|}{} &
+   \\ \hline
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#1\\ (Torna Indietro)\end{tabular}}} &
+  \multicolumn{1}{c|}{6a} &
+  \multicolumn{1}{l|}{Preme su "Cancella"} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{7a} &
+  \multicolumn{1}{l|}{} &
   \multicolumn{1}{l|}{} &
   Mostra M01 \\ \hline
-\end{tabular}
+\multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#2\\ (Ripensamento sull'offerta)\end{tabular}}} &
+  \multicolumn{1}{c|}{8b} &
+  \multicolumn{1}{l|}{Seleziona "Cancella Offerta"} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{9b} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  Mostra M01 \\ \hline
+\multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Extension \#4\\ (Non si inseriscono\\ tutti i campi)\end{tabular}}} &
+  \multicolumn{1}{c|}{8d} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{Mostra M04} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{9d} &
+  \multicolumn{1}{c|}{Preme "Si"} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} \\ \cline{2-5} 
+ &
+  \multicolumn{1}{c|}{10d} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{} &
+  \multicolumn{1}{c|}{Mostra M01} \\ \hline
+\end{tabular}%
 }
 \end{table}
 
@@ -935,8 +1104,6 @@ L'adozione di questa architettura ha comportato diversi benefici:
 \end{itemize}
 
 \subsubsection{Architettura Client}
-TODO MARCO
-
     Il client, sviluppato con Java \texttt{Swing}, rappresenta il \textbf{livello di presentazione} dell'applicazione. Esso si occupa di interagire con l'utente e di inviare le richieste al server. A livello architetturale, abbiamo adottato un approccio basato sul \textbf{pattern MVC (Model-View-Controller)} per organizzare le componenti dell'interfaccia:
 
     \begin{itemize}
@@ -965,10 +1132,28 @@ L'utilizzo dell'architettura a strati nel \textbf{tier Server} contribuisce ad u
 
 \subsection{Linguaggi di programmazione utilizzati}
 
-Per il lato backend è stato utilizzato java con il framework Spring, che ci ha permesso di avere una connessione al databse che non dipendesse dal DBMS utilizzato, e di rendere sicure le richieste fatte al server. Questo è stato possibile rispettivamente grazie a Spring-JPA (Java Persistence API) e Spring-security.
+Per il lato backend è stato utilizzato java con il framework Spring, che ci ha permesso di avere una connessione al databse che non dipendesse dal DBMS utilizzato, e di rendere sicure le richieste fatte al server. Questo è stato possibile rispettivamente grazie a Spring-JPA (Java Persistence API) e Spring-security.\\
 
-TODO MARCO
+Il lato \textbf{front-end} dell'applicativo è stato sviluppato in Java, utilizzando \textbf{Swing} per la costruzione dell'interfaccia grafica utente (GUI). La progettazione delle interfacce è stata facilitata dall'utilizzo di \textbf{JForm Designer}, un tool che permette di modellare visivamente la struttura e i layout delle varie schermate dell'applicazione.
 
+\subsection*{Mappa Interattiva}
+
+La visualizzazione della mappa è stata realizzata tramite l'utilizzo della libreria \textbf{OpenMap API}. In combinazione con il servizio \textbf{GeoApify}, essa consente di:
+
+\begin{itemize}
+  \item Analizzare e individuare gli indirizzi degli immobili.
+  \item Segnalare sulla mappa, tramite appositi simboli, la posizione di ogni immobile.
+  \item Segnalare tramite appositi simboli, la presenza scuole, parchi e trsporti pubblici.
+  \item Offrire funzionalità di \textbf{autocomplete} in tempo reale durante la digitazione di un indirizzo, facilitando così la ricerca da parte dell'utente.
+\end{itemize}
+
+\subsection*{Previsioni Meteo per Visite Immobiliari}
+
+Per la funzionalità di richiesta visite da parte degli utenti, è stata integrata l'\textbf{API Open Meteo}. Questa consente di visualizzare le previsioni meteorologiche fino a due settimane, inclusa la giornata corrente, nella posizione geografica dell'immobile selezionato.
+
+\subsection*{Geocodifica Inversa}
+
+Per la traduzione da coordinate geografiche a indirizzi completi, è stato utilizzato \textbf{Nominatim}, un sottosistema di \textbf{OpenStreetMap}. Nominatim gestisce la \textit{geocodifica inversa}, fornendo quindi l’indirizzo corrispondente a un determinato set di coordinate geografiche.
 
 
 \subsection{Persistenza dei Dati}
@@ -982,9 +1167,189 @@ Abbiamo scelto di utilizzare Google Cloud perché ci permetteva di avere su uno 
 \\
 Il nostro database si trova quindi interamente su una istanza cloud SQL, mentre le immagini vengono salvati in un altro servizio offerto da Google Cloud ovvero Google Cloud Storage che permette di conservarle e infine salvare il relativo URL nel database.
 
+\subsubsection{Descrizione dello schema UML per la persistenza dati}
+
+\subsubsection*{UML Database}
+
+\begin{figure}[H]
+    \noindent
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (15,9); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (15,9);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=15cm,height=9cm]{Immagini/UML Database.png}};
+    \end{tikzpicture}
+
+\end{figure}.
+
+Al centro del modello troviamo la classe Immobile, che contiene attributi descrittivi come prezzo, superficie, descrizione, tipo di vendita, numero di stanze, classe energetica, e caratteristiche aggiuntive (es. ascensore, portineria, climatizzazione). Ogni immobile è associato a un indirizzo georeferenziato, modellato nella classe Indirizzo che contiene dettagli come via, città, longitudine, latitudine e CAP.
+
+Gli immobili appartengono a un’agenzia immobiliare, che a sua volta può avere più agenti immobiliari. L’agenzia dispone anche di utenti AdminSupport, che rappresentano account di supporto amministrativo. Gli agenti possono caricare immobili e sono responsabili delle visite e delle offerte ricevute. La classe ImmaginiImmobile consente di associare immagini (mediante URL) agli immobili, con una relazione 1:N.
+
+Gli utenti finali sono modellati nella classe Cliente, contenente nome, cognome, email e password. I clienti possono prenotare visite agli immobili, specificando data, ora e stato di conferma della visita. Inoltre, possono fare offerte sugli immobili, specificando prezzo proposto, data, esito dell’offerta ed eventuale controproposta da parte dell’agente. Le offerte e le visite sono tracciate e associate sia all'immobile che al cliente.
+
+\subsubsection*{Descrizione Creazione Tabelle}:.
+
+\begin{lstlisting}
+    CREATE TABLE AgenziaImmobiliare (
+	NomeAgenzia VARCHAR(255) PRIMARY KEY,
+	EmailAgenzia VARCHAR(255) NOT NULL UNIQUE,
+	EmailAdmin VARCHAR(255) NOT NULL UNIQUE,
+	PasswordAdmin VARCHAR(255) NOT NULL,
+	Regione VARCHAR(255) NOT NULL
+);
+\end{lstlisting}
+La tabella Agenzia Immobiliare memorizza varie informazioni come l'email dell'agenzia e l'email dell'admin. Importante è il Nome dell'agenzia che è primary key poiché nel nostro applicativo abbiamo deciso di non avere più agenzie con lo stesso nome.
+
+\begin{lstlisting}
+    CREATE TABLE Cliente (
+	Nome VARCHAR(255) NOT NULL,
+	Cognome VARCHAR(255) NOT NULL,
+	EmailCliente VARCHAR(255) PRIMARY KEY,
+	PasswordCliente VARCHAR(255) NOT NULL,
+	DataN DATE NOT NULL
+);
+
+\end{lstlisting}
+La tabella Cliente contiene informazioni del cliente e utilizza come primary key l'email del cliente.
+
+\begin{lstlisting}
+    CREATE TABLE AgenteImmobiliare(
+	NomeAgente VARCHAR(255) NOT NULL,
+	CognomeAgente VARCHAR(255) NOT NULL,
+	EmailAgente VARCHAR(255) PRIMARY KEY,
+	PasswordAgente VARCHAR(255) NOT NULL,
+	NomeAgenzia VARCHAR(255),
+FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
+
+);
+
+\end{lstlisting}
+La tabella Agente Immobiliare avrà vari dati tra cui una chiave esterna dell'Agenzia per cui lavora; come primary key abbiamo utilizzato l'email dell'agente.
+\newpage
+
+
+\begin{lstlisting}
+    CREATE TABLE AdminSupport(
+	NomeSupport VARCHAR(255) NOT NULL,
+	CognomeSupport VARCHAR(255) NOT NULL,
+	EmailSupport VARCHAR(255) PRIMARY KEY,
+	PasswordSupport VARCHAR(255) NOT NULL,
+	NomeAgenzia VARCHAR(255),
+    FOREIGN KEY(NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
+	
+);
+\end{lstlisting}
+La tabella AdminSupport conserva i dati degli account di supporto amministazione; abbiamo dovuto fare una table differente da quella di Admin per semplificare e velocizzare la differenziazione della ricerca al momento del login 
+
+
+
+\begin{lstlisting}
+    CREATE TABLE Indirizzo (
+    IdIndirizzo VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+    Via TEXT NOT NULL,
+    Citta TEXT NOT NULL,
+    Latitudine DOUBLE PRECISION,
+    Longitudine DOUBLE PRECISION,
+    Provincia TEXT NOT NULL,
+    NumeroCivico INTEGER NOT NULL,
+    Cap INTEGER NOT NULL,
+    Regione TEXT NOT NULL
+);
+\end{lstlisting}
+In questa tabella Indirizzo vediamo per la prima volta l'utilizzo dell'UUid come id. Abbiamo inzialmente utilizzato come ID uno seriale; ci siamo poi accorti che non ci garantiva un alto livello di sicurezza. Abbiamo quindi optato per UUid che è un tipo di identificativo di tipo alfanumerico che viene generato in automatico.
+
+\newpage
+
+
+\begin{lstlisting}
+    CREATE TABLE Immobile (
+    IdImmobile VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+	
+	IdIndirizzo VARCHAR(36),
+    NomeAgente VARCHAR(255),
+    NomeAgenzia VARCHAR(255) NOT NULL,
+    Prezzo DECIMAL(10,2) NOT NULL,
+    TipoVendita VARCHAR(255) NOT NULL,
+    Descrizione VARCHAR(2047) NOT NULL,
+    Superficie INT NOT NULL,
+    TipoImmobile VARCHAR(255) NOT NULL,
+    NumBagni INT NOT NULL,
+    ClasseEnergetica VARCHAR(10) NOT NULL,
+    NumStanze INT NOT NULL,
+    Piano INT NOT NULL,
+    Ascensore BOOLEAN,
+    Balcone BOOLEAN,
+    Cantina BOOLEAN,
+    Portineria BOOLEAN,
+    Climatizzazione BOOLEAN,
+    Venduto BOOLEAN DEFAULT FALSE,
+    Scuole BOOLEAN DEFAULT FALSE,
+    Parchi BOOLEAN DEFAULT FALSE,
+    TrasportoPubblico BOOLEAN DEFAULT FALSE,
+	
+    FOREIGN KEY (IdIndirizzo) REFERENCES Indirizzo(IdIndirizzo) ON DELETE CASCADE,
+    FOREIGN KEY (NomeAgente) REFERENCES AgenteImmobiliare(EmailAgente) ON DELETE SET NULL,
+    FOREIGN KEY (NomeAgenzia) REFERENCES AgenziaImmobiliare(NomeAgenzia)
+);
+\end{lstlisting}
+Nella tabella Immobile oltre a riavere come chiave primaria un UUid abbiamo varie chievi esterne: IdIndirizzo, NomeAgente, NomeAgenzia.
+Avremo potuto non avere come chiave esterna il NomeAgente poiché si poteva recuperare attraverso agenzia immobiliare; bensi abbiamo deciso comunque di metterli entrambi poiché velocizza di molto le query.
+\newpage
+
+\begin{lstlisting}
+    CREATE TABLE Offerta (
+    IdOfferta VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid(),
+    IdImmobile VARCHAR(36) NOT NULL,
+    EmailCliente VARCHAR(255),
+    PrezzoOfferta DECIMAL(10,2) NOT NULL,
+    DataOfferta TIMESTAMP NOT NULL,
+    EsitoOfferta BOOLEAN,
+    ContrOfferta BOOLEAN,
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
+    FOREIGN KEY (EmailCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
+);
+\end{lstlisting}
+La tabella Offerta utilizza anch'essa un UUid come primary key; inoltre a due chiavi esterne ovvero IdImmobile e EmailCliente.
+
+
+\begin{lstlisting}
+    CREATE TABLE Visita (
+    IdImmobile VARCHAR(36),
+    EmailCliente VARCHAR(255),
+    OraVisita TIME NOT NULL,
+    DataVisita DATE NOT NULL,
+    Conferma BOOLEAN,
+    PRIMARY KEY (IdImmobile, EmailCliente),
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE,
+    FOREIGN KEY (EmailCliente) REFERENCES Cliente(EmailCliente) ON DELETE CASCADE
+);
+\end{lstlisting}
+La tabella Visita ha come primary key l'unione delle chiavi esterne IdImmobile e EmailCliente.
+
+\begin{lstlisting}
+    CREATE TABLE ImmagineImmobile(
+    UrlImmagine VARCHAR(255) PRIMARY KEY,
+    IdImmobile VARCHAR(36) NOT NULL,
+    FOREIGN KEY (IdImmobile) REFERENCES Immobile(IdImmobile) ON DELETE CASCADE
+);
+\end{lstlisting}
+La tabella ImmagineImmobile contiene gli URL delle immagini conservate nel Bucket di Google Cloud Storage. Abbiamo deciso di utilizzare questo metodo e di non salvare direttamente le immagini nel database poiché sarebbe stato troppo pesante salvare le immagini interamente. Ha come chiave esterna l'IdImmobile.
+\newpage
+
 \subsubsection{Mapping e Gestione degli Oggetti Persistenti}
 
 Le entità del dominio applicativo (model) sono annotate con le classiche annotazioni JPA (\texttt{@Entity}, \texttt{@Id}, \texttt{@OneToMany}, ecc.), che permettono il mapping automatico tra classi Java e tabelle del database. L'utilizzo di \textbf{repository JPA} (interfacce che estendono \texttt{JpaRepository}) semplifica notevolmente l'implementazione delle operazioni CRUD (Create, Read, Update, Delete), eliminando la necessità di scrivere query SQL esplicite per la maggior parte dei casi.
+
 
 \subsubsection{Sicurezza dei Dati Sensibili}
 
@@ -1033,7 +1398,9 @@ La combinazione di Spring Boot, Spring Security, e JPA rende il sistema facilmen
 
 
 \subsection{Scelte di design UI}
-TODO
+
+
+
 \subsection{Diagramma delle classi di design}
 TODO
 \subsection{Sequence Diagram}
@@ -1060,7 +1427,7 @@ TODO
 
 \end{figure}
 Qui l'input iniziale lo ha l'utente che inserisce posizione e filtri e effettua la ricerca, il client quindi preparera la richiesta json in modo tale da poterla comunicare al backend.
-Nel backend la classe "Auth Controller" prima estrae la langitudine e la latitudine e manda una query al database cercando gli immobili più vicini; questo restituirà una lista di possibili "candidati".
+Nel backend la classe "Auth Controller" prima estrae la longitudine e la latitudine e manda una query al database cercando gli immobili più vicini; questo restituirà una lista di possibili "candidati".
 Di questi immobili andrà poi a recuperare le immagini dal database in questo modo:
 Manda una query al database dove recupera tutte le immagini associate all'immobile, questo resituirà una lista di URL che rappresentano la posizione delle vere immagini all'interno del servizio Google Cloud Storage.
 Viene quindi fatta una richiesta che permette di scaricare queste immagini in tipo Blob, viene infine fatto un cast a Base64 in modo da poterli inviare al Frontend. Questo porcedimento viene fatto per ogni immagine dell'immobile.
@@ -1116,7 +1483,7 @@ Infine viene mandato al frontend un messaggio di avvenuto o no inserimento dell'
     \end{tikzpicture}
 
 \end{figure}
-Il cliente inserisce i dati dell'offerta e il frontend prepare la richiesta Json da inviare al backend; viene anche controllato il token di Cliente che ci permette di vedere se ha fattoi l login.
+Il cliente inserisce i dati dell'offerta e il frontend prepare la richiesta Json da inviare al backend; viene anche controllato il token di Cliente che ci permette di vedere se ha fatto il login.
 Dopo aver fatto vari controlli di sicurezza per l'account utente, e dopo aver verificato che è un account Cliente a fare la richiesta (poichè si può inviare una richiesta anche da agente immobiliare), viene quindi salvata l'offerta nel database e infine viene inviata la notifica all'agente immobiliare.
 
 
@@ -1194,7 +1561,44 @@ Il conteggio dei commit è stato effettuato tramite comandi Git eseguiti in loca
 
 
 \subsection{Report Qualità del codice}
-TODO
+
+
+Durante lo sviluppo del progetto, è stato utilizzato \textbf{SonarQube} come strumento di analisi statica del codice. SonarQube è stato integrato direttamente nell'IDE \textbf{IntelliJ IDEA}, rendendo possibile la rilevazione in tempo reale di code smell, vulnerabilità e problemi di manutenibilità, favorendo così un approccio proattivo alla qualità del software.
+
+\subsubsection*{Integrazione con IntelliJ IDEA}
+L'integrazione è avvenuta mediante il plugin ufficiale \textit{SonarLint}, che comunica direttamente con il server SonarQube configurato per il progetto. Questa configurazione ha permesso di:
+\begin{itemize}
+  \item Evidenziare immediatamente le problematiche nel codice mentre si scriveva.
+  \item Sincronizzare i risultati dell’analisi locale con quelli del server centrale.
+  \item Ridurre il tempo di debugging grazie a feedback tempestivi e contestuali.
+\end{itemize}
+
+\subsubsection*{Contributo al Bug Fixing}
+Grazie a SonarQube, sono stati individuati e corretti diversi problemi potenziali prima ancora di eseguire i test. In particolare:
+\begin{itemize}
+  \item Miglioramento della \textbf{manutenibilità} attraverso la rimozione di code smell.
+  \item Aumento dell’attenzione alla \textbf{sicurezza}, con l’identificazione di  \textit{Security Hotspots}.
+  \item Ottimizzazione della struttura del progetto grazie alla rilevazione di una duplicazione del codice.
+\end{itemize}
+
+\subsubsection{Report finale di SonarQube}
+Di seguito viene inserita l'immagine dell’ultimo report generato da SonarQube:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Immagini/sonarqube_report.jpg}
+\end{figure}
+
+Il report evidenzia una buona qualità complessiva del codice:
+\begin{itemize}
+  \item \textbf{Affidabilità e Sicurezza}: entrambi gli indicatori risultano privi di issue critiche (livello A).
+  \item \textbf{Manutenibilità}: sebbene presenti 8 problemi, sono classificati come non critici e già noti.
+  \item \textbf{Coverage}: il valore pari a 0.0\% dovuto al fatto che i test che sono stati fatti, non sono sufficienti per SonarQube e non alzano questo valore.
+  \item \textbf{Duplicazioni}: presenti su circa il 5.6\% del codice, accettabile ma da monitorare per sviluppi futuri del codice.
+  \item \textbf{Security Hotspots}: quattro aree richiedono revisione, indicate con priorità elevata. Queste però sono dovute alla disabilitazione degli \textit{Spring Security's CSRF}, non necessari in questo applicativo essendo un applicazione desktop, in caso di sviluppi futuri si proederà a riabilitare il servizio.
+\end{itemize}
+
+Nel complesso, SonarQube ha fornito un contributo decisivo al miglioramento della qualità del software e alla riduzione dei bug prima della fase di test 
 
 
 

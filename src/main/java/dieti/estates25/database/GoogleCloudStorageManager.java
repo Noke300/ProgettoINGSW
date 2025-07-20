@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.io.FileNotFoundException;
 
-import java.util.Iterator;
-
 public class GoogleCloudStorageManager implements StorageManagerInterface {
     private static final String BUCKET_NAME = "dieti-estates-2025";
     private static final Dotenv dotenv = Dotenv.load();
@@ -69,17 +67,8 @@ public class GoogleCloudStorageManager implements StorageManagerInterface {
 
         Page<Blob> blobs = storage.list( BUCKET_NAME, Storage.BlobListOption.prefix(folderName));
 
-        Iterator<Blob> iterator = blobs.iterateAll().iterator();
-
-        boolean found = false;
-        while (iterator.hasNext()) {
-            found = true;
-            Blob blob = iterator.next();
-            System.out.println("Eliminazione: " + blob.getName());
+        for (Blob blob : blobs.iterateAll()) {
             blob.delete();
-        }
-        if (!found) {
-            System.out.println("Nessun oggetto trovato con prefisso: " + folderName);
         }
     }
 }

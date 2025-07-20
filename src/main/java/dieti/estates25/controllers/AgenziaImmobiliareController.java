@@ -6,9 +6,7 @@ import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import dieti.estates25.service.AgenziaImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +15,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth-admin")
 public class AgenziaImmobiliareController {
-
-    private final AuthenticationManager authenticationManager;
     private final AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB;
 
-    public AgenziaImmobiliareController(
-            @Qualifier("agenziaImmobiliareAuthenticationManager") AuthenticationManager authenticationManager,
-            AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB) {
-        this.authenticationManager = authenticationManager;
+    public AgenziaImmobiliareController(AgenziaImmobiliareServiceDB agenziaImmobiliareServiceDB) {
         this.agenziaImmobiliareServiceDB = agenziaImmobiliareServiceDB;
     }
 

@@ -7,9 +7,7 @@ import dieti.estates25.model.Visita;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.AgenteImmobiliareServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 

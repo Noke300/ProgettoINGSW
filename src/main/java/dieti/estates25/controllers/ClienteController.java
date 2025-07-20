@@ -5,9 +5,7 @@ import dieti.estates25.model.Visita;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth-cliente")
 public class ClienteController {
-
-    private final AuthenticationManager authenticationManager;
     private final ClienteServiceDB clienteService;
 
-    public ClienteController(
-            @Qualifier("clientAuthenticationManager") AuthenticationManager authenticationManager,
-            ClienteServiceDB clienteService) {
-        this.authenticationManager = authenticationManager;
+    public ClienteController(ClienteServiceDB clienteService) {
         this.clienteService = clienteService;
     }
 

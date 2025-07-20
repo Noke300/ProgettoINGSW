@@ -5,9 +5,7 @@ import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.AdminSupportServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth-adminSupport")
 public class AdminSupportController {
-
-    private final AuthenticationManager authenticationManager;
     private final AdminSupportServiceDB adminSupportService;
 
-    public AdminSupportController(
-            @Qualifier("adminSupportAuthenticationManager") AuthenticationManager authenticationManager,
-            AdminSupportServiceDB adminSupportService) {
-        this.authenticationManager = authenticationManager;
+    public AdminSupportController(AdminSupportServiceDB adminSupportService) {
         this.adminSupportService = adminSupportService;
     }
 

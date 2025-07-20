@@ -146,7 +146,7 @@ public class OffertaPannel {
             inviaButton.addActionListener(h -> {
                 String testo = campoOfferta.getText().trim();
                 if (!testo.isEmpty()) {
-                    if (controller.getNameLogIn().equals("[CLIENT]")) {
+                    if (controller.getNameLogIn().equals("[CLIENT]") || (controller.getNameLogIn().equals("[AGENTE_IMMOBILIARE]"))) {
                         try {
                             double prezzo = Double.parseDouble(testo);
                             if (prezzo <= 0) {

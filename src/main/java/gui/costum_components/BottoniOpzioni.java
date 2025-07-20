@@ -138,9 +138,6 @@ public class BottoniOpzioni extends JPanel {
             frame.repaint();
         });
 
-
-
-
         for (JButton btn : Arrays.asList(logInButton, buttonAccountAmministrazione,buttonRicerca)) {
             btn.addMouseListener(IconClass.cursorButton());
             menuOpzioni.add(btn);

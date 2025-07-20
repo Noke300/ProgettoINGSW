@@ -188,6 +188,12 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
         Immobile immobile = request.getImmobile();
         Indirizzo indirizzo = immobile.getIndirizzo();
 
+        if(immobile.getNumBagni() > immobile.getNumStanze()){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Il numero di bagni non può essere magiore a quello delle stanze");
+        }
+
         indirizzo = getOrCreateIndirizzo(indirizzo);
         immobile.setIndirizzo(indirizzo);
 

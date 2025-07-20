@@ -42,7 +42,7 @@ public class LogInAmministrazione extends JPanel {
             char[] pass = passwordField1.getPassword();
             String email = textFildEmail.getText();
 
-            CompletableFuture<String> futureToken = control.loginParallel(email, new String(pass));
+            CompletableFuture<String> futureToken = control.loginSequential(email, new String(pass));
 
             futureToken.thenAccept(token1 -> SwingUtilities.invokeLater(() -> {
                 if (token1.isEmpty()) {

@@ -134,28 +134,20 @@ public class Controller {
 
         return "";
     }
-    public CompletableFuture<String> loginParallel(String email, String password) {
-        List<String> urls = List.of(LOGIN_URL_ADMIN, LOGIN_URL_ADMINSUP, LOGIN_URL_AGENTE);
+    public CompletableFuture<String> loginSequential(String email, String password) {
+        List<String> urls = List.of(LOGIN_URL_AGENTE,LOGIN_URL_ADMINSUP,LOGIN_URL_ADMIN);
 
-        List<CompletableFuture<String>> futures = urls.stream()
-                .map(url -> CompletableFuture.supplyAsync(() -> attemptLogin(url, email, password)))
-                .toList();
-
-        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .thenApply(voidd -> {
-                    for (CompletableFuture<String> future : futures) {
-                        try {
-                            String token = future.get();
-                            if (token != null && !token.isBlank()) {
-                                return token.trim(); // primo token valido
-                            }
-                        } catch (Exception e) {
-                            System.err.println("Errore durante lettura del future: " + e.getMessage());
-                        }
-                    }
-                    return ""; // nessun token trovato
-                });
+        return CompletableFuture.supplyAsync(() -> {
+            for (String url : urls) {
+                String token = attemptLogin(url, email, password);
+                if (token != null && !token.isBlank()) {
+                    return token.trim(); // ritorna il primo token valido
+                }
+            }
+            return ""; // nessun token trovato
+        });
     }
+
 
     private String attemptLogin(String url, String email, String password) {
         Map<String, String> credentials = getPayloadPerTipo(url, email, password);

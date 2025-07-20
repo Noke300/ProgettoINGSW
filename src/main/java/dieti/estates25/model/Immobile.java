@@ -65,7 +65,7 @@ public class Immobile {
     @Column(name = "portineria")
     private boolean portineria;
 
-    @Column(name = "climatizzatione")
+    @Column(name = "climatizzazione")
     private boolean climatizzazione;
 
     @Column(name = "venduto")

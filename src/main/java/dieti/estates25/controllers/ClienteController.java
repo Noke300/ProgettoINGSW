@@ -5,7 +5,6 @@ import dieti.estates25.model.Visita;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.service.ClienteServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,12 +17,15 @@ import java.util.List;
 @RequestMapping("/auth-cliente")
 public class ClienteController {
 
-    @Autowired
-    @Qualifier("clientAuthenticationManager")
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final ClienteServiceDB clienteService;
 
-    @Autowired
-    private ClienteServiceDB clienteService;
+    public ClienteController(
+            @Qualifier("clientAuthenticationManager") AuthenticationManager authenticationManager,
+            ClienteServiceDB clienteService) {
+        this.authenticationManager = authenticationManager;
+        this.clienteService = clienteService;
+    }
 
     @GetMapping("/clienti")
     public List<Cliente> getAllClienti() {

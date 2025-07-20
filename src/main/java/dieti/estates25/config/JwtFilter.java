@@ -9,8 +9,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,17 +25,20 @@ import java.util.List;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTService jwtService;
+    private final JWTService jwtService;
+    private final ApplicationContext context;
+    private final TokenBlacklist tokenBlacklist;
 
-    @Autowired
-    ApplicationContext context;
-
-    @Autowired
-    private TokenBlacklist tokenBlacklist;
+    public JwtFilter(JWTService jwtService,
+                     ApplicationContext context,
+                     TokenBlacklist tokenBlacklist) {
+        this.jwtService = jwtService;
+        this.context = context;
+        this.tokenBlacklist = tokenBlacklist;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String email = null;
@@ -61,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 case "agente" -> context.getBean(AgenteImmobiliareServiceDB.class).loadUserByUsername(email);
                 case "adminSupport" -> context.getBean(AdminSupportServiceDB.class).loadUserByUsername(email);
                 case "admin" -> context.getBean(AgenziaImmobiliareServiceDB.class).loadUserByUsername(email);
-                case null, default -> throw new ServletException("Ruolo inesistente");
+                default -> throw new ServletException("Ruolo inesistente");
             };
 
             if(jwtService.validateToken(token, userDetails)){

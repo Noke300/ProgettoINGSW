@@ -10,7 +10,6 @@ import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliare;
 import dieti.estates25.model.agenziaimmobiliare.AgenziaImmobiliarePrincipal;
 import dieti.estates25.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -33,34 +32,35 @@ import java.util.Optional;
 @Service
 public class AgenziaImmobiliareServiceDB implements UserDetailsService {
 
-    @Autowired
-    private JWTService jwtService;
+    private final JWTService jwtService;
+    private final AgenziaImmobiliareRepository agenziaImmobiliareRepository;
+    private final AgenteImmobiliareRepository agenteImmobiliareRepository;
+    private final AdminSupportRepository adminSupportRepository;
+    private final ImmobileRepository immobileRepository;
+    private final ImmagineImmobileRepository immagineImmobileRepository;
+    private final AgenteImmobiliareServiceDB agentService;
+    private final AdminSupportServiceDB adminSupportService;
+    private final AuthenticationManager authManager;
 
-    @Autowired
-    private AgenziaImmobiliareRepository agenziaImmobiliareRepository;
-
-    @Autowired
-    private AgenteImmobiliareRepository agenteImmobiliareRepository;
-
-    @Autowired
-    private AdminSupportRepository adminSupportRepository;
-
-    @Autowired
-    private ImmobileRepository immobileRepository;
-
-    @Autowired
-    private ImmagineImmobileRepository immagineImmobileRepository;
-
-    @Autowired
-    private AgenteImmobiliareServiceDB agentService;
-
-    @Autowired
-    private AdminSupportServiceDB adminSupportService;
-
-    @Autowired
-    @Lazy
-    @Qualifier("agenziaImmobiliareAuthenticationManager")
-    private AuthenticationManager authManager;
+    public AgenziaImmobiliareServiceDB(JWTService jwtService,
+                                       AgenziaImmobiliareRepository agenziaImmobiliareRepository,
+                                       AgenteImmobiliareRepository agenteImmobiliareRepository,
+                                       AdminSupportRepository adminSupportRepository,
+                                       ImmobileRepository immobileRepository,
+                                       ImmagineImmobileRepository immagineImmobileRepository,
+                                       AgenteImmobiliareServiceDB agentService,
+                                       AdminSupportServiceDB adminSupportService,
+                                       @Lazy @Qualifier("agenziaImmobiliareAuthenticationManager") AuthenticationManager authManager) {
+        this.jwtService = jwtService;
+        this.agenziaImmobiliareRepository = agenziaImmobiliareRepository;
+        this.agenteImmobiliareRepository = agenteImmobiliareRepository;
+        this.adminSupportRepository = adminSupportRepository;
+        this.immobileRepository = immobileRepository;
+        this.immagineImmobileRepository = immagineImmobileRepository;
+        this.agentService = agentService;
+        this.adminSupportService = adminSupportService;
+        this.authManager = authManager;
+    }
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 

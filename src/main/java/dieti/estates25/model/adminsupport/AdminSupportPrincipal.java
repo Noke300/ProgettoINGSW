@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class AdminSupportPrincipal implements UserDetails {
 
-    private final AdminSupport adminSupport;
+    private final transient AdminSupport adminSupport;
     public AdminSupportPrincipal(AdminSupport adminSupport) {
         this.adminSupport = adminSupport;
     }

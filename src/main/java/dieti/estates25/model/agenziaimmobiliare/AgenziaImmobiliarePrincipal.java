@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class AgenziaImmobiliarePrincipal implements UserDetails {
 
-    private final AgenziaImmobiliare agenziaimmobiliare;
+    private final transient AgenziaImmobiliare agenziaimmobiliare;
 
     public AgenziaImmobiliarePrincipal(AgenziaImmobiliare agenzia) {this.agenziaimmobiliare = agenzia;}
 

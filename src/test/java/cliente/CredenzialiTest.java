@@ -1,16 +1,32 @@
 package cliente;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
+import dieti.estates25.repositories.ClienteRepository;
+import dieti.estates25.repositories.ImmobileRepository;
+import dieti.estates25.repositories.OffertaRepository;
+import dieti.estates25.repositories.VisitaRepository;
 import dieti.estates25.service.ClienteServiceDB;
+import dieti.estates25.service.JWTService;
+import dieti.estates25.service.NotificaService;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.Calendar;
 import java.util.Date;
 
 class CredenzialiTest {
 
-    private final ClienteServiceDB validator = new ClienteServiceDB();
+    ClienteServiceDB validator = new ClienteServiceDB(
+            mock(ClienteRepository.class),
+            mock(VisitaRepository.class),
+            mock(OffertaRepository.class),
+            mock(ImmobileRepository.class),
+            mock(JWTService.class),
+            mock(NotificaService.class),
+            mock(AuthenticationManager.class)
+    );
 
     // Helper per creare una data
     private Date getDate(int year, int month, int day) {

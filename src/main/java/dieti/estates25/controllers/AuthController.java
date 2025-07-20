@@ -10,7 +10,6 @@ import dieti.estates25.repositories.ImmobileRepository;
 import dieti.estates25.repositories.OffertaRepository;
 import dieti.estates25.service.NotificaService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,23 +30,26 @@ import java.util.function.Predicate;
 @RestController
 public class AuthController {
 
-    @Autowired
-    private TokenBlacklist tokenBlacklist;
+    private final TokenBlacklist tokenBlacklist;
+    private final ImmobileRepository immobileRepository;
+    private final OffertaRepository offertaRepository;
+    private final ClienteRepository clienteRepository;
+    private final ImmagineImmobileRepository immagineImmobileRepository;
+    private final NotificaService notificaService;
 
-    @Autowired
-    private ImmobileRepository immobileRepository;
-
-    @Autowired
-    private OffertaRepository offertaRepository;
-
-    @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private ImmagineImmobileRepository immagineImmobileRepository;
-
-    @Autowired
-    private NotificaService notificaService;
+    public AuthController(TokenBlacklist tokenBlacklist,
+                          ImmobileRepository immobileRepository,
+                          OffertaRepository offertaRepository,
+                          ClienteRepository clienteRepository,
+                          ImmagineImmobileRepository immagineImmobileRepository,
+                          NotificaService notificaService) {
+        this.tokenBlacklist = tokenBlacklist;
+        this.immobileRepository = immobileRepository;
+        this.offertaRepository = offertaRepository;
+        this.clienteRepository = clienteRepository;
+        this.immagineImmobileRepository = immagineImmobileRepository;
+        this.notificaService = notificaService;
+    }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -260,7 +262,7 @@ public class AuthController {
         try {
             storageManager = new GoogleCloudStorageManager();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new ArrayList<>();
         }
         GoogleCloudStorageService storageService = new GoogleCloudStorageService(storageManager);
 
@@ -272,7 +274,7 @@ public class AuthController {
                 try {
                     immagini.add(storageService.downloadHouseImage(j.getUrlImmagine()));
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    return new ArrayList<>();
                 }
             }
 

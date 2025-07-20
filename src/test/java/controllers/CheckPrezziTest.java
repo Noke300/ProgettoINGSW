@@ -1,14 +1,28 @@
 package controllers;
 
+import dieti.estates25.config.TokenBlacklist;
 import dieti.estates25.controllers.AuthController;
+import dieti.estates25.repositories.ClienteRepository;
+import dieti.estates25.repositories.ImmagineImmobileRepository;
+import dieti.estates25.repositories.ImmobileRepository;
+import dieti.estates25.repositories.OffertaRepository;
+import dieti.estates25.service.NotificaService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 class CheckPrezziTest {
 
-    private final AuthController validator = new AuthController();
+    AuthController validator = new AuthController(
+            mock(TokenBlacklist.class),
+            mock(ImmobileRepository.class),
+            mock(OffertaRepository.class),
+            mock(ClienteRepository.class),
+            mock(ImmagineImmobileRepository.class),
+            mock(NotificaService.class)
+    );
 
     @Test
     void testCE1_CE4_CE7() {

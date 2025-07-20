@@ -6,7 +6,6 @@ import dieti.estates25.model.*;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliarePrincipal;
 import dieti.estates25.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Example;
@@ -33,36 +32,38 @@ import java.util.*;
 @Service
 public class AgenteImmobiliareServiceDB implements UserDetailsService {
 
-    @Autowired
-    private AgenteImmobiliareRepository agentRepository;
+    private final AgenteImmobiliareRepository agentRepository;
+    private final ImmobileRepository immobileRepository;
+    private final VisitaRepository visitaRepository;
+    private final IndirizzoRepository indirizzoRepository;
+    private final JWTService jwtService;
+    private final ImmagineImmobileRepository immagineImmobileRepository;
+    private final OffertaRepository offertaRepository;
+    private final AuthenticationManager authManager;
 
-    @Autowired
-    private ImmobileRepository immobileRepository;
-
-    @Autowired
-    private VisitaRepository visitaRepository;
-
-    @Autowired
-    private IndirizzoRepository indirizzoRepository;
-
-    @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private ImmagineImmobileRepository immagineImmobileRepository;
-
-    @Autowired
-    @Lazy
-    @Qualifier("agentAuthenticationManager")
-    private AuthenticationManager authManager;
+    public AgenteImmobiliareServiceDB(AgenteImmobiliareRepository agentRepository,
+                                      ImmobileRepository immobileRepository,
+                                      VisitaRepository visitaRepository,
+                                      IndirizzoRepository indirizzoRepository,
+                                      JWTService jwtService,
+                                      ImmagineImmobileRepository immagineImmobileRepository,
+                                      OffertaRepository offertaRepository,
+                                      @Lazy @Qualifier("agentAuthenticationManager") AuthenticationManager authManager) {
+        this.agentRepository = agentRepository;
+        this.immobileRepository = immobileRepository;
+        this.visitaRepository = visitaRepository;
+        this.indirizzoRepository = indirizzoRepository;
+        this.jwtService = jwtService;
+        this.immagineImmobileRepository = immagineImmobileRepository;
+        this.offertaRepository = offertaRepository;
+        this.authManager = authManager;
+    }
 
     private GoogleCloudStorageManager storageManager;
 
     private GoogleCloudStorageService storageService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    @Autowired
-    private OffertaRepository offertaRepository;
 
     public List<AgenteImmobiliare> getAllAgents() {
         return agentRepository.findAll();
@@ -160,6 +161,17 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
                     .body("Immobile non trovato");
         }
 
+        try {
+            storageManager = new GoogleCloudStorageManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        storageService = new GoogleCloudStorageService(storageManager);
+
+        String folderName = "immobili/cartella" + immobile.getIdImmobile();
+        storageService.delete(folderName);
+
         if (immobileRepository.countByIndirizzo(immobile.getIndirizzo()) <= 1){
             String idIndirizzo = immobile.getIndirizzo().getIdIndirizzo();
             immobileRepository.delete(immobile);
@@ -167,6 +179,7 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
         }else{
             immobileRepository.delete(immobile);
         }
+
         return ResponseEntity.ok("Immobile eliminato correttamente");
     }
 

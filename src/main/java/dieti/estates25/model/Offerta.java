@@ -4,7 +4,6 @@ import dieti.estates25.model.cliente.Cliente;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
 
 @Entity
 @Table(name = "offerta")

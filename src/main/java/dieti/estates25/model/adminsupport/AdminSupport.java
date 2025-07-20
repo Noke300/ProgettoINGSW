@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "adminsupport")
-public class AdminSupport {
+public class AdminSupport{
 
     @Id
     @Column(name = "emailsupport")

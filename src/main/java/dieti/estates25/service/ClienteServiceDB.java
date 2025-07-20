@@ -7,7 +7,6 @@ import dieti.estates25.model.VisitaId;
 import dieti.estates25.model.cliente.Cliente;
 import dieti.estates25.model.cliente.ClientePrincipal;
 import dieti.estates25.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -31,28 +30,29 @@ import java.util.Optional;
 @Service
 public class ClienteServiceDB implements UserDetailsService {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+    private final VisitaRepository visitaRepository;
+    private final OffertaRepository offertaRepository;
+    private final ImmobileRepository immobileRepository;
+    private final JWTService jwtService;
+    private final NotificaService notificaService;
+    private final AuthenticationManager authManager;
 
-    @Autowired
-    private VisitaRepository visitaRepository;
-
-    @Autowired
-    private OffertaRepository offertaRepository;
-
-    @Autowired
-    private ImmobileRepository immobileRepository;
-
-    @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private NotificaService notificaService;
-
-    @Autowired
-    @Lazy
-    @Qualifier("clientAuthenticationManager")
-    private AuthenticationManager authManager;
+    public ClienteServiceDB(ClienteRepository clienteRepository,
+                            VisitaRepository visitaRepository,
+                            OffertaRepository offertaRepository,
+                            ImmobileRepository immobileRepository,
+                            JWTService jwtService,
+                            NotificaService notificaService,
+                            @Lazy @Qualifier("clientAuthenticationManager") AuthenticationManager authManager) {
+        this.clienteRepository = clienteRepository;
+        this.visitaRepository = visitaRepository;
+        this.offertaRepository = offertaRepository;
+        this.immobileRepository = immobileRepository;
+        this.jwtService = jwtService;
+        this.notificaService = notificaService;
+        this.authManager = authManager;
+    }
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);   //numero di round che permettono una grande sicurezza senza troppo tempo per il calcolo
 

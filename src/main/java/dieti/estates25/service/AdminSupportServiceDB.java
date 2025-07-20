@@ -9,7 +9,6 @@ import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.adminsupport.AdminSupportPrincipal;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -32,28 +31,29 @@ import java.util.Optional;
 @Service
 public class AdminSupportServiceDB implements UserDetailsService {
 
-    @Autowired
-    private JWTService jwtService;
+    private final JWTService jwtService;
+    private final AdminSupportRepository adminSupportRepository;
+    private final AgenteImmobiliareRepository agenteImmobiliareRepository;
+    private final ImmobileRepository immobileRepository;
+    private final ImmagineImmobileRepository immagineImmobileRepository;
+    private final AgenteImmobiliareServiceDB agentService;
+    private final AuthenticationManager authManager;
 
-    @Autowired
-    private AdminSupportRepository adminSupportRepository;
-
-    @Autowired
-    private AgenteImmobiliareRepository agenteImmobiliareRepository;
-
-    @Autowired
-    private ImmobileRepository immobileRepository;
-
-    @Autowired
-    private ImmagineImmobileRepository immagineImmobileRepository;
-
-    @Autowired
-    private AgenteImmobiliareServiceDB agentService;
-
-    @Autowired
-    @Lazy
-    @Qualifier("adminSupportAuthenticationManager")
-    private AuthenticationManager authManager;
+    public AdminSupportServiceDB(JWTService jwtService,
+                                 AdminSupportRepository adminSupportRepository,
+                                 AgenteImmobiliareRepository agenteImmobiliareRepository,
+                                 ImmobileRepository immobileRepository,
+                                 ImmagineImmobileRepository immagineImmobileRepository,
+                                 AgenteImmobiliareServiceDB agentService,
+                                 @Lazy @Qualifier("adminSupportAuthenticationManager") AuthenticationManager authManager) {
+        this.jwtService = jwtService;
+        this.adminSupportRepository = adminSupportRepository;
+        this.agenteImmobiliareRepository = agenteImmobiliareRepository;
+        this.immobileRepository = immobileRepository;
+        this.immagineImmobileRepository = immagineImmobileRepository;
+        this.agentService = agentService;
+        this.authManager = authManager;
+    }
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -160,7 +160,7 @@ public class AdminSupportServiceDB implements UserDetailsService {
         try {
             storageManager = new GoogleCloudStorageManager();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new ArrayList<>();
         }
         storageService = new GoogleCloudStorageService(storageManager);
 
@@ -172,7 +172,7 @@ public class AdminSupportServiceDB implements UserDetailsService {
                 try {
                     immagini.add(storageService.downloadHouseImage(j.getUrlImmagine()));
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    return new ArrayList<>();
                 }
             }
 

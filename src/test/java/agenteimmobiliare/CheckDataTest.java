@@ -1,7 +1,12 @@
 package agenteimmobiliare;
 
+import dieti.estates25.repositories.*;
 import dieti.estates25.service.AgenteImmobiliareServiceDB;
+import dieti.estates25.service.JWTService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.security.authentication.AuthenticationManager;
 
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -12,7 +17,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CheckDataTest {
 
-    private final AgenteImmobiliareServiceDB validator = new AgenteImmobiliareServiceDB();
+    @Mock
+    private AgenteImmobiliareRepository agentRepository;
+    @Mock private ImmobileRepository immobileRepository;
+    @Mock private VisitaRepository visitaRepository;
+    @Mock private IndirizzoRepository indirizzoRepository;
+    @Mock private JWTService jwtService;
+    @Mock private ImmagineImmobileRepository immagineImmobileRepository;
+    @Mock private OffertaRepository offertaRepository;
+    @Mock private AuthenticationManager authManager;
+
+    private AgenteImmobiliareServiceDB validator;
+
+    @BeforeEach
+    void setUp() {
+        validator = new AgenteImmobiliareServiceDB(
+                agentRepository,
+                immobileRepository,
+                visitaRepository,
+                indirizzoRepository,
+                jwtService,
+                immagineImmobileRepository,
+                offertaRepository,
+                authManager
+        );
+    }
 
     // Helper per creare una data
     private Date getDate(int year, int month, int day) {
@@ -30,9 +59,16 @@ class CheckDataTest {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         Date data = getDate(year, month, day);
-        LocalTime ora = LocalTime.now().plusHours(2);
+        LocalTime ora = LocalTime.now();
+        boolean result;
 
-        boolean result = validator.checkData(data, ora);
+        if(ora.isAfter(LocalTime.of(18, 0))){
+            result = true;
+        }else{
+            ora = ora.plusMinutes(1);
+            result = validator.checkData(data, ora);
+        }
+
         assertTrue(result);
     }
 

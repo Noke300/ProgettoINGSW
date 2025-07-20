@@ -200,21 +200,20 @@ public class InterfacciaListaImmobili extends JPanel {
         menuPrezzi.add(comboPrezzoMax);
 
         // Listener su listaTipi
-        listaTipi.addItemListener(e -> {
+        comboBoxTipVendita.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 String tipo = e.getItem().toString();
                 Ricerca.aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, tipo);
             }
         });
 
-// ✅ Chiamata iniziale manuale per popolare i combo box
         SwingUtilities.invokeLater(() -> {
-            String tipoIniziale = (String) listaTipi.getSelectedItem();
+            String tipoIniziale = (String) comboBoxTipVendita.getSelectedItem();
             if (tipoIniziale != null) {
                 Ricerca.aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, tipoIniziale);
             }
         });
-
+        Ricerca.aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, "Vendita");
 
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
@@ -231,7 +230,7 @@ public class InterfacciaListaImmobili extends JPanel {
         for (JButton jButton : Arrays.asList(mapButton, buttonFiltri,backButton)) {
             jButton.addMouseListener(IconClass.cursorButton());
         }
-        listaTipi.addMouseListener(IconClass.cursorButton());
+        comboBoxTipVendita.addMouseListener(IconClass.cursorButton());
         menuOpzioni.addMouseListener(IconClass.cursorButton());
         comboBoxSuperfice.addMouseListener(IconClass.cursorButton());
 
@@ -260,7 +259,7 @@ public class InterfacciaListaImmobili extends JPanel {
         searchButton = new JButton();
         searchField = new JTextField();
         buttonFiltri = new JButton();
-        listaTipi = new JComboBox<>();
+        comboBoxTipVendita = new JComboBox<>();
         menuBarPrezziTutto = new JMenuBar();
         menuPrezzi = new JMenu();
         comboBoxSuperfice = new JComboBox<>();
@@ -371,14 +370,14 @@ public class InterfacciaListaImmobili extends JPanel {
             buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
             panelTopBar.add(buttonFiltri, "cell 1 2,align left center,grow 0 0");
 
-            //---- listaTipi ----
-            listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Casa",
-                "Appartamento"
+            //---- comboBoxTipVendita ----
+            comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
+                "Vendita e Affitto",
+                "Affitto",
+                "Vendita"
             }));
-            listaTipi.setSelectedIndex(0);
-            listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(listaTipi, "cell 2 2,align left center,grow 0 0");
+            comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            panelTopBar.add(comboBoxTipVendita, "cell 2 2");
 
             //======== menuBarPrezziTutto ========
             {
@@ -458,7 +457,7 @@ public class InterfacciaListaImmobili extends JPanel {
     private JButton searchButton;
     private JTextField searchField;
     private JButton buttonFiltri;
-    private JComboBox<String> listaTipi;
+    private JComboBox<String> comboBoxTipVendita;
     private JMenuBar menuBarPrezziTutto;
     private JMenu menuPrezzi;
     private JComboBox<String> comboBoxSuperfice;

@@ -395,7 +395,7 @@ public class Ricerca extends JPanel {
         filtri.put("prezzoMin", traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));
         filtri.put("superficie", getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
 
-        if(comboBoxTipVendita.getSelectedItem().equals("Qualsiasi")){
+        if(comboBoxTipVendita.getSelectedItem().equals("Vendita e Affitto")){
             filtri.put("tipoVendita", null);
         }else{
             filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
@@ -479,7 +479,7 @@ public class Ricerca extends JPanel {
         mapButton = new JButton();
         searchButton = new JButton();
         searchField = new JTextField();
-        listaTipi = new JComboBox<>();
+        comboBoxTipVendita = new JComboBox<>();
         menuBarPrezziTutto = new JMenuBar();
         menuPrezzi = new JMenu();
         comboBoxSuperfice = new JComboBox<>();
@@ -490,7 +490,7 @@ public class Ricerca extends JPanel {
         LogoOpzioni = new JLabel();
         internalFrameFiltri = new JPanel();
         labelTipoVendita = new JLabel();
-        comboBoxTipVendita = new JComboBox<>();
+        listaTipi = new JComboBox<>();
         labelNumeroBagni = new JLabel();
         spinnerBagni = new JSpinner();
         labelStanze = new JLabel();
@@ -515,10 +515,10 @@ public class Ricerca extends JPanel {
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
             "0[74,fill]0" +
-            "[shrink 0,center]0" +
-            "[left]0" +
+            "[shrink 0,center]" +
+            "[left]" +
             "[fill]0" +
-            "[24,center]0" +
+            "[6,center]0" +
             "[102,center]0" +
             "[62,shrink 0,fill]0",
             // rows
@@ -569,15 +569,14 @@ public class Ricerca extends JPanel {
         searchField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         add(searchField, "cell 1 2 5 1,aligny center,grow 100 0");
 
-        //---- listaTipi ----
-        listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
-            "Case e Appartamenti",
-            "Casa",
-            "Appartamento"
+        //---- comboBoxTipVendita ----
+        comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
+            "Vendita e Affitto",
+            "Affitto",
+            "Vendita"
         }));
-        listaTipi.setSelectedIndex(0);
-        listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(listaTipi, "cell 1 3,align center center,grow 0 0");
+        comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        add(comboBoxTipVendita, "cell 1 3");
 
         //======== menuBarPrezziTutto ========
         {
@@ -635,7 +634,7 @@ public class Ricerca extends JPanel {
         buttonFiltri.setText("Filtri");
         buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
         buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonFiltri, "cell 4 3,align left center,grow 0 0");
+        add(buttonFiltri, "cell 5 3,align left center,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -694,19 +693,20 @@ public class Ricerca extends JPanel {
                 "[27,center]ind"));
 
             //---- labelTipoVendita ----
-            labelTipoVendita.setText("Tipo Di Vendita");
+            labelTipoVendita.setText("Tipo Di Immobile");
             labelTipoVendita.setIcon(UIManager.getIcon("FileView.fileIcon"));
             labelTipoVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
             internalFrameFiltri.add(labelTipoVendita, "cell 0 0");
 
-            //---- comboBoxTipVendita ----
-            comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Qualsiasi",
-                "Affitto",
-                "Vendita"
+            //---- listaTipi ----
+            listaTipi.setModel(new DefaultComboBoxModel<>(new String[] {
+                "Case e Appartamenti",
+                "Casa",
+                "Appartamento"
             }));
-            comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            internalFrameFiltri.add(comboBoxTipVendita, "cell 2 0");
+            listaTipi.setSelectedIndex(0);
+            listaTipi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            internalFrameFiltri.add(listaTipi, "cell 2 0");
 
             //---- labelNumeroBagni ----
             labelNumeroBagni.setText("Numero Bagni");
@@ -828,7 +828,7 @@ public class Ricerca extends JPanel {
     private JButton mapButton;
     private JButton searchButton;
     private JTextField searchField;
-    private JComboBox<String> listaTipi;
+    private JComboBox<String> comboBoxTipVendita;
     private JMenuBar menuBarPrezziTutto;
     private JMenu menuPrezzi;
     private JComboBox<String> comboBoxSuperfice;
@@ -839,7 +839,7 @@ public class Ricerca extends JPanel {
     private JLabel LogoOpzioni;
     private JPanel internalFrameFiltri;
     private JLabel labelTipoVendita;
-    private JComboBox<String> comboBoxTipVendita;
+    private JComboBox<String> listaTipi;
     private JLabel labelNumeroBagni;
     private JSpinner spinnerBagni;
     private JLabel labelStanze;

@@ -254,35 +254,40 @@ public class MapLoader {
     //scan dei posti
     public static boolean fetchPlaces(GeoPosition g, String category) {
 
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        String url = String.format(Locale.US,"https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,500&bias=proximity:%f,%f&limit=15&apiKey=%s",
-                category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
+        if (g != null) {
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+            String url = String.format(Locale.US, "https://api.geoapify.com/v2/places?categories=%s&filter=circle:%f,%f,500&bias=proximity:%f,%f&limit=15&apiKey=%s",
+                    category, g.getLongitude(), g.getLatitude(), g.getLongitude(), g.getLatitude(), GEOAPIFY_API_KEY);
 
-        Request request = new Request.Builder()
-                .url(url)
-                .method("GET", null)
-                .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .method("GET", null)
+                    .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (response.body() != null) {
-                String jsonData = response.body().string();
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
-                JSONArray features = (JSONArray) jsonObject.get("features");
+            try (Response response = client.newCall(request).execute()) {
+                if (response.body() != null) {
+                    String jsonData = response.body().string();
+                    JSONParser parser = new JSONParser();
+                    JSONObject jsonObject = (JSONObject) parser.parse(jsonData);
+                    JSONArray features = (JSONArray) jsonObject.get("features");
 
-                for (Object o : features) {
-                    JSONObject feature = (JSONObject) o;
-                    JSONObject geometry = (JSONObject) feature.get("geometry");
-                    JSONArray coordinates = (JSONArray) geometry.get("coordinates");
+                    for (Object o : features) {
+                        JSONObject feature = (JSONObject) o;
+                        JSONObject geometry = (JSONObject) feature.get("geometry");
+                        JSONArray coordinates = (JSONArray) geometry.get("coordinates");
 
-                    return true;
+                        return true;
 
+                    }
+                } else {
+                    return false;
                 }
-            }else{
-                return false;
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
             }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
+        }else {
+            JOptionPane.showMessageDialog(null, "Indirizzo non trovato.");
+            return false;
         }
         return false;
     }

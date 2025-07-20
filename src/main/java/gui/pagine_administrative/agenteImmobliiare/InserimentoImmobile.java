@@ -448,18 +448,46 @@ public class InserimentoImmobile extends JPanel {
 
         });
         // Logica caricamento immagini
+// Lista dei pannelli cella per tracciarli
+        List<JPanel> cellPanelList = new ArrayList<>();
+
         uploadButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
                 File imgFile = chooser.getSelectedFile();
                 ImageIcon icon = new ImageIcon(imgFile.getAbsolutePath());
                 Image thumb = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+
                 JPanel cell = new JPanel(new BorderLayout());
-                cell.add(new JLabel(new ImageIcon(thumb)), BorderLayout.CENTER);
-                cell.add(new JLabel("<html>" + imgFile.getName() + "<br/>" + (imgFile.length() / 1024) + " KB</html>",
-                        SwingConstants.CENTER), BorderLayout.SOUTH);
-                cell.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                cell.setPreferredSize(new Dimension(200, 150));
+
+                JLabel imageLabel = new JLabel(new ImageIcon(thumb));
+                cell.add(imageLabel, BorderLayout.CENTER);
+
+                JLabel infoLabel = new JLabel("<html>" + imgFile.getName() + "<br/>" + (imgFile.length() / 1024) + " KB</html>", SwingConstants.CENTER);
+                cell.add(infoLabel, BorderLayout.SOUTH);
+
+                JButton removeBtn = new JButton("❌");
+                removeBtn.setMargin(new Insets(2, 4, 2, 4));
+                removeBtn.setBorder(BorderFactory.createLineBorder(Color.RED));
+                removeBtn.setFocusPainted(false);
+
+                JPanel removePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                removePanel.setOpaque(false);
+                removePanel.add(removeBtn);
+                cell.add(removePanel, BorderLayout.NORTH);
+
+                removeBtn.addActionListener(ev -> {
+                    int index = cellPanelList.indexOf(cell);
+                    if (index >= 0) {
+                        imageBarPanel.remove(cell);
+                        imageBarPanel.revalidate();
+                        imageBarPanel.repaint();
+                        base64ListImmagini.remove(index);
+                        listNomeImmagini.remove(index);
+                        cellPanelList.remove(index);
+                    }
+                });
+
                 try {
                     String base64Image = imageToBase64(imgFile);
                     base64ListImmagini.add(base64Image);
@@ -467,6 +495,10 @@ public class InserimentoImmobile extends JPanel {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+
+                cell.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                cell.setPreferredSize(new Dimension(200, 150));
+                cellPanelList.add(cell);
                 imageBarPanel.add(cell);
                 imageBarPanel.revalidate();
                 imageBarPanel.repaint();

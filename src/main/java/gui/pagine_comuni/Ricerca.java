@@ -253,9 +253,7 @@ public class Ricerca extends JPanel {
 
 
         if((!(token == null) && !token.isEmpty())&& control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
-                notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
-                NotificationClient.notificheWindow(messaggio);
-            }));
+                notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> NotificationClient.notificheWindow(messaggio)));
         }
 
     }
@@ -290,6 +288,10 @@ public class Ricerca extends JPanel {
         if (geoPos != null) {
             List<ImmobileEImmagini> immobiles = control.ricerca(geoPos,filtriEsterni(fetchFiltri()));
             if (!immobiles.isEmpty()) {
+
+                menuPrezzi.setPopupMenuVisible(false);
+                menuPrezzi.setVisible(false);
+
                 frame.setContentPane(new InterfacciaListaImmobili(frame,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
                 frame.revalidate();
                 frame.repaint();

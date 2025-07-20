@@ -170,15 +170,13 @@ public class InterfacciaListaImmobili extends JPanel {
             JPanel actualMapDisplayPanel = new JPanel(new BorderLayout()); // Pannello per JXMapViewer
             mapPanelInDialog.add(actualMapDisplayPanel, BorderLayout.CENTER);
 
-            SimplifiedMapLoader.createClickableMap(actualMapDisplayPanel, initialPos, 10, event -> {
-                SwingUtilities.invokeLater(() -> { // Assicurati che l'aggiornamento della UI sia sull'EDT
-                    if (event.getAddress() != null) {
-                        selectedAddressField.setText(event.getAddress());
-                    } else {
-                        selectedAddressField.setText("Indirizzo non valido o fuori confine Italiano");
-                    }
-                });
-            });
+            SimplifiedMapLoader.createClickableMap(actualMapDisplayPanel, initialPos, 10, event -> SwingUtilities.invokeLater(() -> { // Assicurati che l'aggiornamento della UI sia sull'EDT
+                if (event.getAddress() != null) {
+                    selectedAddressField.setText(event.getAddress());
+                } else {
+                    selectedAddressField.setText("Indirizzo non valido o fuori confine Italiano");
+                }
+            }));
 
             mapDialogInstance.setLocationRelativeTo(frame);
             mapDialogInstance.setVisible(true); // Mostra il dialogo
@@ -285,10 +283,29 @@ public class InterfacciaListaImmobili extends JPanel {
             }
         });
 
+        FocusListener focusCloser = new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    if (!comboPrezzoMin.hasFocus() && !comboPrezzoMax.hasFocus() && !menuPrezzi.hasFocus()) {
+                        menuPrezzi.setPopupMenuVisible(false);
+                    }
+                });
+            }
+        };
+
+        comboPrezzoMin.addFocusListener(focusCloser);
+        comboPrezzoMax.addFocusListener(focusCloser);
+        menuPrezzi.addFocusListener(focusCloser);
+
+
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
             backButton.addActionListener(e-> {
             frame.setContentPane(new Ricerca(frame,control,token));
+
+            menuPrezzi.setPopupMenuVisible(false);
+            menuPrezzi.setVisible(false);
             frame.revalidate();
             frame.repaint();
         });

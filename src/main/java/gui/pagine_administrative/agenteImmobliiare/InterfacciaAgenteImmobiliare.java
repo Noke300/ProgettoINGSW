@@ -128,6 +128,10 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                     panelListaImmobile.remove(selectedPanel[0]);
                     selectedPanel[0] = null;
 
+                    buttonElimina.setEnabled(false);
+                    buttonAggiungiOfferta.setEnabled(false);
+                    buttonOfferteVisualizza.setEnabled(false);
+
                     panelListaImmobile.revalidate();
                     panelListaImmobile.repaint();
                 }

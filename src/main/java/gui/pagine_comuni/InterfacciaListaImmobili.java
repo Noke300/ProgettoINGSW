@@ -16,13 +16,13 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author marco
@@ -30,6 +30,9 @@ import java.util.Objects;
 public class InterfacciaListaImmobili extends JPanel {
     private final ImmobilePanelSingolo  immobilePanelSingolo = new ImmobilePanelSingolo();
     private AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
+    protected JComboBox<String> comboPrezzoMax = new JComboBox<>();
+    protected JComboBox<String> comboPrezzoMin = new JComboBox<>();
+
 
     String token;
 
@@ -63,7 +66,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 Ricerca ricerca = new Ricerca(frame,control,token);
                 BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Ricerca di Immobili : "+searchField.getText());
                 assert geoPos != null;
-                List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, ricerca.fetchFiltri());
+                List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, filtriEsterni(ricerca.fetchFiltri()));
                 if (!immobiles.isEmpty()) {
                     frame.setContentPane(new InterfacciaListaImmobili(frame, bottoniOpzioni, geoPos, control, token, internalFrameFiltri, immobiles));
                     frame.revalidate();
@@ -186,14 +189,12 @@ public class InterfacciaListaImmobili extends JPanel {
         }
 
         // Prezzo Minimo
-        JComboBox<String> comboPrezzoMin = new JComboBox<>();
         JMenuItem minItem = new JMenuItem("Minimo:");
         minItem.setEnabled(false);
         menuPrezzi.add(minItem);
         menuPrezzi.add(comboPrezzoMin);
 
         // Prezzo Massimo
-        JComboBox<String> comboPrezzoMax = new JComboBox<>();
         JMenuItem maxItem = new JMenuItem("Massimo:");
         maxItem.setEnabled(false);
         menuPrezzi.add(maxItem);
@@ -214,6 +215,75 @@ public class InterfacciaListaImmobili extends JPanel {
             }
         });
         Ricerca.aggiornaPrezzi(comboPrezzoMin, comboPrezzoMax, "Vendita");
+
+        menuPrezzi.getPopupMenu().addPopupMenuListener(new PopupMenuListener() {
+            private boolean ignoreVisibilityFlag = false;
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                if (!ignoreVisibilityFlag) {
+                    ignoreVisibilityFlag = true;
+                    menuPrezzi.setPopupMenuVisible(true);
+                    ignoreVisibilityFlag = false;
+                }
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                // Prevent the menu from being hidden when combo boxes are focused/open
+                SwingUtilities.invokeLater(() -> {
+                    if (comboPrezzoMax.isPopupVisible() || comboPrezzoMin.isPopupVisible()) {
+                        ignoreVisibilityFlag = true;
+                        menuPrezzi.setPopupMenuVisible(true);
+                        ignoreVisibilityFlag = false;
+                    }
+                });
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+                // No action needed for canceled events
+            }
+        });
+
+        // Add listeners to ensure the combo boxes keep the menu open
+        comboPrezzoMin.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                // Keep the parent menu open
+                menuPrezzi.setPopupMenuVisible(true);
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                // Prevent a parent menu from closing with a small delay
+                SwingUtilities.invokeLater(() -> menuPrezzi.setPopupMenuVisible(true));
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+                // No action needed here
+            }
+        });
+
+        comboPrezzoMax.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                // Keep the parent menu open
+                menuPrezzi.setPopupMenuVisible(true);
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                // Prevent a parent menu from closing with a small delay
+                SwingUtilities.invokeLater(() -> menuPrezzi.setPopupMenuVisible(true));
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+                // No action needed here
+            }
+        });
 
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
@@ -242,6 +312,21 @@ public class InterfacciaListaImmobili extends JPanel {
 
     }
 
+    private Map<String,Object> filtriEsterni(Map<String, Object> filtri){
+
+        filtri.put("prezzoMax", Ricerca.traduciPrezzo((String) comboPrezzoMax.getSelectedItem()));
+        filtri.put("prezzoMin", Ricerca.traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));
+        filtri.put("superficie", Ricerca.getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
+
+        if(comboBoxTipVendita.getSelectedItem().equals("Vendita e Affitto")){
+            filtri.put("tipoVendita", null);
+        }else{
+            filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
+        }
+
+        return filtri;
+    }
+
 
     public JPanel getSelectedPanel() {
         return selectedPanel[0];
@@ -258,11 +343,11 @@ public class InterfacciaListaImmobili extends JPanel {
         mapButton = new JButton();
         searchButton = new JButton();
         searchField = new JTextField();
-        buttonFiltri = new JButton();
         comboBoxTipVendita = new JComboBox<>();
         menuBarPrezziTutto = new JMenuBar();
         menuPrezzi = new JMenu();
         comboBoxSuperfice = new JComboBox<>();
+        buttonFiltri = new JButton();
         panelMap = new JPanel();
         panelListaImmobileScroll = new JScrollPane();
         panelListaImmobile = new JPanel();
@@ -308,7 +393,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 "[96,grow]rel" +
                 "[123,grow]rel" +
                 "[fill]0" +
-                "[255,grow,center]0" +
+                "[120,grow,center]rel" +
                 "[255,grow,center]para" +
                 "[fill]",
                 // rows
@@ -364,12 +449,6 @@ public class InterfacciaListaImmobili extends JPanel {
             searchField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
             panelTopBar.add(searchField, "cell 1 1 6 1,aligny center,grow 100 0");
 
-            //---- buttonFiltri ----
-            buttonFiltri.setText("Filtri");
-            buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-            buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(buttonFiltri, "cell 1 2,align left center,grow 0 0");
-
             //---- comboBoxTipVendita ----
             comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
                 "Vendita e Affitto",
@@ -377,7 +456,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 "Vendita"
             }));
             comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(comboBoxTipVendita, "cell 2 2");
+            panelTopBar.add(comboBoxTipVendita, "cell 1 2");
 
             //======== menuBarPrezziTutto ========
             {
@@ -396,15 +475,46 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarPrezziTutto.add(menuPrezzi);
             }
-            panelTopBar.add(menuBarPrezziTutto, "cell 3 2");
+            panelTopBar.add(menuBarPrezziTutto, "cell 2 2");
 
             //---- comboBoxSuperfice ----
             comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
-                "Superfice"
+                "Superficie",
+                "10m\u00b2",
+                "30m\u00b2",
+                "50m\u00b2",
+                "70m\u00b2",
+                "90m\u00b2",
+                "110m\u00b2",
+                "130m\u00b2",
+                "150m\u00b2",
+                "170m\u00b2",
+                "190m\u00b2",
+                "210m\u00b2",
+                "230m\u00b2",
+                "250m\u00b2",
+                "270m\u00b2",
+                "290m\u00b2",
+                "310m\u00b2",
+                "330m\u00b2",
+                "350m\u00b2",
+                "370m\u00b2",
+                "390m\u00b2",
+                "410m\u00b2",
+                "430m\u00b2",
+                "450m\u00b2",
+                "470m\u00b2",
+                "500m\u00b2"
             }));
             comboBoxSuperfice.setForeground(Color.black);
             comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(comboBoxSuperfice, "cell 5 2,align left center,grow 0 0");
+            panelTopBar.add(comboBoxSuperfice, "cell 3 2,align left center,grow 0 0");
+
+            //---- buttonFiltri ----
+            buttonFiltri.setText("Filtri");
+            buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
+            buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            panelTopBar.add(buttonFiltri, "cell 5 2,align left center,grow 0 0");
         }
         add(panelTopBar, "north,aligny top,growy 0");
 
@@ -456,11 +566,11 @@ public class InterfacciaListaImmobili extends JPanel {
     private JButton mapButton;
     private JButton searchButton;
     private JTextField searchField;
-    private JButton buttonFiltri;
     private JComboBox<String> comboBoxTipVendita;
     private JMenuBar menuBarPrezziTutto;
     private JMenu menuPrezzi;
     private JComboBox<String> comboBoxSuperfice;
+    private JButton buttonFiltri;
     private JPanel panelMap;
     private JScrollPane panelListaImmobileScroll;
     private JPanel panelListaImmobile;

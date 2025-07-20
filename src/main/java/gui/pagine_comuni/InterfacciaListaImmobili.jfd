@@ -12,7 +12,7 @@ new FormModel {
 			"border": new javax.swing.border.BevelBorder( 1, null, null, null, null )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "fill,hidemode 3,aligny center"
-				"$columnConstraints": "[fill][159,grow]rel[96,grow]rel[123,grow]rel[fill]0[255,grow,center]0[255,grow,center]para[fill]"
+				"$columnConstraints": "[fill][159,grow]rel[96,grow]rel[123,grow]rel[fill]0[120,grow,center]rel[255,grow,center]para[fill]"
 				"$rowConstraints": "[22,grow,fill]0[75,grow,top]0[]para"
 			} ) {
 				name: "panelTopBar"
@@ -72,14 +72,6 @@ new FormModel {
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 1 1 6 1,aligny center,grow 100 0"
 				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonFiltri"
-					"text": "Filtri"
-					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.detailsViewIcon" )
-					"font": new java.awt.Font( "Segoe UI", 0, 18 )
-				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 1 2,align left center,grow 0 0"
-				} )
 				add( new FormComponent( "javax.swing.JComboBox" ) {
 					name: "comboBoxTipVendita"
 					"model": new javax.swing.DefaultComboBoxModel {
@@ -90,7 +82,7 @@ new FormModel {
 					}
 					"font": new java.awt.Font( "Segoe UI", 0, 18 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 2 2"
+					"value": "cell 1 2"
 				} )
 				add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 					name: "menuBarPrezziTutto"
@@ -107,15 +99,48 @@ new FormModel {
 						"font": new java.awt.Font( "Segoe UI", 0, 18 )
 					} )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-					"value": "cell 3 2"
+					"value": "cell 2 2"
 				} )
 				add( new FormComponent( "javax.swing.JComboBox" ) {
 					name: "comboBoxSuperfice"
 					"model": new javax.swing.DefaultComboBoxModel {
-						selectedItem: "Superfice"
-						addElement( "Superfice" )
+						selectedItem: "Superficie"
+						addElement( "Superficie" )
+						addElement( "10m²" )
+						addElement( "30m²" )
+						addElement( "50m²" )
+						addElement( "70m²" )
+						addElement( "90m²" )
+						addElement( "110m²" )
+						addElement( "130m²" )
+						addElement( "150m²" )
+						addElement( "170m²" )
+						addElement( "190m²" )
+						addElement( "210m²" )
+						addElement( "230m²" )
+						addElement( "250m²" )
+						addElement( "270m²" )
+						addElement( "290m²" )
+						addElement( "310m²" )
+						addElement( "330m²" )
+						addElement( "350m²" )
+						addElement( "370m²" )
+						addElement( "390m²" )
+						addElement( "410m²" )
+						addElement( "430m²" )
+						addElement( "450m²" )
+						addElement( "470m²" )
+						addElement( "500m²" )
 					}
 					"foreground": sfield java.awt.Color black
+					"font": new java.awt.Font( "Segoe UI", 0, 18 )
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 3 2,align left center,grow 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonFiltri"
+					"text": "Filtri"
+					"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.detailsViewIcon" )
 					"font": new java.awt.Font( "Segoe UI", 0, 18 )
 				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 					"value": "cell 5 2,align left center,grow 0 0"

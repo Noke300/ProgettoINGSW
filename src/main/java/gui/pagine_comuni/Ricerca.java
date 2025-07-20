@@ -288,7 +288,7 @@ public class Ricerca extends JPanel {
     private void performSearchAction(JFrame frame, Controller control) {
         GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
         if (geoPos != null) {
-            List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, fetchFiltri());
+            List<ImmobileEImmagini> immobiles = control.ricerca(geoPos,filtriEsterni(fetchFiltri()));
             if (!immobiles.isEmpty()) {
                 frame.setContentPane(new InterfacciaListaImmobili(frame,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
                 frame.revalidate();
@@ -391,16 +391,6 @@ public class Ricerca extends JPanel {
     public Map<String, Object> fetchFiltri(){
         Map<String, Object> filtri = new HashMap<>();
 
-        filtri.put("prezzoMax", traduciPrezzo((String) comboPrezzoMax.getSelectedItem()));
-        filtri.put("prezzoMin", traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));
-        filtri.put("superficie", getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
-
-        if(comboBoxTipVendita.getSelectedItem().equals("Vendita e Affitto")){
-            filtri.put("tipoVendita", null);
-        }else{
-            filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
-        }
-
         if(listaTipi.getSelectedItem().equals("Case e Appartamenti")){
             filtri.put("tipoImmobile", null);
         }else{
@@ -443,7 +433,22 @@ public class Ricerca extends JPanel {
         return filtri;
     }
 
-    private Integer getSuperficie(String superficieStr) {
+    private Map<String,Object> filtriEsterni(Map<String, Object> filtri){
+
+        filtri.put("prezzoMax", traduciPrezzo((String) comboPrezzoMax.getSelectedItem()));
+        filtri.put("prezzoMin", traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));
+        filtri.put("superficie", getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
+
+        if(comboBoxTipVendita.getSelectedItem().equals("Vendita e Affitto")){
+            filtri.put("tipoVendita", null);
+        }else{
+            filtri.put("tipoVendita", comboBoxTipVendita.getSelectedItem());
+        }
+
+        return filtri;
+    }
+
+    public static Integer getSuperficie(String superficieStr) {
         if (superficieStr.equals("Superficie")) {
             return 0;
         }
@@ -458,7 +463,7 @@ public class Ricerca extends JPanel {
         }
     }
 
-    private Double traduciPrezzo(String prezzoStr) {
+    public static Double traduciPrezzo(String prezzoStr) {
         if (prezzoStr.equals("Prezzo Minimo") || prezzoStr.equals("Prezzo Massimo")) {
             return 0.0;
         }

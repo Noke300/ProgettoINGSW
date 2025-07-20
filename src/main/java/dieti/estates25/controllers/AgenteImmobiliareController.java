@@ -20,12 +20,15 @@ import java.util.List;
 @RequestMapping("/auth-agente")
 public class AgenteImmobiliareController {
 
-    @Autowired
-    @Qualifier("agentAuthenticationManager")
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final AgenteImmobiliareServiceDB agentService;
 
-    @Autowired
-    private AgenteImmobiliareServiceDB agentService;
+    public AgenteImmobiliareController(
+            @Qualifier("agentAuthenticationManager") AuthenticationManager authenticationManager,
+            AgenteImmobiliareServiceDB agentService) {
+        this.authenticationManager = authenticationManager;
+        this.agentService = agentService;
+    }
 
     @GetMapping("/agenti")
     public List<AgenteImmobiliare> getAllAgents() {

@@ -5,7 +5,6 @@ import dieti.estates25.model.adminsupport.AdminSupport;
 import dieti.estates25.model.agenteimmobiliare.AgenteImmobiliare;
 import dieti.estates25.service.AdminSupportServiceDB;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,12 +17,15 @@ import java.util.List;
 @RequestMapping("/auth-adminSupport")
 public class AdminSupportController {
 
-    @Autowired
-    @Qualifier("adminSupportAuthenticationManager")
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final AdminSupportServiceDB adminSupportService;
 
-    @Autowired
-    private AdminSupportServiceDB adminSupportService;
+    public AdminSupportController(
+            @Qualifier("adminSupportAuthenticationManager") AuthenticationManager authenticationManager,
+            AdminSupportServiceDB adminSupportService) {
+        this.authenticationManager = authenticationManager;
+        this.adminSupportService = adminSupportService;
+    }
 
     @GetMapping("/adminSupport")
     public List<AdminSupport> getAllAdminSupport() {

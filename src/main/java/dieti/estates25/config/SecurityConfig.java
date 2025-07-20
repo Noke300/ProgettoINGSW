@@ -4,7 +4,6 @@ import dieti.estates25.service.AgenziaImmobiliareServiceDB;
 import dieti.estates25.service.AdminSupportServiceDB;
 import dieti.estates25.service.AgenteImmobiliareServiceDB;
 import dieti.estates25.service.ClienteServiceDB;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -26,21 +25,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity   //serve a dire di usare questa configurazione e non quella di default
 public class SecurityConfig {
 
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
+    private final ClienteServiceDB clientDetailsService;
+    private final AgenteImmobiliareServiceDB agentDetailsService;
+    private final AdminSupportServiceDB adminSupportDetailService;
+    private final AgenziaImmobiliareServiceDB agenziaImmobiliareService;
 
-    @Autowired
-    private ClienteServiceDB clientDetailsService;
-
-    @Autowired
-    private AgenteImmobiliareServiceDB agentDetailsService;
-
-    @Autowired
-    private  AdminSupportServiceDB adminSupportDetailService;
-
-    @Autowired
-    private  AgenziaImmobiliareServiceDB agenziaImmobiliareService;
-
+    public SecurityConfig(JwtFilter jwtFilter,
+                          ClienteServiceDB clientDetailsService,
+                          AgenteImmobiliareServiceDB agentDetailsService,
+                          AdminSupportServiceDB adminSupportDetailService,
+                          AgenziaImmobiliareServiceDB agenziaImmobiliareService) {
+        this.jwtFilter = jwtFilter;
+        this.clientDetailsService = clientDetailsService;
+        this.agentDetailsService = agentDetailsService;
+        this.adminSupportDetailService = adminSupportDetailService;
+        this.agenziaImmobiliareService = agenziaImmobiliareService;
+    }
     @Bean
     @Order(1)
     public SecurityFilterChain clienteSecurityFilterChain(HttpSecurity http) throws Exception {

@@ -390,61 +390,67 @@ public class InserimentoImmobile extends JPanel {
             if(descriptionArea.getText().isEmpty()) tuttiCampiCompilati = false;
             if(base64ListImmagini.isEmpty()) tuttiCampiCompilati = false;
 
-            if(tuttiCampiCompilati){
+            if(tuttiCampiCompilati) {
 
                 AgenteImmobiliare agenteTemp;
                 agenteTemp = controllerA.fetchAgenteImmobiliare(token);
                 GeoPosition geoP = MapLoader.getCoordinatesFromAddress(fullField.getText());
 
-                assert geoP != null;
-                boolean scuoleB = MapLoader.fetchPlaces(geoP,"education.school");
-                boolean transportB = MapLoader.fetchPlaces(geoP,"public_transport");
-                boolean parchiB = MapLoader.fetchPlaces(geoP,"leisure.park");
+                if (geoP != null) {
+                    boolean scuoleB = MapLoader.fetchPlaces(geoP, "education.school");
+                    boolean transportB = MapLoader.fetchPlaces(geoP, "public_transport");
+                    boolean parchiB = MapLoader.fetchPlaces(geoP, "leisure.park");
 
-                Indirizzo indirizzoT = new Indirizzo(
-                        viaField.getText(),
-                        cittaField.getText(),
-                        String.valueOf(provinciaCombo.getSelectedItem()),
-                        Integer.parseInt(numeroField.getText()),
-                        Integer.parseInt(capField.getText()),
-                        String.valueOf(regioneCombo.getSelectedItem()),
-                        geoP.getLatitude(),geoP.getLongitude());
-                        Immobile immobileTemp = new Immobile(
-                        agenteTemp.getAgenziaImmobiliare(),
-                        indirizzoT,
-                        agenteTemp,
-                        transportB,
-                        parchiB,
-                        scuoleB,
-                        false,
-                        climatizzazione.isSelected(),
-                        ascensore.isSelected(),
-                        cantina.isSelected(),
-                        portineria.isSelected(),
-                        balcone.isSelected(),
-                        (int) bagniSpinner.getValue(),
-                        (int) pianoSpinner.getValue(),
-                        Integer.parseInt(superficieField.getText()),
-                        (int)stanzeSpinner.getValue(),
-                        Double.parseDouble(priceField.getText()),
-                        classeEnergeticaCombo.getSelectedItem().toString(),
-                        tipoVendita.getSelectedItem().toString(),
-                        descriptionArea.getText(),
-                        String.valueOf(tipoImmobile.getSelectedItem()));
 
-              if( controllerA.insertImmobili(immobileTemp,base64ListImmagini,listNomeImmagini,token)){
-                  JOptionPane.showMessageDialog(null, "Inserimento Completato");
-                  LogInAmministrazione.loginAministrazione(frame,controllerA,token,controllerA.getNameLogIn());
-                  frame.revalidate();
-                  frame.repaint();
+                    Indirizzo indirizzoT = new Indirizzo(
+                            viaField.getText(),
+                            cittaField.getText(),
+                            String.valueOf(provinciaCombo.getSelectedItem()),
+                            Integer.parseInt(numeroField.getText()),
+                            Integer.parseInt(capField.getText()),
+                            String.valueOf(regioneCombo.getSelectedItem()),
+                            geoP.getLatitude(), geoP.getLongitude());
+                    Immobile immobileTemp = new Immobile(
+                            agenteTemp.getAgenziaImmobiliare(),
+                            indirizzoT,
+                            agenteTemp,
+                            transportB,
+                            parchiB,
+                            scuoleB,
+                            false,
+                            climatizzazione.isSelected(),
+                            ascensore.isSelected(),
+                            cantina.isSelected(),
+                            portineria.isSelected(),
+                            balcone.isSelected(),
+                            (int) bagniSpinner.getValue(),
+                            (int) pianoSpinner.getValue(),
+                            Integer.parseInt(superficieField.getText()),
+                            (int) stanzeSpinner.getValue(),
+                            Double.parseDouble(priceField.getText()),
+                            classeEnergeticaCombo.getSelectedItem().toString(),
+                            tipoVendita.getSelectedItem().toString(),
+                            descriptionArea.getText(),
+                            String.valueOf(tipoImmobile.getSelectedItem()));
 
-              }else {
-                  JOptionPane.showMessageDialog(null, "Error nel inserimento del immobile ");
-              }
+                    if (controllerA.insertImmobili(immobileTemp, base64ListImmagini, listNomeImmagini, token)) {
+                        JOptionPane.showMessageDialog(null, "Inserimento Completato");
+                        LogInAmministrazione.loginAministrazione(frame, controllerA, token, controllerA.getNameLogIn());
+                        frame.revalidate();
+                        frame.repaint();
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error nel inserimento del immobile ");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Indirizzo non trovato.");
+
+                }
 
             }else{
-                JOptionPane.showMessageDialog(null, "Compilare correttamente tutti i campi");
-            }
+                    JOptionPane.showMessageDialog(null, "Compilare correttamente tutti i campi");
+                }
 
         });
         // Logica caricamento immagini

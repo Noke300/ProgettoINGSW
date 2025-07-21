@@ -285,9 +285,6 @@ public class MapLoader {
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
-        }else {
-            JOptionPane.showMessageDialog(null, "Indirizzo non trovato.");
-            return false;
         }
         return false;
     }

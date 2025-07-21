@@ -182,7 +182,7 @@ public class RegistrazioneCliente extends JPanel {
             }
         });
         JWindow tooltipData = new JWindow();
-        JLabel labelTooltipData = new JLabel("Formato richiesto: dd/MM/yyyy (es: 31/12/2025)");
+        JLabel labelTooltipData = new JLabel("Formato richiesto: yyyy-MM-gg (es: 2002-04-21)");
         labelTooltipData.setFont(new Font("Segoe UI", Font.ITALIC, 13));
         labelTooltipData.setOpaque(true);
         labelTooltipData.setBackground(Color.LIGHT_GRAY);

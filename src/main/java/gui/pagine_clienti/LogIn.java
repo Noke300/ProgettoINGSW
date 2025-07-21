@@ -35,7 +35,7 @@ public class LogIn extends JPanel {
              char[] tempPass = passwordField1.getPassword();
 
              this.token = control.logInClient(textFildEmail.getText(), new String(tempPass));
-             if (this.token.isEmpty()) {
+             if (this.token.isEmpty() || this.token == null) {
                      JOptionPane.showMessageDialog(
                              frame,
                              "Login fallito. Riprova!",
@@ -44,9 +44,9 @@ public class LogIn extends JPanel {
                      );
                      Arrays.fill(tempPass, ' ');
                  }else {
-                     BottoniOpzioni.getMapLog().clear();
                      control.setNameLogIn(control.getRawSpecifiche(this.token));
-                     frame.setContentPane(new Ricerca(frame,control,this.token));
+                     BottoniOpzioni.getMapLog().clear();
+                     frame.setContentPane(new Ricerca(frame,control,this.token.trim()));
                      frame.revalidate();
                      frame.repaint();
                     Arrays.fill(tempPass, ' ');

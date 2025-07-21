@@ -22,6 +22,7 @@ import model.AgenteImmobiliare;
 import model.AgenziaImmobiliare;
 import model.ImmobileEImmagini;
 import net.miginfocom.swing.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author marco
@@ -30,6 +31,7 @@ public class InterfacciaAdmin extends JPanel {
     protected AgenziaImmobiliare admin;
     private BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Admin Support", "Agente Immobiliare"});
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public InterfacciaAdmin(JFrame frame, ControllerAdmin controller, String token) {
         initComponents();
@@ -130,14 +132,12 @@ public class InterfacciaAdmin extends JPanel {
         });
 
         buttonAggiungiDipendenti.addActionListener(e -> AggiungiDipendentiPannel.creaPanelAdmin(frame, controller, admin, token, model, tipoCombo));
-
-
         panelListaDipendenti.setViewportView(tabella);
         panelListaDipendenti.revalidate();
         panelListaDipendenti.repaint();
 
         SwingUtilities.invokeLater(() -> {
-            if (admin.getPasswordAdmin().contains(admin.getNomeAgenzia())) {
+            if (encoder.matches(CreaAziendaP.capitalizeFirstLetter(admin.getNomeAgenzia()),admin.getPasswordAdmin())) {
 
                 JDialog dialog = new JDialog(frame, "Imposta nuova password", true);
                 dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

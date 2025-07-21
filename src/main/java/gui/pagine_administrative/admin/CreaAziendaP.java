@@ -19,11 +19,14 @@ import gui.pagine_administrative.LogInAmministrazione;
 import gui.pagine_administrative.agenteImmobliiare.InserimentoImmobile;
 import model.AgenziaImmobiliare;
 import net.miginfocom.swing.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author marco
  */
 public class CreaAziendaP extends JPanel {
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public CreaAziendaP(JFrame frame , Controller controller, BottoniOpzioni bottoniOpzioni) {
         initComponents();
         bottoniOpzioni.setUpOpzioniMenu(frame,controller,"",menuBarOpzioni,menuOpzioni);
@@ -45,9 +48,7 @@ public class CreaAziendaP extends JPanel {
             if(controller.registrazioneAgenzia(agenziaImmobiliare)){
 
                 UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 20)); // Puoi modificare la dimensione e il tipo
-                JOptionPane.showMessageDialog(frame,
-                        "Registrazione avvenuta con successo.\nEmail: " + textFildAdmin.getText() + "\nPassword: " + password);
-
+                JOptionPane.showMessageDialog(frame, "Registrazione avvenuta con successo.\nEmail: " + textFildAdmin.getText() + "\nPassword: " + password);
 
                 frame.setContentPane(new LogInAmministrazione(frame,controller,""));
                 frame.revalidate();
@@ -75,10 +76,9 @@ public class CreaAziendaP extends JPanel {
         }
         str = firstChar + str.substring(1);
 
-        Random random = new Random();
-        int numeroCasuale = random.nextInt(100) + 1;
 
-        return str + numeroCasuale + "!";
+
+        return str + 10 + "!";
     }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

@@ -27,7 +27,7 @@ public class Controller {
     protected String requestBody;
     private String nameLogIn;
 
-    protected static final String URL_SERVER = "http://localhost";
+    protected static final String URL_SERVER = "http://34.154.237.189";
     protected static final String RICERCA_URL = URL_SERVER+":8081/cerca-immobili";
     protected static final String OFFERTA_URL = URL_SERVER+":8081/offerta";
     protected static final String OFFERTA_LIST  = URL_SERVER+":8081/visualizza-offerte";
@@ -113,7 +113,6 @@ public class Controller {
            response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                setNameLogIn(getRawSpecifiche(response.body().replace("\"", "")));
                 return response.body().replace("\"", ""); // rimuove doppi apici
             } else {
                 return "";

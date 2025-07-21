@@ -175,7 +175,6 @@ public class ClientPersonalPage extends JPanel {
                     tipo = "Rifiutata";
                 }
             }
-
             String testo = "💰 Prezzo: " + offerta.getPrezzoOfferta() +
                     " | 📍 Immobile: " + offerta.getImmobile().getIndirizzo().toString() +
                     " | Tipo: " + tipo;

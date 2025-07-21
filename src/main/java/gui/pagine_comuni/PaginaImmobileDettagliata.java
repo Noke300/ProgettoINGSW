@@ -97,9 +97,13 @@ public class PaginaImmobileDettagliata extends JPanel {
                 dataset
         );
         NumberAxis yAxis = (NumberAxis) chart.getCategoryPlot().getRangeAxis();
-        yAxis.setLowerBound(150000);
-        yAxis.setTickUnit(new NumberTickUnit(50000));
-
+        if(immobile.getTipoVendita().equals("Vendita")) {
+            yAxis.setLowerBound(150000);
+            yAxis.setTickUnit(new NumberTickUnit(50000));
+        }else if(immobile.getTipoVendita().equals("Affitto")) {
+            yAxis.setLowerBound(300);
+            yAxis.setTickUnit(new NumberTickUnit(100));
+        }
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBackground(new Color(0, 0, 0, 0));
         panelChart.add(chartPanel, BorderLayout.CENTER);

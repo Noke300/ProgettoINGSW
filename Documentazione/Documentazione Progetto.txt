@@ -10,6 +10,9 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{tabularx}
 \usepackage{makecell}
+\usepackage{longtable}
+
+\usepackage{adjustbox}
 
 
 
@@ -56,12 +59,6 @@
 
 \maketitle
 
-Cose da fare:
-\begin{itemize}
-  \item  Nella sezione "Persistenza dati" andrà aggiunto l'eventuale    database per le immagini, e le eventuali modifiche/aggiunte alla parte già esistente.
-\end{itemize}
-
-
 \newpage
 
 \tableofcontents
@@ -71,12 +68,70 @@ Cose da fare:
 
 \section{Introduzione}
 
-TODO 
+
+Il corso di \textit{Ingegneria del Software} si propone di fornire agli studenti una preparazione solida, sia teorica che pratica, nello sviluppo di sistemi software complessi. Attraverso l'esplorazione di metodi di progettazione, modelli formali e strumenti di verifica, l'obiettivo è quello di approfondire la comprensione del ciclo di vita del software, della comunicazione tra gli stakeholder e della qualità delle interfacce utente.
+
+Durante il percorso formativo, si pone particolare attenzione all'autonomia nell'esecuzione di attività di test, all'analisi della qualità del codice e all'uso di metriche per l'usabilità e la validazione del software. Questo approccio consente di sviluppare competenze fondamentali per la creazione di applicazioni affidabili.
+
+In questa prospettiva, il progetto presentato offre un'opportunità concreta per applicare quanto appreso, creando uno scenario realistico in cui mettere in pratica le metodologie e gli strumenti trattati durante le lezioni.
+
+L'obiettivo principale è quindi quello di verificare se gli studenti riescano a tradurre la teoria in soluzioni pratiche, dimostrando non solo la padronanza dei concetti, ma anche la consapevolezza dell'importanza di queste competenze per il loro futuro professionale.
+
+\newpage
 
 \section{Documento dei Requisiti Software}
 
 \subsection{Glossario}
-TODO
+
+\begin{longtable}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Termine} & \textbf{Definizione} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Termine} & \textbf{Definizione} \\
+\hline
+\endhead
+\textbf{MVC (Model-View-Controller)} & Architettura software che separa dati (Model), interfaccia (View) e logica di controllo (Controller). \\
+\hline
+\textbf{Requisiti Funzionali (RF)} & Funzionalità che il sistema deve offrire (es. login, prenotazioni, ricerca, ecc.). \\
+\hline
+\textbf{Requisiti Non Funzionali (RNF)} & Vincoli qualitativi come prestazioni, usabilità, sicurezza e portabilità. \\
+\hline
+\textbf{Caso d’Uso (Use Case)} & Rappresentazione delle interazioni tra un utente (attore) e il sistema per raggiungere un obiettivo. \\
+\hline
+\textbf{Scenario Cockburn} & Formato descrittivo dei casi d’uso focalizzato su attori, flussi principali e alternativi, condizioni iniziali e finali. \\
+\hline
+\textbf{Mockup} & Bozza grafica che rappresenta l’interfaccia utente prima della realizzazione. \\
+\hline
+\textbf{PostgreSQL} & Sistema di gestione di basi di dati relazionali open-source. \\
+\hline
+Google Cloud SQL & Servizio di database gestito in cloud offerto da Google, compatibile con PostgreSQL. \\
+\hline
+\textbf{JUnit} & Framework per il testing automatico di unità di codice Java. \\
+\hline
+\textbf{SonarQube} & Piattaforma per l’analisi statica del codice, utile per trovare problemi, vulnerabilità e code smells. \\
+\hline
+\textbf{Schema E-R} & Diagramma che rappresenta entità, attributi e relazioni del modello dati. \\
+\hline
+\textbf{R-WECT }& Metodologia per la valutazione dei test (Readability, Workability, Exhaustiveness, Coverage, Traceability). \\
+\hline
+\textbf{UI (User Interface) }& Interfaccia attraverso la quale l’utente interagisce con l’applicazione. \\
+\hline
+\textbf{UX (User Experience)} & Esperienza complessiva percepita dall’utente durante l’utilizzo del sistema. \\
+\hline
+\textbf{UML }& Linguaggio standard per la modellazione e visualizzazione di sistemi software. \\
+\hline
+\textbf{Diagramma di Sequenza} & Tipo di diagramma UML che mostra le interazioni tra oggetti nel tempo. \\
+\hline
+\textbf{Persistenza} & Azione di salvare in modo permanente i dati, tipicamente su un database. \\
+\hline
+\textbf{Controller} & Parte del pattern MVC che gestisce l’input dell’utente e aggiorna modello e vista. \\
+\hline
+\textbf{Client-Server }& Architettura in cui un client invia richieste a un server che elabora e restituisce risposte. \\
+\hline
+\end{longtable}
+\newpage
 
 \subsection{Casi d'uso}
 
@@ -151,7 +206,7 @@ Agente Immobiliare & \begin{tabular}[c]{@{}l@{}}-Gestisce Richiesta Visita,\\ -G
 \end{itemize}
 
 
-
+\newpage
 \subsection{Ricerca e Analisi degli utenti tipo}
 
 
@@ -380,7 +435,7 @@ Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amminist
         \item Gli utenti possono visualizzare un riepilogo delle proprie attività: immobili visualizzati, visite prenotate, offerte fatte.
     \end{itemize}
 \end{itemize}
-
+\newpage
 \subsection{Approfondimento Casi D'uso significativi}
 
 \subsubsection{Ricerca Immobile}
@@ -389,6 +444,7 @@ Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amminist
 \subsubsection*{Mock-Up}
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -410,6 +466,7 @@ Per soddisfare questi obiettivi, l’applicativo dovrà permettere agli amminist
 Dopo aver aperto l'applicativo si visualizza la pagina con la barra di ricerca, il pulsante \textbf{"mappamondo"} che permette di visualizzare una mappa interattiva e vari filtri che si trovano o al di sotto della barra di ricerca o nell'apposita schermata apribile premendo il tasto \textbf{"filtri"}; premendo il tasto \textbf{Invio} nella barra di ricerca si passa al mock-up \textbf{M02}.
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -431,6 +488,7 @@ Dopo aver aperto l'applicativo si visualizza la pagina con la barra di ricerca, 
 Si presenta quindi una pagina con una lista di immobili trovati in funzione della ricerca fatta. Questa lista mostra diverse opzioni, ciascuna accompagnata da varie specifiche sul fianco e da immagini di presentazione. Alla destra della lista è visibile una mappa interattiva che permette di visualizzare la posizione dell'immobile selezionato.
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -562,6 +620,7 @@ Se il prezzo minimo è maggiore del prezzo massimo, quando si premerà per la ri
 
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -580,9 +639,12 @@ Se il prezzo minimo è maggiore del prezzo massimo, quando si premerà per la ri
     \end{tikzpicture}
 
 \end{figure}
+Dopo aver effettuato l'accesso con l'account da agente immobiliare, viene visualizzata una schermata contenente la lista degli immobili precedentemente aggiunti dall'agente e una mappa con le loro posizioni.
+\newpage
 
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -602,13 +664,13 @@ Se il prezzo minimo è maggiore del prezzo massimo, quando si premerà per la ri
 
 \end{figure}
 
-Dopo aver effettuato l'accesso con l'account da agente immobiliare, viene visualizzata una schermata contenente la lista degli immobili precedentemente aggiunti dall'agente e una mappa con le loro posizioni.
-
 In basso è possibile premere, dopo aver selezionato un immobile, il tasto \textbf{Elimina}, che rimuove l'immobile selezionato dall'applicativo; e il tasto \textbf{Aggiungi offerta}, che consente di aggiungere manualmente un'offerta all'immobile selezionato.
 
 Infine, in basso a sinistra è presente il tasto \textbf{Aggiungi immobile}, che apre il mockup \textbf{M01}.
+\newpage
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -632,8 +694,10 @@ Nel mock-up \textbf{M01} sono presenti vari campi da compilare per poter registr
 
 Dopo aver completato tutti i campi, l'agente immobiliare può cliccare sul tasto \textbf{Inserisci} e tornare al mock-up \textbf{M00}, dove il nuovo immobile apparirà nella lista.
 
+\newpage
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -756,6 +820,7 @@ Se tutti i campi non vengono inseriti correttamente comparirà la pagina di erro
 \subsubsection*{Mock-Up}
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -777,9 +842,11 @@ Se tutti i campi non vengono inseriti correttamente comparirà la pagina di erro
 
 Il cliente, dopo aver effettuato una ricerca, si troverà davanti alla lista degli immobili più coerenti. 
 Cliccando su uno di questi immobili, verrà reindirizzato alla pagina relativa all'immobile selezionato.
+\newpage
 
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -801,9 +868,10 @@ Cliccando su uno di questi immobili, verrà reindirizzato alla pagina relativa a
 
 Nella pagina relativa all'immobile, troverà la descrizione dell'immobile e, sulla sinistra, i pulsanti per \textbf{fare l'offerta} e \textbf{richiedere visita}. 
 Cliccando su \textit{fai offerta}, si aprirà una pagina per digitare un'offerta, seguita successivamente da una pagina di conferma dell'offerta.
-
+\newpage
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -824,6 +892,7 @@ Cliccando su \textit{fai offerta}, si aprirà una pagina per digitare un'offerta
 \end{figure}
 
 Se non viene inserita un offerta uscirà una pagina di errore.
+\newpage
 
 \subsubsection*{Cockburn}
 
@@ -860,11 +929,13 @@ Se non viene inserita un offerta uscirà una pagina di errore.
 \end{tabular}%
 }
 \end{table}
+\newpage
 
 \subsubsection{Accetta Visita}
 \subsubsection*{Mock-Up}
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -883,8 +954,10 @@ Se non viene inserita un offerta uscirà una pagina di errore.
     \end{tikzpicture}
 \end{figure}
 Dopo aver fatto accesso nell'account da agente immobiliare si possono visualizzare le richieste di visite aprendo il calendario.
-    
+
+\newpage
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -905,7 +978,10 @@ Dopo aver fatto accesso nell'account da agente immobiliare si possono visualizza
 \end{figure}
 Cliccando una data verde, ovvero una data che presenta una richiesta, si può visualizzare la richiesta di visita da parte di un Cliente.
 
+\newpage
+
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -926,8 +1002,10 @@ Cliccando una data verde, ovvero una data che presenta una richiesta, si può vi
 \end{figure}
 Se si seleziona una data non verde ovvero una data che non contiene una richiesta, comparirà una pagina di errore.
 
+\newpage
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -948,6 +1026,7 @@ Se si seleziona una data non verde ovvero una data che non contiene una richiest
 \end{figure}
 
 \begin{figure}[H]
+\centering
     \noindent
     \begin{tikzpicture}
         \path[blur shadow={
@@ -967,6 +1046,7 @@ Se si seleziona una data non verde ovvero una data che non contiene una richiest
 
 \end{figure}
 Quando si fà una scelta se di accettare o di rifiutare usciranno due pagine di conferma.
+\newpage
 
 \subsubsection*{CockBurn}
 
@@ -1189,13 +1269,17 @@ Il nostro database si trova quindi interamente su una istanza cloud SQL, mentre 
             {\includegraphics[width=15cm,height=9cm]{Immagini/UML Database.png}};
     \end{tikzpicture}
 
-\end{figure}.
+\end{figure}
 
-Al centro del modello troviamo la classe Immobile, che contiene attributi descrittivi come prezzo, superficie, descrizione, tipo di vendita, numero di stanze, classe energetica, e caratteristiche aggiuntive (es. ascensore, portineria, climatizzazione). Ogni immobile è associato a un indirizzo georeferenziato, modellato nella classe Indirizzo che contiene dettagli come via, città, longitudine, latitudine e CAP.
+100% of your text is likely AI-generated
 
-Gli immobili appartengono a un’agenzia immobiliare, che a sua volta può avere più agenti immobiliari. L’agenzia dispone anche di utenti AdminSupport, che rappresentano account di supporto amministrativo. Gli agenti possono caricare immobili e sono responsabili delle visite e delle offerte ricevute. La classe ImmaginiImmobile consente di associare immagini (mediante URL) agli immobili, con una relazione 1:N.
+New version:
+Al centro del modello troviamo la classe Immobile, che include vari attributi descrittivi come il prezzo, la superficie, la descrizione, il tipo di vendita, il numero di stanze, la classe energetica e alcune caratteristiche aggiuntive, come ad esempio l'ascensore, la portineria e la climatizzazione. Ogni immobile è legato a un indirizzo georeferenziato, rappresentato dalla classe Indirizzo, che fornisce dettagli come via, città, longitudine, latitudine e CAP. 
 
-Gli utenti finali sono modellati nella classe Cliente, contenente nome, cognome, email e password. I clienti possono prenotare visite agli immobili, specificando data, ora e stato di conferma della visita. Inoltre, possono fare offerte sugli immobili, specificando prezzo proposto, data, esito dell’offerta ed eventuale controproposta da parte dell’agente. Le offerte e le visite sono tracciate e associate sia all'immobile che al cliente.
+Gli immobili sono gestiti da un'agenzia immobiliare, che può avere diversi agenti immobiliari al suo interno. L'agenzia dispone anche di utenti Admin-Support, che fungono da account per il supporto amministrativo. Gli agenti hanno la possibilità di caricare gli immobili e sono responsabili delle visite e delle offerte ricevute. La classe ImmaginiImmobile permette di associare immagini (tramite URL) agli immobili, stabilendo una relazione 1:N.
+
+Gli utenti finali sono rappresentati nella classe Cliente, che contiene informazioni come nome, cognome, email e password. I clienti possono prenotare visite agli immobili, specificando la data, l'ora e lo stato di conferma della visita. Inoltre, hanno la possibilità di fare offerte sugli immobili, indicando il prezzo proposto, la data, l'esito dell'offerta e eventuali controproposte da parte dell'agente. Le offerte e le visite vengono tracciate e collegate sia all'immobile che al cliente.
+\newpage
 
 \subsubsection*{Descrizione Creazione Tabelle}:.
 
@@ -1399,10 +1483,130 @@ La combinazione di Spring Boot, Spring Security, e JPA rende il sistema facilmen
 
 \subsection{Scelte di design UI}
 
+Quando abbiamo progettato l’interfaccia utente dell’applicazione, abbiamo adottato un approccio incentrato sull’esperienza dell’utente, seguendo principi di semplicità, coerenza e funzionalità. Il nostro obiettivo principale era creare un’interfaccia accessibile e intuitiva, capace di guidare l’utente attraverso le varie funzionalità dell’app senza bisogno di istruzioni esterne.
 
+\paragraph{Scelte cromatiche} Abbiamo deciso di utilizzare una palette di colori neutri con accenti vivaci per mettere in risalto le azioni principali. I colori sono stati scelti per garantire un buon contrasto visivo e facilitare la lettura anche in diverse condizioni di luce. Il design visivo si basa sulla coerenza cromatica tra le varie schermate, per mantenere un’identità visiva uniforme.
+
+\paragraph{Allineamento e disposizione} Gli elementi grafici e testuali sono stati organizzati seguendo una griglia simmetrica, per favorire la leggibilità e l’orientamento visivo. Abbiamo messo in evidenza i percorsi principali di navigazione, con un’organizzazione gerarchica chiara e facilmente riconoscibile.
+
+
+\paragraph{Eyetracking e focus visivo} Seguendo studi di usabilità e analisi comportamentali, abbiamo posizionato i pulsanti di navigazione principali nella parte bassa dello schermo. Questo approccio consente una maggiore rapidità d’interazione e riduce i tempi di apprendimento.
 
 \subsection{Diagramma delle classi di design}
-TODO
+\subsubsection{BackEnd}
+
+\begin{figure}[H]
+\centering
+    \noindent
+       \centering
+  \makebox[\textwidth][c]{%
+    \adjustbox{trim={x 0cm y 0cm},clip}{%
+    \begin{tikzpicture}
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (20,25); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (20,25);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=20cm,height=25cm]{Immagini/javaBackEnd parte 1.jpg}};
+    \end{tikzpicture}
+}
+}
+\end{figure}
+
+\begin{figure}[H]
+   
+    \noindent
+      \centering
+  \makebox[\textwidth][c]{%
+    \adjustbox{trim={x 0cm y 0cm},clip}{%
+    \begin{tikzpicture}
+
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (20,25); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (20,25);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=20cm,height=25cm]{Immagini/javaBackEnd parte 2.jpg}};
+
+
+    \end{tikzpicture}
+    }
+    }
+\end{figure}
+
+\subsubsection{FrontEnd}
+
+\begin{figure}[H]
+   
+    \noindent
+      \centering
+  \makebox[\textwidth][c]{%
+    \adjustbox{trim={x 0cm y 0cm},clip}{%
+    \begin{tikzpicture}
+
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (20,25); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (20,25);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=20cm,height=25cm]{Immagini/javaFrontEnd parte 1.jpg}};
+
+
+    \end{tikzpicture}
+    }
+    }
+\end{figure}
+
+\begin{figure}[H]
+   
+    \noindent
+      \centering
+  \makebox[\textwidth][c]{%
+    \adjustbox{trim={x 0cm y 0cm},clip}{%
+    \begin{tikzpicture}
+
+        \path[blur shadow={
+                shadow blur steps=10,
+                shadow xshift=1ex,
+                shadow yshift=-1ex
+            },
+            draw=none, 
+            fill=white,
+            rounded corners=10pt]
+            (0,0) rectangle (20,25); 
+
+        \clip[rounded corners=10pt] (0,0) rectangle (20,25);
+        \node[anchor=south west, inner sep=0pt] at (0,0) 
+            {\includegraphics[width=20cm,height=25cm]{Immagini/javaFrontEnd parte 2.jpg}};
+
+
+    \end{tikzpicture}
+    }
+    }
+\end{figure}
+
+
 \subsection{Sequence Diagram}
 
 \subsubsection{Ricerca Immobile}
@@ -1675,7 +1879,31 @@ Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
 \begin{lstlisting}
 class CheckDataTest {
 
-    private final AgenteImmobiliareServiceDB validator = new AgenteImmobiliareServiceDB();
+    @Mock
+    private AgenteImmobiliareRepository agentRepository;
+    @Mock private ImmobileRepository immobileRepository;
+    @Mock private VisitaRepository visitaRepository;
+    @Mock private IndirizzoRepository indirizzoRepository;
+    @Mock private JWTService jwtService;
+    @Mock private ImmagineImmobileRepository immagineImmobileRepository;
+    @Mock private OffertaRepository offertaRepository;
+    @Mock private AuthenticationManager authManager;
+
+    private AgenteImmobiliareServiceDB validator;
+
+    @BeforeEach
+    void setUp() {
+        validator = new AgenteImmobiliareServiceDB(
+                agentRepository,
+                immobileRepository,
+                visitaRepository,
+                indirizzoRepository,
+                jwtService,
+                immagineImmobileRepository,
+                offertaRepository,
+                authManager
+        );
+    }
 
     // Helper per creare una data
     private Date getDate(int year, int month, int day) {
@@ -1860,7 +2088,15 @@ Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
 \begin{lstlisting}
 class CredenzialiTest {
 
-    private final ClienteServiceDB validator = new ClienteServiceDB();
+    ClienteServiceDB validator = new ClienteServiceDB(
+            mock(ClienteRepository.class),
+            mock(VisitaRepository.class),
+            mock(OffertaRepository.class),
+            mock(ImmobileRepository.class),
+            mock(JWTService.class),
+            mock(NotificaService.class),
+            mock(AuthenticationManager.class)
+    );
 
     // Helper per creare una data
     private Date getDate(int year, int month, int day) {
@@ -2024,7 +2260,14 @@ Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
 \begin{lstlisting}
 class CheckPrezziTest {
 
-    private final AuthController validator = new AuthController();
+    AuthController validator = new AuthController(
+            mock(TokenBlacklist.class),
+            mock(ImmobileRepository.class),
+            mock(OffertaRepository.class),
+            mock(ClienteRepository.class),
+            mock(ImmagineImmobileRepository.class),
+            mock(NotificaService.class)
+    );
 
     @Test
     void testCE1_CE4_CE7() {
@@ -2158,7 +2401,14 @@ Da queste classi di equivalenza sono stati ricavati i seguenti test:\\
 \begin{lstlisting}
 class CheckFiltriTest {
 
-    private final AuthController validator = new AuthController();
+    AuthController validator = new AuthController(
+            mock(TokenBlacklist.class),
+            mock(ImmobileRepository.class),
+            mock(OffertaRepository.class),
+            mock(ClienteRepository.class),
+            mock(ImmagineImmobileRepository.class),
+            mock(NotificaService.class)
+    );
 
     @Test
     void testCE1_CE4_CE7_C10_C13() {

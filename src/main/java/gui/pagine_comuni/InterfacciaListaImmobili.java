@@ -15,6 +15,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -286,18 +287,25 @@ public class InterfacciaListaImmobili extends JPanel {
         FocusListener focusCloser = new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                SwingUtilities.invokeLater(() -> {
-                    if (!comboPrezzoMin.hasFocus() && !comboPrezzoMax.hasFocus() && !menuPrezzi.hasFocus()) {
+                Timer timer = new Timer(150, ev -> {
+                    Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+                    boolean isInsideMenu = SwingUtilities.isDescendingFrom(focusOwner, menuPrezzi);
+
+                    if (!isInsideMenu &&
+                            !comboPrezzoMin.isPopupVisible() &&
+                            !comboPrezzoMax.isPopupVisible()) {
                         menuPrezzi.setPopupMenuVisible(false);
                     }
                 });
+                timer.setRepeats(false);
+                timer.start();
             }
         };
+
 
         comboPrezzoMin.addFocusListener(focusCloser);
         comboPrezzoMax.addFocusListener(focusCloser);
         menuPrezzi.addFocusListener(focusCloser);
-
 
     }
     private void setUpOpzioniMenu(JFrame frame, Controller control) {
@@ -406,11 +414,12 @@ public class InterfacciaListaImmobili extends JPanel {
                 "fill,hidemode 3,aligny center",
                 // columns
                 "[fill]" +
-                "[159,grow]rel" +
-                "[96,grow]rel" +
-                "[123,grow]rel" +
+                "[121,grow]0" +
+                "[0,grow]rel" +
+                "[158,grow]rel" +
                 "[fill]0" +
                 "[120,grow,center]rel" +
+                "[255,grow,center]para" +
                 "[255,grow,center]para" +
                 "[fill]",
                 // rows
@@ -441,7 +450,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarOpzioni.add(menuOpzioni);
             }
-            panelTopBar.add(menuBarOpzioni, "cell 5 0 3 1,align right top,grow 0 0");
+            panelTopBar.add(menuBarOpzioni, "cell 5 0 4 1,align right top,grow 0 0");
 
             //---- mapButton ----
             mapButton.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
@@ -459,12 +468,12 @@ public class InterfacciaListaImmobili extends JPanel {
             searchButton.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
             searchButton.setBorder(null);
             searchButton.setBorderPainted(false);
-            panelTopBar.add(searchButton, "cell 5 1 2 1,align right center,grow 0 0");
+            panelTopBar.add(searchButton, "cell 5 1 3 1,align right center,grow 0 0");
 
             //---- searchField ----
             searchField.setBackground(Color.white);
             searchField.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-            panelTopBar.add(searchField, "cell 1 1 6 1,aligny center,grow 100 0");
+            panelTopBar.add(searchField, "cell 1 1 7 1,aligny center,grow 100 0");
 
             //---- comboBoxTipVendita ----
             comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -492,7 +501,7 @@ public class InterfacciaListaImmobili extends JPanel {
                 }
                 menuBarPrezziTutto.add(menuPrezzi);
             }
-            panelTopBar.add(menuBarPrezziTutto, "cell 2 2");
+            panelTopBar.add(menuBarPrezziTutto, "cell 3 2");
 
             //---- comboBoxSuperfice ----
             comboBoxSuperfice.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -525,13 +534,13 @@ public class InterfacciaListaImmobili extends JPanel {
             }));
             comboBoxSuperfice.setForeground(Color.black);
             comboBoxSuperfice.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(comboBoxSuperfice, "cell 3 2,align left center,grow 0 0");
+            panelTopBar.add(comboBoxSuperfice, "cell 5 2,align left center,grow 0 0");
 
             //---- buttonFiltri ----
             buttonFiltri.setText("Filtri");
             buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
             buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-            panelTopBar.add(buttonFiltri, "cell 5 2,align left center,grow 0 0");
+            panelTopBar.add(buttonFiltri, "cell 6 2,align left center,grow 0 0");
         }
         add(panelTopBar, "north,aligny top,growy 0");
 

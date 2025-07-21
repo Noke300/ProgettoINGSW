@@ -20,11 +20,11 @@ import java.util.List;
 
 public class ControllerAdminSup extends Controller {
 
-    protected static final String GET_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/getAgentiImmobiliari";
-    protected static final String ELIMINA_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/licenziaAgenteImmobiliare";
-    protected static final String ADD_AGENTE_IMM = "http://localhost:8081/auth-adminSupport/registraAgenteImmobiliare";
-    protected static final String GET_ADMIN_SUP = "http://localhost:8081/auth-adminSupport/specificheCliente";
-    protected static final String GET_IMMOBILI = "http://localhost:8081/auth-adminSupport/visualizzaImmobili";
+    protected static final String GET_AGENTE_IMM = URL_SERVER+":8081/auth-adminSupport/getAgentiImmobiliari";
+    protected static final String ELIMINA_AGENTE_IMM = URL_SERVER+":8081/auth-adminSupport/licenziaAgenteImmobiliare";
+    protected static final String ADD_AGENTE_IMM = URL_SERVER+":8081/auth-adminSupport/registraAgenteImmobiliare";
+    protected static final String GET_ADMIN_SUP = URL_SERVER+":8081/auth-adminSupport/specificheCliente";
+    protected static final String GET_IMMOBILI = URL_SERVER+":8081/auth-adminSupport/visualizzaImmobili";
 
     public AdminSupport fetchAdminSup(String token) {
         try {
@@ -42,8 +42,6 @@ public class ControllerAdminSup extends Controller {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore nella comunicazione HTTP", e);
         }
-
-        System.out.println("Codice risposta: " + response.statusCode());
 
         if (response.statusCode() == 200) {
             Gson gson = new Gson();

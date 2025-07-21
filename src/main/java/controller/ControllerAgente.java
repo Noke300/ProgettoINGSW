@@ -19,14 +19,14 @@ import java.util.*;
 public class ControllerAgente extends Controller{
 
 
-    protected static final String IMMOBILI_URL          = "http://localhost:8081/auth-agente/immobili";
-    protected static final String VISITE_IMM_AGENTE     = "http://localhost:8081/auth-agente/visite";
-    protected static final String ELIMINA_IMM           = "http://localhost:8081/auth-agente/elimina-immobile";
-    protected static final String AGGIUNGI_IMMOBILE     = "http://localhost:8081/auth-agente/aggiungi-immobile";
-    protected static final String GET_AGGENTEIMM        = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare";
-    protected static final String GET_SPECIFICHE_IMM    = "http://localhost:8081/auth-agente/specificheAgenteImmobiliare"; // (duplicato: puoi consolidare)
-    protected static final String GET_IMMOBILE          = "http://localhost:8081/auth-agente/getImmobile";
-    protected static final String ESITO_VISITA         = "http://localhost:8081/auth-agente/confermaVisita";
+    protected static final String IMMOBILI_URL          = URL_SERVER+":8081/auth-agente/immobili";
+    protected static final String VISITE_IMM_AGENTE     = URL_SERVER+":8081/auth-agente/visite";
+    protected static final String ELIMINA_IMM           = URL_SERVER+":8081/auth-agente/elimina-immobile";
+    protected static final String AGGIUNGI_IMMOBILE     = URL_SERVER+":8081/auth-agente/aggiungi-immobile";
+    protected static final String GET_AGGENTEIMM        = URL_SERVER+":8081/auth-agente/specificheAgenteImmobiliare";
+    protected static final String GET_SPECIFICHE_IMM    = URL_SERVER+":8081/auth-agente/specificheAgenteImmobiliare"; // (duplicato: puoi consolidare)
+    protected static final String GET_IMMOBILE          = URL_SERVER+":8081/auth-agente/getImmobile";
+    protected static final String ESITO_VISITA         = URL_SERVER+":8081/auth-agente/confermaVisita";
 
     public boolean insertImmobili(Immobile immobile, List<String> immagini, List<String> fileNames, String token) {
 

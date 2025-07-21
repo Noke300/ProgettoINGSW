@@ -52,8 +52,6 @@ public class SimplifiedMapLoader extends MapLoader {
         // Set the overlay painter
         mapViewer.setOverlayPainter(waypointPainter);
 
-        System.out.println("Map initialized with waypoint painter");
-
         // Add a double-click listener for waypoint creation
         mapViewer.addMouseListener(new MouseAdapter() {
             @Override
@@ -96,7 +94,6 @@ public class SimplifiedMapLoader extends MapLoader {
                                 if(!(address==null) && !address.toLowerCase().contains("italia")){
                                     address=null;
                                 }
-                                System.out.println("Address lookup result: " + (address != null ? address : "Indirizzo non valido o fuori confine Italiano"));
                             } catch (InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                                 System.err.println("Address lookup interrupted: " + ex.getMessage());

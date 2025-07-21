@@ -27,27 +27,26 @@ public class Controller {
     protected String requestBody;
     private String nameLogIn;
 
-    protected static final String RICERCA_URL           = "http://localhost:8081/cerca-immobili";
-    protected static final String OFFERTA_URL           = "http://localhost:8081/offerta";
-    protected static final String OFFERTA_LIST          = "http://localhost:8081/visualizza-offerte";
-    protected static final String WHO_URL               = "http://localhost:8081/whoAmI";
-    protected static final String LOGOUT_URL           = "http://localhost:8081/logout";
+    protected static final String URL_SERVER = "http://34.154.237.189";
+    protected static final String RICERCA_URL = URL_SERVER+":8081/cerca-immobili";
+    protected static final String OFFERTA_URL = URL_SERVER+":8081/offerta";
+    protected static final String OFFERTA_LIST  = URL_SERVER+":8081/visualizza-offerte";
+    protected static final String WHO_URL  = URL_SERVER+":8081/whoAmI";
+    protected static final String LOGOUT_URL  = URL_SERVER+":8081/logout";
 
 
-    protected static final String LOGIN_URL_ADMINSUP    = "http://localhost:8081/auth-adminSupport/login";
-    protected static final String LOGIN_URL_ADMIN       = "http://localhost:8081/auth-admin/login";
-    protected static final String LOGIN_URL_AGENTE      = "http://localhost:8081/auth-agente/login";
-    protected static final String LOGIN_URL_CLIENTE     = "http://localhost:8081/auth-cliente/login";
+    protected static final String LOGIN_URL_ADMINSUP = URL_SERVER+":8081/auth-adminSupport/login";
+    protected static final String LOGIN_URL_ADMIN = URL_SERVER+":8081/auth-admin/login";
+    protected static final String LOGIN_URL_AGENTE = URL_SERVER+":8081/auth-agente/login";
+    protected static final String LOGIN_URL_CLIENTE = URL_SERVER+":8081/auth-cliente/login";
 
-    protected static final String REGISTRAZIONE_URL_CLIENTE = "http://localhost:8081/auth-cliente/register";
-    protected static final String REGISTRAZIONE_URL_AZIENDA = "http://localhost:8081/auth-admin/register";
+    protected static final String REGISTRAZIONE_URL_CLIENTE = URL_SERVER+":8081/auth-cliente/register";
+    protected static final String REGISTRAZIONE_URL_AZIENDA = URL_SERVER+":8081/auth-admin/register";
 
-    protected static final String ESITO_OFFERTA         = "http://localhost:8081/auth-agente/accettaOfferta";
-    protected static final String CONTRO_OFFERTA         = "http://localhost:8081/auth-agente/controOfferta";
+    protected static final String ESITO_OFFERTA = URL_SERVER+":8081/auth-agente/accettaOfferta";
+    protected static final String CONTRO_OFFERTA = URL_SERVER+":8081/auth-agente/controOfferta";
 
 
-
-    //TODO separare i vari path nei rispettivi controller
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalTime.class, (JsonSerializer<LocalTime>) (src, typeOfSrc, context) ->
                     new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("HH:mm")))
@@ -103,7 +102,6 @@ public class Controller {
         bodyMap.put("emailCliente", emailCliente);
         bodyMap.put("passwordCliente", password);
 
-        Gson gson = new Gson(); // Assicurati che sia configurato se serve formattazione data o custom type adapter
         requestBody = gson.toJson(bodyMap);
 
         try {
@@ -164,7 +162,6 @@ public class Controller {
 
             if (response.statusCode() == 200 && response.body() != null && !response.body().isBlank()) {
                 String token = response.body().replace("\"", "").trim();
-                System.out.println(" Login riuscito su " + url + ", token: " + token);
                 return token;
             } else {
                 System.out.println(" Login fallito su " + url + ". Stato: " + response.statusCode());
@@ -313,7 +310,7 @@ public class Controller {
         }
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.statusCode() == 201;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante invio offerta: " + e.getMessage());
@@ -322,13 +319,13 @@ public class Controller {
 
     public String getRawSpecifiche(String token) {
         try {
-            HttpRequest request = HttpRequest.newBuilder()
+             request = HttpRequest.newBuilder()
                     .uri(new URI(WHO_URL))
                     .header("Authorization", "Bearer " + token.trim())
                     .GET()
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+             response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200 && response.body() != null && !response.body().isBlank()) {
                 String ruolo = response.body().trim(); // Stringa pura, es: "[ADMIN]"
@@ -371,9 +368,8 @@ public class Controller {
 
     public boolean esito(Offerta offerta, String token) {
 
-        String requestBody = gson.toJson(offerta);
-        HttpRequest request;
-        try {
+        requestBody = gson.toJson(offerta);
+         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(ESITO_OFFERTA))
                     .header("Authorization", "Bearer " + token)
@@ -385,7 +381,7 @@ public class Controller {
         }
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.statusCode() == 200;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Errore durante l'esito dell'offerta: " + e.getMessage());

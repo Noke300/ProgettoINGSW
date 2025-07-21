@@ -20,11 +20,11 @@ import java.util.List;
 
 public class ControllerClienti extends Controller {
 
-    protected static final String GET_SPECIFICHE        = "http://localhost:8081/auth-cliente/specificheCliente";
-    protected static final String VISITE_IMM_CLIENTE    = "http://localhost:8081/auth-cliente/getVisite";
-    protected static final String PRENOTA_VISITE        = "http://localhost:8081/auth-cliente/visita";
-    protected static final String OFFERTE_CLIENTE       = "http://localhost:8081/auth-cliente/getOfferte";
-    protected static final String ACCETTA_OFFERTA       = "http://localhost:8081/auth-cliente/controOfferta";
+    protected static final String GET_SPECIFICHE        = URL_SERVER+":8081/auth-cliente/specificheCliente";
+    protected static final String VISITE_IMM_CLIENTE    = URL_SERVER+":8081/auth-cliente/getVisite";
+    protected static final String PRENOTA_VISITE        = URL_SERVER+":8081/auth-cliente/visita";
+    protected static final String OFFERTE_CLIENTE       = URL_SERVER+":8081/auth-cliente/getOfferte";
+    protected static final String ACCETTA_OFFERTA       = URL_SERVER+":8081/auth-cliente/controOfferta";
 
 
 
@@ -48,7 +48,6 @@ public class ControllerClienti extends Controller {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Codice risposta: " + response.statusCode());
 
         if (response.statusCode() == 200) {
             Gson gson = new Gson();

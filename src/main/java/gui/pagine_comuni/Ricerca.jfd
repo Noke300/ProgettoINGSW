@@ -151,7 +151,7 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "LogoOpzioni"
-					"icon": &SwingIcon0 new com.jformdesigner.model.SwingIcon( 0, "/Logo.svg" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/Logo.svg" )
 					"iconTextGap": 2
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Before"
@@ -365,13 +365,6 @@ new FormModel {
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "east"
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "LogoOpzioni2"
-				"icon": #SwingIcon0
-				"iconTextGap": 2
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 7,align center bottom,grow 0 0"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 15 )

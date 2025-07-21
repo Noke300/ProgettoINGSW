@@ -35,7 +35,6 @@ public class Ricerca extends JPanel {
         initializePopupMenu(); // Inizializza il menu
         addPopupToSearchField();// Collega il menu al searchField
         createRicercaPanel(frame,control);
-        System.out.println("T : "+this.token+"\n");
     }
 
     @Override
@@ -515,7 +514,6 @@ public class Ricerca extends JPanel {
         separator1 = new JSeparator();
         buttonCancellaFiltri = new JButton();
         buttonConfermaFiltri = new JButton();
-        LogoOpzioni2 = new JLabel();
 
         //======== this ========
         setLayout(new MigLayout(
@@ -820,11 +818,6 @@ public class Ricerca extends JPanel {
             internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 9,alignx center,grow 0 100");
         }
         add(internalFrameFiltri, "east");
-
-        //---- LogoOpzioni2 ----
-        LogoOpzioni2.setIcon(new FlatSVGIcon("Logo.svg"));
-        LogoOpzioni2.setIconTextGap(2);
-        add(LogoOpzioni2, "cell 0 7,align center bottom,grow 0 0");
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 
@@ -864,6 +857,5 @@ public class Ricerca extends JPanel {
     private JSeparator separator1;
     private JButton buttonCancellaFiltri;
     private JButton buttonConfermaFiltri;
-    private JLabel LogoOpzioni2;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

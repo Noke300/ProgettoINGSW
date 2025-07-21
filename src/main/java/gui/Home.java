@@ -3,6 +3,7 @@ package gui;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.border.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.*;
@@ -17,6 +18,7 @@ public class Home extends JPanel {
         initComponents();
     }
     public JPanel createHomePanel(JFrame frame) {
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         accessoButton.setText("Entra");
         accessoButton.setPreferredSize(new Dimension(120, 30));
         accessoButton.addActionListener(e -> {
@@ -51,61 +53,52 @@ public class Home extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents @formatter:off
-        // Generated using JFormDesigner Evaluation license - Alessio Nesi
+        // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+        panelMenuBarOpzioniColore = new JPanel();
         titolo = new JLabel();
-        labelHome = new JLabel();
         accessoButton = new JButton();
 
         //======== this ========
         setPreferredSize(new Dimension(500, 600));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax .
-        swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border
-        . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog"
-        , java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) , getBorder
-        () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java
-        . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException
-        ( ) ;} } );
         setLayout(new MigLayout(
             "insets 0,hidemode 3,align center center,gap 10 5",
             // columns
-            "[14,grow 1,fill]" +
-            "[fill]" +
-            "[grow 1,fill]",
+            "[14,grow 1,fill]0",
             // rows
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]" +
-            "[]"));
+            "[64]0" +
+            "[283,grow]0" +
+            "[69,grow,shrink 0]para"));
+
+        //======== panelMenuBarOpzioniColore ========
+        {
+            panelMenuBarOpzioniColore.setForeground(Color.green);
+            panelMenuBarOpzioniColore.setBackground(UIManager.getColor("Actions.Green"));
+            panelMenuBarOpzioniColore.setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
+            panelMenuBarOpzioniColore.setLayout(new BorderLayout());
+        }
+        add(panelMenuBarOpzioniColore, "cell 0 0,growy");
 
         //---- titolo ----
         titolo.setText("Dieti Estates 25 ");
-        titolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 46));
+        titolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 69));
         titolo.setForeground(UIManager.getColor("Actions.Green"));
         titolo.setHorizontalAlignment(SwingConstants.CENTER);
-        titolo.setIcon(new FlatSVGIcon("Logo.svg"));
+        titolo.setIcon(new FlatSVGIcon("LogoBackGraund.svg"));
         titolo.setHorizontalTextPosition(SwingConstants.CENTER);
         titolo.setVerticalTextPosition(SwingConstants.BOTTOM);
-        add(titolo, "cell 1 0,align center center,grow 0 0");
-
-        //---- labelHome ----
-        labelHome.setText("Home");
-        labelHome.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 28));
-        labelHome.setHorizontalAlignment(SwingConstants.CENTER);
-        add(labelHome, "cell 1 1");
+        add(titolo, "cell 0 1,growy");
 
         //---- accessoButton ----
         accessoButton.setText("Button");
         accessoButton.setPreferredSize(null);
-        add(accessoButton, "cell 1 4,aligny center,growy 0");
+        add(accessoButton, "cell 0 2,aligny top,grow 100 0");
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables @formatter:off
-    // Generated using JFormDesigner Evaluation license - Alessio Nesi
+    // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
+    private JPanel panelMenuBarOpzioniColore;
     private JLabel titolo;
-    private JLabel labelHome;
     private JButton accessoButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

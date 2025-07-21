@@ -90,7 +90,6 @@ public class PaginaImmobileDettagliata extends JPanel {
         else labelPrezzoUltimo.setText(offerteIM.getLast().getPrezzoOfferta() +" €");
         labelPrezzoUltimo.setFont(new Font("Segoe UI", Font.BOLD,28));
 
-        //TODO non far modificare le proprietà del grafico
         JFreeChart chart = ChartFactory.createLineChart(
                 "Offerte",
                 "Data",
@@ -99,7 +98,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         );
         NumberAxis yAxis = (NumberAxis) chart.getCategoryPlot().getRangeAxis();
         yAxis.setLowerBound(150000);
-        yAxis.setTickUnit(new NumberTickUnit(20000));
+        yAxis.setTickUnit(new NumberTickUnit(50000));
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBackground(new Color(0, 0, 0, 0));
@@ -388,7 +387,7 @@ public class PaginaImmobileDettagliata extends JPanel {
         JPanel mappaPanel = new JPanel(new BorderLayout());
         mappaPanel.setPreferredSize(new Dimension(600, 350));
         GeoPosition geoP = new GeoPosition(immobile.getLanIm(),immobile.getLongIm());
-        //TODO MapLoder da covert in metodo statico
+
         new MapLoader(geoP, mappaPanel, List.of(immobile));
         pannelloContenuto.add(mappaPanel);
 

@@ -21,15 +21,15 @@ import java.util.List;
 public class ControllerAdmin extends Controller {
 
 
-    protected static final String MODIFICA_PASS          = "http://localhost:8081/auth-admin/aggiornaCredenziali";
-    protected static final String GET_AGENZIAIMM        = "http://localhost:8081/auth-admin/specificheAgenziaImmobiliare";
-    protected static final String GET_AGENTIIMM         = "http://localhost:8081/auth-admin/getAgentiImmobiliari";
-    protected static final String GET_ADMINSUPPORT      = "http://localhost:8081/auth-admin/getAdminSupport";
-    protected static final String ELIMINA_ADMINSUP      = "http://localhost:8081/auth-admin/licenziaAdminSupport";
-    protected static final String ELIMINA_AGENTE_IMM    = "http://localhost:8081/auth-admin/licenziaAgenteImmobiliare";
-    protected static final String ADD_AGENTE_IMM        = "http://localhost:8081/auth-admin/registraAgenteImmobiliare";
-    protected static final String ADD_ADMINSUP          = "http://localhost:8081/auth-admin/registraAdminSupport";
-    protected static final String GET_IMMOBILI          = "http://localhost:8081/auth-admin/visualizzaImmobili";
+    protected static final String MODIFICA_PASS          = URL_SERVER+":8081/auth-admin/aggiornaCredenziali";
+    protected static final String GET_AGENZIAIMM        = URL_SERVER+":8081/auth-admin/specificheAgenziaImmobiliare";
+    protected static final String GET_AGENTIIMM         = URL_SERVER+":8081/auth-admin/getAgentiImmobiliari";
+    protected static final String GET_ADMINSUPPORT      = URL_SERVER+":8081/auth-admin/getAdminSupport";
+    protected static final String ELIMINA_ADMINSUP      = URL_SERVER+":8081/auth-admin/licenziaAdminSupport";
+    protected static final String ELIMINA_AGENTE_IMM    = URL_SERVER+":8081/auth-admin/licenziaAgenteImmobiliare";
+    protected static final String ADD_AGENTE_IMM        = URL_SERVER+":8081/auth-admin/registraAgenteImmobiliare";
+    protected static final String ADD_ADMINSUP          = URL_SERVER+":8081/auth-admin/registraAdminSupport";
+    protected static final String GET_IMMOBILI          = URL_SERVER+":8081/auth-admin/visualizzaImmobili";
 
 
     public AgenziaImmobiliare fetchAgenziaImmobiliare(String token) {

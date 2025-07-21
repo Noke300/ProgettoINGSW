@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-public class NotificationClient {
+public class NotificationClient extends Controller {
 
     private final String userId;
     private final CopyOnWriteArrayList<Consumer<String>> listeners = new CopyOnWriteArrayList<>();
@@ -27,7 +27,7 @@ public class NotificationClient {
         new Thread(() -> {
             try {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("http://localhost:8081/notifiche/stream?userId=" + userId))
+                        .uri(new URI(URL_SERVER+":8081/notifiche/stream?userId=" + userId))
                         .header("Accept", "text/event-stream")
                         .GET()
                         .build();

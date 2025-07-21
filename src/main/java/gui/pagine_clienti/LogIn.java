@@ -45,6 +45,7 @@ public class LogIn extends JPanel {
                      Arrays.fill(tempPass, ' ');
                  }else {
                      BottoniOpzioni.getMapLog().clear();
+                     control.setNameLogIn(control.getRawSpecifiche(this.token));
                      frame.setContentPane(new Ricerca(frame,control,this.token));
                      frame.revalidate();
                      frame.repaint();

@@ -27,7 +27,7 @@ public class Controller {
     protected String requestBody;
     private String nameLogIn;
 
-    protected static final String URL_SERVER = "http://34.154.237.189";
+    protected static final String URL_SERVER = "http://localhost";
     protected static final String RICERCA_URL = URL_SERVER+":8081/cerca-immobili";
     protected static final String OFFERTA_URL = URL_SERVER+":8081/offerta";
     protected static final String OFFERTA_LIST  = URL_SERVER+":8081/visualizza-offerte";
@@ -318,6 +318,9 @@ public class Controller {
     }
 
     public String getRawSpecifiche(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("Token JWT mancante o vuoto.");
+        }
         try {
              request = HttpRequest.newBuilder()
                     .uri(new URI(WHO_URL))
@@ -328,7 +331,7 @@ public class Controller {
              response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200 && response.body() != null && !response.body().isBlank()) {
-                String ruolo = response.body().trim(); // Stringa pura, es: "[ADMIN]"
+                String ruolo = response.body().trim(); // Es: "[ADMIN]"
                 setNameLogIn(ruolo);
                 return ruolo;
             } else {
@@ -339,6 +342,7 @@ public class Controller {
             throw new RuntimeException("Errore durante il recupero delle specifiche: " + e.getMessage(), e);
         }
     }
+
 
     public boolean eseguiLogout(String token) {
         try {

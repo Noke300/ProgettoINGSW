@@ -254,7 +254,7 @@ INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, NumeroCiv
 INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzazione,
     Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'giovanni.moretti@email.com', 'CasaFacile', 260000, 'Affitto', 'Appartamento moderno vicino al centro',
@@ -267,7 +267,7 @@ WHERE Via = 'Via Roma' AND Cap = 10121;
 INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzazione,
     Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'prova@gmail.com', 'ImmobiliareRoma', 370000, 'Vendita', 'Casa indipendente con ampio giardino',
@@ -280,7 +280,7 @@ WHERE NumeroCivico = 25 AND Provincia = 'MI';
 INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzazione,
     Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'prova@gmail.com', 'MilanCase', 195000, 'Vendita', 'Appartamento accogliente in zona tranquilla',
@@ -293,7 +293,7 @@ WHERE Regione = 'Toscana' AND Citta = 'Firenze';
 INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzazione,
     Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'martina.deluca@email.com', 'ViviCasa', 280000, 'Affitto', 'Casa luminosa a pochi passi dal mare',
@@ -306,7 +306,7 @@ WHERE ind.Via = 'Via Garibaldi' AND ind.NumeroCivico = 18;
 INSERT INTO Immobile (
     IdIndirizzo, NomeAgente, NomeAgenzia, Prezzo, TipoVendita, Descrizione,
     Superficie, TipoImmobile, NumBagni, ClasseEnergetica, NumStanze,
-    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzatione,
+    Piano, Ascensore, Balcone, Cantina, Portineria, Climatizzazione,
     Venduto, Scuole, Parchi, TrasportoPubblico
 )
 SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto', 'Appartamento con vista sulla città',

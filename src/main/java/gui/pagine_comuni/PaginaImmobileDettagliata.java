@@ -410,9 +410,11 @@ public class PaginaImmobileDettagliata extends JPanel {
         
 
     }
-
-    private void destraImg(ActionEvent e) {
-        // TODO add your code here
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        // Assicurati che tutti i menu popup siano nascosti quando il pannello viene aggiunto
+        MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
     private void initComponents() {
@@ -540,7 +542,6 @@ public class PaginaImmobileDettagliata extends JPanel {
             buttonDestraImg.setText(">");
             buttonDestraImg.setFont(new Font("Segoe UI", Font.BOLD, 24));
             buttonDestraImg.setBackground(new Color(0x00ffffff, true));
-            buttonDestraImg.addActionListener(e -> destraImg(e));
             panelImmagineImmobile.add(buttonDestraImg, BorderLayout.EAST);
 
             //---- buttonSinistraImg ----

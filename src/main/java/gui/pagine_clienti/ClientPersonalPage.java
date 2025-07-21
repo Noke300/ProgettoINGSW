@@ -162,12 +162,23 @@ public class ClientPersonalPage extends JPanel {
         Map<LocalDateTime, JLabel> dati = new HashMap<>();
         for (Offerta offerta : listaOfferte) {
             LocalDateTime data = offerta.getDataOfferta();
-            boolean isControfferta = Boolean.TRUE.equals(offerta.getContrOfferta());
+            String tipo;
+            if (Boolean.TRUE.equals(offerta.getContrOfferta())) {
+                tipo = "Controfferta";
+            } else {
+                Boolean esito = offerta.getEsitoOfferta();
+                if (esito == null) {
+                    tipo = "In Attesa";
+                } else if (esito) {
+                    tipo = "Accettata";
+                } else {
+                    tipo = "Rifiutata";
+                }
+            }
 
             String testo = "💰 Prezzo: " + offerta.getPrezzoOfferta() +
                     " | 📍 Immobile: " + offerta.getImmobile().getIndirizzo().toString() +
-                    " | Tipo: " + (isControfferta ? "Controfferta" : "In Attesa");
-
+                    " | Tipo: " + tipo;
             JLabel label = new JLabel("🕓 " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " → " + testo);
             label.setName(offerta.getIdOfferta());
             label.setFont(new Font("SansSerif", Font.PLAIN, 20));

@@ -59,6 +59,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
 
         Ricerca.notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> {
             NotificationClient.notificheWindow(messaggio);
+
         }));
         if(!immobili.isEmpty()){
             geoPos = MapLoader.getCoordinatesFromAddress(immobili.getFirst().getGeoPosition());

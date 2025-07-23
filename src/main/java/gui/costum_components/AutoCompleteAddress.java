@@ -96,11 +96,20 @@ public class AutoCompleteAddress {
     }
 
 
-    public void setupSearchAutocomplete(JTextField searchField,JTextField viaField,JTextField capField,JTextField civicoField,JTextField cittaField,JComboBox<String> regioneCombo, JComboBox<String> provinciaCombo) {
+    public void setupSearchAutocomplete(JTextField searchField,
+                                        JTextField viaField,
+                                        JTextField capField,
+                                        JTextField civicoField,
+                                        JTextField cittaField,
+                                        JComboBox<String> regioneCombo,
+                                        JComboBox<String> provinciaCombo) {
+
         JPopupMenu suggestionPopup = new JPopupMenu();
         suggestionPopup.setFocusable(false);
 
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
+        final DocumentListener[] listenerHolder = new DocumentListener[1];
+
+        listenerHolder[0] = new DocumentListener() {
             private final Timer timer = new Timer(500, e -> fetchAndShowSuggestions());
 
             {
@@ -140,18 +149,30 @@ public class AutoCompleteAddress {
                     for (String suggestion : suggestions) {
                         JMenuItem item = new JMenuItem(suggestion);
                         item.addActionListener(ev -> {
+                            // Disattiva temporaneamente il listener
+                            searchField.getDocument().removeDocumentListener(listenerHolder[0]);
+
                             searchField.setText(suggestion);
                             suggestionPopup.setVisible(false);
-                            popolaCampiIndirizzo(searchField.getText(),viaField,capField,civicoField,cittaField,regioneCombo,provinciaCombo);
+
+                            // Popola altri campi e riattiva il listener
+                            SwingUtilities.invokeLater(() -> {
+                                popolaCampiIndirizzo(suggestion, viaField, capField, civicoField, cittaField, regioneCombo, provinciaCombo);
+                                searchField.requestFocusInWindow();
+                                searchField.getDocument().addDocumentListener(listenerHolder[0]);
+                            });
                         });
                         suggestionPopup.add(item);
                     }
 
-                    suggestionPopup.setPopupSize(searchField.getWidth(), searchField.getHeight() * suggestions.size()+50 / 5 + 10);
+                    suggestionPopup.setPopupSize(searchField.getWidth(), searchField.getHeight() * suggestions.size() + 50 / 5 + 10);
                     suggestionPopup.show(searchField, 0, searchField.getHeight());
                 });
             }
-        });
+        };
+
+        // Registra il listener iniziale
+        searchField.getDocument().addDocumentListener(listenerHolder[0]);
     }
 
     protected List<String> fetchAutocompleteSuggestions(String input) {

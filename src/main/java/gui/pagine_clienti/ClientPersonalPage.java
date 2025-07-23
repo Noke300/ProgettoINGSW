@@ -113,7 +113,6 @@ public class ClientPersonalPage extends JPanel {
                     Offerta offerta = new Offerta(label.getName(),false);
                     controllerClienti.accettaOfferta(offerta,token); // Ag
                     JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                    // controllerClienti.rifiutaOfferta(data); // idem sopra
                 });
 
                 rigaPanel.add(Box.createHorizontalStrut(10));

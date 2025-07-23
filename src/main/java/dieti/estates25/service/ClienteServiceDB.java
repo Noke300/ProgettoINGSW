@@ -235,6 +235,7 @@ public class ClienteServiceDB implements UserDetailsService {
             return ResponseEntity.ok("Visita Cancellata");
         }
         oldVisita.setConferma(null);
+        visitaRepository.save(oldVisita);
 
         Immobile immobile = immobileRepository.findImmobileByIdImmobile(oldVisita.getImmobile().getIdImmobile());
         notificaService.inviaNotifica(immobile.getAgente().getEmailAgente(), "Hai una nuova richiesta di visita");

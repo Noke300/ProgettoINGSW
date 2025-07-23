@@ -157,7 +157,7 @@ public class ClienteServiceDB implements UserDetailsService {
         }
         visita.setCliente(clienteRepository.findByEmailCliente(email));
         visita.setImmobile(immobileRepository.findImmobileByIdImmobile(visita.getImmobile().getIdImmobile()));
-        visita.setConferma(false);
+        visita.setConferma(null);
         visita.setId(new VisitaId(email, visita.getImmobile().getIdImmobile()));
         visitaRepository.save(visita);
         notificaService.inviaNotifica(visita.getImmobile().getAgente().getEmailAgente(), "Hanno richiesto una nuova visita");
@@ -215,6 +215,30 @@ public class ClienteServiceDB implements UserDetailsService {
         visitaRepository.deleteAll(visitaRepository.findByImmobile(immobile));
         notificaService.inviaNotifica(immobile.getAgente().getEmailAgente(), "Hanno accettato una contro Offerta");
         return ResponseEntity.ok("Offerta accettata");
+    }
+
+    public ResponseEntity<String> eistoVisita(Visita visita) {
+        if (visita == null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Visita inesistente");
+        }
+        Visita oldVisita = visitaRepository.findById(visita.getId()).orElse(null);
+        assert oldVisita != null;
+        if(visita.getConferma() == null){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Esito incerto");
+        }
+        if(Boolean.FALSE.equals(visita.getConferma())){
+            visitaRepository.delete(oldVisita);
+            return ResponseEntity.ok("Visita Cancellata");
+        }
+        oldVisita.setConferma(null);
+
+        Immobile immobile = immobileRepository.findImmobileByIdImmobile(oldVisita.getImmobile().getIdImmobile());
+        notificaService.inviaNotifica(immobile.getAgente().getEmailAgente(), "Hai una nuova richiesta di visita");
+        return ResponseEntity.ok("Visita proposta");
     }
 }
 

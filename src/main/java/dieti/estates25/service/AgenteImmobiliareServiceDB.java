@@ -292,7 +292,7 @@ public class AgenteImmobiliareServiceDB implements UserDetailsService {
                 visitaRepository.save(visita);
                 return ResponseEntity.ok("Visita confermata");
             }else{
-                visitaRepository.delete(visita);
+                visitaRepository.save(visita);
                 return ResponseEntity.ok("Visita rifiutata");
             }
         }

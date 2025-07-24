@@ -115,7 +115,7 @@ public class ClientPersonalPage extends JPanel {
     }
 
 
-    public static void aggiornaContenutoPanel(Map<LocalDateTime, JLabel> dati, JPanel contenutoPanel, ControllerClienti controllerClienti,Cliente cliente ,String token) {
+    public static void aggiornaContenutoPanel(Map<LocalDateTime, JLabel> dati, JPanel contenutoPanel, ControllerClienti controllerClienti, Cliente cliente, String token) {
         contenutoPanel.removeAll();
         contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
 
@@ -128,12 +128,11 @@ public class ClientPersonalPage extends JPanel {
             JPanel rigaPanel = new JPanel();
             rigaPanel.setLayout(new BoxLayout(rigaPanel, BoxLayout.X_AXIS));
             rigaPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
+            rigaPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Altezza uniforme
             rigaPanel.add(label);
 
             String testo = label.getText();
 
-            // Gestione Controfferta
             if (testo.contains("Controfferta")) {
                 JButton accetta = new JButton("Accetta");
                 JButton rifiuta = new JButton("Rifiuta");
@@ -150,89 +149,60 @@ public class ClientPersonalPage extends JPanel {
                     JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 });
 
-                rigaPanel.add(Box.createHorizontalStrut(10));
-                rigaPanel.add(accetta);
-                rigaPanel.add(Box.createHorizontalStrut(5));
-                rigaPanel.add(rifiuta);
+                for (JComponent comp : new JComponent[]{accetta, rifiuta}) {
+                    comp.setMaximumSize(new Dimension(100, 25));
+                    comp.setAlignmentY(Component.CENTER_ALIGNMENT);
+                    rigaPanel.add(Box.createHorizontalStrut(10));
+                    rigaPanel.add(comp);
+                }
             }
 
-            // Gestione Visite Rifiutate
             if (testo.contains("Rifiutata")) {
-                JButton riproponiBtn = new JButton("Anulla");
-                JComboBox<String> orariBox = new JComboBox<>(new String[] { "08:00", "10:00", "12:00", "14:00", "16:00", "18:00" });
+                JButton riproponiBtn = new JButton("Annulla");
+                JComboBox<String> orariBox = new JComboBox<>(new String[]{"08:00", "10:00", "12:00", "14:00", "16:00", "18:00"});
                 JButton nuovaRichiestaBtn = new JButton("Nuova Richiesta");
 
                 riproponiBtn.addActionListener(e -> {
                     Immobile immobile = new Immobile(label.getName());
-                    // Creazione nuova visita
                     Visita nuovaVisita = new Visita(immobile, cliente, null, null, false);
                     controllerClienti.aggiornaVisita(nuovaVisita, token);
-                    JOptionPane.showMessageDialog(contenutoPanel, "🕒 Visita Anullata");
+                    JOptionPane.showMessageDialog(contenutoPanel, "🕒 Visita annullata");
                 });
 
                 nuovaRichiestaBtn.addActionListener(e -> {
                     try {
-                        // Estrazione nuovo orario dal combobox
                         String nuovoOrario = (String) orariBox.getSelectedItem();
                         int ora = Integer.parseInt(nuovoOrario.split(":")[0]);
                         int minuti = Integer.parseInt(nuovoOrario.split(":")[1]);
 
-                        // Creazione nuova data
                         LocalDateTime nuovaDataOra = data.withHour(ora).withMinute(minuti);
                         Instant istante = nuovaDataOra.atZone(ZoneId.systemDefault()).toInstant();
                         Date nuovaData = Date.from(istante);
                         LocalTime nuovoLocalTime = LocalTime.of(ora, minuti);
-
                         Immobile immobile = new Immobile(label.getName());
 
-                        // Creazione nuova visita
                         Visita nuovaVisita = new Visita(immobile, cliente, nuovoLocalTime, nuovaData, true);
 
-                        if(controllerClienti.aggiornaVisita(nuovaVisita, token)){
-                            JOptionPane.showMessageDialog(contenutoPanel, "📆 Nuova visita proposta per le " + nuovoOrario);
-                        }else{
-                            JOptionPane.showMessageDialog(contenutoPanel, "⚠️ Errore nella riprogrammazione della visita ");
+                        boolean success = controllerClienti.aggiornaVisita(nuovaVisita, token);
+                        String msg = success ? "📆 Nuova visita proposta per le " + nuovoOrario
+                                : "⚠️ Errore nella riprogrammazione della visita";
+                        JOptionPane.showMessageDialog(contenutoPanel, msg);
 
-                        }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(contenutoPanel, "⚠️ Errore nella riprogrammazione della visita: " + ex.getMessage());
-
+                        JOptionPane.showMessageDialog(contenutoPanel, "⚠️ Errore nella riprogrammazione: " + ex.getMessage());
                     }
                 });
 
-                // 1) Preleva le dimensioni dei tuoi bottoni
-                Dimension btnSize = riproponiBtn.getPreferredSize();
-
-// 2) Imposta su tutti e tre componenti
-                riproponiBtn.setPreferredSize(btnSize);
-                riproponiBtn.setMaximumSize(btnSize);
-                riproponiBtn.setMinimumSize(btnSize);
-
-                nuovaRichiestaBtn.setPreferredSize(btnSize);
-                nuovaRichiestaBtn.setMaximumSize(btnSize);
-                nuovaRichiestaBtn.setMinimumSize(btnSize);
-
-                orariBox.setPreferredSize(btnSize);
-                orariBox.setMaximumSize(btnSize);
-                orariBox.setMinimumSize(btnSize);
-
-// 3) Centra tutti i componenti lungo l’asse Y
-                riproponiBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-                orariBox   .setAlignmentY(Component.CENTER_ALIGNMENT);
-                nuovaRichiestaBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-// 4) Assicurati che il rigaPanel usi BoxLayout in orizzontale
-
-                rigaPanel.add(Box.createHorizontalStrut(10));
-                rigaPanel.add(riproponiBtn);
-                rigaPanel.add(Box.createHorizontalStrut(5));
-                rigaPanel.add(orariBox);
-                rigaPanel.add(Box.createHorizontalStrut(5));
-                rigaPanel.add(nuovaRichiestaBtn);
+                for (JComponent comp : new JComponent[]{riproponiBtn, orariBox, nuovaRichiestaBtn}) {
+                    comp.setMaximumSize(new Dimension(100, 25));
+                    comp.setAlignmentY(Component.CENTER_ALIGNMENT);
+                    rigaPanel.add(Box.createHorizontalStrut(10));
+                    rigaPanel.add(comp);
+                }
             }
 
             contenutoPanel.add(rigaPanel);
-            contenutoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            contenutoPanel.add(Box.createRigidArea(new Dimension(0, 8))); // Spazio uniforme tra le righe
         }
 
         contenutoPanel.revalidate();

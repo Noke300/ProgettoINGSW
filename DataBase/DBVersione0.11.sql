@@ -208,36 +208,36 @@ EXECUTE FUNCTION EliminaOfferteVisita();
 
 -- Inserimento dati nella tabella AgenziaImmobiliare
 INSERT INTO AgenziaImmobiliare (NomeAgenzia, EmailAgenzia, EmailAdmin, PasswordAdmin, Regione) VALUES
-('CasaFacile', 'info@casafacile.it', 'admin@casafacile.it', 'pass1234!', 'Lombardia'),
-('ImmobiliareRoma', 'info@immobiliareroma.it', 'admin@immobiliareroma.it', 'pass5678!', 'Lazio'),
-('MilanCase', 'info@milancase.it', 'admin@milancase.it', 'pass91011!', 'Lombardia'),
-('ViviCasa', 'info@vivicasa.it', 'admin@vivicasa.it', 'pass1213!', 'Veneto'),
-('TorinoHome', 'info@torinohome.it', 'admin@torinohome.it', 'pass1415!', 'Piemonte');
+('CasaFacile', 'info@casafacile.it', 'admin@casafacile.it', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'Lombardia'),
+('ImmobiliareRoma', 'info@immobiliareroma.it', 'admin@immobiliareroma.it', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'Lazio'),
+('MilanCase', 'info@milancase.it', 'admin@milancase.it', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'Lombardia'),
+('ViviCasa', 'info@vivicasa.it', 'admin@vivicasa.it', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'Veneto'),
+('TorinoHome', 'info@torinohome.it', 'admin@torinohome.it', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'Piemonte');
 
 -- Inserimento dati nella tabella Cliente
 INSERT INTO Cliente (Nome, Cognome, EmailCliente, PasswordCliente, DataN) VALUES
 ('Mario', 'Rossi', 'mario.rossi@email.com', '$2a$12$Am3HxCFrTnstR6q0yOA9K.254UR2pBCcaWiomKv9EjO5m4NoV1wuO', '1985-06-15'),
-('Luca', 'Bianchi', 'luca.bianchi@email.com', 'lucapass5!', '1990-09-22'),
-('Giulia', 'Verdi', 'giulia.verdi@email.com', 'giuliapass6!', '1987-04-10'),
-('Anna', 'Neri', 'anna.neri@email.com', 'annapass7!', '1995-11-30'),
-('Marco', 'Gialli', 'marco.gialli@email.com', 'marcopass8!', '1982-02-18');
+('Luca', 'Bianchi', 'luca.bianchi@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', '1990-09-22'),
+('Giulia', 'Verdi', 'giulia.verdi@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', '1987-04-10'),
+('Anna', 'Neri', 'anna.neri@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', '1995-11-30'),
+('Marco', 'Gialli', 'marco.gialli@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', '1982-02-18');
 
 -- Inserimento dati nella tabella AgenteImmobiliare
 INSERT INTO AgenteImmobiliare (NomeAgente, CognomeAgente, EmailAgente, PasswordAgente, NomeAgenzia) VALUES
-('Giovanni', 'Moretti', 'giovanni.moretti@email.com', 'agente1231!', 'CasaFacile'),
-('Elisa', 'Ferrari', 'elisa.ferrari@email.com', 'agente456!', 'ImmobiliareRoma'),
-('Paolo', 'Ricci', 'paolo.ricci@email.com', 'agente789!', 'MilanCase'),
-('Martina', 'De Luca', 'martina.deluca@email.com', 'agente101!', 'ViviCasa'),
+('Giovanni', 'Moretti', 'giovanni.moretti@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'CasaFacile'),
+('Elisa', 'Ferrari', 'elisa.ferrari@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'ImmobiliareRoma'),
+('Paolo', 'Ricci', 'paolo.ricci@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'MilanCase'),
+('Martina', 'De Luca', 'martina.deluca@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'ViviCasa'),
 ('Prova', 'Prova', 'prova@gmail.com', '$2a$12$lUaRC1xdQN8wTamPTVfDQeFLnweub8LWPf6GbNUZ6dqNd0SR.jaa6', 'CasaFacile'),
-('Andrea', 'Conti', 'andrea.conti@email.com', 'agente102!', 'TorinoHome');
+('Andrea', 'Conti', 'andrea.conti@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'TorinoHome');
 
 -- Inserimento dati nella tabella AdminSupport
 INSERT INTO AdminSupport (NomeSupport, CognomeSupport, EmailSupport, PasswordSupport, NomeAgenzia) VALUES
-('Francesco', 'Bianchi', 'support.bianchi@email.com', 'support123!', 'CasaFacile'),
-('Sara', 'Galli', 'support.galli@email.com', 'support456!', 'ImmobiliareRoma'),
-('Davide', 'Rizzo', 'support.rizzo@email.com', 'support789!', 'MilanCase'),
-('Lucia', 'Marini', 'support.marini@email.com', 'support101!', 'ViviCasa'),
-('Roberto', 'Serra', 'support.serra@email.com', 'support102!', 'TorinoHome');
+('Francesco', 'Bianchi', 'support.bianchi@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'CasaFacile'),
+('Sara', 'Galli', 'support.galli@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'ImmobiliareRoma'),
+('Davide', 'Rizzo', 'support.rizzo@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'MilanCase'),
+('Lucia', 'Marini', 'support.marini@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'ViviCasa'),
+('Roberto', 'Serra', 'support.serra@email.com', '$2a$12$krTa83H/c699KjbWhCozjO7nv/4/oXla4NoY2qqOpgA.bMXTIPxru', 'TorinoHome');
 
 --Inserimento dati nella tabella Indirizzo
 INSERT INTO Indirizzo (via, citta, latitudine, longitudine, provincia, NumeroCivico, cap, regione) VALUES
@@ -314,46 +314,6 @@ SELECT IdIndirizzo, 'andrea.conti@email.com', 'TorinoHome', 225000, 'Affitto', '
        FALSE, FALSE, TRUE, TRUE
 FROM Indirizzo ind
 WHERE ind.Citta = 'Palermo' AND ind.Provincia = 'PA';
-
-
---INSERIMENTO VISITA
-
--- Visita per immobile a Torino da Mario Rossi
-INSERT INTO Visita (IdImmobile, EmailCliente, OraVisita, DataVisita, Conferma)
-SELECT i.IdImmobile, 'mario.rossi@email.com', '10:00', '2025-12-01 10:00:00', TRUE
-FROM Immobile i
-JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
-WHERE ind.Via = 'Via Roma' AND ind.Citta = 'Torino';
-
--- Visita per immobile a Milano da Luca Bianchi
-INSERT INTO Visita (IdImmobile, EmailCliente, OraVisita, DataVisita, Conferma)
-SELECT i.IdImmobile, 'luca.bianchi@email.com', '10:00', '2025-12-02 10:00:00', FALSE
-FROM Immobile i
-JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
-WHERE ind.Via = 'Corso Italia' AND ind.Citta = 'Milano';
-
--- Visita per immobile a Firenze da Giulia Verdi
-INSERT INTO Visita (IdImmobile, EmailCliente, OraVisita, DataVisita, Conferma)
-SELECT i.IdImmobile, 'giulia.verdi@email.com', '10:00', '2025-12-03 10:00:00', TRUE
-FROM Immobile i
-JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
-WHERE ind.Via = 'Via Mazzini' AND ind.Citta = 'Firenze';
-
--- Visita per immobile a Genova da Anna Neri
-INSERT INTO Visita (IdImmobile, EmailCliente, OraVisita, DataVisita, Conferma)
-SELECT i.IdImmobile, 'anna.neri@email.com', '10:00', '2025-12-04 10:00:00', FALSE
-FROM Immobile i
-JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
-WHERE ind.Via = 'Via Garibaldi' AND ind.Citta = 'Genova';
-
--- Visita per immobile a Palermo da Marco Gialli
-INSERT INTO Visita (IdImmobile, EmailCliente, OraVisita, DataVisita, Conferma)
-SELECT i.IdImmobile, 'marco.gialli@email.com', '10:00', '2025-12-05 10:00:00', TRUE
-FROM Immobile i
-JOIN Indirizzo ind ON i.IdIndirizzo = ind.IdIndirizzo
-WHERE ind.Via = 'Via Dante' AND ind.Citta = 'Palermo';
-
-
 
 --INSERIMENTO OFFERTA
 

@@ -104,16 +104,31 @@ public class ControllerAgente extends Controller{
                 for (JsonElement elem : jsonArray) {
                     JsonObject obj = elem.getAsJsonObject();
 
-                    // Recupera i singoli campi dal JSON
-                    Date dataVisita = gson.fromJson(obj.get("dataVisita"), Date.class);
-                    LocalTime oraVisita = LocalTime.parse(obj.get("oraVisita").getAsString());
-                    Boolean conferma = obj.get("conferma").getAsBoolean();
+                    Date dataVisita = obj.has("dataVisita") && !obj.get("dataVisita").isJsonNull()
+                            ? gson.fromJson(obj.get("dataVisita"), Date.class)
+                            : null;
 
-                    // Gestione Immobile e Cliente (se sono oggetti complessi)
-                    Immobile immobile = gson.fromJson(obj.get("immobile"), Immobile.class);
-                    Cliente cliente = gson.fromJson(obj.get("cliente"), Cliente.class);
+                    LocalTime oraVisita = obj.has("oraVisita") && !obj.get("oraVisita").isJsonNull()
+                            ? LocalTime.parse(obj.get("oraVisita").getAsString())
+                            : null;
 
-                    // Costruisci visita
+                    Boolean conferma = obj.has("conferma") && !obj.get("conferma").isJsonNull()
+                            ? obj.get("conferma").getAsBoolean()
+                            : null;
+
+                    // 👉 Scarta se conferma è FALSE
+                    if (Boolean.FALSE.equals(conferma)) {
+                        continue;
+                    }
+
+                    Immobile immobile = obj.has("immobile") && !obj.get("immobile").isJsonNull()
+                            ? gson.fromJson(obj.get("immobile"), Immobile.class)
+                            : null;
+
+                    Cliente cliente = obj.has("cliente") && !obj.get("cliente").isJsonNull()
+                            ? gson.fromJson(obj.get("cliente"), Cliente.class)
+                            : null;
+
                     Visita visita = new Visita(immobile, cliente, oraVisita, dataVisita, conferma);
                     visite.add(visita);
                 }
@@ -126,6 +141,7 @@ public class ControllerAgente extends Controller{
             throw new RuntimeException("Errore durante richiesta visite: " + e.getMessage());
         }
     }
+
 
 
     public boolean eliminaImmobile(String immobile, String token) {

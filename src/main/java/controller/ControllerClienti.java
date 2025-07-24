@@ -25,6 +25,7 @@ public class ControllerClienti extends Controller {
     protected static final String PRENOTA_VISITE        = URL_SERVER+":8081/auth-cliente/visita";
     protected static final String OFFERTE_CLIENTE       = URL_SERVER+":8081/auth-cliente/getOfferte";
     protected static final String ACCETTA_OFFERTA       = URL_SERVER+":8081/auth-cliente/controOfferta";
+    protected static final String CONTRO_VISITE        = URL_SERVER+":8081/auth-cliente/controVisita";
 
 
 
@@ -82,7 +83,11 @@ public class ControllerClienti extends Controller {
                     // Recupera i singoli campi dal JSON
                     Date dataVisita = gson.fromJson(obj.get("dataVisita"), Date.class);
                     LocalTime oraVisita = LocalTime.parse(obj.get("oraVisita").getAsString());
-                    Boolean conferma = obj.get("conferma").getAsBoolean();
+                    JsonElement confermaElement = obj.get("conferma");
+                    Boolean conferma = (confermaElement != null && !confermaElement.isJsonNull())
+                            ? confermaElement.getAsBoolean()
+                            : null;
+
 
                     // Gestione Immobile e Cliente (se sono oggetti complessi)
                     Immobile immobile = gson.fromJson(obj.get("immobile"), Immobile.class);
@@ -200,6 +205,25 @@ public class ControllerClienti extends Controller {
             throw new RuntimeException("Errore durante l'esito dell'offerta: " + e.getMessage());
         }
     }
+
+    public boolean aggiornaVisita(Visita visita, String token) {
+        String requestBody = gson.toJson(visita);
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(CONTRO_VISITE)) // Assumendo che Visita abbia un getId()
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody)) // Utilizziamo PUT per aggiornare
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 200;
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException("Errore durante aggiornamento visita: " + e.getMessage());
+        }
+    }
+
 
 
 

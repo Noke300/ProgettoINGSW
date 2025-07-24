@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -18,7 +19,9 @@ import com.formdev.flatlaf.extras.*;
 import controller.ControllerClienti;
 import gui.costum_components.BottoniOpzioni;
 import gui.costum_components.IconClass;
+import gui.costum_components.VisitaPanel;
 import model.Cliente;
+import model.Immobile;
 import model.Offerta;
 import model.Visita;
 import net.miginfocom.swing.*;
@@ -32,6 +35,8 @@ public class ClientPersonalPage extends JPanel {
     private List<Visita> listaVisita;
     BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
 
+
+
     public ClientPersonalPage(JFrame frame, ControllerClienti controllerClienti, String token) {
         initComponents();
         Cliente cliente = controllerClienti.getSpecifiche(token);
@@ -43,22 +48,23 @@ public class ClientPersonalPage extends JPanel {
         buttonOfferte.addActionListener(e -> {
             listaOfferte = controllerClienti.getOfferte(token);
             Map<LocalDateTime, JLabel> mappa = getOfferteMap(listaOfferte);
-            aggiornaContenutoPanel(mappa, panelInterno, controllerClienti,token);
+            aggiornaContenutoPanel(mappa, panelInterno, controllerClienti,cliente,token);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
 
         // 🔄 Bottone Log
         buttonLog.addActionListener(e -> {
-            aggiornaContenutoPanel(BottoniOpzioni.getMapLog(), panelInterno, controllerClienti);
+            aggiornaContenutoPanel(BottoniOpzioni.getMapLog(), panelInterno);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
 
         // 🔄 Bottone Visite
-        listaVisita = controllerClienti.getVisite(token);
+
         buttonVisite.addActionListener(e -> {
-            aggiornaContenutoPanel(getVisiteMap(listaVisita), panelInterno, controllerClienti);
+            listaVisita = controllerClienti.getVisite(token);
+            aggiornaContenutoPanel(getVisiteMap(listaVisita), panelInterno, controllerClienti,cliente,token);
             contenutoPanel.revalidate();
             contenutoPanel.repaint();
         });
@@ -80,8 +86,36 @@ public class ClientPersonalPage extends JPanel {
         super.addNotify();
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
+    public static void aggiornaContenutoPanel(Map<LocalDateTime, String> dati, JPanel contenutoPanel) {
+        contenutoPanel.removeAll();
+        contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
 
-    public static void aggiornaContenutoPanel(Map<LocalDateTime, JLabel> dati, JPanel contenutoPanel, ControllerClienti controllerClienti,String token) {
+        Map<LocalDateTime, String> ordinata = new TreeMap<>(dati);
+
+        for (Map.Entry<LocalDateTime, String> entry : ordinata.entrySet()) {
+            LocalDateTime data = entry.getKey();
+            String testo = entry.getValue();
+
+            // Creazione JLabel con formattazione coerente
+            JLabel label = new JLabel("🕓 " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " → " + testo);
+            label.setFont(new Font("SansSerif", Font.PLAIN, 20));
+
+            // Inserimento nel pannello contenitore
+            JPanel rigaPanel = new JPanel();
+            rigaPanel.setLayout(new BoxLayout(rigaPanel, BoxLayout.X_AXIS));
+            rigaPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            rigaPanel.add(label);
+
+            contenutoPanel.add(rigaPanel);
+            contenutoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+
+        contenutoPanel.revalidate();
+        contenutoPanel.repaint();
+    }
+
+
+    public static void aggiornaContenutoPanel(Map<LocalDateTime, JLabel> dati, JPanel contenutoPanel, ControllerClienti controllerClienti,Cliente cliente ,String token) {
         contenutoPanel.removeAll();
         contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
 
@@ -97,21 +131,22 @@ public class ClientPersonalPage extends JPanel {
 
             rigaPanel.add(label);
 
-            // Controllo testuale dentro JLabel
             String testo = label.getText();
+
+            // Gestione Controfferta
             if (testo.contains("Controfferta")) {
                 JButton accetta = new JButton("Accetta");
                 JButton rifiuta = new JButton("Rifiuta");
 
                 accetta.addActionListener(e -> {
-                    Offerta offerta = new Offerta(label.getName(),true);
-                    controllerClienti.accettaOfferta(offerta,token); // Aggiungi chiamata se disponibile
+                    Offerta offerta = new Offerta(label.getName(), true);
+                    controllerClienti.accettaOfferta(offerta, token);
                     JOptionPane.showMessageDialog(contenutoPanel, "✅ Offerta accettata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 });
 
                 rifiuta.addActionListener(e -> {
-                    Offerta offerta = new Offerta(label.getName(),false);
-                    controllerClienti.accettaOfferta(offerta,token); // Ag
+                    Offerta offerta = new Offerta(label.getName(), false);
+                    controllerClienti.accettaOfferta(offerta, token);
                     JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 });
 
@@ -121,6 +156,58 @@ public class ClientPersonalPage extends JPanel {
                 rigaPanel.add(rifiuta);
             }
 
+            // Gestione Visite Rifiutate
+            if (testo.contains("Rifiutata")) {
+                JButton riproponiBtn = new JButton("Anulla");
+                JComboBox<String> orariBox = new JComboBox<>(new String[] { "08:00", "10:00", "12:00", "14:00", "16:00", "18:00" });
+                JButton nuovaRichiestaBtn = new JButton("Nuova Richiesta");
+
+                riproponiBtn.addActionListener(e -> {
+                    Immobile immobile = new Immobile(label.getName());
+                    // Creazione nuova visita
+                    Visita nuovaVisita = new Visita(immobile, cliente, null, null, false);
+                    controllerClienti.aggiornaVisita(nuovaVisita, token);
+                    JOptionPane.showMessageDialog(contenutoPanel, "🕒 Visita Anullata");
+                });
+
+                nuovaRichiestaBtn.addActionListener(e -> {
+                    try {
+                        // Estrazione nuovo orario dal combobox
+                        String nuovoOrario = (String) orariBox.getSelectedItem();
+                        int ora = Integer.parseInt(nuovoOrario.split(":")[0]);
+                        int minuti = Integer.parseInt(nuovoOrario.split(":")[1]);
+
+                        // Creazione nuova data
+                        LocalDateTime nuovaDataOra = data.withHour(ora).withMinute(minuti);
+                        Instant istante = nuovaDataOra.atZone(ZoneId.systemDefault()).toInstant();
+                        Date nuovaData = Date.from(istante);
+                        LocalTime nuovoLocalTime = LocalTime.of(ora, minuti);
+
+                        Immobile immobile = new Immobile(label.getName());
+
+                        // Creazione nuova visita
+                        Visita nuovaVisita = new Visita(immobile, cliente, nuovoLocalTime, nuovaData, null);
+
+                        if(controllerClienti.aggiornaVisita(nuovaVisita, token)){
+                            JOptionPane.showMessageDialog(contenutoPanel, "📆 Nuova visita proposta per le " + nuovoOrario);
+                        }else{
+                            JOptionPane.showMessageDialog(contenutoPanel, "⚠️ Errore nella riprogrammazione della visita ");
+
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(contenutoPanel, "⚠️ Errore nella riprogrammazione della visita: " + ex.getMessage());
+
+                    }
+                });
+
+                rigaPanel.add(Box.createHorizontalStrut(10));
+                rigaPanel.add(riproponiBtn);
+                rigaPanel.add(Box.createHorizontalStrut(5));
+                rigaPanel.add(orariBox);
+                rigaPanel.add(Box.createHorizontalStrut(5));
+                rigaPanel.add(nuovaRichiestaBtn);
+            }
+
             contenutoPanel.add(rigaPanel);
             contenutoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
@@ -128,34 +215,6 @@ public class ClientPersonalPage extends JPanel {
         contenutoPanel.revalidate();
         contenutoPanel.repaint();
     }
-
-    public static void aggiornaContenutoPanel(Map<LocalDateTime, String> dati, JPanel contenutoPanel, ControllerClienti controllerClienti) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        contenutoPanel.removeAll();
-        contenutoPanel.setLayout(new BoxLayout(contenutoPanel, BoxLayout.Y_AXIS));
-
-        Map<LocalDateTime, String> ordinata = new TreeMap<>(dati);
-
-        for (Map.Entry<LocalDateTime, String> entry : ordinata.entrySet()) {
-            LocalDateTime data = entry.getKey();
-            String testo = entry.getValue();
-
-            JPanel rigaPanel = new JPanel();
-            rigaPanel.setLayout(new BoxLayout(rigaPanel, BoxLayout.X_AXIS));
-            rigaPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-            JLabel riga = new JLabel("🕓 " + data.format(formatter) + " → " + testo);
-            riga.setFont(new Font("SansSerif", Font.PLAIN, 20));
-            rigaPanel.add(riga);
-
-            contenutoPanel.add(rigaPanel);
-            contenutoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        }
-
-        contenutoPanel.revalidate();
-        contenutoPanel.repaint();
-    }
-
 
     public static Map<LocalDateTime, JLabel> getOfferteMap(List<Offerta> listaOfferte) {
         Map<LocalDateTime, JLabel> dati = new HashMap<>();
@@ -186,8 +245,8 @@ public class ClientPersonalPage extends JPanel {
         return dati;
     }
 
-    public static Map<LocalDateTime, String> getVisiteMap(List<Visita> listaVisite) {
-        Map<LocalDateTime, String> dati = new HashMap<>();
+    public static Map<LocalDateTime, JLabel> getVisiteMap(List<Visita> listaVisite) {
+        Map<LocalDateTime, JLabel> dati = new HashMap<>();
         for (Visita visita : listaVisite) {
             Instant instant = visita.getDataVisita().toInstant();
             ZoneId zona = ZoneId.systemDefault();
@@ -195,15 +254,29 @@ public class ClientPersonalPage extends JPanel {
                     .withHour(visita.getOraVisita().getHour())
                     .withMinute(visita.getOraVisita().getMinute());
 
-            String stato = visita.getConferma() ? "Confermata" : "In Attesa";
-            String testo = "🗓️ Data/Ora: " + dataOra.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
-                    " | 📍 Immobile: " + visita.getImmobile().getIndirizzo().toString() +
+            String stato;
+            Boolean conferma = visita.getConferma();
+            if (conferma == null) {
+                stato = "In Attesa";
+            } else if (conferma) {
+                stato = "Confermata";
+            } else {
+                stato = "Rifiutata";
+            }
+
+            String testo = "📍 Immobile: " + visita.getImmobile().getIndirizzo().toString() +
                     " | Stato: " + stato;
 
-            dati.put(dataOra, testo);
+            JLabel label = new JLabel("🗓️ Data/Ora: " +
+                    dataOra.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " → " + testo);
+            label.setName(visita.getImmobile().getIdImmobile());
+            label.setFont(new Font("SansSerif", Font.PLAIN, 20));
+
+            dati.put(dataOra, label);
         }
         return dati;
     }
+
 
 
     private void initComponents() {

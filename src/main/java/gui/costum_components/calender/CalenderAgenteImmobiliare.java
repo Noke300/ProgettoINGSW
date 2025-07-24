@@ -35,7 +35,7 @@ public class CalenderAgenteImmobiliare {
         JButton addDateButton = new JButton("Info Giorno");
 
         addDateButton.addActionListener(h ->
-                mostraDettagliVisite(calendar.getDate(), format, frame, control, token, dateColorManager, calendarPopup)
+                mostraDettagliVisite(calendar.getDate(), format, frame, control, token, dateColorManager)
         );
         controlPanel.add(addDateButton, BorderLayout.SOUTH);
 
@@ -68,7 +68,7 @@ public class CalenderAgenteImmobiliare {
                 String key = format.format(adjustedDate);
                 visitePerGiorno.computeIfAbsent(key, k -> new ArrayList<>()).add(visita);
 
-                ColoredDate colored = new ColoredDate(adjustedDate, visita.getConferma());
+                ColoredDate colored = new ColoredDate(adjustedDate, Boolean.FALSE.equals(visita.getConferma()));
                 if (!coloredDates.contains(colored)) {
                     coloredDates.add(colored);
                 }
@@ -91,7 +91,7 @@ public class CalenderAgenteImmobiliare {
             JPanel controlPanel = new JPanel(new BorderLayout());
             JButton addDateButton = new JButton("Info Giorno");
             addDateButton.addActionListener(h ->
-                    mostraDettagliVisite(calendar.getDate(), format, frame, control, token, dateColorManager, calendarPopup)
+                    mostraDettagliVisite(calendar.getDate(), format, frame, control, token, dateColorManager)
             );            controlPanel.add(addDateButton, BorderLayout.SOUTH);
 
             calendarPopup.add(calendar, BorderLayout.CENTER);
@@ -114,7 +114,7 @@ public class CalenderAgenteImmobiliare {
 
     private static void mostraDettagliVisite(Date selectedDate, DateFormat format, JFrame frame,
                                              ControllerAgente controller, String token,
-                                             DateColorManager dateColorManager, JDialog calendarPopup) {
+                                             DateColorManager dateColorManager) {
 
         String giornoChiave = format.format(selectedDate);
         List<Visita> visiteDelGiorno = visitePerGiorno.get(giornoChiave);
@@ -142,7 +142,7 @@ public class CalenderAgenteImmobiliare {
                                 "💸 Prezzo: €" + imm.getPrezzo() + "\n" +
                                 "📍 Indirizzo: " + imm.getIndirizzo() + "\n" +
                                 "👤 Cliente: " + cl.getNome() + " " + cl.getCognome() + "\n" +
-                                "✅ Confermata: " + (visita.getConferma() ? "✅ Sì" : "❌ No")
+                                "📌 Stato: " + (visita.getConferma() == null ? "⏳ In Attesa" : "✅ Confermata")
                 );
                 info.setFont(new Font("SansSerif", Font.PLAIN, 16));
                 info.setEditable(false);
@@ -150,16 +150,16 @@ public class CalenderAgenteImmobiliare {
 
                 JPanel buttonPanel = new JPanel();
 
-                if (!visita.getConferma()) {
+                if (visita.getConferma() == null) {
                     JButton accetta = new JButton("✅ Accetta");
                     JButton rifiuta = new JButton("❌ Rifiuta");
 
                     accetta.addActionListener(ev -> {
                         visita.setConferma(true);
                         if (controller.esitoVisita(token, visita)) {
-                            JOptionPane.showMessageDialog(frame, "Visita confermata.");
+                            JOptionPane.showMessageDialog(frame, "✅ Visita confermata.");
                         } else {
-                            JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
+                            JOptionPane.showMessageDialog(frame, "❌ Qualcosa è andato storto.");
                         }
                         dateColorManager.updateDayColors(true);
                         dettaglioDialog.dispose();
@@ -168,9 +168,9 @@ public class CalenderAgenteImmobiliare {
                     rifiuta.addActionListener(ev -> {
                         visita.setConferma(false);
                         if (controller.esitoVisita(token, visita)) {
-                            JOptionPane.showMessageDialog(frame, "Visita rifiutata.");
+                            JOptionPane.showMessageDialog(frame, "❌ Visita rifiutata.");
                         } else {
-                            JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
+                            JOptionPane.showMessageDialog(frame, "⚠️ Qualcosa è andato storto.");
                         }
                         dateColorManager.updateDayColors(true);
                         dettaglioDialog.dispose();
@@ -178,14 +178,16 @@ public class CalenderAgenteImmobiliare {
 
                     buttonPanel.add(accetta);
                     buttonPanel.add(rifiuta);
-                } else {
+
+                } else if (visita.getConferma()) {
                     JButton annulla = new JButton("🔄 Annulla");
+
                     annulla.addActionListener(ev -> {
-                        visita.setConferma(false);
+                        visita.setConferma(false); // Torna in stato "In Attesa"
                         if (controller.esitoVisita(token, visita)) {
-                            JOptionPane.showMessageDialog(frame, "Visita annullata.");
+                            JOptionPane.showMessageDialog(frame, "⏳ Visita annullata. Ora in attesa.");
                         } else {
-                            JOptionPane.showMessageDialog(frame, "Qualcosa è andato storto.");
+                            JOptionPane.showMessageDialog(frame, "⚠️ Qualcosa è andato storto.");
                         }
                         dateColorManager.updateDayColors(true);
                         dettaglioDialog.dispose();
@@ -205,7 +207,7 @@ public class CalenderAgenteImmobiliare {
             dettaglioDialog.setVisible(true);
 
         } else {
-            JOptionPane.showMessageDialog(frame, "Nessuna visita per questo giorno.", "Informazioni", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "📭 Nessuna visita per questo giorno.", "Informazioni", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

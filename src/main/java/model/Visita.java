@@ -1,5 +1,7 @@
 package model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -7,8 +9,9 @@ public class Visita {
 
     private Immobile immobile;
     private Cliente cliente;
-    private java.time.LocalTime oraVisita;
+    private LocalTime oraVisita;
     private Date dataVisita;
+    @Nullable
     private Boolean conferma;
 
     public Visita(Immobile immobile, Cliente cliente, LocalTime oraVisita, Date dataVisita, Boolean conferma) {
@@ -36,5 +39,6 @@ public class Visita {
     public void setDataVisita(Date dataVisita) { this.dataVisita = dataVisita; }
 
     public void setConferma(Boolean conferma) {this.conferma = conferma;}
-    public boolean getConferma() { return this.conferma; }
+    @Nullable
+    public Boolean getConferma() { return this.conferma; }
 }

@@ -34,7 +34,6 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
     MapLoader mapLoader;
     private JPanel[] selectedPanel = new JPanel[1];// inizialmente vuoto
     GeoPosition geoPos;
-    private ImmobilePanelSingolo immobilePanelSingolo = new ImmobilePanelSingolo();
     //--Border per gli immobili selected
 
     @Override

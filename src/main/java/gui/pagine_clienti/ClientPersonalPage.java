@@ -186,7 +186,7 @@ public class ClientPersonalPage extends JPanel {
                         Immobile immobile = new Immobile(label.getName());
 
                         // Creazione nuova visita
-                        Visita nuovaVisita = new Visita(immobile, cliente, nuovoLocalTime, nuovaData, null);
+                        Visita nuovaVisita = new Visita(immobile, cliente, nuovoLocalTime, nuovaData, true);
 
                         if(controllerClienti.aggiornaVisita(nuovaVisita, token)){
                             JOptionPane.showMessageDialog(contenutoPanel, "📆 Nuova visita proposta per le " + nuovoOrario);
@@ -199,6 +199,29 @@ public class ClientPersonalPage extends JPanel {
 
                     }
                 });
+
+                // 1) Preleva le dimensioni dei tuoi bottoni
+                Dimension btnSize = riproponiBtn.getPreferredSize();
+
+// 2) Imposta su tutti e tre componenti
+                riproponiBtn.setPreferredSize(btnSize);
+                riproponiBtn.setMaximumSize(btnSize);
+                riproponiBtn.setMinimumSize(btnSize);
+
+                nuovaRichiestaBtn.setPreferredSize(btnSize);
+                nuovaRichiestaBtn.setMaximumSize(btnSize);
+                nuovaRichiestaBtn.setMinimumSize(btnSize);
+
+                orariBox.setPreferredSize(btnSize);
+                orariBox.setMaximumSize(btnSize);
+                orariBox.setMinimumSize(btnSize);
+
+// 3) Centra tutti i componenti lungo l’asse Y
+                riproponiBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
+                orariBox   .setAlignmentY(Component.CENTER_ALIGNMENT);
+                nuovaRichiestaBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+// 4) Assicurati che il rigaPanel usi BoxLayout in orizzontale
 
                 rigaPanel.add(Box.createHorizontalStrut(10));
                 rigaPanel.add(riproponiBtn);

@@ -417,6 +417,10 @@ public class PaginaImmobileDettagliata extends JPanel {
         MenuSelectionManager.defaultManager().clearSelectedPath();
     }
 
+    private void destraImg(ActionEvent e) {
+        // TODO add your code here
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Educational license - Marco Scotto di Uccio Scotto di Uccio (Marco Scotto Di Uccio)
@@ -542,6 +546,7 @@ public class PaginaImmobileDettagliata extends JPanel {
             buttonDestraImg.setText(">");
             buttonDestraImg.setFont(new Font("Segoe UI", Font.BOLD, 24));
             buttonDestraImg.setBackground(new Color(0x00ffffff, true));
+            buttonDestraImg.addActionListener(e -> destraImg(e));
             panelImmagineImmobile.add(buttonDestraImg, BorderLayout.EAST);
 
             //---- buttonSinistraImg ----

@@ -106,8 +106,7 @@ public class LogInAmministrazione extends JPanel {
 
                 List<ImmobileEImmagini> immobiliEImmagini = ((ControllerAgente) controlAdmin).fetchImmobili(token);
                 BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
-                frame.setContentPane(new InterfacciaAgenteImmobiliare(
-                        frame, bottoniOpzioni, (ControllerAgente) controlAdmin, token, immobiliEImmagini));
+                frame.setContentPane(new InterfacciaAgenteImmobiliare(frame, bottoniOpzioni, (ControllerAgente) controlAdmin, token, immobiliEImmagini));
                 break;
 
             case "[ADMIN]":

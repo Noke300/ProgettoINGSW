@@ -189,7 +189,6 @@ public class Controller {
 
     public boolean registrazioneCliente(Cliente cliente) {
         requestBody = gson.toJson(cliente);
-
         try {
             this.request = HttpRequest.newBuilder()
                     .uri(new URI(REGISTRAZIONE_URL_CLIENTE))
@@ -199,7 +198,6 @@ public class Controller {
         } catch (URISyntaxException e) {
             throw new RuntimeException("Errore URI: " + e.getMessage());
         }
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200 || response.statusCode() == 201) {

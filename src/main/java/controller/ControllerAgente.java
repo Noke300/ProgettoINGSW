@@ -36,8 +36,7 @@ public class ControllerAgente extends Controller{
         jsonMap.put("immagini", immagini);
         jsonMap.put("fileNames", fileNames);
 
-        String requestBody = gson.toJson(jsonMap);
-        HttpRequest request;
+        requestBody = gson.toJson(jsonMap);
         try {
             request = HttpRequest.newBuilder()
                     .uri(new URI(AGGIUNGI_IMMOBILE)) // aggiorna se diverso

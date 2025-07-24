@@ -189,7 +189,6 @@ public class ClientPersonalPage extends JPanel {
     public static Map<LocalDateTime, String> getVisiteMap(List<Visita> listaVisite) {
         Map<LocalDateTime, String> dati = new HashMap<>();
         for (Visita visita : listaVisite) {
-            // Converti Date a LocalDateTime
             Instant instant = visita.getDataVisita().toInstant();
             ZoneId zona = ZoneId.systemDefault();
             LocalDateTime dataOra = LocalDateTime.ofInstant(instant, zona)

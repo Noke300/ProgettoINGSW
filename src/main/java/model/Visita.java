@@ -21,7 +21,6 @@ public class Visita {
 
     public Visita(Immobile immobile, LocalTime oraVisita, Date dataVisita) {
         this.immobile = immobile;
-
         this.oraVisita = oraVisita;
         this.dataVisita = dataVisita;
         this.conferma = false;

@@ -1,5 +1,7 @@
 package controller;
 
+import gui.costum_components.IconClass;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -26,7 +28,7 @@ public class NotificationClient extends Controller {
     public void start() {
         new Thread(() -> {
             try {
-                HttpRequest request = HttpRequest.newBuilder()
+                 request = HttpRequest.newBuilder()
                         .uri(new URI(URL_SERVER+":8081/notifiche/stream?userId=" + userId))
                         .header("Accept", "text/event-stream")
                         .GET()
@@ -56,9 +58,9 @@ public class NotificationClient extends Controller {
         JWindow notificationWindow = new JWindow();
 
         JLabel label = new JLabel("Notifica: " + messaggio);
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         label.setOpaque(true);
-        label.setBackground(new Color(255, 255, 204)); // giallo tenue
+        label.setBackground(IconClass.getMainColor()); // giallo tenue
         label.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
                 BorderFactory.createEmptyBorder(10, 15, 10, 15)

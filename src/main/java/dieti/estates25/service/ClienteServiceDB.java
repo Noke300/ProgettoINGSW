@@ -223,6 +223,11 @@ public class ClienteServiceDB implements UserDetailsService {
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Visita inesistente");
         }
+        String email = getEmailAutenticato();
+        visita.setCliente(clienteRepository.findByEmailCliente(email));
+        visita.setImmobile(immobileRepository.findImmobileByIdImmobile(visita.getImmobile().getIdImmobile()));
+        visita.setId(new VisitaId(email, visita.getImmobile().getIdImmobile()));
+
         Visita oldVisita = visitaRepository.findById(visita.getId()).orElse(null);
         assert oldVisita != null;
         if(visita.getConferma() == null){

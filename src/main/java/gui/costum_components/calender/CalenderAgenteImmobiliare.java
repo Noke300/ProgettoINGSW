@@ -68,7 +68,7 @@ public class CalenderAgenteImmobiliare {
                 String key = format.format(adjustedDate);
                 visitePerGiorno.computeIfAbsent(key, k -> new ArrayList<>()).add(visita);
 
-                ColoredDate colored = new ColoredDate(adjustedDate, Boolean.FALSE.equals(visita.getConferma()));
+                ColoredDate colored = new ColoredDate(adjustedDate);
                 if (!coloredDates.contains(colored)) {
                     coloredDates.add(colored);
                 }

@@ -70,6 +70,7 @@ public class CalenderAgenteImmobiliare {
 
                 ColoredDate colored = new ColoredDate(adjustedDate);
                 if (!coloredDates.contains(colored)) {
+
                     coloredDates.add(colored);
                 }
             }

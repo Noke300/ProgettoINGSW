@@ -58,7 +58,9 @@ public class InterfacciaListaImmobili extends JPanel {
 
         List<Immobile> immobiliS = new ArrayList<>();
         for (ImmobileEImmagini i : immobili){
-            immobiliS.add(i.getImmobile());
+            if(i.getImmobile().getAgenteImmobiliare() !=null) {
+                immobiliS.add(i.getImmobile());
+            }
         }
 
         searchButton.addActionListener(e -> {

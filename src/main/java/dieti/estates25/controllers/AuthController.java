@@ -202,6 +202,9 @@ public class AuthController {
             if (f.getPiano() != -2) {
                 p = p.and(i -> i.getPiano() >= f.getPiano());
             }
+            if (f.getSuperficie() != 0){
+                p = p.and(i -> i.getSuperficie() >= f.getSuperficie());
+            }
         }
 
         return p;

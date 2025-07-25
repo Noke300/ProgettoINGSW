@@ -261,11 +261,11 @@ public class ClientPersonalPage extends JPanel {
             } else if (conferma) {
                 stato = "Confermata";
             } else {
-                stato = "Rifiutata";
+                stato = "Rifiutata"+", Richiedere per il giorno dopo";
             }
 
             String testo = "📍 Immobile: " + visita.getImmobile().getIndirizzo().toString() +
-                    " | Stato : " + stato +", Richiedere per il giorno dopo";
+                    " | Stato : " + stato;
 
             JLabel label = new JLabel("🗓️ Data/Ora: " +
                     dataOra.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " → " + testo);

@@ -280,7 +280,7 @@ public class InterfacciaAgenteImmobiliare extends JPanel {
                 "[grow 1,fill]rel" +
                 "[grow 1,fill]",
                 // rows
-                "[33,fill]" +
+                "[33,fill]para" +
                 "[]"));
 
             //---- buttonAggiungImmobile ----

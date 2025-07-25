@@ -87,7 +87,7 @@ public class InterfacciaListaImmobili extends JPanel {
         //--- 7. Filtri  ---
         JButton buttonConfermaFiltri = new JButton("Conferma");
         internalFrameFiltri.remove(18);
-        internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 11,alignx center,grow 0 100");
+        internalFrameFiltri.add(buttonConfermaFiltri,18);
 
 
         buttonFiltri.addActionListener(e -> {
@@ -415,7 +415,7 @@ public class InterfacciaListaImmobili extends JPanel {
             panelTopBar.setLayout(new MigLayout(
                 "fill,hidemode 3,aligny center",
                 // columns
-                "[fill]" +
+                "[fill]unrel" +
                 "[121,grow]0" +
                 "[0,grow]rel" +
                 "[158,grow]rel" +

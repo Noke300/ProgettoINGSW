@@ -55,12 +55,13 @@ public class NotificationClient extends Controller {
     }
 
     public static void  notificheWindow(String messaggio){
+
         JWindow notificationWindow = new JWindow();
 
         JLabel label = new JLabel("Notifica: " + messaggio);
         label.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         label.setOpaque(true);
-        label.setBackground(IconClass.getMainColor()); // giallo tenue
+        label.setBackground(Color.GRAY); // giallo tenue
         label.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
                 BorderFactory.createEmptyBorder(10, 15, 10, 15)

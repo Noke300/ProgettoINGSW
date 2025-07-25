@@ -253,7 +253,7 @@ public class Ricerca extends JPanel {
         });
 
 
-        if((!(token == null) && !token.isEmpty())&& control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
+        if((!(token == null) && !token.isEmpty()) && control.getNameLogIn().equals("[AGENTE_IMMOBILIARE]")){
                 notifiche.addListener(messaggio -> SwingUtilities.invokeLater(() -> NotificationClient.notificheWindow(messaggio)));
         }
 
@@ -521,13 +521,12 @@ public class Ricerca extends JPanel {
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
-            "[74,fill]" +
-            "[shrink 0,center]" +
-            "[left]" +
-            "[fill]" +
-            "[6,center]0" +
-            "[102,center]" +
-            "[62,shrink 0,fill]0",
+            "[74,fill]ind" +
+            "[shrink 0,center]0" +
+            "[left]0" +
+            "[fill]0" +
+            "[102,center]0" +
+            "[6,center]0",
             // rows
             "[73,top]0" +
             "[73,center]0" +
@@ -547,7 +546,7 @@ public class Ricerca extends JPanel {
         labelTitolo.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
         labelTitolo.setHorizontalTextPosition(SwingConstants.CENTER);
         labelTitolo.setVerticalTextPosition(SwingConstants.BOTTOM);
-        add(labelTitolo, "cell 1 1 5 1,align center center,grow 0 0");
+        add(labelTitolo, "cell 1 1 4 1,align center center,grow 0 0");
 
         //---- mapButton ----
         mapButton.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
@@ -568,13 +567,13 @@ public class Ricerca extends JPanel {
         searchButton.setBackground(new Color(0x00ffffff, true));
         searchButton.setBorderPainted(false);
         searchButton.setBorder(null);
-        add(searchButton, "cell 5 2,align right center,grow 0 0");
+        add(searchButton, "cell 4 2,align right center,grow 0 0");
 
         //---- searchField ----
         searchField.setBackground(null);
         searchField.setFont(new Font("Segoe UI", Font.PLAIN, 30));
         searchField.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-        add(searchField, "cell 1 2 5 1,aligny center,grow 100 0");
+        add(searchField, "cell 1 2 4 1,aligny center,grow 100 0");
 
         //---- comboBoxTipVendita ----
         comboBoxTipVendita.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -583,7 +582,7 @@ public class Ricerca extends JPanel {
             "Vendita"
         }));
         comboBoxTipVendita.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        add(comboBoxTipVendita, "cell 1 3");
+        add(comboBoxTipVendita, "cell 1 3,alignx left,growx 0");
 
         //======== menuBarPrezziTutto ========
         {
@@ -641,7 +640,7 @@ public class Ricerca extends JPanel {
         buttonFiltri.setText("Filtri");
         buttonFiltri.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
         buttonFiltri.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        add(buttonFiltri, "cell 5 3,align left center,grow 0 0");
+        add(buttonFiltri, "cell 4 3,align left center,grow 0 0");
 
         //======== panelMenuBarOpzioniColore ========
         {
@@ -819,7 +818,7 @@ public class Ricerca extends JPanel {
             buttonConfermaFiltri.setBackground(UIManager.getColor("Actions.Green"));
             internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 9,alignx center,grow 0 100");
         }
-        add(internalFrameFiltri, "east");
+        add(internalFrameFiltri, "east,alignx center,growx 0");
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 

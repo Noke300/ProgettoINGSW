@@ -148,7 +148,8 @@ public class VisitaPanel {
                     assert selected != null;
                     LocalTime orario = LocalTime.parse(selected, formatter);
 
-                    Date dataVisita = java.sql.Date.valueOf(dataSelezionata);
+                    LocalDate dataSelezionataMinusOne = dataSelezionata.minusDays(1);
+                    Date dataVisita = java.sql.Date.valueOf(dataSelezionataMinusOne);
                     Visita visita = new Visita(immobile, orario, dataVisita);
 
                     if (control.getNameLogIn().equals("[CLIENT]")) {

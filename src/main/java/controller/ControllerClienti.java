@@ -108,8 +108,7 @@ public class ControllerClienti extends Controller {
     }
 
     public List<Offerta> getOfferte(String token) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request;
+         client = HttpClient.newHttpClient();
 
         try {
             request = HttpRequest.newBuilder()

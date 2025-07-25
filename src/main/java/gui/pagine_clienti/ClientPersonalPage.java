@@ -145,9 +145,12 @@ public class ClientPersonalPage extends JPanel {
 
                 rifiuta.addActionListener(e -> {
                     Offerta offerta = new Offerta(label.getName(), false);
-                    controllerClienti.accettaOfferta(offerta, token);
-                    JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                });
+                    if(controllerClienti.accettaOfferta(offerta, token)) {
+                        JOptionPane.showMessageDialog(contenutoPanel, "❌ Offerta rifiutata il " + data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                        }else {
+                        JOptionPane.showMessageDialog(contenutoPanel, "❌ Erorre ");
+                    }
+                    });
 
                 for (JComponent comp : new JComponent[]{accetta, rifiuta}) {
                     comp.setMaximumSize(new Dimension(100, 25));

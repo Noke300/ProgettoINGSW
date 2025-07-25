@@ -12,7 +12,7 @@ new FormModel {
 			"border": new javax.swing.border.BevelBorder( 1, null, null, null, null )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 				"$layoutConstraints": "fill,hidemode 3,aligny center"
-				"$columnConstraints": "[fill][121,grow]0[0,grow]rel[158,grow]rel[fill]0[120,grow,center]rel[255,grow,center]para[255,grow,center]para[fill]"
+				"$columnConstraints": "[fill]unrel[121,grow]0[0,grow]rel[158,grow]rel[fill]0[120,grow,center]rel[255,grow,center]para[255,grow,center]para[fill]"
 				"$rowConstraints": "[22,grow,fill]0[75,grow,top]0[]para"
 			} ) {
 				name: "panelTopBar"

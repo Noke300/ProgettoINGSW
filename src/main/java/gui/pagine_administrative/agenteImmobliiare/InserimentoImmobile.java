@@ -631,7 +631,7 @@ public class InserimentoImmobile extends JPanel {
             "[186,grow,fill]0" +
             "[0,fill]0" +
             "[186,grow,fill]0" +
-            "[186,grow,top]0" +
+            "[186,grow,top]para" +
             "[21,grow,fill]0" +
             "[]"));
         add(scrollPaneImmobile, "cell 0 0 4 5,grow");

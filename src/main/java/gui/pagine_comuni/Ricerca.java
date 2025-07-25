@@ -521,7 +521,7 @@ public class Ricerca extends JPanel {
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
-            "[74,fill]ind" +
+            "[74,fill]0" +
             "[shrink 0,center]0" +
             "[left]0" +
             "[fill]0" +
@@ -540,13 +540,13 @@ public class Ricerca extends JPanel {
 
         //---- labelTitolo ----
         labelTitolo.setText("DietiEstates25 ");
-        labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 58));
+        labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 72));
         labelTitolo.setForeground(UIManager.getColor("Actions.Green"));
         labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
         labelTitolo.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
         labelTitolo.setHorizontalTextPosition(SwingConstants.CENTER);
         labelTitolo.setVerticalTextPosition(SwingConstants.BOTTOM);
-        add(labelTitolo, "cell 1 1 4 1,align center center,grow 0 0");
+        add(labelTitolo, "cell 0 1 6 1,grow");
 
         //---- mapButton ----
         mapButton.setIcon(UIManager.getIcon("FileChooser.listViewIcon"));
@@ -818,7 +818,7 @@ public class Ricerca extends JPanel {
             buttonConfermaFiltri.setBackground(UIManager.getColor("Actions.Green"));
             internalFrameFiltri.add(buttonConfermaFiltri, "cell 2 9,alignx center,grow 0 100");
         }
-        add(internalFrameFiltri, "east,alignx center,growx 0");
+        add(internalFrameFiltri, "east,alignx center,grow 0 100");
         // JFormDesigner - End of component initialization //GEN-END:initComponents @formatter:on
     }
 

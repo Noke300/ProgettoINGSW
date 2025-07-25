@@ -5,21 +5,21 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "fill,insets 0,hidemode 3,align center center,gap 10 5"
-			"$columnConstraints": "[74,fill]ind[shrink 0,center]0[left]0[fill]0[102,center]0[6,center]0"
+			"$columnConstraints": "[74,fill]0[shrink 0,center]0[left]0[fill]0[102,center]0[6,center]0"
 			"$rowConstraints": "[73,top]0[73,center]0[73,center]0[73,center]0[84,top]0[90,center]0[29]0[77]0[21,top]0"
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelTitolo"
 				"text": "DietiEstates25 "
-				"font": new java.awt.Font( "Felix Titling", 3, 58 )
+				"font": new java.awt.Font( "Felix Titling", 3, 72 )
 				"foreground": &SwingColor0 new com.jformdesigner.model.SwingColor( "Actions.Green" )
 				"horizontalAlignment": 0
 				"icon": new com.jformdesigner.model.SwingIcon( 2, "FileChooser.homeFolderIcon" )
 				"horizontalTextPosition": 0
 				"verticalTextPosition": 3
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 1 4 1,align center center,grow 0 0"
+				"value": "cell 0 1 6 1,grow"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "mapButton"
@@ -391,11 +391,11 @@ new FormModel {
 					"value": "cell 2 9,alignx center,grow 0 100"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "east,alignx center,growx 0"
+				"value": "east,alignx center,grow 0 100"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 15 )
-			"size": new java.awt.Dimension( 1040, 510 )
+			"location": new java.awt.Point( 35, 15 )
+			"size": new java.awt.Dimension( 1130, 510 )
 		} )
 	}
 }

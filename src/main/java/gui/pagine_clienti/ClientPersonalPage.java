@@ -178,7 +178,7 @@ public class ClientPersonalPage extends JPanel {
                         int ora = Integer.parseInt(nuovoOrario.split(":")[0]);
                         int minuti = Integer.parseInt(nuovoOrario.split(":")[1]);
 
-                        LocalDateTime nuovaDataOra = data.withHour(ora).withMinute(minuti);
+                        LocalDateTime nuovaDataOra = data.minusDays(1).withHour(ora).withMinute(minuti);
                         Instant istante = nuovaDataOra.atZone(ZoneId.systemDefault()).toInstant();
                         Date nuovaData = Date.from(istante);
                         LocalTime nuovoLocalTime = LocalTime.of(ora, minuti);

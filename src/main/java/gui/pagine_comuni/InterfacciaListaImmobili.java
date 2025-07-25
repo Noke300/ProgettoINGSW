@@ -66,10 +66,10 @@ public class InterfacciaListaImmobili extends JPanel {
         searchButton.addActionListener(e -> {
             if(!searchField.getText().isEmpty()) {
                 GeoPosition geoPos = MapLoader.getCoordinatesFromAddress(searchField.getText());
-                Ricerca ricerca = new Ricerca(frame,control,token);
+                Ricerca.fetchFiltri();
                 BottoniOpzioni.getMapLog().put(LocalDateTime.now(),"Ricerca di Immobili : "+searchField.getText());
                 assert geoPos != null;
-                List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, filtriEsterni(ricerca.fetchFiltri()));
+                List<ImmobileEImmagini> immobiles = control.ricerca(geoPos, filtriEsterni(Ricerca.filtri));
                 if (!immobiles.isEmpty()) {
                     frame.setContentPane(new InterfacciaListaImmobili(frame, bottoniOpzioni, geoPos, control, token, internalFrameFiltri, immobiles));
                     frame.revalidate();
@@ -339,7 +339,7 @@ public class InterfacciaListaImmobili extends JPanel {
 
     }
 
-    private Map<String,Object> filtriEsterni(Map<String, Object> filtri){
+    private  Map<String,Object> filtriEsterni(Map<String, Object> filtri){
 
         filtri.put("prezzoMax", Ricerca.traduciPrezzo((String) comboPrezzoMax.getSelectedItem()));
         filtri.put("prezzoMin", Ricerca.traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));

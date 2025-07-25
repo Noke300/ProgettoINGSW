@@ -29,6 +29,8 @@ public class Ricerca extends JPanel {
     public static NotificationClient notifiche;
     protected BottoniOpzioni bottoniOpzioni = new BottoniOpzioni();
     private final AutoCompleteAddress autoCompleteAddress = new AutoCompleteAddress();
+
+    public static Map<String, Object> filtri = new HashMap<>();
     public Ricerca(JFrame frame, Controller control, String token) {
         this.token = token;
         initComponents();
@@ -290,7 +292,6 @@ public class Ricerca extends JPanel {
 
                 menuPrezzi.setPopupMenuVisible(false);
                 menuPrezzi.setVisible(false);
-
                 frame.setContentPane(new InterfacciaListaImmobili(frame,bottoniOpzioni, geoPos, control, this.token,internalFrameFiltri,immobiles));
                 frame.revalidate();
                 frame.repaint();
@@ -389,8 +390,7 @@ public class Ricerca extends JPanel {
         });
     }
 
-    public Map<String, Object> fetchFiltri(){
-        Map<String, Object> filtri = new HashMap<>();
+    public static Map<String, Object> fetchFiltri(){
 
         if(listaTipi.getSelectedItem().equals("Case e Appartamenti")){
             filtri.put("tipoImmobile", null);
@@ -839,21 +839,21 @@ public class Ricerca extends JPanel {
     private JLabel LogoOpzioni;
     private JPanel internalFrameFiltri;
     private JLabel labelTipoVendita;
-    private JComboBox<String> listaTipi;
-    private JLabel labelNumeroBagni;
-    private JSpinner spinnerBagni;
+    private static JComboBox<String> listaTipi;
+    private  JLabel labelNumeroBagni;
+    private static JSpinner spinnerBagni;
     private JLabel labelStanze;
-    private JSpinner spinnerStanze;
+    private static JSpinner spinnerStanze;
     private JLabel labelClasseE;
-    protected JComboBox<String> comboBoxClasseE;
+    protected static JComboBox<String> comboBoxClasseE;
     private JLabel labelPiani;
-    private JSpinner spinnerPiani;
+    private static JSpinner spinnerPiani;
     private JLabel label1;
-    private JToggleButton toggleButtonAscensore;
-    private JToggleButton toggleButtonBalcone;
-    private JToggleButton toggleButtonCantina;
-    private JToggleButton toggleButtonClimatizzazione;
-    private JToggleButton toggleButtonPortineria;
+    private static JToggleButton toggleButtonAscensore;
+    private static JToggleButton toggleButtonBalcone;
+    private static JToggleButton toggleButtonCantina;
+    private static JToggleButton toggleButtonClimatizzazione;
+    private static JToggleButton toggleButtonPortineria;
     private JSeparator separator1;
     private JButton buttonCancellaFiltri;
     private JButton buttonConfermaFiltri;

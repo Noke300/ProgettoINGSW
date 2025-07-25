@@ -334,7 +334,6 @@ public class Ricerca extends JPanel {
         comboBoxSuperfice.addMouseListener(IconClass.cursorButton());
 
         //--Icon
-        labelTitolo.setIcon(IconClass.getHomeIcon());
         searchButton.setIcon(IconClass.getSearcherIcon());
         mapButton.setIcon(IconClass.getMapIcon());
 
@@ -543,7 +542,7 @@ public class Ricerca extends JPanel {
         labelTitolo.setFont(new Font("Felix Titling", Font.BOLD | Font.ITALIC, 72));
         labelTitolo.setForeground(UIManager.getColor("Actions.Green"));
         labelTitolo.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTitolo.setIcon(UIManager.getIcon("FileChooser.homeFolderIcon"));
+        labelTitolo.setIcon(new FlatSVGIcon("LogoBackGraund.svg"));
         labelTitolo.setHorizontalTextPosition(SwingConstants.CENTER);
         labelTitolo.setVerticalTextPosition(SwingConstants.BOTTOM);
         add(labelTitolo, "cell 0 1 6 1,grow");

@@ -521,12 +521,12 @@ public class Ricerca extends JPanel {
         setLayout(new MigLayout(
             "fill,insets 0,hidemode 3,align center center,gap 10 5",
             // columns
-            "0[74,fill]0" +
+            "[74,fill]" +
             "[shrink 0,center]" +
             "[left]" +
-            "[fill]0" +
+            "[fill]" +
             "[6,center]0" +
-            "[102,center]0" +
+            "[102,center]" +
             "[62,shrink 0,fill]0",
             // rows
             "[73,top]0" +
@@ -842,7 +842,7 @@ public class Ricerca extends JPanel {
     private JPanel internalFrameFiltri;
     private JLabel labelTipoVendita;
     private static JComboBox<String> listaTipi;
-    private  JLabel labelNumeroBagni;
+    private JLabel labelNumeroBagni;
     private static JSpinner spinnerBagni;
     private JLabel labelStanze;
     private static JSpinner spinnerStanze;

@@ -438,7 +438,9 @@ public class Ricerca extends JPanel {
 
         filtri.put("prezzoMax", traduciPrezzo((String) comboPrezzoMax.getSelectedItem()));
         filtri.put("prezzoMin", traduciPrezzo((String) comboPrezzoMin.getSelectedItem()));
-        filtri.put("superficie", getSuperficie((String) comboBoxSuperfice.getSelectedItem()));
+        int superficieOriginale = getSuperficie((String) comboBoxSuperfice.getSelectedItem());
+        filtri.put("superficie", superficieOriginale);
+
 
         if(comboBoxTipVendita.getSelectedItem().equals("Vendita e Affitto")){
             filtri.put("tipoVendita", null);

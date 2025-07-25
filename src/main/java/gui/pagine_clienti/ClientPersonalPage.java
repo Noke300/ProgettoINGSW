@@ -178,16 +178,19 @@ public class ClientPersonalPage extends JPanel {
                         int ora = Integer.parseInt(nuovoOrario.split(":")[0]);
                         int minuti = Integer.parseInt(nuovoOrario.split(":")[1]);
 
+                        // Supponendo che 'data' sia LocalDateTime
                         LocalDateTime nuovaDataOra = data.minusDays(1).withHour(ora).withMinute(minuti);
+
+                        // Conversione in Date (per compatibilità con Visita)
                         Instant istante = nuovaDataOra.atZone(ZoneId.systemDefault()).toInstant();
                         Date nuovaData = Date.from(istante);
                         LocalTime nuovoLocalTime = LocalTime.of(ora, minuti);
-                        Immobile immobile = new Immobile(label.getName());
 
+                        Immobile immobile = new Immobile(label.getName());
                         Visita nuovaVisita = new Visita(immobile, cliente, nuovoLocalTime, nuovaData, true);
 
                         boolean success = controllerClienti.aggiornaVisita(nuovaVisita, token);
-                        String msg = success ? "📆 Nuova visita proposta per le " + nuovoOrario
+                        String msg = success ? "📅 Nuova visita proposta per le " + nuovoOrario + ", giorno precedente"
                                 : "⚠️ Errore nella riprogrammazione della visita";
                         JOptionPane.showMessageDialog(contenutoPanel, msg);
 
@@ -197,12 +200,13 @@ public class ClientPersonalPage extends JPanel {
                 });
 
                 for (JComponent comp : new JComponent[]{riproponiBtn, orariBox, nuovaRichiestaBtn}) {
-                    comp.setMaximumSize(new Dimension(100, 25));
+                    comp.setMaximumSize(new Dimension(120, 25));
                     comp.setAlignmentY(Component.CENTER_ALIGNMENT);
                     rigaPanel.add(Box.createHorizontalStrut(10));
                     rigaPanel.add(comp);
                 }
             }
+
 
             contenutoPanel.add(rigaPanel);
             contenutoPanel.add(Box.createRigidArea(new Dimension(0, 8))); // Spazio uniforme tra le righe
@@ -261,7 +265,7 @@ public class ClientPersonalPage extends JPanel {
             }
 
             String testo = "📍 Immobile: " + visita.getImmobile().getIndirizzo().toString() +
-                    " | Stato: " + stato;
+                    " | Stato : " + stato +", Richiedere per il giorno dopo";
 
             JLabel label = new JLabel("🗓️ Data/Ora: " +
                     dataOra.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " → " + testo);
